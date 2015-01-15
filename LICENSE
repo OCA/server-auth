@@ -1,4 +1,4 @@
-GNU AFFERO GENERAL PUBLIC LICENSE
+                    GNU AFFERO GENERAL PUBLIC LICENSE
                        Version 3, 19 November 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <http://fsf.org/>
@@ -633,8 +633,13 @@ the "copyright" line and a pointer to where the full notice is found.
     Copyright (C) <year>  <name of author>
 
     This program is free software: you can redistribute it and/or modify
+<<<<<<< HEAD
     it under the terms of the GNU Affero General Public License as published
     by the Free Software Foundation, either version 3 of the License, or
+=======
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+>>>>>>> 517df00... Update and Add License (AGPL) and (XCG)
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -658,4 +663,8 @@ specific requirements.
   You should also get your employer (if you work as a programmer) or school,
 if any, to sign a "copyright disclaimer" for the program, if necessary.
 For more information on this, and how to apply and follow the GNU AGPL, see
+<<<<<<< HEAD
 <http://www.gnu.org/licenses/>.
+=======
+<http://www.gnu.org/licenses/>.
+>>>>>>> 517df00... Update and Add License (AGPL) and (XCG)
