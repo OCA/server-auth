@@ -2,10 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import ipaddress
-import json
 import logging
 from distutils import util
-from urllib.request import urlopen
+
+import requests
 
 from odoo import api, fields, models
 
@@ -46,11 +46,12 @@ class ResAuthenticationAttempt(models.Model):
             .sudo()
             .get_param("auth_brute_force.check_remote", "True")
         ):
+            self.write({"remote_metadata": ""})
             return
         for item in self:
             url = GEOLOCALISATION_URL.format(item.remote)
             try:
-                res = json.loads(urlopen(url, timeout=5).read())
+                res = requests.get(url, timeout=4).json()
             except Exception:
                 _logger.warning(
                     "Couldn't fetch details from %s",
