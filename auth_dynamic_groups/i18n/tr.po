@@ -3,51 +3,51 @@
 # * auth_dynamic_groups
 # 
 # Translators:
-# Rudolf Schnapka <rs@techno-flex.de>, 2016
+# Ahmet Altınışık <aaltinisik@altinkaya.com.tr>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: server-tools (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-19 14:44+0000\n"
-"PO-Revision-Date: 2016-01-18 13:31+0000\n"
-"Last-Translator: Rudolf Schnapka <rs@techno-flex.de>\n"
-"Language-Team: German (http://www.transifex.com/oca/OCA-server-tools-8-0/language/de/)\n"
+"PO-Revision-Date: 2016-01-31 14:58+0000\n"
+"Last-Translator: Ahmet Altınışık <aaltinisik@altinkaya.com.tr>\n"
+"Language-Team: Turkish (http://www.transifex.com/oca/OCA-server-tools-8-0/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: auth_dynamic_groups
 #: model:ir.model,name:auth_dynamic_groups.model_res_groups
 msgid "Access Groups"
-msgstr "Berechtigungsgruppen"
+msgstr "Erişim Grupları"
 
 #. module: auth_dynamic_groups
 #: field:res.groups,dynamic_group_condition:0
 msgid "Condition"
-msgstr "Bedingung"
+msgstr "Koşul"
 
 #. module: auth_dynamic_groups
 #: field:res.groups,is_dynamic:0
 msgid "Dynamic"
-msgstr "Dynamisch"
+msgstr "Dinamik"
 
 #. module: auth_dynamic_groups
 #: view:res.groups:auth_dynamic_groups.view_groups_form
 msgid "Evaluate"
-msgstr "Auswerten"
+msgstr "Değerlendir"
 
 #. module: auth_dynamic_groups
 #: view:res.groups:auth_dynamic_groups.view_groups_form
 msgid "Fill in your condition..."
-msgstr "Tragen Sie Ihre Bedingung ein..."
+msgstr "Durumunuzu doldurun..."
 
 #. module: auth_dynamic_groups
 #: code:addons/auth_dynamic_groups/model/res_groups.py:57
 #, python-format
 msgid "The condition doesn't evaluate correctly!"
-msgstr "Die Bedingung wird nicht korrekt ausgewertet."
+msgstr ""
 
 #. module: auth_dynamic_groups
 #: help:res.groups,dynamic_group_condition:0
@@ -55,14 +55,14 @@ msgid ""
 "The condition to be met for a user to be a member of this group. It is "
 "evaluated as python code at login time, you get `user` passed as a browse "
 "record"
-msgstr "Die zu erfüllende Bedingung, dass ein Benutzer Mitglied dieser Gruppe ist. Es wird bei der Anmeldung als Python-Code ausgewertet, Sie erhalten 'user' passed als Browse-record"
+msgstr ""
 
 #. module: auth_dynamic_groups
 #: model:ir.model,name:auth_dynamic_groups.model_res_users
 msgid "Users"
-msgstr "Benutzer"
+msgstr "Kullanıcılar"
 
 #. module: auth_dynamic_groups
 #: view:res.groups:auth_dynamic_groups.view_groups_form
 msgid "{'readonly': [('is_dynamic', '=', True)]}"
-msgstr ""
+msgstr "{'readonly': [('is_dynamic', '=', True)]}"
