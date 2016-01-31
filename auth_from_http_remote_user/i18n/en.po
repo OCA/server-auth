@@ -3,50 +3,41 @@
 # * auth_from_http_remote_user
 # 
 # Translators:
-# Antonio Trueba, 2016
-# Armando Vulcano Junior <vulcano@uol.com.br>, 2015
-# danimaribeiro <danimaribeiro@gmail.com>, 2016
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2013
-# Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2016
-# Matjaž Mozetič <m.mozetic@matmoz.si>, 2015-2016
-# Rudolf Schnapka <rs@techno-flex.de>, 2015
-# SaFi J. <safi2266@gmail.com>, 2015
-# Thomas A. Jaeger, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: server-tools (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-12 14:33+0000\n"
-"PO-Revision-Date: 2016-05-11 16:42+0000\n"
+"POT-Creation-Date: 2016-05-06 02:41+0000\n"
+"PO-Revision-Date: 2016-05-04 19:15+0000\n"
 "Last-Translator: OCA Transbot <transbot@odoo-community.org>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/oca/OCA-server-tools-8-0/language/pt_BR/)\n"
+"Language-Team: English (http://www.transifex.com/oca/OCA-server-tools-8-0/language/en/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: en\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: auth_from_http_remote_user
 #: field:auth_from_http_remote_user.installed,display_name:0
 msgid "Display Name"
-msgstr "Nome para Mostrar"
+msgstr "Display Name"
 
 #. module: auth_from_http_remote_user
 #: field:auth_from_http_remote_user.installed,id:0
 msgid "ID"
-msgstr "Identificação"
+msgstr "ID"
 
 #. module: auth_from_http_remote_user
 #: field:auth_from_http_remote_user.installed,__last_update:0
 msgid "Last Modified on"
-msgstr "Última atualização em"
+msgstr "Last Modified on"
 
 #. module: auth_from_http_remote_user
 #: field:res.users,sso_key:0
 msgid "SSO Key"
-msgstr "Chave SSO"
+msgstr "SSO Key"
 
 #. module: auth_from_http_remote_user
 #: model:ir.model,name:auth_from_http_remote_user.model_res_users
 msgid "Users"
-msgstr "Usuários"
+msgstr "Users"
