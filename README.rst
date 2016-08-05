@@ -99,6 +99,7 @@ In order of appearance:
   - Alexandre Brun, <alexandre.brun@xcg-consulting.fr>
   - Jeremy Co Kim Len, <jeremy.cokimlen@vinci-concessions.com>
   - Houzéfa Abbasbhay <houzefa.abba@xcg-consulting.fr>
+  - Jeffery Chen Fan <jeffery9@gmail.com>
 
 
 Maintainer

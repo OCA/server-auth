@@ -10,7 +10,7 @@
             <field name="type">form</field>
             <field name="inherit_id" ref="base.view_users_form" />
             <field name="arch" type="xml">
-                <xpath expr="//page[@string='Access Rights']" position="after">
+                <xpath expr="//page[@name='access_rights']" position="after">
                     <page string="SAML">
                         <group>
                             <field name="saml_provider_id" />
