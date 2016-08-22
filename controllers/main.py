@@ -151,7 +151,7 @@ class AuthSAMLController(http.Controller):
         redirect.autocorrect_location_header = True
         return redirect
 
-    @http.route('/auth_saml/signin', type='http', auth='none')
+    @http.route('/auth_saml/signin', type='http', auth='none', csrf=False)
     @fragment_to_query_string
     def signin(self, req, **kw):
         """client obtained a saml token and passed it back
