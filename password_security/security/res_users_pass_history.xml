@@ -9,7 +9,8 @@
     
     <record id="res_users_pass_history_rule" model="ir.rule">
         <field name="name">Res Users Pass History Access</field>
-        <field name="model_id" ref="password_security.model_res_users_pass_history"/>
+        <field name="model_id"
+               ref="password_security.model_res_users_pass_history"/>
         <field name="groups" eval="[(4, ref('base.group_user'))]"/>
         <field name="domain_force">[
             ('user_id', '=', user.id)
