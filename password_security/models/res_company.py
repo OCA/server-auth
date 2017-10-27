@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Copyright 2016 LasLabs Inc.
 # Copyright 2017 Kaushal Prajapati <kbprajapati@live.com>.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -20,19 +21,19 @@ class ResCompany(models.Model):
     )
     password_lower = fields.Integer(
         'Lowercase',
-        help='Require lowercase letters',
+        help='Require number of lowercase letters',
     )
     password_upper = fields.Integer(
         'Uppercase',
-        help='Require uppercase letters',
+        help='Require number of uppercase letters',
     )
     password_numeric = fields.Integer(
         'Numeric',
-        help='Require numeric digits',
+        help='Require number of numeric digits',
     )
     password_special = fields.Integer(
         'Special',
-        help='Require unique special characters',
+        help='Require number of unique special characters',
     )
     password_history = fields.Integer(
         'History',
