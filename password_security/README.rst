@@ -35,7 +35,7 @@ Settings & Defaults
 These are defined at the company level:
 
 =====================  =======   ===================================================
- Name                  Default   Description                             
+ Name                  Default   Description
 =====================  =======   ===================================================
  password_expiration   60        Days until passwords expire
  password_length       12        Minimum number of characters in password
