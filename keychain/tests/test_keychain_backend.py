@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2016 Akretion Mourad EL HADJ MIMOUNE
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -57,25 +56,25 @@ class TestKeychain(TransactionCase):
         backend = self.keychain_backend.new(vals)
         backend._inverse_keychain()
         account = backend._get_existing_keychain()
-        self.assertEqual(
-            account.data, '{"a": "o", "c": "b"}',
+        self.assertDictEqual(
+            account.get_data(), {"a": "o", "c": "b"},
             'Account data is not correct')
         backend._inverse_password()
         self.assertTrue(account, 'Account was not created')
         self.assertEqual(
-            account.clear_password, u'test',
+            account.clear_password, 'test',
             'Account clear password is not correct')
-        self.assertEqual(backend.password, u'test')
+        self.assertEqual(backend.password, 'test')
         backend._compute_password()
         self.assertEqual(
-            backend.password, u'******', 'Backend password was not computed')
+            backend.password, '******', 'Backend password was not computed')
         self.assertEqual(
-            account.name, u'backend_test dev', 'Account name is not correct')
+            account.name, 'backend_test dev', 'Account name is not correct')
         self.assertEqual(
-            account.namespace, u'test_backend',
+            account.namespace, 'test_backend',
             'Account namespace is not correct')
         self.assertEqual(
-            account.environment, u'dev', 'Account environment is not correct')
+            account.environment, 'dev', 'Account environment is not correct')
         self.assertEqual(
             account.technical_name, '%s,%s' % (backend._name, backend.id),
             'Account technical_name is not correct')
