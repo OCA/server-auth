@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2016 Akretion Raphaël REVERDY
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -62,7 +61,7 @@ class TestKeychain(TransactionCase):
     def test_password(self):
         """It should encrypt passwords."""
         account = self._create_account()
-        passwords = ('', '12345', 'djkqfljfqm', u"""&é"'(§è!ç""")
+        passwords = ('', '12345', 'djkqfljfqm', """&é"'(§è!ç""")
 
         for password in passwords:
             account.clear_password = password
