@@ -21,18 +21,22 @@ class ResCompany(models.Model):
     )
     password_lower = fields.Integer(
         'Lowercase',
+        default=1,
         help='Require number of lowercase letters',
     )
     password_upper = fields.Integer(
         'Uppercase',
+        default=1,
         help='Require number of uppercase letters',
     )
     password_numeric = fields.Integer(
         'Numeric',
+        default=1,
         help='Require number of numeric digits',
     )
     password_special = fields.Integer(
         'Special',
+        default=1,
         help='Require number of unique special characters',
     )
     password_history = fields.Integer(
