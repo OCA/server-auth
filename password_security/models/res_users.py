@@ -85,7 +85,7 @@ class ResUsers(models.Model):
             '(?=.*?[a-z]){' + str(company_id.password_lower) + ',}',
             '(?=.*?[A-Z]){' + str(company_id.password_upper) + ',}',
             '(?=.*?\\d){' + str(company_id.password_numeric) + ',}',
-            '(?=.*?\\W){' + str(company_id.password_special) + ',}',
+            r'(?=.*?[\W_]){' + str(company_id.password_special) + ',}',
             '.{%d,}$' % int(company_id.password_length),
         ]
         if not re.search(''.join(password_regex), password):
