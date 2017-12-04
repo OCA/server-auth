@@ -22,6 +22,7 @@ class ResUsers(models.Model):
 
     password_write_date = fields.Datetime(
         'Last password update',
+        default=fields.Datetime.now,
         readonly=True,
     )
     password_history_ids = fields.One2many(
