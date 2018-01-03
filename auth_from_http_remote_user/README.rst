@@ -1,18 +1,23 @@
-Allow users to be automatically logged in
-=========================================
+.. image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+    :target: https://www.gnu.org/licenses/agpl
+    :alt: License: AGPL-3
+
+====================================
+Authentication From HTTP Remote User
+====================================
 
 This module initialize the session by looking for the field HTTP_REMOTE_USER in
-the HEADER of the HTTP request and trying to bind the given value to a user.
+the HEADERS of the HTTP request and trying to bind the given value to a user.
 To be active, the module must be installed in the expected databases and loaded
 at startup; Add the *--load* parameter to the startup command: ::
 
-  --load=web,web_kanban,auth_from_http_remote_user, ...
+  --load=web,auth_from_http_remote_user, ...
 
 If the field is found in the header and no user matches the given one, the
 system issue a login error page. (*401* `Unauthorized`)
 
-Use case.
----------
+Configuration
+=============
 
 The module allows integration with external security systems [#]_ that can pass
 along authentication of a user via Remote_User HTTP header field. In many
@@ -117,9 +122,50 @@ Open your browser and go to MY_VHOST.com. If everything is well configured, you
 are prompted for a login and password outside Odoo and are automatically
 logged in the system.
 
-.. [#] Shibolleth, Tivoli access manager, ..
+.. [#] Shibboleth, Tivoli access manager, ..
 .. [#] Based on a ubuntu 12.04 env
+
+Usage
+=====
+
+.. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
+    :alt: Try me on Runbot
+    :target: https://runbot.odoo-community.org/runbot/149/11.0
+
+
+Bug Tracker
+===========
+
+Bugs are tracked on `GitHub Issues
+<https://github.com/OCA/server-auth/issues>`_. In case of trouble, please
+check there if your issue has already been reported. If you spotted it first,
+help us to smash it by providing detailed and welcomed feedback.
+
+
+Credits
+=======
+
+Images
+------
+
+* Odoo Community Association: `Icon <https://github.com/OCA/maintainer-tools/blob/master/template/module/static/description/icon.svg>`_.
 
 Contributors
 ------------
+
 * Laurent Mignon
+
+Maintainer
+----------
+
+.. image:: https://odoo-community.org/logo.png
+    :alt: Odoo Community Association
+    :target: https://odoo-community.org
+
+This module is maintained by the OCA.
+
+OCA, or the Odoo Community Association, is a nonprofit organization whose
+mission is to support the collaborative development of Odoo features and
+promote its widespread use.
+
+To contribute to this module, please visit https://odoo-community.org.
