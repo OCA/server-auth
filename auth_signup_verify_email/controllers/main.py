@@ -1,9 +1,9 @@
-# -*- coding: utf-8 -*-
-# © 2015 Antiun Ingeniería, S.L.
+# Copyright 2015 Antiun Ingeniería, S.L.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
 from odoo import _, http
+from odoo.http import request
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 
 _logger = logging.getLogger(__name__)
@@ -15,11 +15,12 @@ except ImportError:
 
 
 class SignupVerifyEmail(AuthSignupHome):
+
     @http.route()
     def web_auth_signup(self, *args, **kw):
-        if (http.request.params.get("login") and
-                not http.request.params.get("password")):
-            return self.passwordless_signup(http.request.params)
+        if (request.params.get("login") and
+                not request.params.get("password")):
+            return self.passwordless_signup(request.params)
         else:
             return super(SignupVerifyEmail, self).web_auth_signup(*args, **kw)
 
@@ -29,17 +30,20 @@ class SignupVerifyEmail(AuthSignupHome):
         # Check good format of e-mail
         if not validate_email(values.get("login", "")):
             qcontext["error"] = _("That does not seem to be an email address.")
-            return http.request.render("auth_signup.signup", qcontext)
+            return request.render("auth_signup.signup", qcontext)
         elif not values.get("email"):
             values["email"] = values.get("login")
 
+        # preserve user lang
+        values['lang'] = request.lang
+
         # Remove password
         values["password"] = ""
-        sudo_users = (http.request.env["res.users"]
+        sudo_users = (request.env["res.users"]
                       .with_context(create_user=True).sudo())
 
         try:
-            with http.request.cr.savepoint():
+            with request.cr.savepoint():
                 sudo_users.signup(values, qcontext.get("token"))
                 sudo_users.reset_password(values.get("login"))
         except Exception as error:
@@ -49,7 +53,7 @@ class SignupVerifyEmail(AuthSignupHome):
             # Agnostic message for security
             qcontext["error"] = _(
                 "Something went wrong, please try again later or contact us.")
-            return http.request.render("auth_signup.signup", qcontext)
+            return request.render("auth_signup.signup", qcontext)
 
         qcontext["message"] = _("Check your email to activate your account!")
-        return http.request.render("auth_signup.reset_password", qcontext)
+        return request.render("auth_signup.reset_password", qcontext)
