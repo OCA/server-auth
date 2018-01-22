@@ -6,16 +6,16 @@
 Verify email at signup
 ======================
 
-This module extends the functionality of public sign up, and forces users to
+This module extends the functionality of public sign up to force users to
 provide a valid email address.
 
-To achieve this requirement, the user does not need to provide a password at
-sign up, but when logging in later for the first time.
+To achieve this, users are not required to provide a password at
+sign up: they are asked for only at first login attempt.
 
 Installation
 ============
 
-* Install validate_email_ with ``pip install validate_email`` or equivalent.
+* Install `validate_email <https://pypi.python.org/pypi/validate_email>`_ with ``pip install validate_email`` or equivalent.
 
 Configuration
 =============
@@ -24,8 +24,7 @@ To configure this module, you need to:
 
 * `Properly configure your outgoing email server(s)
   <https://www.odoo.com/es_ES/forum/help-1/question/how-to-configure-email-gateway-282#answer_290>`_.
-* Go to *Settings > General Settings* and enable *Allow
-  external users to sign up*.
+* Go to *Settings > General Settings -> General settings*, search for the *Users* section and enable *Free sign up* in *Customer account*.
 
 Usage
 =====
@@ -37,7 +36,7 @@ To use this module, you need to:
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/149/9.0
+   :target: https://runbot.odoo-community.org/runbot/149/11.0
 
 Known issues / Roadmap
 ======================
@@ -51,7 +50,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues
 <https://github.com/OCA/server-tools/issues>`_. In case of trouble, please
 check there if your issue has already been reported. If you spotted it first,
-help us smashing it by providing a detailed and welcomed feedback.
+help us smash it by providing detailed and welcomed feedback.
 
 
 Credits
@@ -68,6 +67,7 @@ Contributors
 
 * Rafael Blasco <rafaelbn@antiun.com>
 * Jairo Llopis <yajo.sk8@gmail.com>
+* Simone Orsi <simone.orsi@camptocamp.com>
 
 Maintainer
 ----------
@@ -83,5 +83,3 @@ mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
 To contribute to this module, please visit https://odoo-community.org.
-
-.. _validate_email: https://pypi.python.org/pypi/validate_email
