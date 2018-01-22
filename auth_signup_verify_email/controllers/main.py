@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-# © 2015 Antiun Ingeniería, S.L.
+# Copyright 2015 Antiun Ingeniería, S.L.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
@@ -15,6 +14,7 @@ except ImportError:
 
 
 class SignupVerifyEmail(AuthSignupHome):
+
     @http.route()
     def web_auth_signup(self, *args, **kw):
         if (http.request.params.get("login") and
