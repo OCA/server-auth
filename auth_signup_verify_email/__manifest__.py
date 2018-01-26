@@ -16,7 +16,7 @@
     "external_dependencies": {
         "python": [
             "lxml",
-            "validate_email",
+            "email_validator",
         ],
     },
     "data": [
