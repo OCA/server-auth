@@ -10,13 +10,10 @@ from odoo.tools.misc import mute_logger
 class UICase(HttpCase):
     def setUp(self):
         super(UICase, self).setUp()
-        self.icp = self.env["ir.config_parameter"]
-        self.old_allow_uninvited = self.icp.get_param(
-            "auth_signup.allow_uninvited")
-        self.icp.set_param("auth_signup.allow_uninvited", "True")
-
-        # Workaround https://github.com/odoo/odoo/issues/12237
-        self.cr.commit()
+        with self.cursor() as cr:
+            env = self.env(cr)
+            icp = env["ir.config_parameter"]
+            icp.set_param("auth_signup.allow_uninvited", "True")
 
         self.data = {
             "csrf_token": self.csrf_token(),
@@ -29,14 +26,7 @@ class UICase(HttpCase):
             "success": _("Check your email to activate your account!"),
         }
 
-    def tearDown(self):
-        """Workaround https://github.com/odoo/odoo/issues/12237."""
-        super(UICase, self).tearDown()
-        self.icp.set_param(
-            "auth_signup.allow_uninvited", self.old_allow_uninvited)
-        self.cr.commit()
-
-    def html_doc(self, url="/web/signup", data=None, timeout=10):
+    def html_doc(self, url="/web/signup", data=None, timeout=30):
         """Get an HTML LXML document."""
         resp = self.url_open(url, data=data, timeout=timeout)
         return document_fromstring(resp.content)
