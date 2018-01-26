@@ -1,44 +1,32 @@
 # Copyright 2016 Jairo Llopis <jairo.llopis@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from mock import patch
 from lxml.html import document_fromstring
-from odoo import _
-from odoo.tests.common import HttpCase
+from odoo.tests.common import at_install, post_install, HttpCase
+from odoo.addons.mail.models import mail_template
 from odoo.tools.misc import mute_logger
 
 
+@at_install(False)
+@post_install(True)
 class UICase(HttpCase):
     def setUp(self):
         super(UICase, self).setUp()
-        self.icp = self.env["ir.config_parameter"]
-        self.old_allow_uninvited = self.icp.get_param(
-            "auth_signup.allow_uninvited")
-        self.icp.set_param("auth_signup.allow_uninvited", "True")
-
-        # Workaround https://github.com/odoo/odoo/issues/12237
-        self.cr.commit()
+        with self.cursor() as cr:
+            env = self.env(cr)
+            icp = env["ir.config_parameter"]
+            icp.set_param("auth_signup.allow_uninvited", "True")
 
         self.data = {
             "csrf_token": self.csrf_token(),
             "name": "Somebody",
         }
-        self.msg = {
-            "badmail": _("That does not seem to be an email address."),
-            "failure": _(
-                "Something went wrong, please try again later or contact us."),
-            "success": _("Check your email to activate your account!"),
-        }
 
-    def tearDown(self):
-        """Workaround https://github.com/odoo/odoo/issues/12237."""
-        super(UICase, self).tearDown()
-        self.icp.set_param(
-            "auth_signup.allow_uninvited", self.old_allow_uninvited)
-        self.cr.commit()
-
-    def html_doc(self, url="/web/signup", data=None, timeout=10):
+    def html_doc(self, url="/web/signup", data=None, timeout=30):
         """Get an HTML LXML document."""
-        resp = self.url_open(url, data=data, timeout=timeout)
+        with patch(mail_template.__name__ + ".MailTemplate.send_mail"):
+            resp = self.url_open(url, data=data, timeout=timeout)
         return document_fromstring(resp.content)
 
     def csrf_token(self):
@@ -46,26 +34,15 @@ class UICase(HttpCase):
         doc = self.html_doc()
         return doc.xpath("//input[@name='csrf_token']")[0].get("value")
 
-    def search_text(self, doc, text):
-        """Search for any element containing the text."""
-        return doc.xpath("//*[contains(text(), '%s')]" % text)
-
     def test_bad_email(self):
         """Test rejection of bad emails."""
         self.data["login"] = "bad email"
         doc = self.html_doc(data=self.data)
-        self.assertTrue(self.search_text(doc, self.msg["badmail"]))
+        self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
 
     @mute_logger('odoo.addons.auth_signup_verify_email.controllers.main')
     def test_good_email(self):
-        """Test acceptance of good emails.
-
-        This test could lead to success if your SMTP settings are correct, or
-        to failure otherwise. Any case is expected, since tests usually run
-        under unconfigured demo instances.
-        """
+        """Test acceptance of good emails."""
         self.data["login"] = "good@example.com"
         doc = self.html_doc(data=self.data)
-        self.assertTrue(
-            self.search_text(doc, self.msg["failure"]) or
-            self.search_text(doc, self.msg["success"]))
+        self.assertTrue(doc.xpath('//p[@class="alert alert-success"]'))
