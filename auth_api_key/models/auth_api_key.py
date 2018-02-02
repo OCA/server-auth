@@ -26,8 +26,7 @@ class AuthApiKey(models.Model):
     @api.multi
     def _inverse_password(self):
         self.retrieve_id_by_api_key.clear_cache(self)
-        ret = super(AuthApiKey, self)._inverse_password()
-        return ret
+        return super(AuthApiKey, self)._inverse_password()
 
     @api.model
     def retrieve_from_api_key(self, api_key):
