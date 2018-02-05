@@ -67,7 +67,7 @@ class TestKeychain(TransactionCase):
             account.clear_password = password
             account._inverse_set_password()
             self.assertTrue(account.clear_password != account.password)
-            self.assertEqual(account.get_password(), password)
+            self.assertEqual(account._get_password(), password)
 
     def test_wrong_key(self):
         """It should raise an exception when encoded key != decoded."""
@@ -77,7 +77,7 @@ class TestKeychain(TransactionCase):
         account._inverse_set_password()
         config['keychain_key'] = Fernet.generate_key()
         try:
-            account.get_password()
+            account._get_password()
             self.assertTrue(False, 'It should not work with another key')
         except Warning as err:
             self.assertTrue(True, 'It should raise a Warning')
@@ -133,13 +133,13 @@ class TestKeychain(TransactionCase):
         account.clear_password = 'abc'
         account._inverse_set_password()
         self.assertEqual(
-            account.get_password(),
+            account._get_password(),
             'abc', 'Should work with dev')
 
         config['running_env'] = 'prod'
         with self.assertRaises(Warning):
             self.assertEqual(
-                account.get_password(),
+                account._get_password(),
                 'abc', 'Should not work with prod key')
 
     def test_multienv_blank(self):
@@ -153,12 +153,12 @@ class TestKeychain(TransactionCase):
         account.clear_password = 'abc'
         account._inverse_set_password()
         self.assertEqual(
-            account.get_password(),
+            account._get_password(),
             'abc', 'Should work with dev')
 
         config['running_env'] = 'prod'
         self.assertEqual(
-            account.get_password(),
+            account._get_password(),
             'abc', 'Should work with prod')
 
     def test_multienv_force(self):
@@ -177,12 +177,12 @@ class TestKeychain(TransactionCase):
 
         with self.assertRaises(Warning):
             self.assertEqual(
-                account.get_password(),
+                account._get_password(),
                 'abc', 'Should not work with dev')
 
         config['running_env'] = 'prod'
         self.assertEqual(
-            account.get_password(),
+            account._get_password(),
             'abc', 'Should work with prod')
 
     def test_wrong_json(self):
