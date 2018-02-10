@@ -16,16 +16,6 @@ class Users(models.Model):
         copy=False
     )
 
-    @classmethod
-    def authenticate_sso_user(cls, env, user):
-        """Specific authentication for HTTP user.
-
-        Generate a key for authentication and update the user
-        """
-        key = utils.randomString(utils.KEY_LENGTH, '0123456789abcdef')
-        user.with_env(env).sudo().write({'sso_key': key})
-        return key
-
     def check_credentials(self, password):
         """Check credentials for SSO user"""
         res = self.sudo().search([('id', '=', self._uid),
