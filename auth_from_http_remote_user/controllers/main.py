@@ -5,14 +5,12 @@
 from odoo import http
 from odoo.http import request
 from odoo.addons.web.controllers import main
-from odoo.addons.auth_from_http_remote_user.model import \
-    AuthFromHttpRemoteUserInstalled
-from .. import utils
 
 import odoo
 import random
 import logging
 import werkzeug
+from .. import utils
 
 _logger = logging.getLogger(__name__)
 
@@ -41,11 +39,6 @@ class Home(main.Home):
     def _bind_http_remote_user(self, db_name):
         try:
             registry = odoo.registry(db_name)
-            with registry.cursor() as cr:
-                if AuthFromHttpRemoteUserInstalled._name not in registry:
-                    # module not installed in database, continue usual behavior
-                    return
-
                 headers = http.request.httprequest.headers.environ
 
                 login = headers.get(self._REMOTE_USER_ATTRIBUTE, None)
