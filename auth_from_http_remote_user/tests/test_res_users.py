@@ -2,7 +2,9 @@
 # Copyright 2014-2018 'ACSONE SA/NV'
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+from odoo import api, registry
 from odoo.tests import common
+from odoo.tests.common import TransactionCase
 import mock
 from contextlib import contextmanager
 
@@ -22,12 +24,20 @@ def mock_cursor(cr):
     cr.autocommit = org_autocommit
 
 
-class TestResUsers(common.TransactionCase):
+class TestResUsers(TransactionCase):
+
+    def setUp(self):
+        super().setUp()
+        self.user = self.env['res.users'].browse(1)
+        self._model = self.env['res.users']
 
     def test_login(self):
-        self.env.cr.execute('update res_users set sso_key = null;')
-        self.env.cr.commit()
-        #
+        reg = registry(self.env.cr.dbname)
+        with api.Environment.manage():
+            with reg.cursor() as cr:
+                env = api.Environment(cr, self.env.uid, {})
+                env['res.users'].browse(1).write({'sso_key': False})
+
         res_users_obj = self.env['res.users']
         res = res_users_obj.authenticate(
             common.get_db_name(), 'admin', 'admin', None)
@@ -53,15 +63,6 @@ class TestResUsers(common.TransactionCase):
                 common.get_db_name(), 'admin', token, None)
             self.assertTrue(res)
 
-    @unittest.skipIf(os.environ.get('TRAVIS'),
-                     'When run by travis, tests runs on a database with all '
-                     'required addons from server-tools and their dependencies'
-                     ' installed. Even if `auth_from_http_remote_user` does '
-                     'not require the `mail` module, The previous installation'
-                     ' of the mail module has created the column '
-                     '`notification_email_send` as REQUIRED into the table '
-                     'res_partner. BTW, it\'s no more possible to copy a '
-                     'res_user without an integrity error')
     def test_copy(self):
         '''Check that the sso_key is not copied on copy
         '''
