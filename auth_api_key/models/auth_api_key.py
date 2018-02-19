@@ -43,6 +43,6 @@ class AuthApiKey(models.Model):
         res = {}
         for key in keychain_accounts:
             _id = int(key.technical_name.split(',')[1])
-            api_key = key.get_password()
+            api_key = key._get_password()
             res[api_key] = _id
         return res
