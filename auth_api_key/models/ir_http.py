@@ -26,7 +26,7 @@ class IrHttp(models.AbstractModel):
             auth_api_key = request.env['auth.api.key'].retrieve_from_api_key(
                 api_key
             )
-            if api_key:
+            if auth_api_key:
                 # reset _env on the request since we change the uid...
                 # the next call to env will instantiate an new
                 # odoo.api.Environment with the user defined on the
