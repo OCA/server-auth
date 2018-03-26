@@ -1,7 +1,10 @@
-import openerp.tests
+# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from .util.odoo_tests import TestBase
 from .util.singleton import Singleton
+from .util.odoo_tests import TestBase
+
+from odoo.tests import common
 
 
 class TestMemory(object):
@@ -9,8 +12,8 @@ class TestMemory(object):
     __metaclass__ = Singleton
 
 
-@openerp.tests.common.at_install(False)
-@openerp.tests.common.post_install(True)
+@common.at_install(False)
+@common.post_install(True)
 class Test(TestBase):
 
     def setUp(self):

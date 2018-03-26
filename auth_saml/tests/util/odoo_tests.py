@@ -1,11 +1,11 @@
 """Utilities useful to Odoo tests.
 """
 
-import openerp.models
-import openerp.tests
+from odoo import models
+from odoo.tests import common
 
 
-class TestBase(openerp.tests.SingleTransactionCase):
+class TestBase(common.SingleTransactionCase):
     """Provide some test helpers.
     """
 
@@ -28,14 +28,14 @@ class TestBase(openerp.tests.SingleTransactionCase):
             record = self.env[model].create(values)
             records.append(record)
 
-            self.assertIsInstance(record, openerp.models.BaseModel)
+            self.assertIsInstance(record, models.BaseModel)
 
             for field, value in local_values.iteritems():
 
                 recorded_value = getattr(record, field)
 
                 # Handle relational fields (Odoo record-sets).
-                if isinstance(recorded_value, openerp.models.BaseModel):
+                if isinstance(recorded_value, models.BaseModel):
                     if isinstance(recorded_value, (tuple, list)):
                         self.assertEqual(recorded_value.ids, value)
                     else:
