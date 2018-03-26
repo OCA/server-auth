@@ -1,20 +1,18 @@
-# -*- coding: utf-8 -*-
+# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-# this is our very own dependency
-import lasso
-# this is an odoo8 dep so it should be present 'by default'
 import passlib
 
-import openerp
-from openerp import _
-from openerp import api
-from openerp import models
-from openerp import fields
-from openerp import SUPERUSER_ID
-from openerp.exceptions import ValidationError
+from odoo import api, fields, models, _, SUPERUSER_ID
+from odoo.exceptions import ValidationError, AccessDenied
 
 _logger = logging.getLogger(__name__)
+
+try:
+    import lasso
+except ImportError:
+    _logger.debug('Cannot `import lasso`.')
 
 
 class ResUser(models.Model):
@@ -32,7 +30,6 @@ class ResUser(models.Model):
         help="SAML Provider user_id",
     )
 
-    @api.one
     @api.constrains('password_crypt', 'password', 'saml_uid')
     def check_no_password_with_saml(self):
         """Ensure no Odoo user posesses both an SAML user ID and an Odoo
@@ -44,31 +41,21 @@ class ResUser(models.Model):
         else:
             # Super admin is the only user we allow to have a local password
             # in the database
-            if (
-                self.password_crypt and
-                self.saml_uid and
-                self.id is not SUPERUSER_ID
-            ):
-                raise ValidationError(
-                    _("This database disallows users to have both passwords "
-                      "and SAML IDs. Errors for login %s" % (self.login)
-                      )
-                )
+            if (self.password_crypt and self.saml_uid and
+                    self.id is not SUPERUSER_ID):
+                raise ValidationError(_("This database disallows users to "
+                                        "have both passwords and SAML IDs. "
+                                        "Errors for login %s" % (self.login)))
 
-    _sql_constraints = [
-        (
-            'uniq_users_saml_provider_saml_uid',
-            'unique(saml_provider_id, saml_uid)',
-            'SAML UID must be unique per provider'
-        ),
-    ]
+    _sql_constraints = [('uniq_users_saml_provider_saml_uid',
+                         'unique(saml_provider_id, saml_uid)',
+                         'SAML UID must be unique per provider')]
 
     @api.multi
     def _auth_saml_validate(self, provider_id, token):
         """ return the validation data corresponding to the access token """
 
-        pobj = self.env['auth.saml.provider']
-        p = pobj.browse(provider_id)
+        p = self.env['auth.saml.provider'].browse(provider_id)
 
         # we are not yet logged in, so the userid cannot have access to the
         # fields we need yet
@@ -88,8 +75,7 @@ class ResUser(models.Model):
             login.acceptSso()
         except lasso.Error as error:
             raise Exception(
-                'Invalid assertion : %s' % lasso.strError(error[0])
-            )
+                'Invalid assertion : %s' % lasso.strError(error[0]))
 
         attrs = {}
 
@@ -101,8 +87,8 @@ class ResUser(models.Model):
                 try:
                     name = attribute.name.decode('ascii')
                 except Exception as e:
-                    _logger.warning('sso_after_response: error decoding name of \
-                        attribute %s' % attribute.dump())
+                    _logger.warning('sso_after_response: error decoding name \
+                        of attribute %s' % attribute.dump())
                 else:
                     try:
                         if attribute.nameFormat:
@@ -144,10 +130,7 @@ class ResUser(models.Model):
         elif not matching_value and matching_attribute != "subject.nameId":
             raise Exception(
                 "Matching attribute %s not found in user attrs: %s" % (
-                    matching_attribute,
-                    attrs,
-                )
-            )
+                    matching_attribute, attrs))
 
         validation = {'user_id': matching_value}
         return validation
@@ -169,14 +152,10 @@ class ResUser(models.Model):
         saml_uid = validation['user_id']
 
         user_ids = self.search(
-            [
-                ("saml_uid", "=", saml_uid),
-                ('saml_provider_id', '=', provider),
-            ]
-        )
+            [('saml_uid', '=', saml_uid), ('saml_provider_id', '=', provider)])
 
         if not user_ids:
-            raise openerp.exceptions.AccessDenied()
+            raise AccessDenied()
 
         # TODO replace assert by proper raise... asserts do not execute in
         # production code...
@@ -185,24 +164,14 @@ class ResUser(models.Model):
 
         # now find if a token for this user/provider already exists
         token_ids = token_osv.search(
-            [
-                ('saml_provider_id', '=', provider),
-                ('user_id', '=', user.id),
-            ]
-        )
+            [('saml_provider_id', '=', provider), ('user_id', '=', user.id)])
 
         if token_ids:
-            token_ids.write(
-                {'saml_access_token': saml_response},
-            )
+            token_ids.write({'saml_access_token': saml_response})
         else:
-            token_osv.create(
-                {
-                    'saml_access_token': saml_response,
-                    'saml_provider_id': provider,
-                    'user_id': user.id,
-                },
-            )
+            token_osv.create({'saml_access_token': saml_response,
+                              'saml_provider_id': provider,
+                              'user_id': user.id})
 
         return user.login
 
@@ -213,13 +182,13 @@ class ResUser(models.Model):
 
         # required check
         if not validation.get('user_id'):
-            raise openerp.exceptions.AccessDenied()
+            raise AccessDenied()
 
         # retrieve and sign in user
         login = self._auth_saml_signin(provider, validation, saml_response)
 
         if not login:
-            raise openerp.exceptions.AccessDenied()
+            raise AccessDenied()
 
         # return user credentials
         return self.env.cr.dbname, login, saml_response
@@ -237,18 +206,12 @@ class ResUser(models.Model):
             # Attempt a regular login (via other auth addons) first.
             super(ResUser, self).check_credentials(token)
 
-        except (
-            openerp.exceptions.AccessDenied,
-            passlib.exc.PasswordSizeError,
-        ):
+        except (AccessDenied, passlib.exc.PasswordSizeError):
             # since normal auth did not succeed we now try to find if the user
             # has an active token attached to his uid
             res = self.env['auth_saml.token'].sudo().search(
-                [
-                    ('user_id', '=', self.env.user.id),
-                    ('saml_access_token', '=', token),
-                ],
-            )
+                [('user_id', '=', self.env.user.id),
+                 ('saml_access_token', '=', token)])
 
             # if the user is not found we re-raise the AccessDenied
             if not res:
@@ -266,20 +229,16 @@ class ResUser(models.Model):
         # - An SAML ID is being set.
         # - The user is not the Odoo admin.
         # - The "allow both" setting is disabled.
-        if (
-            vals and vals.get('saml_uid') and
-            self.id is not SUPERUSER_ID and
-            not self._allow_saml_and_password()
-        ):
-                vals.update({
-                    'password': False,
-                    'password_crypt': False,
-                })
+        if (vals and vals.get('saml_uid') and self.id is not SUPERUSER_ID and
+                not self._allow_saml_and_password()):
+            vals.update({
+                'password': False,
+                'password_crypt': False,
+            })
 
         return super(ResUser, self).write(vals)
 
     @api.model
     def _allow_saml_and_password(self):
 
-        settings_obj = self.env['base.config.settings']
-        return settings_obj.allow_saml_and_password()
+        return self.env['res.config.settings'].allow_saml_and_password()
