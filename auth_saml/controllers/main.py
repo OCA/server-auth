@@ -1,20 +1,21 @@
-# -*- coding: utf-8 -*-
+# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
 import logging
 
-import simplejson
+import json as simplejson
 import werkzeug.utils
 
-import openerp
-from openerp import _
-from openerp import http
-from openerp.http import request
-from openerp import SUPERUSER_ID
-# import openerp.addons.web.http as oeweb
-from openerp.addons.web.controllers.main import set_cookie_and_redirect
-from openerp.addons.web.controllers.main import ensure_db
-from openerp.addons.web.controllers.main import login_and_redirect
+import odoo
+from odoo import api, _, http, SUPERUSER_ID
+from odoo.http import request
+from odoo import registry as registry_get
+from odoo.addons.web.controllers.main import set_cookie_and_redirect
+from odoo.addons.web.controllers.main import ensure_db
+from odoo.addons.web.controllers.main import login_and_redirect
+from odoo.addons.web.controllers.main import Home
+
 
 _logger = logging.getLogger(__name__)
 
@@ -47,15 +48,13 @@ def fragment_to_query_string(func):
 # ----------------------------------------------------------
 
 
-class SAMLLogin(openerp.addons.web.controllers.main.Home):
+class SAMLLogin(Home):
 
     def list_providers(self):
         try:
-            provider_obj = request.registry.get('auth.saml.provider')
-            providers = provider_obj.search_read(
-                request.cr, SUPERUSER_ID, [('enabled', '=', True)]
-            )
-        except Exception, e:
+            providers = request.env['auth.saml.provider'].sudo().search_read(
+                [('enabled', '=', True)])
+        except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
             providers = []
 
@@ -129,7 +128,6 @@ class AuthSAMLController(http.Controller):
         """
 
         provider_id = int(pid)
-        provider_osv = request.registry.get('auth.saml.provider')
 
         auth_request = None
 
@@ -138,11 +136,11 @@ class AuthSAMLController(http.Controller):
         state = self.get_state(provider_id)
 
         try:
-            auth_request = provider_osv._get_auth_request(
-                request.cr, SUPERUSER_ID, provider_id, state
-            )
+            auth_request = request.env[
+                'auth.saml.provider'].sudo()._get_auth_request(provider_id,
+                                                               state)
 
-        except Exception, e:
+        except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
 
         # TODO: handle case when auth_request comes back as None
@@ -172,12 +170,14 @@ class AuthSAMLController(http.Controller):
 
         state = simplejson.loads(kw['RelayState'])
         provider = state['p']
-
-        with request.registry.cursor() as cr:
+        dbname = state['d']
+        context = state.get('c', {})
+        registry = registry_get(dbname)
+        with registry.cursor() as cr:
             try:
-                u = request.registry.get('res.users')
-                credentials = u.auth_saml(
-                    cr, SUPERUSER_ID, provider, saml_response
+                env = api.Environment(cr, SUPERUSER_ID, context)
+                credentials = env['res.users'].sudo().auth_saml(
+                    provider, saml_response
                 )
                 cr.commit()
                 action = state.get('a')
@@ -187,16 +187,15 @@ class AuthSAMLController(http.Controller):
                     url = '/#action=%s' % action
                 elif menu:
                     url = '/#menu_id=%s' % menu
-
                 return login_and_redirect(*credentials, redirect_url=url)
 
-            except AttributeError, e:
+            except AttributeError as e:
                 # auth_signup is not installed
                 _logger.error("auth_signup not installed on database "
                               "saml sign up cancelled.")
                 url = "/#action=login&saml_error=1"
 
-            except openerp.exceptions.AccessDenied:
+            except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
                 # user could be on a temporary session
                 _logger.info('SAML2: access denied, redirect to main page '
@@ -208,11 +207,9 @@ class AuthSAMLController(http.Controller):
                 redirect.autocorrect_location_header = False
                 return redirect
 
-            except Exception, e:
+            except Exception as e:
                 # signup error
                 _logger.exception("SAML2: %s" % str(e))
                 url = "/#action=login&saml_error=2"
 
         return set_cookie_and_redirect(url)
-
-# vim:expandtab:tabstop=4:softtabstop=4:shiftwidth=4:
