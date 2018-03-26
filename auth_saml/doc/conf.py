@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-
-# flake8: noqa
+# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 #
 # SAML2 authentication build configuration file, created by
@@ -19,7 +18,6 @@ import ast
 import sys
 import os
 
-import openerp
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -310,23 +308,27 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 # odoo-sphinx-autodoc
 #
 
-# sphinxodoo_addons : List of addons name to load (if empty, no addon will be loaded)
-this_module = os.path.basename(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# sphinxodoo_addons : List of addons name to load (if empty, no addon will be loaded) # noqa
+this_module = os.path.basename(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 sphinxodoo_addons = [this_module]
 # sphinxodoo_root_path : Path of the Odoo root directory
-# sphinxodoo_root_path = os.path.dirname(os.path.dirname(os.path.abspath(openerp.__file__)))
+# sphinxodoo_root_path = os.path.dirname(os.path.dirname(os.path.abspath(openerp.__file__))) # noqa
 # TODO Fix this.
 sphinxodoo_root_path = '/home/habba/Dev/OpenERP/sources/odoo8'
 
 # sphinxodoo_addons_path : List of paths were Odoo addons to load are located
-superproject_path = os.path.dirname(os.path.dirname(os.path.dirname(os.getenv('PWD'))))
+superproject_path = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.getenv('PWD'))))
 with open(os.path.join(superproject_path, 'odoo_type')) as f:
     odoo_type = f.read()
 sphinxodoo_addons_path = []
 if odoo_type.strip() == 'bzr':
-    sphinxodoo_addons_path.append(os.path.join(os.getenv('HOME'), 'src', 'openobject-addons'))
-    sphinxodoo_addons_path.append(os.path.join(os.getenv('HOME'), 'src', 'openerp-web', 'addons'))
+    sphinxodoo_addons_path.append(
+        os.path.join(os.getenv('HOME'), 'src', 'openobject-addons'))
+    sphinxodoo_addons_path.append(
+        os.path.join(os.getenv('HOME'), 'src', 'openerp-web', 'addons'))
 else:
     sphinxodoo_addons_path.append(os.path.join(sphinxodoo_root_path, 'addons'))
 
