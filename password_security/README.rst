@@ -17,6 +17,7 @@ It contains features such as
 * Password minimum number of uppercase letters
 * Password minimum number of numbers
 * Password minimum number of special characters
+* Password similarity to user's name or login
 
 Configuration
 =============
@@ -34,18 +35,19 @@ Settings & Defaults
 
 These are defined at the company level:
 
-=====================  =======   ===================================================
- Name                  Default   Description                             
-=====================  =======   ===================================================
- password_expiration   60        Days until passwords expire
- password_length       12        Minimum number of characters in password
- password_lower        0         Minimum number of lowercase letter in password
- password_upper        0         Minimum number of uppercase letters in password
- password_numeric      0         Minimum number of number in password
- password_special      0         Minimum number of unique special character in password
- password_history      30        Disallow reuse of this many previous passwords
- password_minimum      24        Amount of hours that must pass until another reset
-=====================  =======   ===================================================
+=================================   =======   =======================================================
+ Name                               Default   Description
+=================================   =======   =======================================================
+ password_expiration                60        Days until passwords expire
+ password_length                    12        Minimum number of characters in password
+ password_lower                     0         Minimum number of lowercase letter in password
+ password_upper                     0         Minimum number of uppercase letters in password
+ password_numeric                   0         Minimum number of number in password
+ password_special                   0         Minimum number of unique special character in password
+ password_history                   30        Disallow reuse of this many previous passwords
+ password_minimum                   24        Amount of hours that must pass until another reset
+ password_not_similar_name_login    True      Disallow password similar to user's name or login
+=================================   =======   =======================================================
 
 Usage
 =====
