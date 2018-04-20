@@ -49,3 +49,9 @@ class ResCompany(models.Model):
         default=24,
         help='Amount of hours until a user may change password again',
     )
+    password_not_similar_name_login = fields.Boolean(
+        'Disallow passwords similar to name or login',
+        default=True,
+        help='When enabled, users\' passwords can\'t match closely to their '
+             'names or logins.'
+    )
