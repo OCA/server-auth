@@ -40,8 +40,8 @@ class Home(main.Home):
             return user[0]
         return None
 
-    def logging_http_remote_user(self, env, user):
-        """Specific logging for HTTP user.
+    def login_http_remote_user(self, env, user):
+        """Specific login for HTTP user.
 
         Generate a key for authentication and update the user
         """
@@ -68,12 +68,12 @@ class Home(main.Home):
                 # HTTP_REMOTE_USER login not found in database
                 request.session.logout(keep_db=True)
                 raise http.AuthenticationError()
-            # Logging SSO user using separate environment as the authentication
+            # Login SSO user using separate environment as the authentication
             # later on is done in a specific environment as well
             with api.Environment.manage():
                 with request.env.registry.cursor() as cr:
                     env = api.Environment(cr, SUPERUSER_ID, {})
-                    key = self.logging_http_remote_user(env, user)
+                    key = self.login_http_remote_user(env, user)
             request.session.authenticate(db_name, login=login,
                                          password=key, uid=user.id)
         except http.AuthenticationError as e:
