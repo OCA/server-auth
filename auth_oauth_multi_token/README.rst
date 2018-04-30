@@ -16,11 +16,15 @@ Configuration and usage
 
 On users' form you can set the number of maximum simultaneous connections.
 
-By default 5 connections are allowed.
+By default 10 connections are allowed.
 
 From there you can also clear / inactivate existing tokens.
 
 Nothing changes on login action: just select your provider and try to log in.
+
+.. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
+   :alt: Try me on Runbot
+   :target: https://runbot.odoo-community.org/runbot/251/11.0
 
 Bug Tracker
 ===========
@@ -41,7 +45,7 @@ Images
 Contributors
 ------------
 
-* Florent de Labarre <florent@iguanayachts.com
+* Florent de Labarre <florent.mirieu@gmail.com>
 * Simone Orsi <simone.orsi@camptocamp.com>
 
 Maintainer
