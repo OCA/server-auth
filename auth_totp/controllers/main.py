@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016-2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -59,7 +58,7 @@ class AuthTotp(Home):
         # sudo() is required because there is no request.env.uid (likely since
         # there is no user logged in at the start of the request)
         user_model_sudo = request.env['res.users'].sudo()
-        config_model_sudo = user_model_sudo.env['ir.config_parameter']
+        config_model_sudo = user_model_sudo.env['ir.config_parameter'].sudo()
 
         user_login = request.session.get('login')
         user = user_model_sudo.search([('login', '=', user_login)])
