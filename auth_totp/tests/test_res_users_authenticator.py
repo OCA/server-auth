@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016-2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
@@ -22,21 +21,21 @@ class TestResUsersAuthenticator(TransactionCase):
         return self.env['res.users.authenticator'].create(base_values)
 
     def test_check_has_user(self):
-        '''Should delete record when it no longer has a user_id'''
+        """Should delete record when it no longer has a user_id"""
         test_auth = self._new_authenticator()
         test_auth.user_id = False
 
         self.assertFalse(test_auth.exists())
 
     def test_validate_conf_code_empty_recordset(self):
-        '''Should return False if recordset is empty'''
+        """Should return False if recordset is empty"""
         test_auth = self.env['res.users.authenticator']
 
         self.assertFalse(test_auth.validate_conf_code('Test Code'))
 
     @mock.patch(MOCK_PATH)
     def test_validate_conf_code_match(self, pyotp_mock):
-        '''Should return True if code matches at least one record in set'''
+        """Should return True if code matches at least one record in set"""
         test_auth = self._new_authenticator()
         test_auth_2 = self._new_authenticator({'name': 'Test Name 2'})
         test_set = test_auth + test_auth_2
@@ -48,7 +47,7 @@ class TestResUsersAuthenticator(TransactionCase):
 
     @mock.patch(MOCK_PATH)
     def test_validate_conf_code_no_match(self, pyotp_mock):
-        '''Should return False if code does not match any records in set'''
+        """Should return False if code does not match any records in set"""
         test_auth = self._new_authenticator()
         pyotp_mock.TOTP().verify.return_value = False
 
@@ -56,7 +55,7 @@ class TestResUsersAuthenticator(TransactionCase):
 
     @mock.patch(MOCK_PATH)
     def test_validate_conf_code_pyotp_use(self, pyotp_mock):
-        '''Should call PyOTP 2x/record with correct arguments until match'''
+        """Should call PyOTP 2x/record with correct arguments until match"""
         test_auth = self._new_authenticator()
         test_auth_2 = self._new_authenticator({
             'name': 'Test Name 2',
