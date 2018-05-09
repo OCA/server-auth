@@ -1,5 +1,5 @@
-.. image:: https://img.shields.io/badge/license-LGPL--3-blue.svg
-   :target: http://www.gnu.org/licenses/lgpl.html
+.. image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+   :target: https://www.gnu.org/licenses/lgpl.html
    :alt: License: LGPL-3
 
 ====================
@@ -40,7 +40,7 @@ re-enabling MFA for that user.
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/149/10.0
+   :target: https://runbot.odoo-community.org/runbot/251/11.0
 
 Known Issues / Roadmap
 ======================
@@ -66,10 +66,10 @@ Roadmap
 Bug Tracker
 ===========
 
-Bugs are tracked on
-`GitHub Issues <https://github.com/OCA/server-tools/issues>`_. In case of
-trouble, please check there if your issue has already been reported. If you
-spotted it first, help us smash it by providing detailed and welcomed feedback.
+Bugs are tracked on `GitHub Issues
+<https://github.com/OCA/server-auth/issues>`_. In case of trouble, please
+check there if your issue has already been reported. If you spotted it first,
+help us smash it by providing detailed and welcomed feedback.
 
 Credits
 =======
@@ -77,8 +77,7 @@ Credits
 Images
 ------
 
-* Odoo Community Association:
-  `Icon <https://github.com/OCA/maintainer-tools/blob/master/template/module/static/description/icon.svg>`_.
+* Odoo Community Association: `Icon <https://odoo-community.org/logo.png>`_.
 
 Contributors
 ------------
