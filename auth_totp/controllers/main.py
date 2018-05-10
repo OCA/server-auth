@@ -2,8 +2,11 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from datetime import datetime, timedelta
+import base64
 import json
-from werkzeug.contrib.securecookie import SecureCookie
+from werkzeug.contrib.securecookie import SecureCookie, UnquoteError
+from werkzeug.contrib.sessions import ModificationTrackingDict
+from werkzeug._compat import to_bytes
 from werkzeug.wrappers import Response as WerkzeugResponse
 from odoo import _, http
 from odoo.http import Response, request
@@ -12,6 +15,43 @@ from odoo.addons.web.controllers.main import Home
 
 class JsonSecureCookie(SecureCookie):
     serialization_method = json
+
+    # Monkey patch 1:
+    # see: https://github.com/pallets/werkzeug/commit/
+    #      576b75d85e97fc23441e766a9714edc6993bde25
+
+    def __init__(self, data=None, secret_key=None, new=True):
+        ModificationTrackingDict.__init__(self, data or ())
+        # explicitly convert it into a bytestring because python 2.6
+        # no longer performs an implicit string conversion on hmac
+        if secret_key is not None:
+            secret_key = to_bytes(secret_key, 'utf-8')
+        self.secret_key = secret_key
+        self.new = new
+
+    # Monkey patch 2:
+    # see: https://github.com/pallets/werkzeug/issues/953
+
+    @classmethod
+    def quote(cls, value):
+        if cls.serialization_method is not None:
+            value = cls.serialization_method.dumps(value)
+            value = value.encode('utf-8')
+        if cls.quote_base64:
+            value = b''.join(base64.b64encode(value).splitlines()).strip()
+        return value
+
+    @classmethod
+    def unquote(cls, value):
+        try:
+            if cls.quote_base64:
+                value = base64.b64decode(value)
+            value = str(value, 'utf-8')
+            if cls.serialization_method is not None:
+                value = cls.serialization_method.loads(value)
+            return value
+        except Exception:
+            raise UnquoteError()
 
 
 class AuthTotp(Home):
