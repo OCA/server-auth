@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
@@ -16,7 +15,7 @@ class AuthTotpPasswordSecurity(AuthTotp):
         if not request.params.get('login_success'):
             return response
 
-        user = request.env['res.users'].sudo().browse(request.uid)
+        user = request.env.user.sudo()
         if user._password_has_expired():
             user.action_expire_password()
             request.session.logout(keep_db=True)
