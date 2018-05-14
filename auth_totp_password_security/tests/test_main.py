@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html)
 
@@ -42,7 +41,7 @@ class TestAuthTotpPasswordSecurity(TransactionCase):
         test_response = 'Test Response'
         super_mock.return_value = test_response
         self.request_mock.params = {}
-        result = self.test_controller.mfa_login_post().get_data()
+        result = self.test_controller.mfa_login_post().get_data(True)
 
         self.assertEqual(result, test_response)
 
@@ -51,7 +50,7 @@ class TestAuthTotpPasswordSecurity(TransactionCase):
         test_response = 'Test Response'
         super_mock.return_value = test_response
         self.test_user.password_write_date = Datetime.to_string(datetime.now())
-        result = self.test_controller.mfa_login_post().get_data()
+        result = self.test_controller.mfa_login_post().get_data(True)
 
         self.assertEqual(result, test_response)
 
@@ -71,7 +70,7 @@ class TestAuthTotpPasswordSecurity(TransactionCase):
 
     def test_mfa_login_post_expired_redirect(self, super_mock):
         """Should return correct redirect if password is expired"""
-        result = self.test_controller.mfa_login_post().get_data()
+        result = self.test_controller.mfa_login_post().get_data(True)
 
         expected = self.test_user.partner_id.signup_url
         self.assertIn(expected, result)
