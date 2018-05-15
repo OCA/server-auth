@@ -25,7 +25,6 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
         help='A name that will help you remember this authentication'
              ' app/device',
         required=True,
-        index=True,
     )
     secret_key = fields.Char(
         default=lambda s: pyotp.random_base32(),
@@ -45,7 +44,6 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
         help='This is the user whose account the new authentication app/device'
              ' will be tied to',
         readonly=True,
-        index=True,
         ondelete='cascade',
     )
     confirmation_code = fields.Char(

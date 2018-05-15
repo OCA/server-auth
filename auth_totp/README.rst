@@ -86,6 +86,8 @@ Contributors
 
 * Oleg Bulkin <obulkin@laslabs.com>
 
+Do not contact contributors directly about support or help with technical issues.
+
 Maintainer
 ----------
 
