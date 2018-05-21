@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 Tecnativa - Jairo Llopis
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from threading import current_thread
-from urllib import urlencode
 
 from decorator import decorator
 from mock import patch
@@ -106,11 +104,11 @@ class BruteForceCase(HttpCase):
         self.url_open("/web/session/logout", timeout=30)
         # Fail 3 times
         for n in range(3):
-            response = self.url_open("/web/login", bytes(urlencode(data1)), 30)
+            response = self.url_open("/web/login", data1, 30)
             # If you fail, you get /web/login again
             self.assertTrue(
-                response.geturl().endswith("/web/login"),
-                "Unexpected URL %s" % response.geturl(),
+                response.url.endswith("/web/login"),
+                "Unexpected URL %s" % response.url,
             )
         # Admin banned, demo not
         with self.cursor() as cr:
@@ -129,10 +127,10 @@ class BruteForceCase(HttpCase):
             )
         # Now I know the password, but login is rejected too
         data1["password"] = self.good_password
-        response = self.url_open("/web/login", bytes(urlencode(data1)), 30)
+        response = self.url_open("/web/login", data1, 30)
         self.assertTrue(
-            response.geturl().endswith("/web/login"),
-            "Unexpected URL %s" % response.geturl(),
+            response.url.endswith("/web/login"),
+            "Unexpected URL %s" % response.url,
         )
         # IP has been banned, demo user cannot login
         with self.cursor() as cr:
@@ -160,8 +158,8 @@ class BruteForceCase(HttpCase):
             # Unban
             banned.action_whitelist_add()
         # Try good login, it should work now
-        response = self.url_open("/web/login", bytes(urlencode(data1)), 30)
-        self.assertTrue(response.geturl().endswith("/web"))
+        response = self.url_open("/web/login", data1, 30)
+        self.assertTrue(response.url.endswith("/web"))
 
     @skip_unless_addons_installed("web")
     @mute_logger(*GARBAGE_LOGGERS)
@@ -175,11 +173,11 @@ class BruteForceCase(HttpCase):
         self.url_open("/web/session/logout", timeout=30)
         # Fail 3 times
         for n in range(3):
-            response = self.url_open("/web/login", bytes(urlencode(data1)), 30)
+            response = self.url_open("/web/login", data1, 30)
             # If you fail, you get /web/login again
             self.assertTrue(
-                response.geturl().endswith("/web/login"),
-                "Unexpected URL %s" % response.geturl(),
+                response.url.endswith("/web/login"),
+                "Unexpected URL %s" % response.url,
             )
         # Admin banned, demo not
         with self.cursor() as cr:
@@ -197,15 +195,11 @@ class BruteForceCase(HttpCase):
                 ),
             )
         # Demo user can login
-        response = self.url_open(
-            "/web/login",
-            bytes(urlencode(self.data_demo)),
-            30,
-        )
+        response = self.url_open("/web/login", self.data_demo, 30)
         # If you pass, you get /web
         self.assertTrue(
-            response.geturl().endswith("/web"),
-            "Unexpected URL %s" % response.geturl(),
+            response.url.endswith("/web"),
+            "Unexpected URL %s" % response.url,
         )
         self.url_open("/web/session/logout", timeout=30)
         # Attempts recorded
