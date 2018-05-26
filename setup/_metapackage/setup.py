@@ -8,6 +8,7 @@ setuptools.setup(
     description="Meta package for oca-server-auth Odoo addons",
     version=version,
     install_requires=[
+        'odoo11-addon-auth_brute_force',
         'odoo11-addon-auth_ldaps',
         'odoo11-addon-auth_oauth_multi_token',
         'odoo11-addon-auth_saml',
