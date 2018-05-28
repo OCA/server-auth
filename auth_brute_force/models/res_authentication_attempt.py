@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import json
+from distutils import util
 import logging
 import ipaddress
 from urllib.request import urlopen
@@ -24,6 +25,7 @@ class ResAuthenticationAttempt(models.Model):
             ('successful', 'Successful'),
             ('failed', 'Failed'),
             ('banned', 'Banned'),
+            ('unbanned', 'Unbanned')
         ],
         index=True,
     )
@@ -35,13 +37,22 @@ class ResAuthenticationAttempt(models.Model):
     whitelisted = fields.Boolean(
         compute="_compute_whitelisted",
     )
+    banned = fields.Boolean(
+        compute="_compute_banned"
+    )
+
+    @api.multi
+    @api.depends('remote', 'login')
+    def _compute_banned(self):
+        for item in self:
+            item.banned = not self._trusted(item.remote, item.login)
 
     @api.multi
     @api.depends('remote')
     def _compute_metadata(self):
-        if self.env["ir.config_parameter"].sudo().get_param(
-            'auth_brute_force.check_remote', True
-        ):
+        if util.strtobool(self.env["ir.config_parameter"].sudo().get_param(
+            'auth_brute_force.check_remote', 'True'
+        )):
             for item in self:
                 url = GEOLOCALISATION_URL.format(item.remote)
                 try:
@@ -56,7 +67,8 @@ class ResAuthenticationAttempt(models.Model):
                     item.remote_metadata = "\n".join(
                         '%s: %s' % pair for pair in res.items())
 
-    def check_whitelist(self, ip):
+    @api.model
+    def _check_whitelist(self, ip):
         for whitelist in self._whitelist_remotes():
             try:
                 if (
@@ -71,7 +83,7 @@ class ResAuthenticationAttempt(models.Model):
     @api.multi
     def _compute_whitelisted(self):
         for one in self:
-            one.whitelisted = self.check_whitelist(one.remote)
+            one.whitelisted = self._check_whitelist(one.remote)
 
     @api.model
     def _hits_limit(self, limit, remote, login=None):
@@ -94,7 +106,7 @@ class ResAuthenticationAttempt(models.Model):
             domain += [("login", "=", login)]
         # Find last successful login
         last_ok = self.search(
-            domain + [("result", "=", "successful")],
+            domain + [("result", "in", ["successful", "unbanned"])],
             order='create_date desc',
             limit=1,
         )
@@ -125,7 +137,7 @@ class ResAuthenticationAttempt(models.Model):
             return True
         get_param = self.env["ir.config_parameter"].sudo().get_param
         # Whitelisted remotes always pass
-        if self.check_whitelist(remote):
+        if self._check_whitelist(remote):
             return True
         # Check if remote is banned
         limit = int(get_param("auth_brute_force.max_by_ip", 50))
@@ -173,6 +185,17 @@ class ResAuthenticationAttempt(models.Model):
             "auth_brute_force.whitelist_remotes",
             ",".join(whitelist),
         )
+
+    @api.multi
+    def action_unbanned(self):
+        self.ensure_one()
+        if self.banned:
+            self.create({
+                'remote': self.remote,
+                'login': self.login,
+                'result': 'unbanned',
+
+            })
 
     @api.multi
     def action_whitelist_remove(self):
