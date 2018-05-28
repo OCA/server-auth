@@ -39,24 +39,30 @@ class ResAuthenticationAttempt(models.Model):
     @api.multi
     @api.depends('remote')
     def _compute_metadata(self):
-        for item in self:
-            url = GEOLOCALISATION_URL.format(item.remote)
-            try:
-                res = json.loads(urlopen(url, timeout=5).read())
-            except Exception:
-                _logger.warning(
-                    "Couldn't fetch details from %s",
-                    url,
-                    exc_info=True,
-                )
-            else:
-                item.remote_metadata = "\n".join(
-                    '%s: %s' % pair for pair in res.items())
+        if self.env["ir.config_parameter"].sudo().get_param(
+            'auth_brute_force.check_remote', True
+        ):
+            for item in self:
+                url = GEOLOCALISATION_URL.format(item.remote)
+                try:
+                    res = json.loads(urlopen(url, timeout=5).read())
+                except Exception:
+                    _logger.warning(
+                        "Couldn't fetch details from %s",
+                        url,
+                        exc_info=True,
+                    )
+                else:
+                    item.remote_metadata = "\n".join(
+                        '%s: %s' % pair for pair in res.items())
 
     def check_whitelist(self, ip):
         for whitelist in self._whitelist_remotes():
             try:
-                if whitelist and ipaddress.ip_address(ip) in ipaddress.ip_network(whitelist):
+                if (
+                    whitelist and
+                    ipaddress.ip_address(ip) in ipaddress.ip_network(whitelist)
+                ):
                     return True
             except ValueError:
                 continue

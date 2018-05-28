@@ -35,6 +35,9 @@ You can use these configuration parameters that control this addon behavior:
   maximum successive failures allowed for any IP and user combination.
   After hitting the limit, that user and IP combination is banned.
 
+* ``auth_brute_force.check_remote`` defaults to True, and indicates if it
+  it will check the information on http://ip-api.com
+
 Usage
 =====
 
