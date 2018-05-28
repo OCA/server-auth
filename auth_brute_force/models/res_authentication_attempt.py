@@ -3,6 +3,7 @@
 
 import json
 import logging
+import ipaddress
 from urllib.request import urlopen
 from odoo import api, fields, models
 
@@ -52,11 +53,19 @@ class ResAuthenticationAttempt(models.Model):
                 item.remote_metadata = "\n".join(
                     '%s: %s' % pair for pair in res.items())
 
+    def check_whitelist(self, ip):
+        for whitelist in self._whitelist_remotes():
+            try:
+                if whitelist and ipaddress.ip_address(ip) in ipaddress.ip_network(whitelist):
+                    return True
+            except ValueError:
+                continue
+        return False
+
     @api.multi
     def _compute_whitelisted(self):
-        whitelist = self._whitelist_remotes()
         for one in self:
-            one.whitelisted = one.remote in whitelist
+            one.whitelisted = self.check_whitelist(one.remote)
 
     @api.model
     def _hits_limit(self, limit, remote, login=None):
@@ -110,7 +119,7 @@ class ResAuthenticationAttempt(models.Model):
             return True
         get_param = self.env["ir.config_parameter"].sudo().get_param
         # Whitelisted remotes always pass
-        if remote in self._whitelist_remotes():
+        if self.check_whitelist(remote):
             return True
         # Check if remote is banned
         limit = int(get_param("auth_brute_force.max_by_ip", 50))
