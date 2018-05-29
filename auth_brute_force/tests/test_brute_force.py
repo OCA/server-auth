@@ -231,7 +231,7 @@ class BruteForceCase(HttpCase):
             self.assertTrue(failed.banned)
             self.assertFailed(failed.whitelisted)
             # Unban
-            failed.action_unbanned()
+            failed.action_unban()
             self.assertFailed(failed.whitelisted)
             self.assertFailed(failed.banned)
         # Try good login, it should work now
