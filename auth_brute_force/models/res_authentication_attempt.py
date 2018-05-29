@@ -191,11 +191,8 @@ class ResAuthenticationAttempt(models.Model):
     def action_unban(self):
         self.ensure_one()
         if self.banned:
-            self.create({
-                'remote': self.remote,
-                'login': self.login,
+            self.write({
                 'result': 'unbanned',
-
             })
 
     @api.multi
