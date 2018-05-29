@@ -111,12 +111,15 @@ class ResAuthenticationAttempt(models.Model):
             order='create_date desc',
             limit=1,
         )
+
         if last_ok:
             domain += [("create_date", ">", last_ok.create_date)]
         # Count failures since last success, if any
         recent_failures = self.search_count(
-            domain + [("result", "not in",  ["successful", "unbanned"])],
-        )
+            domain + [
+                ("result", "!=", "successful"),
+                ("result", "!=", "unbanned"),
+            ])
         # Did we hit the limit?
         return recent_failures >= limit
 
