@@ -50,22 +50,23 @@ class ResAuthenticationAttempt(models.Model):
     @api.multi
     @api.depends('remote')
     def _compute_metadata(self):
-        if util.strtobool(self.env["ir.config_parameter"].sudo().get_param(
+        if not util.strtobool(self.env["ir.config_parameter"].sudo().get_param(
             'auth_brute_force.check_remote', 'True'
         )):
-            for item in self:
-                url = GEOLOCALISATION_URL.format(item.remote)
-                try:
-                    res = json.loads(urlopen(url, timeout=5).read())
-                except Exception:
-                    _logger.warning(
-                        "Couldn't fetch details from %s",
-                        url,
-                        exc_info=True,
-                    )
-                else:
-                    item.remote_metadata = "\n".join(
-                        '%s: %s' % pair for pair in res.items())
+            return
+        for item in self:
+            url = GEOLOCALISATION_URL.format(item.remote)
+            try:
+                res = json.loads(urlopen(url, timeout=5).read())
+            except Exception:
+                _logger.warning(
+                    "Couldn't fetch details from %s",
+                    url,
+                    exc_info=True,
+                )
+            else:
+                item.remote_metadata = "\n".join(
+                    '%s: %s' % pair for pair in res.items())
 
     @api.model
     def _check_whitelist(self, ip):
@@ -114,7 +115,7 @@ class ResAuthenticationAttempt(models.Model):
             domain += [("create_date", ">", last_ok.create_date)]
         # Count failures since last success, if any
         recent_failures = self.search_count(
-            domain + [("result", "!=", "successful")],
+            domain + [("result", "not in",  ["successful", "unbanned"])],
         )
         # Did we hit the limit?
         return recent_failures >= limit
@@ -187,7 +188,7 @@ class ResAuthenticationAttempt(models.Model):
         )
 
     @api.multi
-    def action_unbanned(self):
+    def action_unban(self):
         self.ensure_one()
         if self.banned:
             self.create({
