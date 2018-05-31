@@ -37,15 +37,6 @@ class ResAuthenticationAttempt(models.Model):
     whitelisted = fields.Boolean(
         compute="_compute_whitelisted",
     )
-    banned = fields.Boolean(
-        compute="_compute_banned"
-    )
-
-    @api.multi
-    @api.depends('remote', 'login')
-    def _compute_banned(self):
-        for item in self:
-            item.banned = not self._trusted(item.remote, item.login)
 
     @api.multi
     @api.depends('remote')
@@ -193,7 +184,7 @@ class ResAuthenticationAttempt(models.Model):
     @api.multi
     def action_unban(self):
         self.ensure_one()
-        if self.banned:
+        if self.result == 'banned':
             self.write({
                 'result': 'unbanned',
             })
