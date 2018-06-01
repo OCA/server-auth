@@ -60,7 +60,7 @@ class ResAuthenticationAttempt(models.Model):
                     '%s: %s' % pair for pair in res.items())
 
     @api.model
-    def _check_whitelist(self, ip):
+    def _is_whitelisted(self, ip):
         for whitelist in self._whitelist_remotes():
             try:
                 if (
@@ -75,7 +75,7 @@ class ResAuthenticationAttempt(models.Model):
     @api.multi
     def _compute_whitelisted(self):
         for one in self:
-            one.whitelisted = self._check_whitelist(one.remote)
+            one.whitelisted = self._is_whitelisted(one.remote)
 
     @api.model
     def _hits_limit(self, limit, remote, login=None):
@@ -132,7 +132,7 @@ class ResAuthenticationAttempt(models.Model):
             return True
         get_param = self.env["ir.config_parameter"].sudo().get_param
         # Whitelisted remotes always pass
-        if self._check_whitelist(remote):
+        if self._is_whitelisted(remote):
             return True
         # Check if remote is banned
         limit = int(get_param("auth_brute_force.max_by_ip", 50))
