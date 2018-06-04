@@ -28,7 +28,7 @@
                         name="action_unban"
                         type="object"
                         string="Set to unbanned"
-                        attrs="{'invisible': [('result', '=', 'banned')]}"
+                        attrs="{'invisible': [('result', '!=', 'banned')]}"
                     />
                     <button
                         name="action_whitelist_add"
