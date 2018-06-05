@@ -104,7 +104,7 @@ class ResAuthenticationAttempt(models.Model):
         )
 
         if last_ok:
-            domain += [("create_date", ">", last_ok.create_date)]
+            domain += [("id", ">", last_ok.id)]
         # Count failures since last success, if any
         recent_failures = self.search_count(
             domain + [
