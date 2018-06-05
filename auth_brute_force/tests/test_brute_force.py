@@ -228,12 +228,10 @@ class BruteForceCase(HttpCase):
                 ("remote", "=", "127.0.0.1"),
             ])
             self.assertEqual(len(banned), 1)
-            self.assertTrue(failed.banned)
-            self.assertFailed(failed.whitelisted)
+            self.assertFalse(banned.whitelisted)
             # Unban
-            failed.action_unban()
-            self.assertFailed(failed.whitelisted)
-            self.assertFailed(failed.banned)
+            banned.action_unban()
+            self.assertFalse(banned.whitelisted)
         # Try good login, it should work now
         response = self.url_open("/web/login", data1, 30)
         self.assertTrue(response.url.endswith("/web"))
@@ -350,6 +348,86 @@ class BruteForceCase(HttpCase):
             self.assertEqual(len(banned), 1)
             # Unban
             banned.action_whitelist_add()
+        # Try good login, it should work now
+        self.assertTrue(self.xmlrpc_common.authenticate(
+            self.env.cr.dbname, data1["login"], data1["password"], {}))
+
+    @mute_logger(*GARBAGE_LOGGERS)
+    def test_xmlrpc_login_existing_unbanned(self, *args):
+        """Remote is banned with real user on XML-RPC login."""
+        data1 = {
+            "login": "admin",
+            "password": "1234",  # Wrong
+        }
+        # Fail 3 times
+        for n in range(3):
+            self.assertFalse(self.xmlrpc_common.authenticate(
+                self.env.cr.dbname, data1["login"], data1["password"], {}))
+        # Admin banned, demo not
+        with self.cursor() as cr:
+            env = self.env(cr)
+            self.assertFalse(
+                env["res.authentication.attempt"]._trusted(
+                    "127.0.0.1",
+                    data1["login"],
+                ),
+            )
+            self.assertTrue(
+                env["res.authentication.attempt"]._trusted(
+                    "127.0.0.1",
+                    "demo",
+                ),
+            )
+        # Now I know the password, but login is rejected too
+        data1["password"] = self.good_password
+        self.assertFalse(self.xmlrpc_common.authenticate(
+            self.env.cr.dbname, data1["login"], data1["password"], {}))
+        # IP has been banned, demo user cannot login
+        with self.cursor() as cr:
+            env = self.env(cr)
+            self.assertFalse(
+                env["res.authentication.attempt"]._trusted(
+                    "127.0.0.1",
+                    "demo",
+                ),
+            )
+        # Attempts recorded
+        with self.cursor() as cr:
+            env = self.env(cr)
+            failed = env["res.authentication.attempt"].search([
+                ("result", "=", "failed"),
+                ("login", "=", data1["login"]),
+                ("remote", "=", "127.0.0.1"),
+            ])
+            self.assertEqual(len(failed), 3)
+            banned = env["res.authentication.attempt"].search([
+                ("result", "=", "banned"),
+                ("login", "=", data1["login"]),
+                ("remote", "=", "127.0.0.1"),
+            ])
+            self.assertFalse(env["res.authentication.attempt"].search([
+                ("result", "=", "unbanned"),
+                ("login", "=", data1["login"]),
+                ("remote", "=", "127.0.0.1"),
+            ]))
+            self.assertEqual(len(banned), 1)
+            self.assertFalse(banned.whitelisted)
+            self.assertFalse(env["res.authentication.attempt"]._trusted(
+                "127.0.0.1",
+                data1["login"],
+            ))
+            # Unban
+            banned.action_unban()
+            self.assertTrue(env["res.authentication.attempt"].search([
+                ("result", "in", ["unbanned", "successful"]),
+                ("login", "=", data1["login"]),
+                ("remote", "=", "127.0.0.1"),
+            ]))
+            self.assertFalse(banned.whitelisted)
+            self.assertTrue(env["res.authentication.attempt"]._trusted(
+                "127.0.0.1",
+                data1["login"],
+            ))
         # Try good login, it should work now
         self.assertTrue(self.xmlrpc_common.authenticate(
             self.env.cr.dbname, data1["login"], data1["password"], {}))
