@@ -1,4 +1,5 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+#!/usr/bin/env python3
+# Copyright (C) 2010-2016,2018 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import os
@@ -16,7 +17,8 @@ def main():
     tags = sys.argv[3].split(',')
     todolist = {tag: [] for tag in tags}
 
-    os.path.walk(folder, scan_folder, exts, tags, todolist)
+    for root, dirs, files in os.walk(folder):
+        scan_folder((exts, tags, todolist), root, files)
     create_autotodo(folder, todolist)
 
 
@@ -63,18 +65,19 @@ def write_info(f, infos, folder):
 
 def create_autotodo(folder, todolist):
     with open('autotodo', 'w+') as f:
-        for tag, info in todolist.iteritems():
+        for tag, info in list(todolist.items()):
             f.write("%s\n%s\n\n" % (tag, '=' * len(tag)))
             write_info(f, info, folder)
 
 
-def scan_folder(exts, tags, res, dirname, names):
+def scan_folder(data_tuple, dirname, names):
+    (exts, tags, res) = data_tuple
     file_info = {}
     for name in names:
         (root, ext) = os.path.splitext(name)
         if ext in exts:
             file_info = scan_file(os.path.join(dirname, name), tags)
-            for tag, info in file_info.iteritems():
+            for tag, info in list(file_info.items()):
                 if info:
                     res[tag].extend(info)
 

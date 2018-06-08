@@ -13,7 +13,7 @@ $(error The '$(SPHINXBUILD)' command was not found. Make sure you have Sphinx in
 endif
 
 project:=$(shell basename $(shell readlink -f ..))
-branch:=$(shell hg branch)
+branch:=$(shell git rev-parse --abbrev-ref HEAD)
 
 # Internal variables.
 PAPEROPT_a4     = -D latex_paper_size=a4
@@ -49,27 +49,27 @@ help:
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 	@echo "  coverage   to run coverage check of the documentation (if enabled)"
-	@echo "  publish    to make html documentation and publish it on doc.xcg.global"
 
 .PHONY: clean
 clean:
 	rm -rf $(BUILDDIR)/*
+	rm -f manifest
 	rm -f autotodo
 
 .PHONY: html
-html: autotodo
+html: manifest autotodo
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
 .PHONY: dirhtml
-dirhtml:
+dirhtml: manifest autotodo
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/dirhtml."
 
 .PHONY: singlehtml
-singlehtml:
+singlehtml: manifest autotodo
 	$(SPHINXBUILD) -b singlehtml $(ALLSPHINXOPTS) $(BUILDDIR)/singlehtml
 	@echo
 	@echo "Build finished. The HTML page is in $(BUILDDIR)/singlehtml."
@@ -87,14 +87,14 @@ json:
 	@echo "Build finished; now you can process the JSON files."
 
 .PHONY: htmlhelp
-htmlhelp:
+htmlhelp: manifest autotodo
 	$(SPHINXBUILD) -b htmlhelp $(ALLSPHINXOPTS) $(BUILDDIR)/htmlhelp
 	@echo
 	@echo "Build finished; now you can run HTML Help Workshop with the" \
 	      ".hhp project file in $(BUILDDIR)/htmlhelp."
 
 .PHONY: qthelp
-qthelp:
+qthelp: manifest autotodo
 	$(SPHINXBUILD) -b qthelp $(ALLSPHINXOPTS) $(BUILDDIR)/qthelp
 	@echo
 	@echo "Build finished; now you can run "qcollectiongenerator" with the" \
@@ -104,7 +104,7 @@ qthelp:
 	@echo "# assistant -collectionFile $(BUILDDIR)/qthelp/EventGLEViva.qhc"
 
 .PHONY: applehelp
-applehelp:
+applehelp: manifest autotodo
 	$(SPHINXBUILD) -b applehelp $(ALLSPHINXOPTS) $(BUILDDIR)/applehelp
 	@echo
 	@echo "Build finished. The help book is in $(BUILDDIR)/applehelp."
@@ -113,7 +113,7 @@ applehelp:
 	      "bundle."
 
 .PHONY: devhelp
-devhelp:
+devhelp: manifest autotodo
 	$(SPHINXBUILD) -b devhelp $(ALLSPHINXOPTS) $(BUILDDIR)/devhelp
 	@echo
 	@echo "Build finished."
@@ -220,19 +220,8 @@ pseudoxml:
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
 
-autotodo:
-	     @python autotodo.py ../ .py TODO,FIXME,XXX
+autotodo: autotodo.py
+	@./autotodo.py ../ .py TODO,FIXME,XXX
 
-LANGUAGES=en fr
-
-.PHONY: publish
-publish:
-	@for LANGUAGE in $(LANGUAGES); do \
-		make -e SPHINXOPTS=-Dlanguage=$${LANGUAGE} html; \
-		ssh openerp-dev.xcg.global mkdir -p /var/www/doc/$(project)/$${LANGUAGE}/$(branch); \
-		ssh openerp-dev.xcg.global chmod 775 /var/www/doc/$(project); \
-		ssh openerp-dev.xcg.global chmod 775 /var/www/doc/$(project)/$${LANGUAGE}; \
-		ssh openerp-dev.xcg.global chmod 775 /var/www/doc/$(project)/$${LANGUAGE}/$(branch); \
-		rsync -r -a -v --chmod=ug=rwX --delete $(BUILDDIR)/html/ openerp-dev.xcg.global:/var/www/doc/$(project)/$${LANGUAGE}/$(branch); \
-	done
-
+manifest: ../__manifest__.py manifest.py
+	@./manifest.py

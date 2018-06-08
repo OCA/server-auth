@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016, 2018 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 #
@@ -15,9 +15,11 @@
 # serve to show the default.
 
 import ast
+import configparser
 import sys
 import os
 
+import odoo
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -38,6 +40,8 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.coverage',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
     'sphinxodoo.ext.autodoc',
     'sphinx.ext.graphviz',
 ]
@@ -58,14 +62,14 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'SAML2 authentication'
-copyright = u'2016, XCG Consulting'
+copyright = u'2016, 2018 XCG Consulting'
 author = u'XCG Consulting, Odoo Community Association (OCA)'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-with open(os.path.join('..', '__openerp__.py'), 'r') as f:
+with open(os.path.join('..', '__manifest__.py'), 'r') as f:
     read_data = f.read()
 d = ast.literal_eval(read_data)
 # The full version, including alpha/beta/rc tags.
@@ -301,37 +305,26 @@ texinfo_documents = [
 todo_include_todos = True
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+intersphinx_mapping = {'https://docs.python.org/3/': None}
 
 
 #
 # odoo-sphinx-autodoc
 #
 
-# sphinxodoo_addons : List of addons name to load (if empty, no addon will be loaded) # noqa
+# sphinxodoo_addons: List of addons name to load (if empty, no addon will be loaded) # noqa
 this_module = os.path.basename(
     os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-sphinxodoo_addons = [this_module]
+sphinxodoo_addons = [this_module, ]
 # sphinxodoo_root_path : Path of the Odoo root directory
-# sphinxodoo_root_path = os.path.dirname(os.path.dirname(os.path.abspath(openerp.__file__))) # noqa
-# TODO Fix this.
-sphinxodoo_root_path = '/home/habba/Dev/OpenERP/sources/odoo8'
-
+sphinxodoo_root_path = os.path.dirname(os.path.dirname(os.path.abspath(
+    odoo.__file__)))
 # sphinxodoo_addons_path : List of paths were Odoo addons to load are located
 superproject_path = os.path.dirname(
     os.path.dirname(os.path.dirname(os.getenv('PWD'))))
-with open(os.path.join(superproject_path, 'odoo_type')) as f:
-    odoo_type = f.read()
+c = configparser.SafeConfigParser()
+c.read(os.path.join(superproject_path, 'setup.cfg'))
 sphinxodoo_addons_path = []
-if odoo_type.strip() == 'bzr':
-    sphinxodoo_addons_path.append(
-        os.path.join(os.getenv('HOME'), 'src', 'openobject-addons'))
-    sphinxodoo_addons_path.append(
-        os.path.join(os.getenv('HOME'), 'src', 'openerp-web', 'addons'))
-else:
-    sphinxodoo_addons_path.append(os.path.join(sphinxodoo_root_path, 'addons'))
 
-with open(os.path.join(superproject_path, 'addon_dirs')) as f:
-    for line in f.read().splitlines():
-        sphinxodoo_addons_path.append(os.path.join(superproject_path, line))
+for line in c.get('odoo_scripts', 'addon_dirs').splitlines():
+    sphinxodoo_addons_path.append(os.path.join(superproject_path, line))
