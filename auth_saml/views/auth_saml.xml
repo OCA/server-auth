@@ -64,7 +64,6 @@
     </record>
 
     <menuitem id="menu_saml_providers" name="SAML Providers"
-        parent="base.menu_users" sequence="30" action="action_saml_provider"
-        groups="base.group_no_one" />
+        parent="base.menu_users" sequence="30" action="action_saml_provider"/>
 
 </odoo>
