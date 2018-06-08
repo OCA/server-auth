@@ -4,7 +4,7 @@
     <!-- login form button, new in Odoo8, Odoo7 automatically adds the button -->
     <template id="auth_saml.providers" name="Auth SAML Providers">
         <div t-foreach="providers" t-as="p">
-            <a t-att-href="'/auth_saml/get_auth_request?pid=%s'%p['id']" class="btn btn-link">
+            <a t-att-href="'/auth_saml/get_auth_request?pid=%s'%p['id']" class="btn btn-primary">
                 <i t-att-class="p['css_class']"/>
                 <t t-esc="p['body']"/>
             </a>
