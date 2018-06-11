@@ -25,6 +25,12 @@
             <form>
                 <header>
                     <button
+                        name="action_unban"
+                        type="object"
+                        string="Set to unbanned"
+                        attrs="{'invisible': [('result', '!=', 'banned')]}"
+                    />
+                    <button
                         name="action_whitelist_add"
                         type="object"
                         string="Add remote to whitelist"
@@ -69,6 +75,7 @@
                 <filter name="filter_no_success" string="Without Success" domain="[('result','!=', 'successful')]"/>
                 <filter name="filter_banned" string="Banned" domain="[('result','=', 'banned')]"/>
                 <filter name="filter_failed" string="Failed" domain="[('result','=', 'failed')]"/>
+                <filter name="filter_unbanned" string="Unbanned" domain="[('result','=', 'unbanned')]"/>
                 <filter name="filter_successful" string="Successful" domain="[('result','=', 'successful')]"/>
             </search>
         </field>
