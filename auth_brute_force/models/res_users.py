@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2017 Tecnativa - Jairo Llopis
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
@@ -62,14 +61,11 @@ class ResUsers(models.Model):
     @classmethod
     def _auth_attempt_force_raise(cls, login, method):
         """Force a method to raise an AccessDenied on falsey return."""
-        try:
-            with cls._auth_attempt(login):
-                result = method()
-                if not result:
-                    # Force exception to record auth failure
-                    raise AccessDenied()
-        except AccessDenied:
-            pass  # `_auth_attempt()` did the hard part already
+        with cls._auth_attempt(login):
+            result = method()
+            if not result:
+                # Force exception to record auth failure
+                raise AccessDenied()
         return result
 
     @classmethod
@@ -110,18 +106,14 @@ class ResUsers(models.Model):
     # Override all auth-related core methods
     @classmethod
     def _login(cls, db, login, password):
-        return cls._auth_attempt_force_raise(
-            login,
-            lambda: super(ResUsers, cls)._login(db, login, password),
-        )
+        with cls._auth_attempt(login):
+            return super(ResUsers, cls)._login(db, login, password)
 
     @classmethod
     def authenticate(cls, db, login, password, user_agent_env):
-        return cls._auth_attempt_force_raise(
-            login,
-            lambda: super(ResUsers, cls).authenticate(
-                db, login, password, user_agent_env),
-        )
+        with cls._auth_attempt(login):
+            return super(ResUsers, cls).authenticate(
+                db, login, password, user_agent_env)
 
     @api.model
     def check_credentials(self, password):
