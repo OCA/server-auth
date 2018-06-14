@@ -201,8 +201,8 @@ class TestPasswordSecurityHome(TransactionCase):
                 assets['request'].httprequest.method = 'POST'
                 res = self.password_security_home.web_auth_reset_password()
                 self.assertEqual(
-                assets['web_auth_reset_password'](), res,
-            )
+                    assets['web_auth_reset_password'](), res,
+                )
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
