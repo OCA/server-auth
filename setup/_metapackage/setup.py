@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo11-addon-auth_oauth_multi_token',
         'odoo11-addon-auth_saml',
         'odoo11-addon-auth_signup_verify_email',
+        'odoo11-addon-auth_totp',
         'odoo11-addon-keychain',
         'odoo11-addon-password_security',
         'odoo11-addon-users_ldap_mail',
