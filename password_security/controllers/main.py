@@ -16,7 +16,7 @@ class PasswordSecuritySession(Session):
     @http.route()
     def change_password(self, fields):
         new_password = operator.itemgetter('new_password')(
-            dict(map(operator.itemgetter('name', 'value'), fields))
+            dict(list(map(operator.itemgetter('name', 'value'), fields)))
         )
         user_id = request.env.user
         user_id._check_password(new_password)
