@@ -63,7 +63,7 @@ class ResUsers(models.Model):
                 company_id.password_special) + ' character)')
         if company_id.password_not_similar_name_login:
             message.append(
-                '\n* ' + 'Must not be similar to the user\'s login or name.')
+                '\n* Must not be similar user\'s login or name.')
         if message:
             message = [_('Must contain the following:')] + message
         if company_id.password_length:
@@ -76,31 +76,24 @@ class ResUsers(models.Model):
     def _check_password(self, password):
         self._check_password_rules(password)
         self._check_password_history(password)
-        self._check_password_similar_name(password, self.name)
-        self._check_password_similar_login(password, self.login)
+        self._check_password_similarity(password, self.login, self.name)
         return True
 
     @api.multi
-    def _check_password_similar_name(self, password, name):
+    def _check_password_similarity(self, password, login, name):
         self.ensure_one()
         if self.company_id.password_not_similar_name_login:
-            # remove non-alnums from user's name for comparison
-            name_alnum = re.sub(r'[\W_]', '', name)
-            if name_alnum.lower() == password.lower():
-                raise PassError(self.password_match_message())
-        return True
+            password = password.lower()
+            name = name.lower()
 
-    @api.multi
-    def _check_password_similar_login(self, password, login):
-        self.ensure_one()
-        if self.company_id.password_not_similar_name_login:
-            match = re.match(r'([^@]+)(?:@[^@]+)?', login)
-            login_name_only = match.group(1)
-            login_whole = match.group(0)
-            if login_name_only.lower() == password.lower():
+            if password in name or name in password:
                 raise PassError(self.password_match_message())
-            if login_whole.lower() == password.lower():
+
+            login_name = re.match(r'([^@]+)(?:@[^@]+)?', login).group(1)
+
+            if password in login_name or login_name in password:
                 raise PassError(self.password_match_message())
+
         return True
 
     @api.multi
