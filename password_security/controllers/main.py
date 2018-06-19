@@ -35,22 +35,15 @@ class PasswordSecurityHome(AuthSignupHome):
     def web_login(self, *args, **kw):
         ensure_db()
         response = super(PasswordSecurityHome, self).web_login(*args, **kw)
-        if not request.httprequest.method == 'POST':
+        if not request.params.get("login_success"):
             return response
-        uid = request.session.authenticate(
-            request.session.db,
-            request.params['login'],
-            request.params['password']
-        )
-        if not uid:
+        # Now, I'm an authenticated user
+        if not request.env.user._password_has_expired():
             return response
-        users_obj = request.env['res.users'].sudo()
-        user_id = users_obj.browse(request.uid)
-        if not user_id._password_has_expired():
-            return response
-        user_id.action_expire_password()
+        # My password is expired, kick me out
+        request.env.user.action_expire_password()
         request.session.logout(keep_db=True)
-        redirect = user_id.partner_id.signup_url
+        redirect = request.env.user.partner_id.signup_url
         return http.redirect_with_hash(redirect)
 
     @http.route()
