@@ -1,11 +1,12 @@
 # Copyright 2016 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-import mock
+from datetime import datetime, timedelta
+from unittest import mock
 
 from contextlib import contextmanager
 
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import HttpCase, TransactionCase
 from odoo.http import Response
 
 from ..controllers import main
@@ -101,82 +102,6 @@ class TestPasswordSecurityHome(TransactionCase):
             assets['web_login'].assert_called_once_with(
                 *expect_list, **expect_dict
             )
-
-    def test_web_login_no_post(self):
-        """ It should return immediate result of super when not POST """
-        with self.mock_assets() as assets:
-            assets['request'].httprequest.method = 'GET'
-            assets['request'].session.authenticate.side_effect = \
-                EndTestException
-            res = self.password_security_home.web_login()
-            self.assertEqual(
-                assets['web_login'](), res,
-            )
-
-    def test_web_login_authenticate(self):
-        """ It should attempt authentication to obtain uid """
-        with self.mock_assets() as assets:
-            assets['request'].httprequest.method = 'POST'
-            authenticate = assets['request'].session.authenticate
-            request = assets['request']
-            authenticate.side_effect = EndTestException
-            with self.assertRaises(EndTestException):
-                self.password_security_home.web_login()
-            authenticate.assert_called_once_with(
-                request.session.db,
-                request.params['login'],
-                request.params['password'],
-            )
-
-    def test_web_login_authenticate_fail(self):
-        """ It should return super result if failed auth """
-        with self.mock_assets() as assets:
-            authenticate = assets['request'].session.authenticate
-            request = assets['request']
-            request.httprequest.method = 'POST'
-            request.env['res.users'].sudo.side_effect = EndTestException
-            authenticate.return_value = False
-            res = self.password_security_home.web_login()
-            self.assertEqual(
-                assets['web_login'](), res,
-            )
-
-    def test_web_login_get_user(self):
-        """ It should get the proper user as sudo """
-        with self.mock_assets() as assets:
-            request = assets['request']
-            request.httprequest.method = 'POST'
-            sudo = request.env['res.users'].sudo()
-            sudo.browse.side_effect = EndTestException
-            with self.assertRaises(EndTestException):
-                self.password_security_home.web_login()
-            sudo.browse.assert_called_once_with(
-                request.uid
-            )
-
-    def test_web_login_valid_pass(self):
-        """ It should return parent result if pass isn't expired """
-        with self.mock_assets() as assets:
-            request = assets['request']
-            request.httprequest.method = 'POST'
-            user = request.env['res.users'].sudo().browse()
-            user.action_expire_password.side_effect = EndTestException
-            user._password_has_expired.return_value = False
-            res = self.password_security_home.web_login()
-            self.assertEqual(
-                assets['web_login'](), res,
-            )
-
-    def test_web_login_expire_pass(self):
-        """ It should expire password if necessary """
-        with self.mock_assets() as assets:
-            request = assets['request']
-            request.httprequest.method = 'POST'
-            user = request.env['res.users'].sudo().browse()
-            user.action_expire_password.side_effect = EndTestException
-            user._password_has_expired.return_value = True
-            with self.assertRaises(EndTestException):
-                self.password_security_home.web_login()
 
     def test_web_login_log_out_if_expired(self):
         """It should log out user if password expired"""
@@ -278,3 +203,44 @@ class TestPasswordSecurityHome(TransactionCase):
                 self.assertEqual(
                     assets['web_auth_reset_password'](), res,
                 )
+
+
+@mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
+class LoginCase(HttpCase):
+    def test_web_login_authenticate(self, *args):
+        """It should allow authenticating by login"""
+        response = self.url_open(
+            "/web/login",
+            {"login": "admin", "password": "admin"},
+        )
+        self.assertIn(
+            "window.location = '/web'",
+            response.text,
+        )
+
+    def test_web_login_authenticate_fail(self, *args):
+        """It should fail auth"""
+        response = self.url_open(
+            "/web/login",
+            {"login": "admin", "password": "noadmin"},
+        )
+        self.assertIn(
+            "Wrong login/password",
+            response.text,
+        )
+
+    def test_web_login_expire_pass(self, *args):
+        """It should expire password if necessary"""
+        two_days_ago = datetime.now() - timedelta(days=2)
+        with self.cursor() as cr:
+            env = self.env(cr)
+            env.user.password_write_date = two_days_ago
+            env.user.company_id.password_expiration = 1
+        response = self.url_open(
+            "/web/login",
+            {"login": "admin", "password": "admin"},
+        )
+        self.assertIn(
+            "/web/reset_password",
+            response.text,
+        )
