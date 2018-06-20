@@ -16,10 +16,8 @@ except ImportError:
     try:
         from validate_email import validate_email as _validate
 
-
         class EmailSyntaxError(Exception):
             message = False
-
 
         def validate_email(*args, **kwargs):
             if not _validate(*args, **kwargs):
