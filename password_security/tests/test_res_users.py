@@ -150,3 +150,11 @@ class TestResUsers(TransactionCase):
         self.assertTrue(self.main_comp.password_special)
         rec_id = self._new_record()
         rec_id._check_password('asdQWE12345_3')
+
+    def test_user_with_admin_rights_can_create_users(self):
+        demo = self.env.ref("base.user_demo")
+        demo.groups_id |= self.env.ref("base.group_erp_manager")
+        self.model_obj.sudo(demo).create({
+            "login": "test1",
+            "name": "test1",
+        })
