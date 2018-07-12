@@ -13,7 +13,7 @@
     'maintainer': 'Odoo Community Association (OCA)',
     'website': "http://acsone.eu",
     'category': 'Tools',
-    'version': '11.0.1.0.1',
+    'version': '11.0.1.0.0',
     'license': 'AGPL-3',
     'data': [
         'data/ir_config_parameter_data.xml'
