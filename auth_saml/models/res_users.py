@@ -85,38 +85,28 @@ class ResUser(models.Model):
                 lformat = lasso.SAML2_ATTRIBUTE_NAME_FORMAT_BASIC
                 nickname = None
                 try:
-                    name = attribute.name.decode('ascii')
+                    name = attribute.name
                 except Exception as e:
                     _logger.warning('sso_after_response: error decoding name \
                         of attribute %s' % attribute.dump())
                 else:
-                    try:
-                        if attribute.nameFormat:
-                            lformat = attribute.nameFormat.decode('ascii')
-                        if attribute.friendlyName:
-                            nickname = attribute.friendlyName
-                    except Exception as e:
-                        message = 'sso_after_response: name or format of an \
-                            attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(message % (attribute.dump(), str(e)))
-                    try:
-                        if name:
-                            if lformat:
-                                if nickname:
-                                    key = (name, lformat, nickname)
-                                else:
-                                    key = (name, lformat)
+                    if attribute.nameFormat:
+                        lformat = attribute.nameFormat
+                    if attribute.friendlyName:
+                        nickname = attribute.friendlyName
+                    if name:
+                        if lformat:
+                            if nickname:
+                                key = (name, lformat, nickname)
                             else:
-                                key = name
-                        attrs[key] = list()
-                        for value in attribute.attributeValue:
-                            content = [a.exportToXml() for a in value.any]
-                            content = ''.join(content)
-                            attrs[key].append(content.decode('utf8'))
-                    except Exception as e:
-                        message = 'sso_after_response: value of an \
-                            attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(message % (attribute.dump(), str(e)))
+                                key = (name, lformat)
+                        else:
+                            key = name
+                    attrs[key] = list()
+                    for value in attribute.attributeValue:
+                        content = [a.exportToXml() for a in value.any]
+                        content = ''.join(content)
+                        attrs[key].append(content)
 
         matching_value = None
         for k in attrs:
