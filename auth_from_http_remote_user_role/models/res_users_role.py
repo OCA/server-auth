@@ -24,6 +24,6 @@ class ResUsersRole(models.Model):
                         for roleid in roles2add]
             user.role_line_ids = triplets
         if roles2remove:
-            self.role_line_ids.search([
+            env['res.users.role.line'].search([
                 ('user_id', '=', user.id),
                 ('role_id', 'in', roles2remove)]).unlink()

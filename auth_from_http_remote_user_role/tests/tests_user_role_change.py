@@ -30,3 +30,8 @@ class TestUserRoleChange(TransactionCase):
         self.env['res.users.role'].change_roles_remote_user(
             self.env, 1, new_roles)
         self.assertListEqual(u.role_ids.ids, new_roles)
+
+        new_roles = [self.roleb.id, self.rolec.id]
+        self.env['res.users.role'].change_roles_remote_user(
+            self.env, 1, new_roles)
+        self.assertListEqual(u.role_ids.ids, new_roles)
