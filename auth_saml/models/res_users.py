@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016,2018 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -43,9 +43,9 @@ class ResUser(models.Model):
             # in the database
             if (self.password_crypt and self.saml_uid and
                     self.id is not SUPERUSER_ID):
-                raise ValidationError(_("This database disallows users to "
-                                        "have both passwords and SAML IDs. "
-                                        "Errors for login %s" % (self.login)))
+                raise ValidationError(
+                    _("This database disallows users to have both passwords "
+                      "and SAML IDs. Errors for login %s").format(self.login))
 
     _sql_constraints = [('uniq_users_saml_provider_saml_uid',
                          'unique(saml_provider_id, saml_uid)',
@@ -221,10 +221,14 @@ class ResUser(models.Model):
         # - The "allow both" setting is disabled.
         if (vals and vals.get('saml_uid') and self.id is not SUPERUSER_ID and
                 not self._allow_saml_and_password()):
-            vals.update({
-                'password': False,
-                'password_crypt': False,
-            })
+            # adding password/password crypt does not work
+            for k in ('password', 'password_crypt'):
+                if k in vals:
+                    vals.pop(k)
+            self.env.cr.execute(
+                "UPDATE res_users SET password='', password_crypt='' WHERE "
+                "id=%s",
+                (self.id, ))
 
         return super(ResUser, self).write(vals)
 
