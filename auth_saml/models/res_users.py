@@ -236,3 +236,17 @@ class ResUser(models.Model):
     def _allow_saml_and_password(self):
 
         return self.env['res.config.settings'].allow_saml_and_password()
+
+    def _set_encrypted_password(self, encrypted):
+        """Redefine auth_crypt method to block password change as it uses
+        a cursor to do it and the python constrains would not be called
+        """
+        if (
+            not self._allow_saml_and_password() and
+            self.saml_uid and
+            self.id is not SUPERUSER_ID
+        ):
+            raise ValidationError(
+                _("This database disallows users to have both passwords "
+                  "and SAML IDs. Errors for login %s").format(self.login))
+        super(ResUser, self)._set_encrypted_password(encrypted)
