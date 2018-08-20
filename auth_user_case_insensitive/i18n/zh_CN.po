@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: auth_user_case_insensitive
-#: code:addons/auth_user_case_insensitive/hooks.py:24
+#: code:addons/auth_user_case_insensitive/hooks.py:23
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
 msgstr ""
