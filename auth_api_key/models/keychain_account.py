@@ -10,7 +10,7 @@ class KeychainAccount(models.Model):
     _inherit = 'keychain.account'
 
     namespace = fields.Selection(
-        selection_add=[('auth_api_key', 'Search Engine Backend')])
+        selection_add=[('auth_api_key', 'Authentification Api key')])
 
     @api.multi
     def _auth_api_key_validate_data(self, data):
