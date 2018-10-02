@@ -34,6 +34,7 @@ class KeychainAccount(models.Model):
     """Manage all accounts of external systems in one place."""
 
     _name = 'keychain.account'
+    _description = 'Store accounts (password / data).'
 
     name = fields.Char(required=True, help="Humain readable label")
     technical_name = fields.Char(
