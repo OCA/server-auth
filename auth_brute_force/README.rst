@@ -22,7 +22,9 @@ extra information about remote IP.
 Configuration
 =============
 
-You can use these configuration parameters that control this addon behavior:
+You can use these configuration parameters
+(menu `Settings / Technical / Parameters / System Parameters`) that control
+this addon behavior:
 
 * ``auth_brute_force.whitelist_remotes`` is a comma-separated list of
   whitelisted IPs. Failures from these remotes are ignored.
