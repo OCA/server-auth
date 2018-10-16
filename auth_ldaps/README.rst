@@ -11,9 +11,10 @@ This module allows to authenticate using a LDAP over SSL system.
 Installation
 ============
 
-To install this module, you need to:
+To verify LDAPS server certificate, you need to:
 
 #. Add the CA certificate of the LDAPS on your server as a trusted certificate
+#. Check the Verify certificate´ flag in configuration
 
 Configuration
 =============
@@ -25,7 +26,7 @@ To configure this module, you need to:
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/251/11.0
+   :target: https://runbot.odoo-community.org/runbot/251/12.0
 
 Bug Tracker
 ===========
@@ -47,6 +48,7 @@ Contributors
 ------------
 
 * Enric Tobella <etobella@creublanca.es>
+* Alexey Pelykh <alexey.pelykh@brainbeanapps.com>
 
 Do not contact contributors directly about support or help with technical issues.
 
