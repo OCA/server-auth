@@ -1,12 +1,16 @@
 # Copyright (C) 2017 Creu Blanca
+# Copyright (C) 2018 Brainbean Apps
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 {
     'name': 'LDAPS authentication',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-auth',
-    'author': 'Creu Blanca, Odoo Community Association (OCA)',
+    'author':
+        'Braibean Apps (https://brainbeanapps.com), '
+        'Creu Blanca, '
+        'Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'installable': True,
     'application': False,
