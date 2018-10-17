@@ -18,6 +18,11 @@
     'depends': [
         'auth_ldap',
     ],
+    'external_dependencies': {
+        'python': [
+            'ldap',
+        ],
+    },
     'data': [
         'views/res_company_ldap_views.xml',
     ],
