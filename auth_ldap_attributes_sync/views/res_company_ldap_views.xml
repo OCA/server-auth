@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+    Copyright (C) 2018 Brainbean Apps (https://brainbeanapps.com)
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+    -->
+    <record id="view_ldap_installer_form" model="ir.ui.view">
+        <field name="name">res.company.ldap.form</field>
+        <field name="model">res.company.ldap</field>
+        <field name="inherit_id" ref="auth_ldap.view_ldap_installer_form"/>
+        <field name="arch" type="xml">
+            <field name="ldap_filter" position="after">
+                <field name="name_attribute"/>
+                <field name="name_attribute_mode"/>
+                
+                <field name="email_attribute"/>
+                <field name="email_attribute_mode"/>
+                
+                <field name="phone_attribute"/>
+                <field name="phone_attribute_mode"/>
+                
+                <field name="mobile_attribute"/>
+                <field name="mobile_attribute_mode"/>
+
+                <field name="function_attribute"/>
+                <field name="function_attribute_mode"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
