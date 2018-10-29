@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!--
+      Copyright (C) 2018 Brainbean Apps (https://brainbeanapps.com)
+      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+    -->
+
+    <record id="ldap_attribute_mapping_view_tree" model="ir.ui.view">
+        <field name="name">ldap.attribute.mapping.view.tree</field>
+        <field name="model">ldap.attribute.mapping</field>
+        <field name="arch" type="xml">
+            <tree string="LDAP Attribute Mapping" editable="bottom">
+                <field name="attribute_name"/>
+                <field name="field_name"/>
+                <field name="mode"/>
+            </tree>
+        </field>
+    </record>
+
+ </odoo>
