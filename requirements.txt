@@ -1,0 +1,3 @@
+# auth_keycloak test mocks
+responses
+
