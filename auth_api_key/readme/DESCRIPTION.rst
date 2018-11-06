@@ -1,0 +1,1 @@
+Authenticate http requests from an API key.
