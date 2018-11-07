@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+    <!--
+      Copyright 2018 Brainbean Apps (https://brainbeanapps.com)
+      License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+    -->
+
+    <record id="auth_ldap_group_sync_cron" model="ir.cron">
+        <field name="name">LDAP Group Sync: Syncs group membership</field>
+        <field name="model_id" ref="model_res_company_ldap"/>
+        <field name="state">code</field>
+        <field name="code">model._sync_group_membership()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="True"/>
+    </record>
+
+</odoo>

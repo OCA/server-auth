@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--
+    Copyright 2018 Brainbean Apps (https://brainbeanapps.com)
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+    -->
+    <record id="view_ldap_installer_form" model="ir.ui.view">
+        <field name="name">res.company.ldap.form</field>
+        <field name="model">res.company.ldap</field>
+        <field name="inherit_id" ref="auth_ldap.view_ldap_installer_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='ldap_server']/../..">
+                <group string="Map Group Membership">
+                    <group>
+                        <field name="sync_ldap_group_membership_periodically"/>
+                        <field name="ldap_group_membership_attribute"/>
+                        <field name="only_ldap_group_membership"/>
+                    </group>
+                    <group colspan="2">
+                        <field name="ldap_group_mapping_ids" nolabel="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
