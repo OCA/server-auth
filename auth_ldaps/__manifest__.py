@@ -8,7 +8,7 @@
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-auth',
     'author':
-        'Braibean Apps (https://brainbeanapps.com), '
+        'Brainbean Apps (https://brainbeanapps.com), '
         'Creu Blanca, '
         'Odoo Community Association (OCA)',
     'license': 'AGPL-3',
