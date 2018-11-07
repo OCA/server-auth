@@ -56,7 +56,7 @@ Credits
 Authors
 ~~~~~~~
 
-* Braibean Apps
+* Brainbean Apps
 
 Contributors
 ~~~~~~~~~~~~

@@ -7,7 +7,7 @@
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-auth',
     'author':
-        'Braibean Apps, '
+        'Brainbean Apps, '
         'Odoo Community Association (OCA)',
     'license': 'AGPL-3',
     'installable': True,
