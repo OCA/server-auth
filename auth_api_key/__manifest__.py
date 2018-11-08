@@ -10,6 +10,7 @@
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "website": "https://acsone.eu/",
+    "development_status": "Beta",
     "depends": ["server_environment"],
     "data": [],
     "demo": [],
