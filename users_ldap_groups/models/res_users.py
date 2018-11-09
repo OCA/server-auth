@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-# © 2018 Therp BV <https://therp.nl>
+# Copyright 2018 Therp BV <https://therp.nl>
+# Copyright 2018 Brainbean Apps <https://brainbeanapps.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 from odoo import SUPERUSER_ID, api, models, registry
 
@@ -9,7 +9,7 @@ class ResUsers(models.Model):
 
     @classmethod
     def _login(cls, db, login, password):
-        user_id = super(ResUsers, cls)._login(db, login, password)
+        user_id = super()._login(db, login, password)
         if not user_id:
             return user_id
         with registry(db).cursor() as cr:
@@ -19,9 +19,9 @@ class ResUsers(models.Model):
             # this case to apply ldap groups if necessary
             ldaps = user.company_id.ldaps
             if user.active and any(ldaps.mapped('only_ldap_groups')):
-                for conf in ldaps.get_ldap_dicts():
-                    entry = ldaps.authenticate(conf, login, password)
+                for conf in ldaps._get_ldap_dicts():
+                    entry = ldaps._authenticate(conf, login, password)
                     if entry:
-                        ldaps.get_or_create_user(conf, login, entry)
+                        ldaps._get_or_create_user(conf, login, entry)
                         break
         return user_id

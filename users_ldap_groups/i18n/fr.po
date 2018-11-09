@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: server-tools (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-09-29 11:14+0000\n"
-"PO-Revision-Date: 2015-09-18 13:56+0000\n"
-"Last-Translator: <>\n"
+"PO-Revision-Date: 2018-12-12 19:58+0000\n"
+"Last-Translator: Alexandre Fayolle <alexandre.fayolle@camptocamp.com>\n"
 "Language-Team: French (http://www.transifex.com/oca/OCA-server-tools-8-0/"
 "language/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.3\n"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_create_uid
@@ -30,24 +31,24 @@ msgstr "Créé le"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_ids
-msgid "Define how Odoo groups are assigned to ldap users"
-msgstr ""
+msgid "Define how Odoo groups are assigned to LDAP users"
+msgstr "Définir comment les groupes Odoo sont attribués aux utilisateurs LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_company_ldap_operator
 msgid "Definition op LDAP operations"
-msgstr ""
+msgstr "Définition des opérations LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_display_name
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator_display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nom affiché"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_ids
 msgid "Group mappings"
-msgstr ""
+msgstr "Tableau de conversion des groupes"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_id
@@ -62,21 +63,23 @@ msgid ""
 "login (so Odoo groups are always synchronous with LDAP groups). If not, "
 "manually added groups are preserved."
 msgstr ""
+"Si activé, les configuration manuelles de groupes sont annulées à chaque "
+"connexion (et donc les groupes Odoo sont toujours synchrones avec les "
+"groupes LDAP). Sinon, les affectations manuelles de groupes sont préservées."
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_ldap_attribute
 msgid "LDAP attribute"
-msgstr ""
+msgstr "Attributs LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_ldap_id
 msgid "LDAP server"
-msgstr ""
+msgstr "Serveur LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping___last_update
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator___last_update
-#, fuzzy
 msgid "Last Modified on"
 msgstr "Dernière mise à jour le"
 
@@ -91,24 +94,24 @@ msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
 #. module: users_ldap_groups
-#: model:ir.ui.view,arch_db:users_ldap_groups.company_form_view
+#: model:ir.ui.view,arch_db:users_ldap_groups.view_ldap_installer_form
 msgid "Map User Groups"
-msgstr ""
+msgstr "Conversions de groupes utilisateurs"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_group_id
 msgid "Odoo group"
-msgstr ""
+msgstr "Groupe Odoo"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_only_ldap_groups
-msgid "Only ldap groups"
-msgstr ""
+msgid "Only LDAP groups"
+msgstr "Uniquement les groupes LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_operator
 msgid "Operator"
-msgstr ""
+msgstr "Opérateur"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_ldap_attribute
@@ -116,11 +119,13 @@ msgid ""
 "The LDAP attribute to check.\n"
 "For active directory, use memberOf."
 msgstr ""
+"L'attribut LDAP à vérifier.\n"
+"Pour Active Directory, utiliser memberOf."
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_group_id
 msgid "The Odoo group to assign"
-msgstr ""
+msgstr "Groupe Odoo à assigner"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_operator
@@ -128,6 +133,8 @@ msgid ""
 "The operator to check the attribute against the value\n"
 "For active directory, use 'contains'"
 msgstr ""
+"L'opérateur à utiliser pour vérifier la valeur de l'attribut.\n"
+"Pour Active Directory, utilisez 'contains'."
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_value
@@ -135,23 +142,25 @@ msgid ""
 "The value to check the attribute against.\n"
 "For active directory, use the dn of the desired group"
 msgstr ""
+"La valeur à comparer à l'attribut.\n"
+"Pour Active Directory, utilisez le dn du groupe souhaité."
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Utilisateurs"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping_value
 msgid "Value"
-msgstr ""
+msgstr "Valeur"
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_company_ldap
 msgid "res.company.ldap"
-msgstr ""
+msgstr "res.company.ldap"
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_company_ldap_group_mapping
 msgid "res.company.ldap.group_mapping"
-msgstr ""
+msgstr "res.company.ldap.group_mapping"
