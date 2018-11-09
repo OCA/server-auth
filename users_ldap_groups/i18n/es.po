@@ -30,7 +30,7 @@ msgstr "Creado en"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_ids
-msgid "Define how Odoo groups are assigned to ldap users"
+msgid "Define how Odoo groups are assigned to LDAP users"
 msgstr ""
 
 #. module: users_ldap_groups
@@ -91,7 +91,7 @@ msgid "Last Updated on"
 msgstr "Última actualización en"
 
 #. module: users_ldap_groups
-#: model:ir.ui.view,arch_db:users_ldap_groups.company_form_view
+#: model:ir.ui.view,arch_db:users_ldap_groups.view_ldap_installer_form
 msgid "Map User Groups"
 msgstr ""
 
@@ -102,7 +102,7 @@ msgstr ""
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_only_ldap_groups
-msgid "Only ldap groups"
+msgid "Only LDAP groups"
 msgstr ""
 
 #. module: users_ldap_groups
