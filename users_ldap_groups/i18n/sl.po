@@ -33,7 +33,7 @@ msgstr "Ustvarjeno"
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping_ids
 #, fuzzy
-msgid "Define how Odoo groups are assigned to ldap users"
+msgid "Define how Odoo groups are assigned to LDAP users"
 msgstr "Določi način dodeljevanja OpenERP skupin LDAP uporabnikom"
 
 #. module: users_ldap_groups
@@ -98,7 +98,7 @@ msgid "Last Updated on"
 msgstr "Zadnjič posodobljeno"
 
 #. module: users_ldap_groups
-#: model:ir.ui.view,arch_db:users_ldap_groups.company_form_view
+#: model:ir.ui.view,arch_db:users_ldap_groups.view_ldap_installer_form
 msgid "Map User Groups"
 msgstr "Mapiraj uporabniške skupine"
 
@@ -110,7 +110,7 @@ msgstr "Samo LDAP skupine"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_only_ldap_groups
-msgid "Only ldap groups"
+msgid "Only LDAP groups"
 msgstr "Samo LDAP skupine"
 
 #. module: users_ldap_groups
