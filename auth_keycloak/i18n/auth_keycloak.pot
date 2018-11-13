@@ -1,0 +1,274 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* auth_keycloak
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_keycloak
+#: help:auth.keycloak.create.wiz,pwd:0
+#: help:auth.keycloak.sync.mixin,pwd:0
+#: help:auth.keycloak.sync.wiz,pwd:0
+#: help:auth.oauth.provider,superuser_pwd:0
+msgid "\"Superuser\" user password"
+msgstr ""
+
+#. module: auth_keycloak
+#: help:auth.keycloak.create.wiz,user:0
+#: help:auth.keycloak.sync.mixin,user:0
+#: help:auth.keycloak.sync.wiz,user:0
+#: help:auth.oauth.provider,superuser:0
+msgid "A super power user that is able to CRUD users on KC."
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.create.wiz:auth_keycloak.auth_keycloak_create_wiz
+#: view:auth.keycloak.sync.wiz:auth_keycloak.auth_keycloak_sync_wiz
+msgid "Cancel"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.oauth.provider,client_secret:0
+msgid "Client secret"
+msgstr ""
+
+#. module: auth_keycloak
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:209
+#, python-format
+msgid "Conflict on user values. Please verify that all values supposed to be unique are really unique. %(detail)s"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.create.wiz:auth_keycloak.auth_keycloak_create_wiz
+msgid "Create"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:res.users:auth_keycloak.view_users_form
+msgid "Create this user on Keycloak too."
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.create.wiz:auth_keycloak.auth_keycloak_create_wiz
+msgid "Create user on Keycloak"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,create_uid:0
+#: field:auth.keycloak.sync.wiz,create_uid:0
+msgid "Created by"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,create_date:0
+#: field:auth.keycloak.sync.wiz,create_date:0
+msgid "Created on"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,display_name:0
+#: field:auth.keycloak.sync.mixin,display_name:0
+#: field:auth.keycloak.sync.wiz,display_name:0
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,id:0
+#: field:auth.keycloak.sync.mixin,id:0
+#: field:auth.keycloak.sync.wiz,id:0
+msgid "ID"
+msgstr ""
+
+#. module: auth_keycloak
+#: model:ir.actions.act_window,name:auth_keycloak.keycloak_create_users
+msgid "Keycloak create users"
+msgstr ""
+
+#. module: auth_keycloak
+#: code:addons/auth_keycloak/models/res_users.py:60
+#, python-format
+msgid "Keycloak provider not found or not configured properly."
+msgstr ""
+
+#. module: auth_keycloak
+#: model:ir.actions.act_window,name:auth_keycloak.keycloak_sync_users
+msgid "Keycloak sync users"
+msgstr ""
+
+#. module: auth_keycloak
+#: help:auth.keycloak.create.wiz,login_match_key:0
+#: help:auth.keycloak.sync.mixin,login_match_key:0
+#: help:auth.keycloak.sync.wiz,login_match_key:0
+msgid "Keycloak user field to match users' login."
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,__last_update:0
+#: field:auth.keycloak.sync.mixin,__last_update:0
+#: field:auth.keycloak.sync.wiz,__last_update:0
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,write_uid:0
+#: field:auth.keycloak.sync.wiz,write_uid:0
+msgid "Last Updated by"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,write_date:0
+#: field:auth.keycloak.sync.wiz,write_date:0
+msgid "Last Updated on"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,login_match_key:0
+#: field:auth.keycloak.sync.mixin,login_match_key:0
+#: field:auth.keycloak.sync.wiz,login_match_key:0
+msgid "Login match key"
+msgstr ""
+
+#. module: auth_keycloak
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:196
+#, python-format
+msgid "No user selected"
+msgstr ""
+
+#. module: auth_keycloak
+#: model:ir.model,name:auth_keycloak.model_auth_oauth_provider
+msgid "OAuth2 provider"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,provider_id:0
+#: field:auth.keycloak.sync.mixin,provider_id:0
+#: field:auth.keycloak.sync.wiz,provider_id:0
+msgid "Provider"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:res.users:auth_keycloak.view_users_form
+msgid "Push to Keycloak"
+msgstr ""
+
+#. module: auth_keycloak
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:72
+#, python-format
+msgid "Something went wrong. Please check logs."
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,user:0
+#: field:auth.keycloak.sync.mixin,user:0
+#: field:auth.keycloak.sync.wiz,user:0
+#: field:auth.oauth.provider,superuser:0
+msgid "Superuser"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,pwd:0
+#: field:auth.keycloak.sync.mixin,pwd:0
+#: field:auth.keycloak.sync.wiz,pwd:0
+#: field:auth.oauth.provider,superuser_pwd:0
+msgid "Superuser pwd"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.sync.wiz:auth_keycloak.auth_keycloak_sync_wiz
+msgid "Sychronize existing users"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.sync.wiz:auth_keycloak.auth_keycloak_sync_wiz
+msgid "Sync"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.oauth.provider:auth_keycloak.view_oauth_provider_form
+msgid "Sync users"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.sync.wiz:auth_keycloak.auth_keycloak_sync_wiz
+msgid "Synchronize users"
+msgstr ""
+
+#. module: auth_keycloak
+#: help:auth.keycloak.create.wiz,endpoint:0
+#: help:auth.keycloak.sync.mixin,endpoint:0
+#: help:auth.keycloak.sync.wiz,endpoint:0
+#: help:auth.oauth.provider,users_endpoint:0
+msgid "User endpoint"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,user_ids:0
+msgid "User ids"
+msgstr ""
+
+#. module: auth_keycloak
+#: model:ir.model,name:auth_keycloak.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,endpoint:0
+#: field:auth.keycloak.sync.mixin,endpoint:0
+#: field:auth.keycloak.sync.wiz,endpoint:0
+#: field:auth.oauth.provider,users_endpoint:0
+msgid "Users endpoint"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.oauth.provider:auth_keycloak.view_oauth_provider_form
+msgid "Users management (Keycloak)"
+msgstr ""
+
+#. module: auth_keycloak
+#: field:auth.keycloak.create.wiz,management_enabled:0
+#: field:auth.keycloak.sync.mixin,management_enabled:0
+#: field:auth.keycloak.sync.wiz,management_enabled:0
+#: field:auth.oauth.provider,users_management_enabled:0
+msgid "Users management enabled"
+msgstr ""
+
+#. module: auth_keycloak
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:58
+#, python-format
+msgid "Users management must be enabled on selected provider"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.create.wiz:auth_keycloak.auth_keycloak_create_wiz
+#: view:auth.keycloak.sync.wiz:auth_keycloak.auth_keycloak_sync_wiz
+msgid "Users managerment not enabled!"
+msgstr ""
+
+#. module: auth_keycloak
+#: view:auth.keycloak.create.wiz:auth_keycloak.auth_keycloak_create_wiz
+#: view:auth.keycloak.sync.wiz:auth_keycloak.auth_keycloak_sync_wiz
+msgid "You must configure \"Users management\" parameters on selected provider."
+msgstr ""
+
+#. module: auth_keycloak
+#: selection:auth.keycloak.create.wiz,login_match_key:0
+#: selection:auth.keycloak.sync.mixin,login_match_key:0
+#: selection:auth.keycloak.sync.wiz,login_match_key:0
+msgid "email"
+msgstr ""
+
+#. module: auth_keycloak
+#: selection:auth.keycloak.create.wiz,login_match_key:0
+#: selection:auth.keycloak.sync.mixin,login_match_key:0
+#: selection:auth.keycloak.sync.wiz,login_match_key:0
+msgid "username"
+msgstr ""
+
