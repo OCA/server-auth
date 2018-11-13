@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+    <record id="view_users_form" model="ir.ui.view">
+      <field name="name">keycloack res.users.form</field>
+      <field name="model">res.users</field>
+      <field name="type">form</field>
+      <field name="inherit_id" ref="base.view_users_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//div[@class='oe_right oe_button_box']" position="inside">
+          <field name="oauth_uid" invisible="1" readonly="1" />
+          <button
+            string="Push to Keycloak"
+            type="object"
+            name="button_push_to_keycloak"
+            class="btn btn-primary"
+            help="Create this user on Keycloak too."
+            attrs="{'invisible': [('oauth_uid', '=', True)]}"
+            />
+        </xpath>
+      </field>
+    </record>
+  </data>
+</openerp>
