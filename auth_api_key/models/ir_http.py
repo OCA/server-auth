@@ -23,7 +23,8 @@ class IrHttp(models.AbstractModel):
         api_key = headers.get("HTTP_API_KEY")
         if api_key:
             request.uid = 1
-            uid = request.env["auth.api.key"].retrieve_uid_from_api_key(api_key)
+            uid = request.env["auth.api.key"]._retrieve_uid_from_api_key(
+                api_key)
             if uid:
                 # reset _env on the request since we change the uid...
                 # the next call to env will instantiate an new
@@ -31,7 +32,7 @@ class IrHttp(models.AbstractModel):
                 # auth.api_key
                 request._env = None
                 request.uid = uid
-                request.auth_api_key = auth_api_key
+                request.auth_api_key = api_key
                 return True
         _logger.error("Wrong HTTP_API_KEY, access denied")
         raise AccessDenied()
