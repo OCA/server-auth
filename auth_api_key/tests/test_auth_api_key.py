@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# Copyright 2018 ACSONE SA/NV
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo.tests.common import TransactionCase
 from odoo.addons.server_environment import serv_config
 from odoo.exceptions import ValidationError, AccessError
@@ -18,18 +21,18 @@ class TestAuthApiKey(TransactionCase):
     def test_lookup(self):
         demo_user = self.env.ref("base.user_demo")
         self.assertEqual(
-            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_right_key"),
+            self.env["auth.api.key"]._retrieve_uid_from_api_key(
+                "api_right_key"),
             demo_user.id,
         )
 
     def test_wrong_key(self):
         with self.assertRaises(ValidationError), self.env.cr.savepoint():
-            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_wrong_key")
+            self.env["auth.api.key"]._retrieve_uid_from_api_key(
+                "api_wrong_key")
 
     def test_user_not_allowed(self):
         demo_user = self.env.ref("base.user_demo")
         with self.assertRaises(AccessError), self.env.cr.savepoint():
-            self.env["auth.api.key"].sudo(user=demo_user)._retrieve_uid_from_api_key(
-                "api_wrong_key"
-            )
-
+            self.env["auth.api.key"].sudo(user=demo_user).\
+                _retrieve_uid_from_api_key("api_wrong_key")
