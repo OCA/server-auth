@@ -10,6 +10,7 @@ from odoo.exceptions import ValidationError, AccessError
 
 class AuthApiKey(models.TransientModel):
     _name = "auth.api.key"
+    _description = "API Key Retriever"
 
     @api.model
     @tools.ormcache("api_key")
