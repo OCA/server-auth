@@ -15,7 +15,7 @@ between Odoo and other applications of your ecosystem.
 .. WARNING::
     This module requires auth_crypt. This is because you still have the
     option if not recommended to allow users to have a password stored in odoo
-    at the same time as having a SALM provider and id.
+    at the same time as having a SAML provider and id.
 
 
 Benefits
