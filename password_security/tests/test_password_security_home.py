@@ -206,30 +206,31 @@ class TestPasswordSecurityHome(TransactionCase):
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
+@mock.patch("odoo.http.redirect_with_hash", return_value="redirected")
 class LoginCase(HttpCase):
-    def test_web_login_authenticate(self, *args):
+    def test_web_login_authenticate(self, redirect_mock, *args):
         """It should allow authenticating by login"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
         )
-        self.assertIn(
-            "window.location = '/web'",
-            response.text,
-        )
+        # Redirected to /web because it succeeded
+        redirect_mock.assert_any_call("/web")
+        self.assertEqual(response.text, "redirected")
 
-    def test_web_login_authenticate_fail(self, *args):
+    def test_web_login_authenticate_fail(self, redirect_mock, *args):
         """It should fail auth"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "noadmin"},
         )
+        redirect_mock.assert_not_called()
         self.assertIn(
             "Wrong login/password",
             response.text,
         )
 
-    def test_web_login_expire_pass(self, *args):
+    def test_web_login_expire_pass(self, redirect_mock, *args):
         """It should expire password if necessary"""
         two_days_ago = datetime.now() - timedelta(days=2)
         with self.cursor() as cr:
@@ -240,7 +241,10 @@ class LoginCase(HttpCase):
             "/web/login",
             {"login": "admin", "password": "admin"},
         )
-        self.assertIn(
-            "/web/reset_password",
-            response.text,
-        )
+        # Password has expired, I'm redirected to reset it
+        all_urls = [call[0][0] for call in redirect_mock.call_args_list
+                    if isinstance(call[0][0], str)]
+        self.assertTrue(all_urls)
+        start = response.url.replace("/login", "/reset_password?")
+        self.assertTrue(any(url.startswith(start) for url in all_urls))
+        self.assertEqual(response.text, "redirected")
