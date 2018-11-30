@@ -4,6 +4,7 @@
 from odoo import api, models, tools, _
 
 from odoo.addons.server_environment import serv_config
+from odoo.tools import consteq
 
 from odoo.exceptions import ValidationError, AccessError
 
@@ -22,7 +23,7 @@ class AuthApiKey(models.TransientModel):
             if section.startswith("api_key_") and serv_config.has_option(
                     section, "key"
             ):
-                if api_key != serv_config.get(section, "key"):
+                if not consteq(api_key, serv_config.get(section, "key")):
                     continue
 
                 login_name = serv_config.get(section, "user")
