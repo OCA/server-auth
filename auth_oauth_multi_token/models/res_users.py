@@ -6,7 +6,7 @@ import uuid
 from odoo import api, fields, models, exceptions
 
 from odoo.addons import base
-base.res.res_users.USER_PRIVATE_FIELDS.\
+base.models.res_users.USER_PRIVATE_FIELDS.\
     append('oauth_master_uuid')
 
 
