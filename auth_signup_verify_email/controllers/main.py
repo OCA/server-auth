@@ -9,7 +9,8 @@ from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 _logger = logging.getLogger(__name__)
 
 try:
-    from email_validator import validate_email, EmailSyntaxError
+    from email_validator import validate_email, EmailSyntaxError, \
+        EmailUndeliverableError
 except ImportError:
     # TODO Remove in v12, dropping backwards compatibility with validate_email
     # pragma: no-cover
@@ -17,6 +18,9 @@ except ImportError:
         from validate_email import validate_email as _validate
 
         class EmailSyntaxError(Exception):
+            message = False
+
+        class EmailUndeliverableError(Exception):
             message = False
 
         def validate_email(*args, **kwargs):
@@ -52,6 +56,12 @@ class SignupVerifyEmail(AuthSignupHome):
                 _("That does not seem to be an email address."),
             )
             return request.render("auth_signup.signup", qcontext)
+        except EmailUndeliverableError as error:
+            qcontext["error"] = str(error)
+            return request.render("auth_signup.signup", qcontext)
+        except Exception as error:
+            qcontext["error"] = str(error)
+            return request.render("auth_signup.signup", qcontext)
         if not values.get("email"):
             values["email"] = values.get("login")
 
@@ -70,10 +80,16 @@ class SignupVerifyEmail(AuthSignupHome):
         except Exception as error:
             # Duplicate key or wrong SMTP settings, probably
             _logger.exception(error)
-
-            # Agnostic message for security
-            qcontext["error"] = _(
-                "Something went wrong, please try again later or contact us.")
+            if request.env["res.users"].sudo().search(
+               [("login", "=", qcontext.get("login"))]):
+                qcontext["error"] = _(
+                    "Another user is already registered using this email"
+                    " address.")
+            else:
+                # Agnostic message for security
+                qcontext["error"] = _(
+                    "Something went wrong, please try again later or"
+                    " contact us.")
             return request.render("auth_signup.signup", qcontext)
 
         qcontext["message"] = _("Check your email to activate your account!")
