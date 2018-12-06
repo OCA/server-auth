@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo12-addon-auth_ldap_attribute_sync',
         'odoo12-addon-auth_ldaps',
+        'odoo12-addon-users_ldap_groups',
     ],
     classifiers=[
         'Programming Language :: Python',
