@@ -6,3 +6,5 @@ email_validator
 python-u2flib-server
 # password_security
 zxcvbn
+# auth_saml
+lasso
