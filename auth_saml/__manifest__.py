@@ -3,7 +3,7 @@
 
 {
     'name': 'Saml2 Authentication',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Tools',
     'author': 'XCG Consulting, Odoo Community Association (OCA)',
     'maintainer': 'XCG Consulting',
@@ -12,7 +12,6 @@
     'depends': [
         'base_setup',
         'web',
-        'auth_crypt',
     ],
     'data': [
         'data/auth_saml.xml',

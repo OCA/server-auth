@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class SamlToken(models.Model):
     _name = "auth_saml.token"
     _rec_name = "user_id"
+    _description = "SAML Token"
 
     saml_provider_id = fields.Many2one(
         'auth.saml.provider',
