@@ -139,9 +139,10 @@ class AuthSAMLController(http.Controller):
         state = self.get_state(provider_id)
 
         try:
-            auth_request = request.env[
-                'auth.saml.provider'].sudo()._get_auth_request(provider_id,
-                                                               state)
+            Provider = request.env[
+                'auth.saml.provider'].sudo()
+            provider = Provider.browse(provider_id)
+            auth_request = provider._get_auth_request(state)
 
         except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
