@@ -12,11 +12,6 @@ This module allows to deport the management of users and passwords in an
 external authentication system to provide SSO functionality (Single Sign On)
 between Odoo and other applications of your ecosystem.
 
-.. WARNING::
-    This module requires auth_crypt. This is because you still have the
-    option if not recommended to allow users to have a password stored in odoo
-    at the same time as having a SAML provider and id.
-
 
 Benefits
 ========
