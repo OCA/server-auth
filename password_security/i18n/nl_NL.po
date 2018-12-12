@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * password_security
-# 
+#
 # Translators:
 # Peter Hageman <hageman.p@gmail.com>, 2017
 msgid ""
@@ -11,11 +11,12 @@ msgstr ""
 "POT-Creation-Date: 2017-06-30 12:22+0000\n"
 "PO-Revision-Date: 2017-06-30 12:22+0000\n"
 "Last-Translator: Peter Hageman <hageman.p@gmail.com>, 2017\n"
-"Language-Team: Dutch (Netherlands) (https://www.transifex.com/oca/teams/23907/nl_NL/)\n"
+"Language-Team: Dutch (Netherlands) (https://www.transifex.com/oca/"
+"teams/23907/nl_NL/)\n"
+"Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: nl_NL\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: password_security
@@ -24,7 +25,7 @@ msgid "Amount of hours until a user may change password again"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:150
+#: code:addons/password_security/models/res_users.py:152
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr ""
@@ -122,12 +123,6 @@ msgid "Lowercase"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:51
-#, python-format
-msgid "Lowercase letter"
-msgstr ""
-
-#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_minimum
 msgid "Minimum Hours"
 msgstr ""
@@ -138,7 +133,7 @@ msgid "Minimum number of characters"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:59
+#: code:addons/password_security/models/res_users.py:64
 #, python-format
 msgid "Must contain the following:"
 msgstr ""
@@ -147,12 +142,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_numeric
 msgid "Numeric"
 msgstr "Numeriek"
-
-#. module: password_security
-#: code:addons/password_security/models/res_users.py:55
-#, python-format
-msgid "Numeric digit"
-msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_password_history_ids
@@ -165,13 +154,7 @@ msgid "Password Policy"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:62
-#, python-format
-msgid "Password must be %d characters or more."
-msgstr ""
-
-#. module: password_security
-#: code:addons/password_security/models/res_users.py:127
+#: code:addons/password_security/models/res_users.py:129
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -180,22 +163,22 @@ msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_lower
-msgid "Require lowercase letters"
+msgid "Require number of lowercase letters"
 msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_numeric
-msgid "Require numeric digits"
+msgid "Require number of numeric digits"
 msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_special
-msgid "Require special characters"
+msgid "Require number of unique special characters"
 msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_upper
-msgid "Require uppercase letters"
+msgid "Require number of uppercase letters"
 msgstr ""
 
 #. module: password_security
@@ -214,12 +197,6 @@ msgid "Special"
 msgstr "Speciaal"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:57
-#, python-format
-msgid "Special character"
-msgstr ""
-
-#. module: password_security
 #: model:ir.ui.view,arch_db:password_security.view_company_form
 msgid "Timings"
 msgstr ""
@@ -230,12 +207,6 @@ msgid "Uppercase"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:53
-#, python-format
-msgid "Uppercase letter"
-msgstr "Hoofdletter"
-
-#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history_user_id
 msgid "User"
 msgstr "Gebruiker"
@@ -244,3 +215,6 @@ msgstr "Gebruiker"
 #: model:ir.model,name:password_security.model_res_users
 msgid "Users"
 msgstr "Gebruikers"
+
+#~ msgid "Uppercase letter"
+#~ msgstr "Hoofdletter"

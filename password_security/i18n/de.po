@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * password_security
-# 
+#
 # Translators:
 # OCA Transbot <transbot@odoo-community.org>, 2016
 msgid ""
@@ -12,10 +12,10 @@ msgstr ""
 "PO-Revision-Date: 2017-06-22 01:12+0000\n"
 "Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2016\n"
 "Language-Team: German (https://www.transifex.com/oca/teams/23907/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: password_security
@@ -24,7 +24,7 @@ msgid "Amount of hours until a user may change password again"
 msgstr "Anzahl der Stunden bis der Benutzer das Passwort wieder ändern darf"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:150
+#: code:addons/password_security/models/res_users.py:152
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Die letzten %d Passwörter dürfen nicht verwendet werden"
@@ -65,8 +65,8 @@ msgid ""
 "Disallow reuse of this many previous passwords - use negative number for "
 "infinite, or 0 to disable"
 msgstr ""
-"Verhindere das erneute Benutzen dieser Anzahl von Passwörtern - benutze eine"
-" negative Zahl um alle vergangenen Passwörter zu verhindern, oder eine 0 um "
+"Verhindere das erneute Benutzen dieser Anzahl von Passwörtern - benutze eine "
+"negative Zahl um alle vergangenen Passwörter zu verhindern, oder eine 0 um "
 "dies auszuschalten"
 
 #. module: password_security
@@ -125,12 +125,6 @@ msgid "Lowercase"
 msgstr "Kleinbuchstaben"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:51
-#, python-format
-msgid "Lowercase letter"
-msgstr "Kleinbuchstabe"
-
-#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_minimum
 msgid "Minimum Hours"
 msgstr "Minimum Stunden"
@@ -141,7 +135,7 @@ msgid "Minimum number of characters"
 msgstr "Minimale Anzahl der Zeichen"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:59
+#: code:addons/password_security/models/res_users.py:64
 #, python-format
 msgid "Must contain the following:"
 msgstr "Muss das Folgende beinhalten:"
@@ -150,12 +144,6 @@ msgstr "Muss das Folgende beinhalten:"
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_numeric
 msgid "Numeric"
 msgstr "Numerisch"
-
-#. module: password_security
-#: code:addons/password_security/models/res_users.py:55
-#, python-format
-msgid "Numeric digit"
-msgstr "Zahl"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_password_history_ids
@@ -168,13 +156,7 @@ msgid "Password Policy"
 msgstr "Passwort Regeln"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:62
-#, python-format
-msgid "Password must be %d characters or more."
-msgstr "Das Passwort muss mehr als %d Zeichen haben."
-
-#. module: password_security
-#: code:addons/password_security/models/res_users.py:127
+#: code:addons/password_security/models/res_users.py:129
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -185,22 +167,26 @@ msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_lower
-msgid "Require lowercase letters"
+#, fuzzy
+msgid "Require number of lowercase letters"
 msgstr "Kleinbuchstaben nötig"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_numeric
-msgid "Require numeric digits"
+#, fuzzy
+msgid "Require number of numeric digits"
 msgstr "Zahlen nötig"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_special
-msgid "Require special characters"
+#, fuzzy
+msgid "Require number of unique special characters"
 msgstr "Spezialzeichen nötig"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_upper
-msgid "Require uppercase letters"
+#, fuzzy
+msgid "Require number of uppercase letters"
 msgstr "Großbuchstaben nötig"
 
 #. module: password_security
@@ -219,12 +205,6 @@ msgid "Special"
 msgstr "Spezial"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:57
-#, python-format
-msgid "Special character"
-msgstr "Spezialzeichen"
-
-#. module: password_security
 #: model:ir.ui.view,arch_db:password_security.view_company_form
 msgid "Timings"
 msgstr "Zeitliches"
@@ -232,12 +212,6 @@ msgstr "Zeitliches"
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_upper
 msgid "Uppercase"
-msgstr "Großbuchstabe"
-
-#. module: password_security
-#: code:addons/password_security/models/res_users.py:53
-#, python-format
-msgid "Uppercase letter"
 msgstr "Großbuchstabe"
 
 #. module: password_security
@@ -249,3 +223,18 @@ msgstr "Benutzer"
 #: model:ir.model,name:password_security.model_res_users
 msgid "Users"
 msgstr "Benutzer"
+
+#~ msgid "Lowercase letter"
+#~ msgstr "Kleinbuchstabe"
+
+#~ msgid "Numeric digit"
+#~ msgstr "Zahl"
+
+#~ msgid "Password must be %d characters or more."
+#~ msgstr "Das Passwort muss mehr als %d Zeichen haben."
+
+#~ msgid "Special character"
+#~ msgstr "Spezialzeichen"
+
+#~ msgid "Uppercase letter"
+#~ msgstr "Großbuchstabe"
