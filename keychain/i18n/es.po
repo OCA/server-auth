@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * keychain
-# 
+#
 # Translators:
 # OCA Transbot <transbot@odoo-community.org>, 2017
 # Nicolas Cozzarin <nicolasjcozzarin@gmail.com>, 2017
@@ -16,14 +16,14 @@ msgstr ""
 "PO-Revision-Date: 2017-02-16 10:39+0000\n"
 "Last-Translator: Eduardo Rodríguez Crespo <erocre@gmail.com>, 2017\n"
 "Language-Team: Spanish (https://www.transifex.com/oca/teams/23907/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: keychain
-#: code:addons/keychain/models/keychain.py:70
+#: code:addons/keychain/models/keychain.py:71
 #, python-format
 msgid ""
 "%s \n"
@@ -37,24 +37,20 @@ msgstr ""
 
 #. module: keychain
 #: model:ir.actions.act_window,name:keychain.keychain_list_action
-#: model:ir.ui.view,arch_db:keychain.keychain_account_id
 msgid "Accounts"
 msgstr "Cuentas"
 
 #. module: keychain
-#: model:ir.ui.view,arch_db:keychain.keychain_account_form
-msgid "Accounts form"
-msgstr ""
-
-#. module: keychain
 #: model:ir.model.fields,help:keychain.field_keychain_account_data
+#: model:ir.model.fields,help:keychain.field_keychain_backend_data
 msgid "Additionnal data as json"
 msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_clear_password
-msgid "Clear password"
-msgstr ""
+#, fuzzy
+msgid "Clear Password"
+msgstr "Contraseña"
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_create_uid
@@ -68,23 +64,25 @@ msgstr "Creado el"
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_data
+#: model:ir.model.fields,field_description:keychain.field_keychain_backend_data
 msgid "Data"
 msgstr "Datos"
 
 #. module: keychain
-#: code:addons/keychain/models/keychain.py:87
+#: code:addons/keychain/models/keychain.py:88
 #, python-format
 msgid "Data not valid"
 msgstr ""
 
 #. module: keychain
-#: code:addons/keychain/models/keychain.py:149
+#: code:addons/keychain/models/keychain.py:150
 #, python-format
 msgid "Data should be a valid JSON"
 msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_display_name
+#: model:ir.model.fields,field_description:keychain.field_keychain_backend_display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
@@ -100,6 +98,7 @@ msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_id
+#: model:ir.model.fields,field_description:keychain.field_keychain_backend_id
 msgid "ID"
 msgstr "ID"
 
@@ -110,6 +109,7 @@ msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account___last_update
+#: model:ir.model.fields,field_description:keychain.field_keychain_backend___last_update
 msgid "Last Modified on"
 msgstr "Última actualización por"
 
@@ -131,6 +131,7 @@ msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_name
+#: model:ir.model.fields,field_description:keychain.field_keychain_backend_name
 msgid "Name"
 msgstr "Nombre"
 
@@ -140,7 +141,7 @@ msgid "Namespace"
 msgstr ""
 
 #. module: keychain
-#: code:addons/keychain/models/keychain.py:198
+#: code:addons/keychain/models/keychain.py:199
 #, python-format
 msgid ""
 "No 'keychain_key_%s' entries found in config file. Use a key similar to: %s"
@@ -148,15 +149,16 @@ msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_password
+#: model:ir.model.fields,field_description:keychain.field_keychain_backend_password
 msgid "Password"
 msgstr "Contraseña"
 
 #. module: keychain
-#: code:addons/keychain/models/keychain.py:162
+#: code:addons/keychain/models/keychain.py:163
 #, python-format
 msgid ""
-"Password has been encrypted with a different key. Unless you can recover the"
-" previous key, this password is unreadable."
+"Password has been encrypted with a different key. Unless you can recover the "
+"previous key, this password is unreadable."
 msgstr ""
 
 #. module: keychain
@@ -171,7 +173,8 @@ msgstr ""
 
 #. module: keychain
 #: model:ir.model.fields,field_description:keychain.field_keychain_account_technical_name
-msgid "Technical name"
+#, fuzzy
+msgid "Technical Name"
 msgstr "Nombre técnico"
 
 #. module: keychain
@@ -187,4 +190,9 @@ msgstr ""
 #. module: keychain
 #: model:ir.model,name:keychain.model_keychain_account
 msgid "keychain.account"
+msgstr ""
+
+#. module: keychain
+#: model:ir.model,name:keychain.model_keychain_backend
+msgid "keychain.backend"
 msgstr ""
