@@ -20,7 +20,7 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: auth_user_case_insensitive
-#: code:addons/auth_user_case_insensitive/hooks.py:24
+#: code:addons/auth_user_case_insensitive/hooks.py:23
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
 msgstr ""
