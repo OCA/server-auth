@@ -8,29 +8,8 @@ from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 
 _logger = logging.getLogger(__name__)
 
-try:
-    from email_validator import validate_email, EmailSyntaxError, \
+from email_validator import validate_email, EmailSyntaxError, \
         EmailUndeliverableError
-except ImportError:
-    # TODO Remove in v12, dropping backwards compatibility with validate_email
-    # pragma: no-cover
-    try:
-        from validate_email import validate_email as _validate
-
-        class EmailSyntaxError(Exception):
-            message = False
-
-        class EmailUndeliverableError(Exception):
-            message = False
-
-        def validate_email(*args, **kwargs):
-            if not _validate(*args, **kwargs):
-                raise EmailSyntaxError
-
-    except ImportError:
-        _logger.debug("Cannot import `email_validator`.")
-    else:
-        _logger.warning("Install `email_validator` to get full support.")
 
 
 class SignupVerifyEmail(AuthSignupHome):

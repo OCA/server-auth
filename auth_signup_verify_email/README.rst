@@ -15,7 +15,7 @@ sign up: they are asked for only at first login attempt.
 Installation
 ============
 
-* Install `validate_email <https://pypi.python.org/pypi/validate_email>`_ with ``pip install validate_email`` or equivalent.
+* Install `email_validator <https://pypi.python.org/pypi/email_validator>`_ with ``pip install email_validator`` or equivalent.
 
 Configuration
 =============
