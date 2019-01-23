@@ -3,7 +3,7 @@
 import odoo
 from odoo import http
 from odoo.tools.func import lazy_property
-from odoo.http import OpenERPSession, SessionExpiredException, request
+from odoo.http import SessionExpiredException, request
 from time import time
 
 
