@@ -4,8 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 11.0-20181126\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-02-04 14:10+0000\n"
+"PO-Revision-Date: 2019-02-04 14:10+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -14,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:83
+#: code:addons/auth_saml/controllers/main.py:103
 #, python-format
 msgid "Access Denied"
 msgstr ""
@@ -22,6 +24,11 @@ msgstr ""
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_res_config_settings_allow_saml_uid_and_internal_password
 msgid "Allow SAML users to posess an Odoo password (warning: decreases security)"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_autoredirect
+msgid "Autoredirect"
 msgstr ""
 
 #. module: auth_saml
@@ -97,13 +104,18 @@ msgid "Matching Attribute"
 msgstr ""
 
 #. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sp_pkey
-msgid "Private key of our service provider (this openerpserver)"
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider_autoredirect
+msgid "Only the provider with the most priority will be automatically redirected"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider_sp_pkey
+msgid "Private key of our service provider (this odoo server)"
 msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_name
-msgid "Provider name"
+msgid "Provider Name"
 msgstr ""
 
 #. module: auth_saml
@@ -157,12 +169,17 @@ msgid "SP Configuration"
 msgstr ""
 
 #. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sp_pkey
+msgid "SP Private key"
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sequence
 msgid "Sequence"
 msgstr ""
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:81
+#: code:addons/auth_saml/controllers/main.py:101
 #, python-format
 msgid "Sign up is not allowed on this database."
 msgstr ""
@@ -173,7 +190,8 @@ msgid "The current SAML token in use"
 msgstr ""
 
 #. module: auth_saml
-#: code:addons/auth_saml/models/res_users.py:48
+#: code:addons/auth_saml/models/res_users.py:47
+#: code:addons/auth_saml/models/res_users.py:250
 #, python-format
 msgid "This database disallows users to have both passwords and SAML IDs. Errors for login %s"
 msgstr ""
@@ -189,7 +207,7 @@ msgid "Users"
 msgstr ""
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:85
+#: code:addons/auth_saml/controllers/main.py:105
 #, python-format
 msgid "You do not have access to this database or your invitation has expired. Please ask for an invitation and be sure to follow the link in your invitation email."
 msgstr ""

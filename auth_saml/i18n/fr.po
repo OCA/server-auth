@@ -2,34 +2,39 @@
 # This file contains the translation of the following modules:
 # * auth_saml
 # Vincent Lhote-Hatakeyama <vincent.lhote@xcg-consulting.fr>, 2014.
+# Vincent Hatakeyama <vincent.hatakeyama@xcg-consulting.fr>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-03 15:51+0000\n"
-"PO-Revision-Date: 2015-03-03 16:56+0100\n"
-"Last-Translator: Houzéfa Abbasbhay <houzefa.abba@xcg-consulting.fr>\n"
+"POT-Creation-Date: 2019-02-04 14:10+0000\n"
+"PO-Revision-Date: 2019-02-04 15:13+0200\n"
+"Last-Translator: Vincent Hatakeyama <vincent.hatakeyama@xcg-consulting.fr>\n"
 "Language-Team: XCG Consulting\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Virtaal 0.7.1\n"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:83
+#: code:addons/auth_saml/controllers/main.py:103
 #, python-format
 msgid "Access Denied"
 msgstr "Accès refusé"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_res_config_settings_allow_saml_uid_and_internal_password
-msgid ""
-"Allow SAML users to posess an Odoo password (warning: decreases security)"
+msgid "Allow SAML users to posess an Odoo password (warning: decreases security)"
 msgstr ""
-"Autoriser les utilisateurs avec SAML à aussi avoir un mot de passe Odoo "
-"(attention : abaisse la sécurité)"
+"Autoriser les utilisateurs avec SAML à aussi avoir un mot de passe Odoo ("
+"attention : abaisse la sécurité)"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_autoredirect
+msgid "Autoredirect"
+msgstr "Autoredirection"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_body
@@ -38,7 +43,6 @@ msgstr "Corps"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_css_class
-#, fuzzy
 msgid "CSS Class"
 msgstr "Classe CSS"
 
@@ -46,13 +50,13 @@ msgstr "Classe CSS"
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_create_uid
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Créé par"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_create_date
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_create_date
 msgid "Created on"
-msgstr ""
+msgstr "Créer le"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_saml_access_token
@@ -63,18 +67,18 @@ msgstr "Jeton SAML courant de l’utilisateur"
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_display_name
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nom affiché"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_enabled
 msgid "Enabled"
-msgstr ""
+msgstr "Actif"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_id
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_idp_metadata
@@ -85,33 +89,40 @@ msgstr "Configuration FI"
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider___last_update
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token___last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Dernière modification le"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_write_uid
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Dernière modification par"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_write_date
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Dernière modification le"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_matching_attribute
 msgid "Matching Attribute"
-msgstr ""
+msgstr "Attribut de correspondance"
 
 #. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sp_pkey
-msgid "Private key of our service provider (this openerpserver)"
-msgstr "Clef privée de notre fournisseur de service (ce serveur OpenERP)"
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider_autoredirect
+msgid "Only the provider with the most priority will be automatically redirected"
+msgstr ""
+"Seul le fournisseur avec la priorité la plus haute sera automatiquement "
+"redirigé"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider_sp_pkey
+msgid "Private key of our service provider (this odoo server)"
+msgstr "Clef privée de notre fournisseur de service (ce serveur Odoo)"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_name
-msgid "Provider name"
+msgid "Provider Name"
 msgstr "Nom du fournisseur"
 
 #. module: auth_saml
@@ -165,12 +176,17 @@ msgid "SP Configuration"
 msgstr "Configuration du FS"
 
 #. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sequence
-msgid "Sequence"
-msgstr ""
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sp_pkey
+msgid "SP Private key"
+msgstr "Clé privé du FS"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:81
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider_sequence
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: auth_saml
+#: code:addons/auth_saml/controllers/main.py:101
 #, python-format
 msgid "Sign up is not allowed on this database."
 msgstr "L’inscription n’est pas autorisée sur cette base de donnée."
@@ -181,12 +197,13 @@ msgid "The current SAML token in use"
 msgstr "Le jeton SAML courant en cours d’utilisation"
 
 #. module: auth_saml
-#: code:addons/auth_saml/models/res_users.py:48
+#: code:addons/auth_saml/models/res_users.py:47
+#: code:addons/auth_saml/models/res_users.py:250
 #, python-format
-msgid ""
-"This database disallows users to have both passwords and SAML IDs. Errors "
-"for login %s"
+msgid "This database disallows users to have both passwords and SAML IDs. Errors for login %s"
 msgstr ""
+"Cette base de données interdit d’avoir à la fois des mots de passe et des "
+"identifiants SMAL. Erreurs pour l’authentification %s"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_token_user_id
@@ -199,12 +216,9 @@ msgid "Users"
 msgstr "Utilisateurs"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:85
+#: code:addons/auth_saml/controllers/main.py:105
 #, python-format
-msgid ""
-"You do not have access to this database or your invitation has expired. "
-"Please ask for an invitation and be sure to follow the link in your "
-"invitation email."
+msgid "You do not have access to this database or your invitation has expired. Please ask for an invitation and be sure to follow the link in your invitation email."
 msgstr ""
 "Vous n’avez pas accès à cette base de donnée ou votre invitation a expirée. "
 "Demandez une invitation et assurez-vous de suivre le lien dans le courriel "
@@ -223,9 +237,14 @@ msgstr "auth_saml.token"
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_res_config_settings
-#, fuzzy
 msgid "res.config.settings"
-msgstr "base.config.settings"
+msgstr "res.config.settings"
+
+#~ msgid "Private key of our service provider (this openerpserver)"
+#~ msgstr "Clef privée de notre fournisseur de service (ce serveur OpenERP)"
+
+#~ msgid "Provider name"
+#~ msgstr "Nom du fournisseur"
 
 #~ msgid ""
 #~ "SAML2 authentication: An Odoo user cannot posess both an SAML user ID and "
