@@ -29,6 +29,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" />
                 <field name="enabled" />
+                <field name="autoredirect" />
             </tree>
         </field>
     </record>
@@ -48,7 +49,8 @@
                     </div>
 
                     <group>
-                        <field name="enabled" />
+                        <field name="enabled"/>
+                        <field name="autoredirect"/>
                         <field name="body" />
                         <field name="css_class" />
                         <field name="matching_attribute" />

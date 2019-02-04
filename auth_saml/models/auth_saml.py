@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2019 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -85,3 +85,9 @@ class AuthSamlProvider(models.Model):
     sequence = fields.Integer('Sequence')
     css_class = fields.Char('CSS Class')
     body = fields.Char('Body')
+    autoredirect = fields.Boolean(
+        "Autoredirect",
+        default=False,
+        help="Only the provider with the most priority will be automatically"
+             " redirected",
+    )

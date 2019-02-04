@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2019 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
@@ -59,6 +59,26 @@ class SAMLLogin(Home):
             providers = []
 
         return providers
+
+    @http.route()
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            # automatically redirect if any provider is set up to do that
+            autoredirect_providers = request.env['auth.saml.provider'].sudo(
+                ).search_read([
+                    ('enabled', '=', True),
+                    ('autoredirect', '=', True),
+                ], limit=1)
+            disable_autoredirect = 'disable_autoredirect' in request.params
+            if autoredirect_providers and not disable_autoredirect:
+                return werkzeug.utils.redirect(
+                    '/auth_saml/get_auth_request?pid=%d' %
+                        autoredirect_providers[0]['id'],
+                    303)
+            else:
+                return super(SAMLLogin, self).web_client(s_action, **kw)
+        return super(SAMLLogin, self).web_client(s_action, **kw)
 
     @http.route()
     def web_login(self, *args, **kw):
