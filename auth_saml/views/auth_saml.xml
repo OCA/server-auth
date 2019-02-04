@@ -26,6 +26,7 @@
         <field name="model">auth.saml.provider</field>
         <field name="arch" type="xml">
             <tree string="arch">
+                <field name="sequence" widget="handle"/>
                 <field name="name" />
                 <field name="enabled" />
             </tree>

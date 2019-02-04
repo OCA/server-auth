@@ -18,7 +18,7 @@ class AuthSamlProvider(models.Model):
 
     _name = 'auth.saml.provider'
     _description = 'SAML2 provider'
-    _order = 'name'
+    _order = 'sequence, name'
 
     @api.multi
     def _get_lasso_for_provider(self):
