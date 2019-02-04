@@ -25,7 +25,7 @@
         <field name="name">auth.saml.provider.list</field>
         <field name="model">auth.saml.provider</field>
         <field name="arch" type="xml">
-            <tree string="arch">
+            <tree string="arch" decoration-muted="not enabled">
                 <field name="sequence" widget="handle"/>
                 <field name="name" />
                 <field name="enabled" />
@@ -39,10 +39,18 @@
         <field name="arch" type="xml">
             <form string="arch">
                 <sheet>
+                    <div class="oe_title">
+                        <h3>
+                            <div>
+                                <field name="name" />
+                            </div>
+                        </h3>
+                    </div>
+
                     <group>
-                        <field name="name" />
                         <field name="enabled" />
                         <field name="body" />
+                        <field name="css_class" />
                         <field name="matching_attribute" />
                     </group>
                     <group>

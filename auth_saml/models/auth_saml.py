@@ -69,11 +69,12 @@ class AuthSamlProvider(models.Model):
         return login.msgUrl
 
     # Name of the OAuth2 entity, authentic, xcg...
-    name = fields.Char('Provider name')
+    name = fields.Char('Provider Name')
     idp_metadata = fields.Text('IDP Configuration')
     sp_metadata = fields.Text('SP Configuration')
     sp_pkey = fields.Text(
-        'Private key of our service provider (this openerpserver)'
+        string='SP Private key',
+        help='Private key of our service provider (this odoo server)',
     )
     matching_attribute = fields.Text(
         string='Matching Attribute',
