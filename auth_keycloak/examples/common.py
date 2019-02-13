@@ -18,7 +18,8 @@ USERINFO_PATH = BASE_PATH + '/userinfo'
 # Watch out w/ official docs, they are wrong here
 # https://issues.jboss.org/browse/KEYCLOAK-8615
 USERS_PATH = '/auth/admin/realms/{realm}/users'
-DATA_FILE = '/tmp/keycloak.json'
+TOKEN_DATA_FILE = '/tmp/keycloak.token.json'
+DEFAULTS_DATA_FILE = '/tmp/keycloak.defaults.json'
 
 
 def do_request(method, url, **kw):
