@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo11-addon-auth_brute_force',
+        'odoo11-addon-auth_from_http_remote_user',
         'odoo11-addon-auth_ldaps',
         'odoo11-addon-auth_oauth_multi_token',
         'odoo11-addon-auth_saml',
