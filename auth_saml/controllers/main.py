@@ -213,6 +213,7 @@ class AuthSAMLController(http.Controller):
                 action = state.get('a')
                 menu = state.get('m')
                 url = '/'
+                # XXX this probably should be changed for odoo 11
                 if action:
                     url = '/#action=%s' % action
                 elif menu:
