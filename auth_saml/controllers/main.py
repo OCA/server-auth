@@ -225,7 +225,7 @@ class AuthSAMLController(http.Controller):
                 # auth_signup is not installed
                 _logger.error("auth_signup not installed on database "
                               "saml sign up cancelled.")
-                url = "/#action=login&saml_error=1"
+                url = "/?saml_error=1#action=login"
 
             except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
@@ -234,7 +234,7 @@ class AuthSAMLController(http.Controller):
                              'in case a valid session exists, '
                              'without setting cookies')
 
-                url = "/#action=login&saml_error=3"
+                url = "/?saml_error=3#action=login"
                 redirect = werkzeug.utils.redirect(url, 303)
                 redirect.autocorrect_location_header = False
                 return redirect
@@ -242,6 +242,6 @@ class AuthSAMLController(http.Controller):
             except Exception as e:
                 # signup error
                 _logger.exception("SAML2: %s" % str(e))
-                url = "/#action=login&saml_error=2"
+                url = "/?saml_error=2#action=login"
 
         return set_cookie_and_redirect(url)
