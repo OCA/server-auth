@@ -110,6 +110,7 @@ class SAMLLogin(Home):
         if response.is_qweb:
             errorcode = request.params.get('error')
             if errorcode == 'saml1':
+            error = None
                 error = _("Sign up is not allowed on this database.")
             elif errorcode == 'saml2':
                 error = _("Access Denied")
