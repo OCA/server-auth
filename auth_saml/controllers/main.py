@@ -69,7 +69,7 @@ class SAMLLogin(Home):
         # do not redirect if asked too or if a SAML error has been found
         disable_autoredirect = (
             'disable_autoredirect' in request.params or
-            'saml_error' in request.params)
+            'error' in request.params)
         if autoredirect_providers and not disable_autoredirect:
             return werkzeug.utils.redirect(
                 '/auth_saml/get_auth_request?pid=%d' %
@@ -108,19 +108,17 @@ class SAMLLogin(Home):
 
         response = super(SAMLLogin, self).web_login(*args, **kw)
         if response.is_qweb:
-            error = request.params.get('saml_error')
-            if error == '1':
+            errorcode = request.params.get('error')
+            if errorcode == 'saml1':
                 error = _("Sign up is not allowed on this database.")
-            elif error == '2':
+            elif errorcode == 'saml2':
                 error = _("Access Denied")
-            elif error == '3':
+            elif errorcode == 'saml3':
                 error = _(
                     "You do not have access to this database or your "
                     "invitation has expired. Please ask for an invitation "
                     "and be sure to follow the link in your invitation email."
                 )
-            else:
-                error = None
 
             response.qcontext['providers'] = providers
 
@@ -225,7 +223,7 @@ class AuthSAMLController(http.Controller):
                 # auth_signup is not installed
                 _logger.error("auth_signup not installed on database "
                               "saml sign up cancelled.")
-                url = "/?saml_error=1#action=login"
+                url = "/web/login?error=saml1"
 
             except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
@@ -234,7 +232,7 @@ class AuthSAMLController(http.Controller):
                              'in case a valid session exists, '
                              'without setting cookies')
 
-                url = "/?saml_error=3#action=login"
+                url = "/web/login?error=saml3"
                 redirect = werkzeug.utils.redirect(url, 303)
                 redirect.autocorrect_location_header = False
                 return redirect
@@ -242,6 +240,6 @@ class AuthSAMLController(http.Controller):
             except Exception as e:
                 # signup error
                 _logger.exception("SAML2: %s" % str(e))
-                url = "/?saml_error=2#action=login"
+                url = "//web/login?error=saml2"
 
         return set_cookie_and_redirect(url)
