@@ -108,13 +108,13 @@ class SAMLLogin(Home):
 
         response = super(SAMLLogin, self).web_login(*args, **kw)
         if response.is_qweb:
-            errorcode = request.params.get('error')
-            if errorcode == 'saml1':
             error = None
+            error_code = request.params.get('error')
+            if error_code == 'saml1':
                 error = _("Sign up is not allowed on this database.")
-            elif errorcode == 'saml2':
+            elif error_code == 'saml2':
                 error = _("Access Denied")
-            elif errorcode == 'saml3':
+            elif error_code == 'saml3':
                 error = _(
                     "You do not have access to this database or your "
                     "invitation has expired. Please ask for an invitation "
