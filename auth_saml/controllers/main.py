@@ -50,32 +50,39 @@ def fragment_to_query_string(func):
 
 class SAMLLogin(Home):
 
-    def list_providers(self):
+    def list_providers(self, with_autoredirect=False):
         try:
+            domain = [('enabled', '=', True)]
+            if with_autoredirect:
+                domain.append(('autoredirect', '=', True))
             providers = request.env['auth.saml.provider'].sudo().search_read(
-                [('enabled', '=', True)])
+                domain)
         except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
             providers = []
 
         return providers
 
+    def _saml_autoredirect(self):
+        # automatically redirect if any provider is set up to do that
+        autoredirect_providers = self.list_providers(True)
+        # do not redirect if asked too or if a SAML error has been found
+        disable_autoredirect = (
+            'disable_autoredirect' in request.params or
+            'saml_error' in request.params)
+        if autoredirect_providers and not disable_autoredirect:
+            return werkzeug.utils.redirect(
+                '/auth_saml/get_auth_request?pid=%d' %
+                autoredirect_providers[0]['id'],
+                303)
+
     @http.route()
     def web_client(self, s_action=None, **kw):
         ensure_db()
         if not request.session.uid:
-            # automatically redirect if any provider is set up to do that
-            autoredirect_providers = request.env['auth.saml.provider'].sudo(
-                ).search_read([
-                    ('enabled', '=', True),
-                    ('autoredirect', '=', True),
-                ], limit=1)
-            disable_autoredirect = 'disable_autoredirect' in request.params
-            if autoredirect_providers and not disable_autoredirect:
-                return werkzeug.utils.redirect(
-                    '/auth_saml/get_auth_request?pid=%d' %
-                        autoredirect_providers[0]['id'],
-                    303)
+            result = self._saml_autoredirect()
+            if result:
+                return result
             else:
                 return super(SAMLLogin, self).web_client(s_action, **kw)
         return super(SAMLLogin, self).web_client(s_action, **kw)
@@ -91,6 +98,11 @@ class SAMLLogin(Home):
 
             # Redirect if already logged in and redirect param is present
             return http.redirect_with_hash(request.params.get('redirect'))
+
+        if request.httprequest.method == 'GET':
+            result = self._saml_autoredirect()
+            if result:
+                return result
 
         providers = self.list_providers()
 
