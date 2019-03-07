@@ -1,37 +1,38 @@
 # Copyright 2015 GRAP - Sylvain LE GAL
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import json
-from distutils import util
-import logging
 import ipaddress
-from urllib.request import urlopen
+import logging
+from distutils import util
+
+import requests
+
 from odoo import api, fields, models
 
-GEOLOCALISATION_URL = u"http://ip-api.com/json/{}"
+GEOLOCALISATION_URL = "http://ip-api.com/json/{}"
 
 _logger = logging.getLogger(__name__)
 
 
 class ResAuthenticationAttempt(models.Model):
-    _name = 'res.authentication.attempt'
-    _order = 'create_date desc'
+    _name = "res.authentication.attempt"
+    _order = "create_date desc"
 
-    login = fields.Char(string='Tried Login', index=True)
-    remote = fields.Char(string='Remote IP', index=True)
+    login = fields.Char(string="Tried Login", index=True)
+    remote = fields.Char(string="Remote IP", index=True)
     result = fields.Selection(
-        string='Authentication Result',
+        string="Authentication Result",
         selection=[
-            ('successful', 'Successful'),
-            ('failed', 'Failed'),
-            ('banned', 'Banned'),
-            ('unbanned', 'Unbanned')
+            ("successful", "Successful"),
+            ("failed", "Failed"),
+            ("banned", "Banned"),
+            ("unbanned", "Unbanned"),
         ],
         index=True,
     )
     remote_metadata = fields.Text(
         string="Remote IP metadata",
-        compute='_compute_metadata',
+        compute="_compute_metadata",
         help="Metadata publicly available for remote IP",
     )
     whitelisted = fields.Boolean(
@@ -39,16 +40,18 @@ class ResAuthenticationAttempt(models.Model):
     )
 
     @api.multi
-    @api.depends('remote')
+    @api.depends("remote")
     def _compute_metadata(self):
-        if not util.strtobool(self.env["ir.config_parameter"].sudo().get_param(
-            'auth_brute_force.check_remote', 'True'
-        )):
+        if not util.strtobool(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("auth_brute_force.check_remote", "True")
+        ):
             return
         for item in self:
             url = GEOLOCALISATION_URL.format(item.remote)
             try:
-                res = json.loads(urlopen(url, timeout=5).read())
+                res = requests.get(url, timeout=4).json()
             except Exception:
                 _logger.warning(
                     "Couldn't fetch details from %s",
@@ -57,15 +60,15 @@ class ResAuthenticationAttempt(models.Model):
                 )
             else:
                 item.remote_metadata = "\n".join(
-                    '%s: %s' % pair for pair in res.items())
+                    "%s: %s" % pair for pair in res.items()
+                )
 
     @api.model
     def _is_whitelisted(self, ip):
         for whitelist in self._whitelist_remotes():
             try:
-                if (
-                    whitelist and
-                    ipaddress.ip_address(ip) in ipaddress.ip_network(whitelist)
+                if whitelist and ipaddress.ip_address(ip) in ipaddress.ip_network(
+                    whitelist
                 ):
                     return True
             except ValueError:
@@ -99,7 +102,7 @@ class ResAuthenticationAttempt(models.Model):
         # Find last successful login
         last_ok = self.search(
             domain + [("result", "in", ["successful", "unbanned"])],
-            order='create_date desc',
+            order="create_date desc",
             limit=1,
         )
 
@@ -107,9 +110,11 @@ class ResAuthenticationAttempt(models.Model):
             domain += [("id", ">", last_ok.id)]
         # Count failures since last success, if any
         recent_failures = self.search_count(
-            domain + [
+            domain
+            + [
                 ("result", "not in", ["successful", "unbanned", False]),
-            ])
+            ]
+        )
         # Did we hit the limit?
         return recent_failures >= limit
 
@@ -164,9 +169,13 @@ class ResAuthenticationAttempt(models.Model):
         :return set:
             Remote IPs that are whitelisted currently.
         """
-        whitelist = self.env["ir.config_parameter"].sudo().get_param(
-            "auth_brute_force.whitelist_remotes",
-            "",
+        whitelist = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                "auth_brute_force.whitelist_remotes",
+                "",
+            )
         )
         return set(whitelist.split(","))
 
@@ -183,10 +192,12 @@ class ResAuthenticationAttempt(models.Model):
     @api.multi
     def action_unban(self):
         self.ensure_one()
-        if self.result == 'banned':
-            self.write({
-                'result': 'unbanned',
-            })
+        if self.result == "banned":
+            self.write(
+                {
+                    "result": "unbanned",
+                }
+            )
 
     @api.multi
     def action_whitelist_remove(self):

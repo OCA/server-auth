@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!-- Copyright 2015 GRAP -Sylvain LE GAL
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
@@ -11,10 +11,10 @@
                 decoration-warning="result == 'failed'"
                 decoration-danger="result == 'banned'"
             >
-                <field name="create_date"/>
-                <field name="remote"/>
-                <field name="login"/>
-                <field name="result"/>
+                <field name="create_date" />
+                <field name="remote" />
+                <field name="login" />
+                <field name="result" />
             </tree>
         </field>
     </record>
@@ -45,12 +45,12 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="create_date"/>
-                        <field name="result"/>
-                        <field name="login"/>
-                        <field name="remote"/>
-                        <field name="remote_metadata"/>
-                        <field name="whitelisted" invisible="1"/>
+                        <field name="create_date" />
+                        <field name="result" />
+                        <field name="login" />
+                        <field name="remote" />
+                        <field name="remote_metadata" />
+                        <field name="whitelisted" invisible="1" />
                     </group>
                 </sheet>
             </form>
@@ -61,8 +61,8 @@
         <field name="model">res.authentication.attempt</field>
         <field name="arch" type="xml">
             <graph>
-                <field name="create_date"/>
-                <field name="result"/>
+                <field name="create_date" />
+                <field name="result" />
             </graph>
         </field>
     </record>
@@ -71,12 +71,32 @@
         <field name="model">res.authentication.attempt</field>
         <field name="arch" type="xml">
             <search>
-                <field name="login"/>
-                <filter name="filter_no_success" string="Without Success" domain="[('result','!=', 'successful')]"/>
-                <filter name="filter_banned" string="Banned" domain="[('result','=', 'banned')]"/>
-                <filter name="filter_failed" string="Failed" domain="[('result','=', 'failed')]"/>
-                <filter name="filter_unbanned" string="Unbanned" domain="[('result','=', 'unbanned')]"/>
-                <filter name="filter_successful" string="Successful" domain="[('result','=', 'successful')]"/>
+                <field name="login" />
+                <filter
+                    name="filter_no_success"
+                    string="Without Success"
+                    domain="[('result','!=', 'successful')]"
+                />
+                <filter
+                    name="filter_banned"
+                    string="Banned"
+                    domain="[('result','=', 'banned')]"
+                />
+                <filter
+                    name="filter_failed"
+                    string="Failed"
+                    domain="[('result','=', 'failed')]"
+                />
+                <filter
+                    name="filter_unbanned"
+                    string="Unbanned"
+                    domain="[('result','=', 'unbanned')]"
+                />
+                <filter
+                    name="filter_successful"
+                    string="Successful"
+                    domain="[('result','=', 'successful')]"
+                />
             </search>
         </field>
     </record>
