@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
 import responses
 import base64
-import urlparse
+from urllib import parse
 from .common import (
     TestKeycloakWizBase, FAKE_TOKEN_RESPONSE, FAKE_USERS_RESPONSE
 )
@@ -35,13 +34,16 @@ class TestWizard(TestKeycloakWizBase):
         request = responses.calls[0].request
         self.assertEqual(request.url, self.provider.auth_endpoint)
         expected = [
+            ('grant_type', 'password'),
             ('username', 'admin'),
-            ('client_secret', 'c35a795e-65ef-432d-97fb-6ef4bea84bb8'),
             ('password', 'well, yes, is "admin"'),
             ('client_id', 'odoo'),
-            ('grant_type', 'password')
+            ('client_secret', 'c35a795e-65ef-432d-97fb-6ef4bea84bb8'),
         ]
-        self.assertListEqual(urlparse.parse_qsl(request.body), expected)
+        self.assertListEqual(
+            sorted(parse.parse_qsl(request.body)),
+            sorted(expected)
+        )
 
     @responses.activate
     def test_get_users(self):
@@ -55,7 +57,7 @@ class TestWizard(TestKeycloakWizBase):
         request = responses.calls[1].request
         self.assertEqual(request.url, self.wiz.endpoint)
         auth = request.headers['Authorization'].replace('Bearer ', '')
-        self.assertEqual(base64.decodestring(auth), 'my nice token')
+        self.assertEqual(base64.decodebytes(auth.encode()), b'my nice token')
 
     @responses.activate
     def test_sync_by_username(self):
