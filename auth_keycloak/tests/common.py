@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -35,9 +34,9 @@ class TestKeycloakBase(common.SavepointCase):
         """Validate request has basic auth header."""
         auth = request.headers['Authorization'].replace('Basic ', '')
         self.assertEqual(
-            base64.decodestring(auth),
+            base64.decodebytes(auth.encode()),
             '{}:{}'.format(self.provider.client_id,
-                           self.provider.client_secret)
+                           self.provider.client_secret).encode()
         )
 
 
@@ -48,8 +47,12 @@ FAKE_TOKEN_RESPONSE = {
     u'token_type': u'bearer',
     u'refresh_expires_in': 1800,
     u'scope': u'profile email',
-    u'access_token': base64.b64encode(u'my nice token'),
-    u'refresh_token': base64.b64encode(u'my nice refresh token'),
+    u'access_token': base64.encodebytes(
+        'my nice token'.encode()
+    ).decode('utf-8'),
+    u'refresh_token': base64.encodebytes(
+        'my nice refresh token'.encode()
+    ).decode('utf-8'),
 }
 FAKE_USERS_RESPONSE = [{
     u'username': u'jdoe',
