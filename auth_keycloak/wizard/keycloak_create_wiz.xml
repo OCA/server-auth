@@ -44,20 +44,12 @@
   </record>
 
   <record id="keycloak_create_users" model="ir.actions.act_window">
-    <field name="name">Keycloak create users</field>
+    <field name="name">Push users to Keycloak</field>
     <field name="res_model">auth.keycloak.create.wiz</field>
     <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
     <field name="view_id" ref="auth_keycloak_create_wiz"/>
     <field name="target">new</field>
+    <field name="binding_model_id" ref="base.model_res_users" />
   </record>
-
-  <record id="action_purge_model_line_value" model="ir.values">
-    <field name="name">Push users to Keycloak</field>
-    <field name="key">action</field>
-    <field name="key2">client_action_multi</field>
-    <field name="model">res.users</field>
-    <field name="value" eval="'ir.actions.act_window,%d' % ref('auth_keycloak.keycloak_create_users')" />
-  </record>
-
 </odoo>
