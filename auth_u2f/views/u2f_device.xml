@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="u2f_device_tree" model="ir.ui.view">
+            <field name="name">u2f.device.tree</field>
+            <field name="model">u2f.device</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="default"/>
+                </tree>
+            </field>
+        </record>
+        <record id="u2f_device_form" model="ir.ui.view">
+            <field name="name">u2f.device.form</field>
+            <field name="model">u2f.device</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_make_default" string="Make default"
+                                type="object" attrs="{'invisible': [('default', '=', True)]}"
+                                class="oe_highlight"/>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                        <field name="default"/>
+                        <field name="json" widget="u2f_scan"/>
+                        <field name="user_id" invisible="1"/>
+                    </group>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_open_u2f_device_tree">
+            <field name="name">U2F devices</field>
+            <field name="res_model">u2f.device</field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">current</field>
+            <field name="context">{'default_user_id': uid}</field>
+            <field name="domain">[('user_id', '=', uid)]</field>
+        </record>
+
+        <record id="view_users_form_simple_modif_inherit_auth_u2f" model="ir.ui.view">
+            <field name="name">res.users.preferences.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+            <field name="arch" type="xml">
+                <button name="preference_change_password" position="after">
+                    <button type="action" name="%(action_open_u2f_device_tree)d"
+                            string="Manage 2-step verification" class="oe_link"/>
+                </button>
+            </field>
+        </record>
+    </data>
+</odoo>
