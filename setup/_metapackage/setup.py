@@ -17,6 +17,7 @@ setuptools.setup(
         'odoo11-addon-auth_signup_verify_email',
         'odoo11-addon-auth_totp',
         'odoo11-addon-auth_totp_password_security',
+        'odoo11-addon-auth_u2f',
         'odoo11-addon-auth_user_case_insensitive',
         'odoo11-addon-keychain',
         'odoo11-addon-password_security',
