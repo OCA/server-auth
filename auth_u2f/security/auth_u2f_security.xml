@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="personal_u2f_devices" model="ir.rule">
+        <field name="name">See only own u2f devices</field>
+        <field name="model_id" ref="model_u2f_device"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+    </record>
+</odoo>

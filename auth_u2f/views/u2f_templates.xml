@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_frontend" name="U2F Assets" inherit_id="web.assets_frontend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/auth_u2f/static/lib/u2f-api.js"></script>
+                <script type="text/javascript" src="/auth_u2f/static/src/js/auth_u2f_frontend.js"></script>
+            </xpath>
+        </template>
+
+        <template id="assets_backend" name="U2F Assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/auth_u2f/static/lib/u2f-api.js"></script>
+                <script type="text/javascript" src="/auth_u2f/static/src/js/auth_u2f.js"></script>
+            </xpath>
+        </template>
+
+        <template id="login" name="Register U2F page">
+            <t t-call="web.layout">
+                <t t-set="head">
+                    <t t-call-assets="web.assets_common" t-js="false"/>
+                    <t t-call-assets="web.assets_frontend" t-js="false"/>
+                    <t t-call-assets="web.assets_common" t-css="false"/>
+                    <t t-call-assets="web.assets_frontend" t-css="false"/>
+                </t>
+                <t t-set="body_classname" t-value="'container'"/>
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="text-center">
+                            <h3>Use your security key to sign in</h3>
+                            <p>Insert your security key into your computer's USB port. If it has a button, tap it.</p>
+                            <i class="fa fa-spinner fa-spin" style="font-size: 32px;"></i>
+                            <p id="error_message" style="color: red;"/>
+                            <form method="POST" action="/web/u2f/login" id="u2f_login_form" onsubmit="return false;">
+                                <input type="hidden" name="redirect" t-att-value="redirect"/>
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" id="u2f_challenge" name="u2f_challenge" t-att-value="login_data"/>
+                                <input type="hidden" id="u2f_token_response" name="u2f_token_response"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
