@@ -4,10 +4,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0+e\n"
+"Project-Id-Version: Odoo Server 11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-03 23:07+0000\n"
-"PO-Revision-Date: 2017-12-03 23:07+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +15,8 @@ msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:41
-#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:15
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:57
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:33
 #, python-format
 msgid "A bad request was sent to your browser. This can happen when the URL\n"
 " you're on is not web.base.url or when this page is not served over HTTPS."
@@ -26,15 +24,15 @@ msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:14
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:32
 #, python-format
 msgid "An unknown error occured"
 msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:39
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:48
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:55
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:64
 #, python-format
 msgid "An unknown error occurred."
 msgstr ""
@@ -76,7 +74,7 @@ msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:58
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:74
 #, python-format
 msgid "Insert your security key and tap the button or gold disk."
 msgstr ""
@@ -123,7 +121,7 @@ msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:56
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:72
 #, python-format
 msgid "Scanned key."
 msgstr ""
@@ -135,14 +133,14 @@ msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:46
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:62
 #, python-format
 msgid "This device is already registered for this user."
 msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:18
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:36
 #, python-format
 msgid "This device is not registered as the default device for this user."
 msgstr ""
@@ -160,8 +158,8 @@ msgstr ""
 
 #. module: auth_u2f
 #. openerp-web
-#: code:addons/auth_u2f/static/src/js/auth_u2f.js:44
-#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:17
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:60
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:35
 #, python-format
 msgid "U2F is not supported by this client."
 msgstr ""
