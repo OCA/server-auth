@@ -5,3 +5,5 @@ email_validator
 lasso
 # auth_totp
 pyotp
+# auth_u2f
+python-u2flib-server
