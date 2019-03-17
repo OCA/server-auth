@@ -23,9 +23,9 @@ msgstr ""
 #: model:ir.ui.view,arch_db:auth_totp.res_users_authenticator_create_view_form
 msgid ""
 "<span>Please provide a name for your app/device. </span>\n"
-"                        <span>Then scan the QR code below to add this "
-"account to your authenticator app and enter in the six digit code produced "
-"by the app.</span>"
+"                        <span>Then scan the QR code or enter the secret code "
+"below to add this account to your authenticator app and enter in the six "
+"digit code produced by the app.</span>"
 msgstr ""
 
 #. module: auth_totp
@@ -187,6 +187,11 @@ msgstr ""
 
 #. module: auth_totp
 #: model:ir.model.fields,field_description:auth_totp.field_res_users_authenticator_create_secret_key
+#, fuzzy
+msgid "Secret Code"
+msgstr "Clave secreta"
+
+#. module: auth_totp
 #: model:ir.model.fields,field_description:auth_totp.field_res_users_authenticator_secret_key
 #, fuzzy
 msgid "Secret Key"
@@ -249,7 +254,7 @@ msgid "You must log in with a password before starting the MFA login process."
 msgstr ""
 
 #. module: auth_totp
-#: code:addons/auth_totp/wizards/res_users_authenticator_create.py:102
+#: code:addons/auth_totp/wizards/res_users_authenticator_create.py:103
 #, python-format
 msgid ""
 "Your confirmation code is not correct. Please try again, making sure that "
