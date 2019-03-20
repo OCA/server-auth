@@ -1,12 +1,16 @@
 # Copyright 2019 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import logging
 from contextlib import contextmanager
 
 import psycopg2
 
 from odoo import api, http, models, SUPERUSER_ID
 from odoo.http import request
+
+
+_logger = logging.getLogger(__name__)
 
 
 class IrHttp(models.AbstractModel):
@@ -23,6 +27,11 @@ class IrHttp(models.AbstractModel):
         if request.session.uid:
             cls._update_role_from_header()
         return auth_method
+
+    @classmethod
+    def _has_http_role_header(cls):
+        headers = http.request.httprequest.headers.environ
+        return cls._REMOTE_USER_ROLE in headers
 
     @classmethod
     def _get_http_role_header(cls):
@@ -82,6 +91,19 @@ class IrHttp(models.AbstractModel):
         Read roles codes from the http header and compare with the actual roles
         of the logging user. If there is a difference, changes are applied.
         """
+        if not cls._has_http_role_header():
+            # if the header is not set at all in the request, we can
+            # consider that we are in a trusted environment:
+            # * the reverse proxy *must* set the header with the roles in any
+            #   case
+            # * when odoo requests itself for generating reports, it will
+            #   not pass any header, we should not reset roles because of this
+            # * it may be used for debugging an environment: direct access
+            #   to odoo will not reset roles, access through the reverse proxy
+            #   will pass the header. Never allow direct access to odoo besides
+            #   a debugging use case though.
+            return
+
         user = request.env['res.users'].browse(request.session.uid)
         roles_in_header = cls._get_http_role_header()
         if (not roles_in_header and not user.last_http_header_roles
@@ -91,6 +113,10 @@ class IrHttp(models.AbstractModel):
         with cls._update_role_race_for_update(user.id) as (acquired, env):
             if not acquired:
                 return
+            _logger.debug(
+                'user %s received header %s and previously had %s',
+                user.id, roles_in_header, user.last_http_header_roles
+            )
 
             user = user.with_env(env)
             new_roles = set()
