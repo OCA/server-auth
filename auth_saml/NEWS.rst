@@ -1,6 +1,14 @@
 Changelog
 =========
 
+__ 11.0.2.0.0::
+
+11.0.2.0.0
+----------
+
+- Sign auth requests with SHA-256 instead of SHA-1. ``lasso >= 2.6.0`` is
+  expected.
+
 __ 11.0.1.1.0::
 
 11.0.1.1.0

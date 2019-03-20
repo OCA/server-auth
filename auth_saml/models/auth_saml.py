@@ -31,6 +31,10 @@ class AuthSamlProvider(models.Model):
             self.sp_metadata,
             self.sp_pkey
         )
+
+        # Requests are SHA1-signed by default -> Ask for SHA-256.
+        server.signatureMethod = lasso.SIGNATURE_METHOD_RSA_SHA256
+
         server.addProviderFromBuffer(
             lasso.PROVIDER_ROLE_IDP,
             self.idp_metadata
