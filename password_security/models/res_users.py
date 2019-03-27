@@ -31,7 +31,7 @@ class ResUsers(models.Model):
         readonly=True,
     )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         vals['password_write_date'] = fields.Datetime.now()
         return super(ResUsers, self).create(vals)
@@ -97,8 +97,8 @@ class ResUsers(models.Model):
         self.ensure_one()
         if not self.password_write_date:
             return True
-        write_date = fields.Datetime.from_string(self.password_write_date)
-        today = fields.Datetime.from_string(fields.Datetime.now())
+        write_date = fields.Datetime.to_datetime(self.password_write_date)
+        today = fields.Datetime.to_datetime(fields.Datetime.now())
         days = (today - write_date).days
         return days > self.company_id.password_expiration
 
@@ -120,7 +120,7 @@ class ResUsers(models.Model):
             pass_min = rec_id.company_id.password_minimum
             if pass_min <= 0:
                 pass
-            write_date = fields.Datetime.from_string(
+            write_date = fields.Datetime.to_datetime(
                 rec_id.password_write_date
             )
             delta = timedelta(hours=pass_min)
