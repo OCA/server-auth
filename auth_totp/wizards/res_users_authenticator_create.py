@@ -99,7 +99,10 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
     @api.multi
     def _perform_validations(self):
         totp = pyotp.TOTP(self.secret_key)
-        if not totp.verify(self.confirmation_code):
+        valid_window = int(self.env['ir.config_parameter'].sudo().get_param(
+            'auth_totp.valid_window', 0))
+
+        if not totp.verify(self.confirmation_code, valid_window=valid_window):
             raise ValidationError(_(
                 'Your confirmation code is not correct. Please try again,'
                 ' making sure that your MFA device is set to the correct time'

@@ -72,8 +72,8 @@ class TestResUsersAuthenticator(TransactionCase):
 
         pyotp_calls = [
             mock.call('Test Key'),
-            mock.call().verify('Test Code'),
+            mock.call().verify('Test Code', valid_window=0),
             mock.call('Test Key 2'),
-            mock.call().verify('Test Code'),
+            mock.call().verify('Test Code', valid_window=0),
         ]
         self.assertEqual(pyotp_mock.TOTP.mock_calls, pyotp_calls)

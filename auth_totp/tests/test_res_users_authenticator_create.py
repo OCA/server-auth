@@ -111,7 +111,7 @@ class TestResUsersAuthenticatorCreate(TransactionCase):
 
         pyotp_mock.TOTP.assert_called_once_with(test_wiz.secret_key)
         pyotp_mock.TOTP().verify.assert_called_once_with(
-            test_wiz.confirmation_code,
+            test_wiz.confirmation_code, valid_window=0,
         )
 
     def test_create_authenticator(self, pyotp_mock):

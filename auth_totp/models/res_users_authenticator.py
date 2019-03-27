@@ -46,9 +46,12 @@ class ResUsersAuthenticator(models.Model):
 
     @api.multi
     def validate_conf_code(self, confirmation_code):
+        valid_window = int(self.env['ir.config_parameter'].sudo().get_param(
+            'auth_totp.valid_window', 0))
+
         for record in self:
             totp = pyotp.TOTP(record.secret_key)
-            if totp.verify(confirmation_code):
+            if totp.verify(confirmation_code, valid_window=valid_window):
                 return True
 
         return False

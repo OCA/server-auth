@@ -10,4 +10,9 @@
         <field name="key">auth_totp.secure_cookie</field>
         <field name="value" eval="1"/>
     </record>
+
+    <record id="validation_window" model="ir.config_parameter">
+        <field name="key">auth_totp.valid_window</field>
+        <field name="value" eval="0"/>
+    </record>
 </odoo>

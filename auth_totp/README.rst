@@ -32,6 +32,10 @@ unless your Odoo instance uses HTTPS. If necessary, you can disable this flag
 by going to ``Settings > Parameters > System Parameters`` and changing the
 ``auth_totp.secure_cookie`` key to ``0``.
 
+It's possible to extend the window for the validation of confirmation code 
+by increasing the parameter ``auth_totp.valid_window`` under ``Settings > 
+Parameters > System Parameters``.
+
 Usage
 =====
 
