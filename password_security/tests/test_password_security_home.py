@@ -232,11 +232,12 @@ class LoginCase(HttpCase):
 
     def test_web_login_expire_pass(self, redirect_mock, *args):
         """It should expire password if necessary"""
-        two_days_ago = datetime.now() - timedelta(days=2)
+        three_days_ago = datetime.now() - timedelta(days=3)
         with self.cursor() as cr:
             env = self.env(cr)
-            env.user.password_write_date = two_days_ago
-            env.user.company_id.password_expiration = 1
+            user = env['res.users'].search([('login', '=', 'admin')])
+            user.password_write_date = three_days_ago
+            user.company_id.password_expiration = 1
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
