@@ -1,5 +1,6 @@
 # Copyright 2016 LasLabs Inc.
 # Copyright 2017 Kaushal Prajapati <kbprajapati@live.com>.
+# Copyright 2018 Modoolar <info@modoolar.com>.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import re
@@ -42,6 +43,31 @@ class ResUsers(models.Model):
             self._check_password(vals['password'])
             vals['password_write_date'] = fields.Datetime.now()
         return super(ResUsers, self).write(vals)
+
+    @api.model
+    def get_password_policy(self):
+        data = super(ResUsers, self).get_password_policy()
+        company_id = self.env.user.company_id
+        data.update(
+            {
+                "password_lower": company_id.password_lower,
+                "password_upper": company_id.password_upper,
+                "password_numeric": company_id.password_numeric,
+                "password_special": company_id.password_special,
+                "password_length": company_id.password_length,
+            }
+        )
+        return data
+
+    def _check_password_policy(self, passwords):
+        result = super(ResUsers, self)._check_password_policy(passwords)
+
+        for password in passwords:
+            if not password:
+                continue
+            self._check_password(password)
+
+        return result
 
     @api.multi
     def password_match_message(self):
@@ -97,9 +123,11 @@ class ResUsers(models.Model):
         self.ensure_one()
         if not self.password_write_date:
             return True
-        write_date = fields.Datetime.from_string(self.password_write_date)
-        today = fields.Datetime.from_string(fields.Datetime.now())
-        days = (today - write_date).days
+
+        if not self.company_id.password_expiration:
+            return False
+
+        days = (fields.Datetime.now() - self.password_write_date).days
         return days > self.company_id.password_expiration
 
     @api.multi
@@ -120,9 +148,7 @@ class ResUsers(models.Model):
             pass_min = rec_id.company_id.password_minimum
             if pass_min <= 0:
                 pass
-            write_date = fields.Datetime.from_string(
-                rec_id.password_write_date
-            )
+            write_date = rec_id.password_write_date
             delta = timedelta(hours=pass_min)
             if write_date + delta > datetime.now():
                 raise PassError(
@@ -144,7 +170,7 @@ class ResUsers(models.Model):
                 recent_passes = rec_id.password_history_ids
             else:
                 recent_passes = rec_id.password_history_ids[
-                    0:recent_passes-1
+                    0: recent_passes - 1
                 ]
             if recent_passes.filtered(
                     lambda r: crypt.verify(password, r.password_crypt)):
@@ -153,12 +179,8 @@ class ResUsers(models.Model):
                     rec_id.company_id.password_history
                 )
 
-    @api.multi
-    def _set_encrypted_password(self, encrypted):
+    def _set_encrypted_password(self, uid, pw):
         """ It saves password crypt history for history rules """
-        super(ResUsers, self)._set_encrypted_password(encrypted)
-        self.write({
-            'password_history_ids': [(0, 0, {
-                'password_crypt': encrypted,
-            })],
-        })
+        super(ResUsers, self)._set_encrypted_password(uid, pw)
+
+        self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
