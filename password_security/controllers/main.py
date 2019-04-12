@@ -54,7 +54,7 @@ class PasswordSecurityHome(AuthSignupHome):
             )
         except PassError as e:
             qcontext = self.get_auth_signup_qcontext()
-            qcontext['error'] = e.message
+            qcontext['error'] = str(e)
             return request.render('auth_signup.signup', qcontext)
 
     @http.route()
