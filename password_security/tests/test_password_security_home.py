@@ -6,7 +6,8 @@ from unittest import mock
 
 from contextlib import contextmanager
 
-from odoo.tests.common import HttpCase, TransactionCase
+from odoo.tests.common import HttpCase, TransactionCase, \
+    at_install, post_install
 from odoo.http import Response
 
 from ..controllers import main
@@ -30,7 +31,6 @@ class MockPassError(main.PassError):
 
 
 class TestPasswordSecurityHome(TransactionCase):
-
     def setUp(self):
         super(TestPasswordSecurityHome, self).setUp()
         self.PasswordSecurityHome = main.PasswordSecurityHome
@@ -206,8 +206,11 @@ class TestPasswordSecurityHome(TransactionCase):
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
-@mock.patch("odoo.http.redirect_with_hash", return_value="redirected")
+@at_install(False)
+@post_install(True)
 class LoginCase(HttpCase):
+    @mock.patch("odoo.http.redirect_with_hash",
+                return_value="redirected")
     def test_web_login_authenticate(self, redirect_mock, *args):
         """It should allow authenticating by login"""
         response = self.url_open(
@@ -218,18 +221,19 @@ class LoginCase(HttpCase):
         redirect_mock.assert_any_call("/web")
         self.assertEqual(response.text, "redirected")
 
-    def test_web_login_authenticate_fail(self, redirect_mock, *args):
+    def test_web_login_authenticate_fail(self, *args):
         """It should fail auth"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "noadmin"},
         )
-        redirect_mock.assert_not_called()
         self.assertIn(
             "Wrong login/password",
             response.text,
         )
 
+    @mock.patch("odoo.http.redirect_with_hash",
+                return_value="redirected")
     def test_web_login_expire_pass(self, redirect_mock, *args):
         """It should expire password if necessary"""
         two_days_ago = datetime.now() - timedelta(days=2)
