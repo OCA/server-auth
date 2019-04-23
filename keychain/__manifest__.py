@@ -10,6 +10,7 @@
     "license": "AGPL-3",
     "application": False,
     "installable": True,
+    "preloadable": False,
     "external_dependencies": {
         "python": [
             'cryptography'],
