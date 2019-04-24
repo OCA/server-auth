@@ -45,7 +45,7 @@ class ResUser(models.Model):
                     self.id is not SUPERUSER_ID):
                 raise ValidationError(
                     _("This database disallows users to have both passwords "
-                      "and SAML IDs. Errors for login %s").format(self.login))
+                      "and SAML IDs. Errors for login {}").format(self.login))
 
     _sql_constraints = [('uniq_users_saml_provider_saml_uid',
                          'unique(saml_provider_id, saml_uid)',
