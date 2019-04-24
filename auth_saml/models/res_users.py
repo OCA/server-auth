@@ -229,6 +229,7 @@ class ResUser(models.Model):
                 "UPDATE res_users SET password='', password_crypt='' WHERE "
                 "id=%s",
                 (self.id, ))
+            self.invalidate_cache()
 
         return super(ResUser, self).write(vals)
 
