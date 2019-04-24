@@ -32,7 +32,7 @@ class ResUser(models.Model):
 
     @api.constrains('password_crypt', 'password', 'saml_uid')
     def check_no_password_with_saml(self):
-        """Ensure no Odoo user posesses both an SAML user ID and an Odoo
+        """Ensure no Odoo user possesses both an SAML user ID and an Odoo
         password. Except admin which is not constrained by this rule.
         """
         if self._allow_saml_and_password():
