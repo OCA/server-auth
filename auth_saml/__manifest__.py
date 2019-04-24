@@ -27,4 +27,5 @@
     'external_dependencies': {
         'python': ['lasso'],  # >= 2.6.0
     },
+    'development_status': 'stable',
 }
