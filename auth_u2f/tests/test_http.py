@@ -19,6 +19,7 @@ import json
 import logging
 from unittest.mock import patch
 
+from odoo.http import HttpRequest
 from odoo.exceptions import AccessDenied
 from odoo.tests.common import TransactionCase
 from ..models.http import U2FAuthenticationError
@@ -26,7 +27,7 @@ from .test_main import BASE_URL, REQUEST_DATA, RESPONSE_DATA
 
 
 ADDON_PATH = 'odoo.addons.auth_u2f'
-AUTH_PATH = 'odoo.addons.base.ir.ir_http.IrHttp._authenticate'
+AUTH_PATH = 'odoo.addons.base.models.ir_http.IrHttp._authenticate'
 DEVICE_PATH = ADDON_PATH + '.models.u2f_device'
 HTTP_PATH = ADDON_PATH + '.models.http'
 USER_PATH = ADDON_PATH + '.models.res_users'
@@ -56,8 +57,39 @@ class TestUsers(TransactionCase):
             'default': True,
         })
 
+        patcher = patch('odoo.http.request')
+        self.addCleanup(patcher.stop)
+        patcher.start()
+
     def _authenticate(self, auth_method):
         return self.env['ir.http']._authenticate(auth_method)
+
+    @patch(HTTP_PATH + '._handle_exception_super')
+    def test_handle_exception(self, super_mock, request_mock):
+        def raise_exception(self, e):
+            raise e
+
+        super_mock.side_effect = raise_exception
+
+        request_mock.httprequest.method = 'POST'
+        request_mock.httprequest.full_path = '/full'
+        request_mock.httprequest.url = '/normal'
+        request_mock.session.u2f_last_registration_challenge = REQUEST_DATA
+        req = HttpRequest(request_mock.httprequest)
+
+        res = req._handle_exception(U2FAuthenticationError())
+        self.assertEqual(
+            res.location,
+            '/web/u2f/login?redirect=%2Fweb%2Fproxy%2Fpost%2Ffull'
+        )
+
+        request_mock.httprequest.method = 'GET'
+        request_mock.params = {}
+        res = req._handle_exception(U2FAuthenticationError())
+        self.assertEqual(
+            res.location,
+            '/web/u2f/login?redirect=%2Fnormal'
+        )
 
     @patch(AUTH_PATH)
     def test_authenticate(self, super_mock, request_mock):

@@ -31,6 +31,7 @@ except ImportError as err:
 
 class U2FDevice(models.Model):
     _name = 'u2f.device'
+    _description = 'U2F Device'
 
     name = fields.Char(required=True)
     json = fields.Char(

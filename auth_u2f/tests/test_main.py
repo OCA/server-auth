@@ -20,8 +20,8 @@ import logging
 import unittest.mock as mock
 
 from odoo.exceptions import AccessDenied
-from odoo.addons.auth_u2f.controllers.main import AuthU2FController, U2FLogin
-from odoo.addons.auth_u2f.models.http import U2FAuthenticationError
+from ..controllers.main import AuthU2FController, U2FLogin
+from ..models.http import U2FAuthenticationError
 from odoo.tests.common import TransactionCase
 
 

@@ -21,7 +21,7 @@ from unittest.mock import MagicMock, patch
 
 from odoo.tests.common import TransactionCase
 from .test_main import BASE_URL, REQUEST_DATA, RESPONSE_DATA, TEST_VALUE
-from odoo.addons.auth_u2f.models.http import U2FAuthenticationError
+from ..models.http import U2FAuthenticationError
 
 
 _logger = logging.getLogger(__name__)
