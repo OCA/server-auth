@@ -46,7 +46,7 @@ def __handle_exception(self, exception):
             query = werkzeug.urls.url_encode({
                 'redirect': redirect,
             })
-        return werkzeug.utils.redirect('/web/u2f/login?%s' % query)
+            return werkzeug.utils.redirect('/web/u2f/login?%s' % query)
 
 
 HttpRequest._handle_exception = __handle_exception
