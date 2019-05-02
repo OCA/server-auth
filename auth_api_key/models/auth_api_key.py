@@ -10,7 +10,7 @@ from odoo.tools import consteq
 from odoo.exceptions import ValidationError, AccessError
 
 
-class AuthApiKey(models.TransientModel):
+class AuthApiKey(models.Model):
     _name = "auth.api.key"
 
     @api.model
