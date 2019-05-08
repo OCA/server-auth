@@ -25,9 +25,15 @@ class AuthApiKey(models.TransientModel):
             ):
                 if not consteq(api_key, serv_config.get(section, "key")):
                     continue
+                user_model = self.env["res.users"]
+                if serv_config.has_option(section, "allow_inactive_user"):
+                    allow_inactive_user = serv_config.getboolean(
+                        section, "allow_inactive_user")
+                    if allow_inactive_user:
+                        user_model = user_model.with_context(active_test=False)
 
                 login_name = serv_config.get(section, "user")
-                uid = self.env["res.users"].search(
+                uid = user_model.search(
                     [("login", "=", login_name)]).id
 
                 if not uid:
