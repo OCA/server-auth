@@ -91,10 +91,10 @@ class CompanyLDAP(models.Model):
         return fields
 
     def _update_user(self, conf, user):
-        ldap_entry = self._get_ldap_user(
-            conf,
-            user.login
-        )
+        if not user:
+            ldap_entry = self._get_ldap_user(conf, self.env.user.login)
+        else:
+            ldap_entry = self._get_ldap_user(conf, user.login)
         if not ldap_entry:
             return ldap_entry
 
@@ -102,16 +102,10 @@ class CompanyLDAP(models.Model):
             'Updating field values from LDAP attributes for login "%s"',
             user.login
         )
-        fields = self._map_attributes_to_fields(
-            conf,
-            ldap_entry,
-            ['always']
-        )
+        fields = self._map_attributes_to_fields(conf, ldap_entry, ['always'])
 
         with registry(self.env.cr.dbname).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
-
             SudoUser = env['res.users'].sudo()
             SudoUser.browse(user.id).write(fields)
-
         return ldap_entry
