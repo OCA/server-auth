@@ -97,6 +97,10 @@ class ResUsers(models.Model):
         self.ensure_one()
         if not self.password_write_date:
             return True
+
+        if not self.company_id.password_expiration:
+            return False
+
         write_date = fields.Datetime.from_string(self.password_write_date)
         today = fields.Datetime.from_string(fields.Datetime.now())
         days = (today - write_date).days
