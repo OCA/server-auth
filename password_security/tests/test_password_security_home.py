@@ -209,9 +209,10 @@ class TestPasswordSecurityHome(TransactionCase):
 @at_install(False)
 @post_install(True)
 class LoginCase(HttpCase):
-    @mock.patch("odoo.http.redirect_with_hash", return_value="redirected")
+    @mock.patch("odoo.http.redirect_with_hash",
+                return_value="redirected")
     def test_web_login_authenticate(self, redirect_mock, *args):
-        """ It should allow authenticating by login """
+        """It should allow authenticating by login"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
@@ -231,9 +232,10 @@ class LoginCase(HttpCase):
             response.text,
         )
 
-    @mock.patch("odoo.http.redirect_with_hash", return_value="redirected")
+    @mock.patch("odoo.http.redirect_with_hash",
+                return_value="redirected")
     def test_web_login_expire_pass(self, redirect_mock, *args):
-        """ It should expire password if necessary """
+        """It should expire password if necessary"""
         two_days_ago = datetime.now() - timedelta(days=2)
         with self.cursor() as cr:
             env = self.env(cr)
