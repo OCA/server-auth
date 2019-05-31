@@ -1,7 +1,8 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from openerp import api, fields, models
 
 
 _SAML_UID_AND_PASS_SETTING = 'auth_saml.allow_saml.uid_and_internal_password'
@@ -16,7 +17,7 @@ class ResConfigSettings(models.TransientModel):
     details.
     """
 
-    _inherit = 'res.config.settings'
+    _inherit = 'base.config.settings'
 
     allow_saml_uid_and_internal_password = fields.Boolean(
         string='Allow SAML users to posess an Odoo password '

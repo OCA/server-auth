@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010-2019 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
 import json as simplejson
 
-from odoo import api, fields, models
+from openerp import api, fields, models
 
 _logger = logging.getLogger(__name__)
 try:

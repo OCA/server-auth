@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
 
-from odoo import fields, models
+from openerp import fields, models
 
 _logger = logging.getLogger(__name__)
 

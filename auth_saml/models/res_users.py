@@ -1,11 +1,12 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010-2016,2018 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
 import passlib
 
-from odoo import api, fields, models, _, SUPERUSER_ID
-from odoo.exceptions import ValidationError, AccessDenied
+from openerp import api, fields, models, _, SUPERUSER_ID
+from openerp.exceptions import ValidationError, AccessDenied
 
 _logger = logging.getLogger(__name__)
 
@@ -236,18 +237,18 @@ class ResUser(models.Model):
     @api.model
     def _allow_saml_and_password(self):
 
-        return self.env['res.config.settings'].allow_saml_and_password()
+        return self.env['base.config.settings'].allow_saml_and_password()
 
-    def _set_encrypted_password(self, encrypted):
+    def _set_encrypted_password(self, cr, uid, id_, encrypted, context=None):
         """Redefine auth_crypt method to block password change as it uses
         a cursor to do it and the python constrains would not be called
         """
         if (
-            not self._allow_saml_and_password() and
-            self.saml_uid and
-            self.id is not SUPERUSER_ID
+            not self._allow_saml_and_password(cr, uid, context=context) and
+            self.browse(cr, uid, [id_]).saml_uid and
+            id_ is not SUPERUSER_ID
         ):
             raise ValidationError(
                 _("This database disallows users to have both passwords "
                   "and SAML IDs. Errors for login %s").format(self.login))
-        super(ResUser, self)._set_encrypted_password(encrypted)
+        super(ResUser, self)._set_encrypted_password(cr, uid, id_, encrypted, context=context)

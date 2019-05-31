@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (C) 2010-2019 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -7,15 +8,14 @@ import logging
 import json as simplejson
 import werkzeug.utils
 
-import odoo
-from odoo import api, _, http, SUPERUSER_ID
-from odoo.http import request
-from odoo import registry as registry_get
-from odoo.addons.web.controllers.main import set_cookie_and_redirect
-from odoo.addons.web.controllers.main import ensure_db
-from odoo.addons.web.controllers.main import login_and_redirect
-from odoo.addons.web.controllers.main import Home
-
+from openerp import api, _, http, SUPERUSER_ID
+from openerp.http import request
+from openerp import registry as registry_get
+from openerp.addons.web.controllers.main import set_cookie_and_redirect
+from openerp.addons.web.controllers.main import ensure_db
+from openerp.addons.web.controllers.main import login_and_redirect
+from openerp.addons.web.controllers.main import Home
+from openerp.exceptions import AccessDenied
 
 _logger = logging.getLogger(__name__)
 
@@ -157,7 +157,6 @@ class AuthSAMLController(http.Controller):
         """state is the JSONified state object and we need to pass
         it inside our request as the RelayState argument
         """
-
         provider_id = int(pid)
 
         auth_request = None
@@ -227,7 +226,7 @@ class AuthSAMLController(http.Controller):
                               "saml sign up cancelled.")
                 url = "/web/login?error=saml1"
 
-            except odoo.exceptions.AccessDenied:
+            except AccessDenied:
                 # saml credentials not valid,
                 # user could be on a temporary session
                 _logger.info('SAML2: access denied, redirect to main page '
