@@ -6,7 +6,7 @@ import uuid
 from odoo import api, fields, models, exceptions
 
 from odoo.addons import base
-base.res.res_users.USER_PRIVATE_FIELDS.\
+base.models.res_users.USER_PRIVATE_FIELDS.\
     append('oauth_master_uuid')
 
 
@@ -20,7 +20,9 @@ class ResUsers(models.Model):
         comodel_name='auth.oauth.multi.token',
         inverse_name='user_id',
         string='OAuth tokens',
-        copy=False
+        copy=False,
+        readonly=True,
+        groups='base.group_system'
     )
     oauth_access_max_token = fields.Integer(
         string='Max number of simultaneous connections',
@@ -42,7 +44,7 @@ class ResUsers(models.Model):
     @api.model
     def _auth_oauth_signin(self, provider, validation, params):
         """Override to handle sign-in with multi token."""
-        res = super(ResUsers, self)._auth_oauth_signin(
+        res = super()._auth_oauth_signin(
             provider, validation, params)
 
         oauth_uid = validation['user_id']
@@ -62,7 +64,6 @@ class ResUsers(models.Model):
         })
         return res
 
-    @api.multi
     def action_oauth_clear_token(self):
         """Inactivate current user tokens."""
         self.mapped('oauth_access_token_ids')._oauth_clear_token()
@@ -70,10 +71,10 @@ class ResUsers(models.Model):
             res.oauth_master_uuid = self._generate_oauth_master_uuid()
 
     @api.model
-    def check_credentials(self, password):
+    def _check_credentials(self, password):
         """Override to check credentials against multi tokens."""
         try:
-            return super(ResUsers, self).check_credentials(password)
+            return super()._check_credentials(password)
         except exceptions.AccessDenied:
             res = self.multi_token_model.sudo().search([
                 ('user_id', '=', self.env.uid),
@@ -84,6 +85,6 @@ class ResUsers(models.Model):
                 raise
 
     def _get_session_token_fields(self):
-        res = super(ResUsers, self)._get_session_token_fields()
+        res = super()._get_session_token_fields()
         res.remove('oauth_access_token')
         return res | {'oauth_master_uuid'}
