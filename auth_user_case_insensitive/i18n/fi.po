@@ -22,7 +22,7 @@ msgstr ""
 #: code:addons/auth_user_case_insensitive/hooks.py:23
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
-msgstr ""
+msgstr "Käyttäjä `%s` on jo olemassa"
 
 #. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
