@@ -19,11 +19,12 @@ class ResUsers(models.Model):
         login = login.lower()
         return super(ResUsers, cls)._login(db, login, password)
 
-    @api.model
-    def create(self, vals):
-        """ Overload create to lowercase login """
-        vals['login'] = vals.get('login', '').lower()
-        return super(ResUsers, self).create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        """ Overload create multiple to lowercase login """
+        for val in vals_list:
+            val['login'] = val.get('login', '').lower()
+        return super(ResUsers, self).create(vals_list)
 
     @api.multi
     def write(self, vals):
