@@ -13,7 +13,7 @@ class TestMultiToken(SavepointCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestMultiToken, cls).setUpClass()
+        super().setUpClass()
         cls.token_model = cls.env['auth.oauth.multi.token']
         cls.provider_google = cls.env.ref('auth_oauth.provider_google')
         cls.user_model = cls.env['res.users'].with_context({

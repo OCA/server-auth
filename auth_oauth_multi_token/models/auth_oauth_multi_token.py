@@ -22,14 +22,15 @@ class AuthOauthMultiToken(models.Model):
     user_id = fields.Many2one(
         comodel_name='res.users',
         string='User',
-        required=True
+        required=True,
+        readonly=True
     )
-    active_token = fields.Boolean('Active')
+    active_token = fields.Boolean('Active', readonly=True, copy=False)
 
     @api.model
     def create(self, vals):
         """Override to validate tokens."""
-        token = super(AuthOauthMultiToken, self).create(vals)
+        token = super().create(vals)
         token._oauth_validate_multi_token()
         return token
 
@@ -53,7 +54,6 @@ class AuthOauthMultiToken(models.Model):
             # clear last token
             user_tokens[max_token - 1]._oauth_clear_token()
 
-    @api.multi
     def _oauth_clear_token(self):
         """Disable current token records."""
         self.write({
