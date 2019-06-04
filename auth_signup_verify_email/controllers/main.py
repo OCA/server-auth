@@ -2,49 +2,37 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
+from email_validator import validate_email, EmailSyntaxError, \
+    EmailUndeliverableError
 from odoo import _
 from odoo.http import request, route
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 
 _logger = logging.getLogger(__name__)
 
-try:
-    from email_validator import validate_email, EmailSyntaxError, \
-        EmailUndeliverableError
-except ImportError:
-    # TODO Remove in v12, dropping backwards compatibility with validate_email
-    # pragma: no-cover
-    try:
-        from validate_email import validate_email as _validate
-
-        class EmailSyntaxError(Exception):
-            message = False
-
-        class EmailUndeliverableError(Exception):
-            message = False
-
-        def validate_email(*args, **kwargs):
-            if not _validate(*args, **kwargs):
-                raise EmailSyntaxError
-
-    except ImportError:
-        _logger.debug("Cannot import `email_validator`.")
-    else:
-        _logger.warning("Install `email_validator` to get full support.")
-
 
 class SignupVerifyEmail(AuthSignupHome):
 
+    # HACK https://github.com/odoo/odoo/pull/34690
+    def get_auth_signup_qcontext(self):
+        vals = super().get_auth_signup_qcontext()
+        if not request.params.get("password"):
+            vals['error'] = "--HACK--"
+        return vals
+
     @route()
     def web_auth_signup(self, *args, **kw):
-        if (request.params.get("login") and
-                not request.params.get("password")):
-            return self.passwordless_signup(request.params)
+        response = super(SignupVerifyEmail, self).web_auth_signup(*args, **kw)
+        if (request.params.get("login") and not
+                request.params.get("password")):
+            return self.passwordless_signup(request.params, response.qcontext)
         else:
-            return super(SignupVerifyEmail, self).web_auth_signup(*args, **kw)
+            return response
 
-    def passwordless_signup(self, values):
-        qcontext = self.get_auth_signup_qcontext()
+    def passwordless_signup(self, values, qcontext):
+        # HACK https://github.com/odoo/odoo/pull/34690
+        if qcontext['error'] == '--HACK--':
+            del qcontext['error']
 
         # Check good format of e-mail
         try:
