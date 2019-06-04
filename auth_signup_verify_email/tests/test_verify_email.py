@@ -3,13 +3,11 @@
 
 from mock import patch
 from lxml.html import document_fromstring
-from odoo.tests.common import at_install, post_install, HttpCase
+from odoo.tests.common import HttpCase
 from odoo.addons.mail.models import mail_template
 from odoo.tools.misc import mute_logger
 
 
-@at_install(False)
-@post_install(True)
 class UICase(HttpCase):
     def setUp(self):
         super(UICase, self).setUp()
