@@ -85,6 +85,14 @@ class IrHttp(models.AbstractModel):
                     yield (True, env)
 
     @classmethod
+    def _is_role_valid(cls):
+        user = request.env['res.users'].browse(request.session.uid)
+        roles_in_header = cls._get_http_role_header()
+
+        return (not roles_in_header and not user.last_http_header_roles
+                or roles_in_header == user.last_http_header_roles)
+
+    @classmethod
     def _update_role_from_header(cls):
         """Update roles assigned to user.
 
@@ -104,11 +112,11 @@ class IrHttp(models.AbstractModel):
             #   a debugging use case though.
             return
 
+        if cls._is_role_valid():
+            return
+
         user = request.env['res.users'].browse(request.session.uid)
         roles_in_header = cls._get_http_role_header()
-        if (not roles_in_header and not user.last_http_header_roles
-                or roles_in_header == user.last_http_header_roles):
-            return
 
         with cls._update_role_race_for_update(user.id) as (acquired, env):
             if not acquired:

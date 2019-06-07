@@ -14,7 +14,7 @@ class ResUsersRole(models.Model):
     @api.model
     def change_roles_remote_user(self, env, user_id, new_roles):
         """ Change the roles of the user with id user_id"""
-        user = env['res.users'].browse(user_id)
+        user = env['res.users'].browse(user_id).with_context(change_roles=True)
         new_roles = set(new_roles)
         existing_roles = set(user.role_ids.ids)
         roles2add = list(new_roles.difference(existing_roles))
