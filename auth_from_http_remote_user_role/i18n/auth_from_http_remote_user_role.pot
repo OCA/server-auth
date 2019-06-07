@@ -1,0 +1,40 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* auth_from_http_remote_user_role
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_from_http_remote_user_role
+#: model:ir.model.fields,field_description:auth_from_http_remote_user_role.field_res_users_role_user_role_code
+msgid "HTTP header code"
+msgstr ""
+
+#. module: auth_from_http_remote_user_role
+#: model:ir.model,name:auth_from_http_remote_user_role.model_ir_http
+msgid "HTTP routing"
+msgstr ""
+
+#. module: auth_from_http_remote_user_role
+#: model:ir.model.fields,field_description:auth_from_http_remote_user_role.field_res_users_last_http_header_roles
+msgid "Last HTTP header roles"
+msgstr ""
+
+#. module: auth_from_http_remote_user_role
+#: model:ir.model,name:auth_from_http_remote_user_role.model_res_users_role
+msgid "User role"
+msgstr ""
+
+#. module: auth_from_http_remote_user_role
+#: model:ir.model,name:auth_from_http_remote_user_role.model_res_users
+msgid "Users"
+msgstr ""
+
