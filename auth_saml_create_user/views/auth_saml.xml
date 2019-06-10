@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record model="ir.ui.view" id="view_saml_provider_form_inherit">
+        <field name="name">auth.saml.provider.form.inherit</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="inherit_id" ref="auth_saml.view_saml_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='matching_attribute']" position="after">
+                <field name="create_user"/>
+            </xpath>    
+        </field>
+    </record>
+</odoo>
