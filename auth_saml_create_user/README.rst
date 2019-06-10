@@ -7,23 +7,20 @@ Auth SAML Create User
    !! changes will be overwritten.                   !!
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
-    :target: https://odoo-community.org/page/development-status
-    :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/licence-LGPL--3-blue.png
-    :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
-    :alt: License: LGPL-3
-.. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
+.. |badge1| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
+    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
+    :alt: License: AGPL-3
+.. |badge2| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
     :target: https://github.com/OCA/server-auth/tree/11.0/auth_saml_create_user
     :alt: OCA/server-auth
-.. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
+.. |badge3| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
     :target: https://translation.odoo-community.org/projects/server-auth-11-0/server-auth-11-0-auth_saml_create_user
     :alt: Translate me on Weblate
-.. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
+.. |badge4| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
     :target: https://runbot.odoo-community.org/runbot/251/11.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| 
 
 This module extends the functionality of Auth SAML to support the automatic creation of
 SAML users when they don't exist in odoo.
@@ -74,6 +71,8 @@ Other credits
 The development of this module has been financially supported by:
 
 * Savoir-faire Linux
+* Odoo Community Association (OCA)
+
 
 Maintainers
 ~~~~~~~~~~~
@@ -87,6 +86,14 @@ This module is maintained by the OCA.
 OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
+
+.. |maintainer-eilst| image:: https://github.com/eilst.png?size=40px
+    :target: https://github.com/eilst
+    :alt: eilst
+
+Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
+
+|maintainer-eilst| 
 
 This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/11.0/auth_saml_create_user>`_ project on GitHub.
 
