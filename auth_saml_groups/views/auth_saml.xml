@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record model="ir.ui.view" id="view_saml_provider_form_inherit">
+        <field name="name">auth.saml.provider.form.inherit</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="inherit_id" ref="auth_saml.view_saml_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='sp_pkey']/.." position="after">
+             <group string="Map User Groups" >   
+                <field name="only_saml_groups"/>
+                <label for="group_mapping_ids" />
+                    <field name="group_mapping_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="saml_attribute" />
+                            <field name="operator" />
+                            <field name="value" />
+                            <field name="group_id" />
+                        </tree>
+                    </field>
+              </group>
+            </xpath>    
+        </field>
+    </record>
+</odoo>
