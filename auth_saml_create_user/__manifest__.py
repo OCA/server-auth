@@ -1,27 +1,23 @@
 # © 2019 Savoir-faire Linux
-# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
     'name': "Auth SAML Create User",
-
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
-
-    'description': """
-        Long description of module's purpose
-    """,
-    'author': 'Savoir-faire Linux',
-    'maintainer': 'Savoir-faire Linux',
-    'website': 'http://www.savoirfairelinux.com',
-    'license': 'LGPL-3',
+        This module extends the functionality of Auth SAML to support
+        the automatic creation of SAML users when they don't exist in odoo.""",
+    'author': 'Savoir-faire Linux, Odoo Community Association (OCA)',
+    'maintainers': ['eilst'],
+    'website': 'https://github.com/OCA/server-auth',
+    'license': 'AGPL-3',
     'category': 'Tools',
-    'version': '11.1',
+    'version': '11.0.1.0.0',
     'depends': [
-        'base',
         'auth_saml'
     ],
     'data': [
+        'data/auth_saml_create_user.xml',
         'views/auth_saml.xml',
     ],
+    'development_status': 'Stable',
 }
