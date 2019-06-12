@@ -4,16 +4,18 @@
 
 {
     'name': 'Saml2 Authentication',
-    'version': '11.0.2.0.0',
+    'version': '9.0.1.0.0',
     'category': 'Tools',
     'author': 'XCG Consulting, Odoo Community Association (OCA)',
     'maintainer': 'XCG Consulting',
     'website': 'http://odoo.consulting',
     'license': 'AGPL-3',
     'depends': [
+        'base',
         'base_setup',
         'web',
         'auth_crypt',
+        'auth_signup'
     ],
     'data': [
         'data/auth_saml.xml',
@@ -24,7 +26,6 @@
         'views/res_users.xml',
     ],
     'installable': True,
-    'auto_install': False,
     'external_dependencies': {
         'python': ['lasso'],  # >= 2.6.0
     },
