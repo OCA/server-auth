@@ -26,7 +26,7 @@ msgstr ""
 "nouveau son mot de passe"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:152
+#: code:addons/password_security/models/res_users.py:156
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Interdire l'utilisation des %d mots de passe les plus récents"
@@ -157,7 +157,7 @@ msgid "Password Policy"
 msgstr "Politique des mots de passe"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:129
+#: code:addons/password_security/models/res_users.py:133
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "

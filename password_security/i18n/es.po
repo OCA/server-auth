@@ -22,7 +22,7 @@ msgid "Amount of hours until a user may change password again"
 msgstr "Número de horas antes que un usuario pueda cambiar la contraseña"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:152
+#: code:addons/password_security/models/res_users.py:156
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "No se puede utilizar una de las %d contraseñas más recientes"
@@ -153,7 +153,7 @@ msgid "Password Policy"
 msgstr "Política de Contraseñas"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:129
+#: code:addons/password_security/models/res_users.py:133
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
