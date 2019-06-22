@@ -60,7 +60,11 @@ class AuthTotp(Home):
         response = super(AuthTotp, self).web_login(*args, **kwargs)
 
         if request.session.get('mfa_login_needed'):
-            request.session['mfa_login_needed'] = False
+            request.session.update({
+                'mfa_login_needed': False,
+                'login': kwargs.get('login', None),
+                'password': kwargs.get('password', None),
+            })
             return http.local_redirect(
                 '/auth_totp/login',
                 query={'redirect': request.params.get('redirect')},
