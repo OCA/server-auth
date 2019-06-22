@@ -31,7 +31,7 @@ class TestAuthTotp(TransactionCase):
 
         self.test_controller = AuthTotp()
 
-        self.test_user = self.env.ref('base.user_root')
+        self.test_user = self.env.ref('base.user_admin')
         self.test_user.mfa_enabled = False
         self.test_user.authenticator_ids = False
         self.env['res.users.authenticator'].create({
