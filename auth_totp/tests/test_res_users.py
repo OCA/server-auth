@@ -10,6 +10,7 @@ from ..models.res_users_authenticator import ResUsersAuthenticator
 
 MODEL_PATH = 'odoo.addons.auth_totp.models.res_users'
 REQUEST_PATH = MODEL_PATH + '.request'
+ADMIN_PASSWORD = 'admin_password'
 
 
 class TestResUsers(TransactionCase):
@@ -20,6 +21,7 @@ class TestResUsers(TransactionCase):
         self.test_model = self.env['res.users']
 
         self.test_user = self.env.ref('base.user_root')
+        self.test_user.write({'password': ADMIN_PASSWORD})
         self.test_user.mfa_enabled = False
         self.test_user.authenticator_ids = False
         self.env['res.users.authenticator'].create({
@@ -54,7 +56,7 @@ class TestResUsers(TransactionCase):
     def test_check_enabled_with_authenticator_mfa_no_auth(self):
         """Should raise correct error if MFA enabled without authenticators"""
         with self.assertRaisesRegexp(ValidationError, 'locked out'):
-            self.test_user.authenticator_ids = False
+            self.test_user.sudo(self.test_user.id).authenticator_ids = False
 
     def test_check_enabled_with_authenticator_no_mfa_auth(self):
         """Should not raise error if MFA not enabled with authenticators"""
@@ -129,9 +131,9 @@ class TestResUsers(TransactionCase):
         self.test_user.mfa_enabled = False
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         try:
-            self.env['res.users'].check_credentials('admin')
+            self.env['res.users']._check_credentials(ADMIN_PASSWORD)
         except AccessDenied:
             self.fail('An exception was raised with a correct password.')
 
@@ -139,7 +141,7 @@ class TestResUsers(TransactionCase):
         """It should add user's ID to MFA UID cache if MFA enabled"""
         self.test_model._mfa_uid_cache[self.env.cr.dbname].clear()
         try:
-            self.test_model.check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         except AccessDenied:
             pass
 
@@ -150,9 +152,9 @@ class TestResUsers(TransactionCase):
     def test_check_credentials_mfa_and_no_request(self):
         """Should raise correct exception if MFA enabled and no request"""
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         with self.assertRaises(MfaLoginNeeded):
-            self.env['res.users'].check_credentials('admin')
+            self.env['res.users']._check_credentials(ADMIN_PASSWORD)
 
     @patch(REQUEST_PATH)
     def test_check_credentials_mfa_login_active(self, request_mock):
@@ -160,9 +162,9 @@ class TestResUsers(TransactionCase):
         request_mock.session = {'mfa_login_active': self.test_user.id}
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         try:
-            self.env['res.users'].check_credentials('admin')
+            self.env['res.users']._check_credentials(ADMIN_PASSWORD)
         except AccessDenied:
             self.fail('An exception was raised with a correct password.')
 
@@ -173,10 +175,10 @@ class TestResUsers(TransactionCase):
         request_mock.httprequest.cookies = {}
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         self.assertFalse(request_mock.session.get('mfa_login_needed'))
         with self.assertRaises(MfaLoginNeeded):
-            self.env['res.users'].check_credentials('admin')
+            self.env['res.users']._check_credentials(ADMIN_PASSWORD)
         self.assertTrue(request_mock.session.get('mfa_login_needed'))
 
     @patch(REQUEST_PATH)
@@ -184,12 +186,13 @@ class TestResUsers(TransactionCase):
         """Should correctly raise/update session if MFA and no device cookie"""
         request_mock.session = {'mfa_login_active': False}
         request_mock.httprequest.cookies = {}
+        res_users = self.env['res.users'].sudo(self.test_user.id)
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            res_users._check_credentials('invalid')
         self.assertFalse(request_mock.session.get('mfa_login_needed'))
         with self.assertRaises(MfaLoginNeeded):
-            self.env['res.users'].check_credentials('admin')
+            res_users._check_credentials(ADMIN_PASSWORD)
         self.assertTrue(request_mock.session.get('mfa_login_needed'))
 
     @patch(REQUEST_PATH)
@@ -198,12 +201,13 @@ class TestResUsers(TransactionCase):
         request_mock.session = {'mfa_login_active': False}
         test_key = 'trusted_devices_%d' % self.test_user.id
         request_mock.httprequest.cookies = {test_key: 'invalid'}
+        res_users = self.env['res.users'].sudo(self.test_user.id)
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            res_users._check_credentials('invalid')
         self.assertFalse(request_mock.session.get('mfa_login_needed'))
         with self.assertRaises(MfaLoginNeeded):
-            self.env['res.users'].check_credentials('admin')
+            res_users._check_credentials(ADMIN_PASSWORD)
         self.assertTrue(request_mock.session.get('mfa_login_needed'))
 
     @patch(REQUEST_PATH)
@@ -215,7 +219,7 @@ class TestResUsers(TransactionCase):
             'login': 'test_user',
         })
         test_id_2 = test_user_2.id
-        self.env['res.users.authenticator'].create({
+        self.env['res.users.authenticator'].sudo(test_id_2).create({
             'name': 'Test Name',
             'secret_key': 'Test Key',
             'user_id': test_id_2,
@@ -228,10 +232,10 @@ class TestResUsers(TransactionCase):
         request_mock.httprequest.cookies = {test_key: test_device_cookie}
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         self.assertFalse(request_mock.session.get('mfa_login_needed'))
         with self.assertRaises(MfaLoginNeeded):
-            self.env['res.users'].check_credentials('admin')
+            self.env['res.users']._check_credentials(ADMIN_PASSWORD)
         self.assertTrue(request_mock.session.get('mfa_login_needed'))
 
     @patch(REQUEST_PATH)
@@ -248,9 +252,9 @@ class TestResUsers(TransactionCase):
         request_mock.httprequest.cookies = {test_key: test_device_cookie}
 
         with self.assertRaises(AccessDenied):
-            self.env['res.users'].check_credentials('invalid')
+            self.env['res.users']._check_credentials('invalid')
         try:
-            self.env['res.users'].check_credentials('admin')
+            self.env['res.users']._check_credentials(ADMIN_PASSWORD)
         except AccessDenied:
             self.fail('An exception was raised with a correct password.')
 

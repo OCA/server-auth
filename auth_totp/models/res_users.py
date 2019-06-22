@@ -64,8 +64,7 @@ class ResUsers(models.Model):
 
         return super(ResUsers, cls).check(db, uid, password)
 
-    @api.model
-    def check_credentials(self, password):
+    def _check_credentials(self, password):
         """Add MFA logic to core authentication process.
 
         Overview:
@@ -76,24 +75,31 @@ class ResUsers(models.Model):
               prevent auth while updating session to indicate that MFA login
               process can now commence.
         """
-        if not self.env.user.mfa_enabled:
-            return super(ResUsers, self).check_credentials(password)
+        self.env.cr.execute(
+            "SELECT COALESCE(mfa_enabled, false) FROM res_users WHERE id=%s",
+            [self.env.user.id])
+        [mfa_enabled] = self.env.cr.fetchone()
+        if not mfa_enabled:
+            return super(ResUsers, self)._check_credentials(password)
 
         self._mfa_uid_cache[self.env.cr.dbname].add(self.env.uid)
 
         if request:
             if request.session.get('mfa_login_active') == self.env.uid:
-                return super(ResUsers, self).check_credentials(password)
+                return super(ResUsers, self)._check_credentials(password)
 
             cookie_key = 'trusted_devices_%d' % self.env.uid
             device_cook = request.httprequest.cookies.get(cookie_key)
             if device_cook:
-                secret = self.env.user.trusted_device_cookie_key
+                self.env.cr.execute(
+                    "SELECT COALESCE(trusted_device_cookie_key, '') FROM res_users WHERE id=%s",
+                    [self.env.user.id])
+                [secret] = self.env.cr.fetchone()
                 device_cook = JsonSecureCookie.unserialize(device_cook, secret)
                 if device_cook:
-                    return super(ResUsers, self).check_credentials(password)
+                    return super(ResUsers, self)._check_credentials(password)
 
-        super(ResUsers, self).check_credentials(password)
+        super(ResUsers, self)._check_credentials(password)
         if request:
             request.session['mfa_login_needed'] = True
         raise MfaLoginNeeded
