@@ -4,7 +4,7 @@
 {
     'name': 'MFA and Password Security Compatibility',
     'summary': 'auth_totp and password_security compatibility',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Hidden',
     'website': 'https://github.com/OCA/server-auth',
     'author': 'LasLabs, Odoo Community Association (OCA)',
