@@ -92,7 +92,8 @@ class ResUsers(models.Model):
             device_cook = request.httprequest.cookies.get(cookie_key)
             if device_cook:
                 self.env.cr.execute(
-                    "SELECT COALESCE(trusted_device_cookie_key, '') FROM res_users WHERE id=%s",
+                    "SELECT COALESCE(trusted_device_cookie_key, '')"
+                    "FROM res_users WHERE id=%s",
                     [self.env.user.id])
                 [secret] = self.env.cr.fetchone()
                 device_cook = JsonSecureCookie.unserialize(device_cook, secret)
