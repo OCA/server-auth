@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-        <record id="view_res_config_settings" model="ir.ui.view">
-            <field name="name">base.config.settings.view</field>
-            <field name="model">base.config.settings</field>
-            <field name="inherit_id" ref="base_setup.view_general_configuration"/>
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="mail.res_config_settings_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//label[@name='email_label']/.." position='after'>
-                    <group>
-                        <label for="id" string="Passkey"/>
-                        <div>
-                        <div>
-                            <field name="auth_admin_passkey_send_to_admin" class="oe_inline"/>
+                <xpath expr="//div[@id='access_rights']" position='after'>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="auth_admin_passkey_send_to_admin"/>
+                        </div>
+                        <div class="o_setting_right_pane">
                             <label for="auth_admin_passkey_send_to_admin"/>
                         </div>
-                        <div>
-                            <field name="auth_admin_passkey_send_to_user" class="oe_inline"/>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="auth_admin_passkey_send_to_user"/>
+                        </div>
+                        <div class="o_setting_right_pane">
                             <label for="auth_admin_passkey_send_to_user"/>
                         </div>
-                        </div>
-                    </group>
+                    </div>
                 </xpath>
             </field>
         </record>
