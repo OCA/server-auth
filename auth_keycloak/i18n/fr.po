@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* auth_keycloak
+# 	* auth_keycloak
 #
 msgid ""
 msgstr ""
@@ -27,8 +27,10 @@ msgstr "Mot de passe du \"super utilisateur\""
 #. module: auth_keycloak
 #: model:ir.ui.view,arch_db:auth_keycloak.auth_keycloak_create_wiz
 #: model:ir.ui.view,arch_db:auth_keycloak.auth_keycloak_sync_wiz
-msgid "<strong>Users managerment not enabled!</strong>\n"
-"                You must configure \"Users management\" parameters on selected provider."
+msgid ""
+"<strong>Users managerment not enabled!</strong>\n"
+"                You must configure \"Users management\" parameters on "
+"selected provider."
 msgstr ""
 "<strong>La gestion des utilisateurs n'est pas activée !</strong>\n"
 "                Vous devez paramétrer la « gestion des utilisateurs » sur le "
@@ -52,13 +54,17 @@ msgstr "Annuler"
 
 #. module: auth_keycloak
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_client_secret
-msgid "Client secret"
+#, fuzzy
+#| msgid "Client secret"
+msgid "Client Secret"
 msgstr "Secret du client"
 
 #. module: auth_keycloak
-#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:209
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:208
 #, python-format
-msgid "Conflict on user values. Please verify that all values supposed to be unique are really unique. %(detail)s"
+msgid ""
+"Conflict on user values. Please verify that all values supposed to be unique "
+"are really unique. %(detail)s"
 msgstr ""
 "Conflit sur les valeurs de l'utilisateur. Vérifiez que toutes les valeurs "
 "qui sont sensées être uniques le sont réellement. %(detail)s"
@@ -105,12 +111,7 @@ msgid "ID"
 msgstr "ID"
 
 #. module: auth_keycloak
-#: model:ir.actions.act_window,name:auth_keycloak.keycloak_create_users
-msgid "Keycloak create users"
-msgstr "Keycloak crée des utilisateurs"
-
-#. module: auth_keycloak
-#: code:addons/auth_keycloak/models/res_users.py:60
+#: code:addons/auth_keycloak/models/res_users.py:59
 #, python-format
 msgid "Keycloak provider not found or not configured properly."
 msgstr "Fournisseur Keycloak non trouvé ou mal configuré."
@@ -151,11 +152,13 @@ msgstr "Dernière mise à jour le"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_login_match_key
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_login_match_key
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_login_match_key
-msgid "Login match key"
+#, fuzzy
+#| msgid "Login match key"
+msgid "Login Match Key"
 msgstr "Clé correspondant au login"
 
 #. module: auth_keycloak
-#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:196
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:195
 #, python-format
 msgid "No user selected"
 msgstr "Aucun utilisateur sélectionné"
@@ -178,7 +181,14 @@ msgid "Push to Keycloak"
 msgstr "Pousser sur Keycloak"
 
 #. module: auth_keycloak
-#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:72
+#: model:ir.actions.act_window,name:auth_keycloak.keycloak_create_users
+#, fuzzy
+#| msgid "Push to Keycloak"
+msgid "Push users to Keycloak"
+msgstr "Pousser sur Keycloak"
+
+#. module: auth_keycloak
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:71
 #, python-format
 msgid "Something went wrong. Please check logs."
 msgstr "Quelque chose s'est mal passé. Veuillez vérifier les logs."
@@ -196,7 +206,9 @@ msgstr "Super utilisateur"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_pwd
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_pwd
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_superuser_pwd
-msgid "Superuser pwd"
+#, fuzzy
+#| msgid "Superuser pwd"
+msgid "Superuser Pwd"
 msgstr "Mot de passe du super utilisateur"
 
 #. module: auth_keycloak
@@ -220,17 +232,19 @@ msgid "Synchronize users"
 msgstr "Synchroniser les utilisateurs"
 
 #. module: auth_keycloak
+#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_user_ids
+#, fuzzy
+#| msgid "Users"
+msgid "User"
+msgstr "Utilisateurs"
+
+#. module: auth_keycloak
 #: model:ir.model.fields,help:auth_keycloak.field_auth_keycloak_create_wiz_endpoint
 #: model:ir.model.fields,help:auth_keycloak.field_auth_keycloak_sync_mixin_endpoint
 #: model:ir.model.fields,help:auth_keycloak.field_auth_keycloak_sync_wiz_endpoint
 #: model:ir.model.fields,help:auth_keycloak.field_auth_oauth_provider_users_endpoint
 msgid "User endpoint"
 msgstr "Endpoint utilisateur"
-
-#. module: auth_keycloak
-#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_user_ids
-msgid "User ids"
-msgstr "Ids utilisateur"
 
 #. module: auth_keycloak
 #: model:ir.model,name:auth_keycloak.model_res_users
@@ -242,8 +256,20 @@ msgstr "Utilisateurs"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_endpoint
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_endpoint
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_users_endpoint
-msgid "Users endpoint"
+#, fuzzy
+#| msgid "Users endpoint"
+msgid "Users Endpoint"
 msgstr "Endpoint utilisateurs"
+
+#. module: auth_keycloak
+#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_management_enabled
+#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_management_enabled
+#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_management_enabled
+#: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_users_management_enabled
+#, fuzzy
+#| msgid "Users management enabled"
+msgid "Users Management Enabled"
+msgstr "Gestion des utilisateurs activée"
 
 #. module: auth_keycloak
 #: model:ir.ui.view,arch_db:auth_keycloak.view_oauth_provider_form
@@ -251,15 +277,7 @@ msgid "Users management (Keycloak)"
 msgstr "Gestion des utilisateurs (Keycloak)"
 
 #. module: auth_keycloak
-#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_management_enabled
-#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_management_enabled
-#: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_management_enabled
-#: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_users_management_enabled
-msgid "Users management enabled"
-msgstr "Gestion des utilisateurs activée"
-
-#. module: auth_keycloak
-#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:58
+#: code:addons/auth_keycloak/wizard/keycloak_sync_wiz.py:57
 #, python-format
 msgid "Users management must be enabled on selected provider"
 msgstr ""
@@ -293,3 +311,9 @@ msgstr "email"
 #: selection:auth.keycloak.sync.wiz,login_match_key:0
 msgid "username"
 msgstr "nom d'utilisateur"
+
+#~ msgid "Keycloak create users"
+#~ msgstr "Keycloak crée des utilisateurs"
+
+#~ msgid "User ids"
+#~ msgstr "Ids utilisateur"
