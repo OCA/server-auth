@@ -25,33 +25,33 @@ msgid "Access Groups"
 msgstr "Grupos de Acesso"
 
 #. module: auth_dynamic_groups
-#: field:res.groups,dynamic_group_condition:0
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups_dynamic_group_condition
 msgid "Condition"
 msgstr "Condição"
 
 #. module: auth_dynamic_groups
-#: field:res.groups,is_dynamic:0
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups_is_dynamic
 msgid "Dynamic"
 msgstr "Dinâmico"
 
 #. module: auth_dynamic_groups
-#: view:res.groups:auth_dynamic_groups.view_groups_form
+#: model:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
 msgid "Evaluate"
 msgstr "Avaliar"
 
 #. module: auth_dynamic_groups
-#: view:res.groups:auth_dynamic_groups.view_groups_form
+#: model:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
 msgid "Fill in your condition..."
 msgstr "Preencha na sua condição..."
 
 #. module: auth_dynamic_groups
-#: code:addons/auth_dynamic_groups/model/res_groups.py:57
+#: code:addons/auth_dynamic_groups/models/res_groups.py:39
 #, python-format
 msgid "The condition doesn't evaluate correctly!"
 msgstr "Condição não avalia corretamente!"
 
 #. module: auth_dynamic_groups
-#: help:res.groups,dynamic_group_condition:0
+#: model:ir.model.fields,help:auth_dynamic_groups.field_res_groups_dynamic_group_condition
 msgid ""
 "The condition to be met for a user to be a member of this group. It is "
 "evaluated as python code at login time, you get `user` passed as a browse "
@@ -66,7 +66,5 @@ msgstr ""
 msgid "Users"
 msgstr "Usuários"
 
-#. module: auth_dynamic_groups
-#: view:res.groups:auth_dynamic_groups.view_groups_form
-msgid "{'readonly': [('is_dynamic', '=', True)]}"
-msgstr "{'readonly': [('is_dynamic', '=', True)]}"
+#~ msgid "{'readonly': [('is_dynamic', '=', True)]}"
+#~ msgstr "{'readonly': [('is_dynamic', '=', True)]}"
