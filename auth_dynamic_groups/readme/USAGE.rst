@@ -10,3 +10,7 @@ can start assigning local menus to it, adjust permissions, etc. Keep in mind
 that view overrides can also be restricted by a group id, this gives a lot of
 possibilities to dynamically adapt views based on arbitrary properties
 reachable via the user record.
+
+Or we want all partners that have the category 'Subscriber' to be added to
+be a group subscribers, to give them access to certain website pages or a
+subscriber portal.
