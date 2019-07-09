@@ -1,0 +1,31 @@
+<odoo>
+
+    <record id="view_groups_form" model="ir.ui.view">
+        <field name="inherit_id" ref="auth_dynamic_groups.view_groups_form" />
+        <field name="model">res.groups</field>
+        <field name="arch" type="xml">
+            <xpath
+                expr="//notebook/page[@id='page_dynamic']"
+                position="inside"
+                >
+                <group
+                    id="group_contract"
+                    attrs="{'invisible': [('group_type', '!=', 'contract')]}"
+                    col="4"
+                    >
+                    <label
+                        for="product_ids"
+                        string="Select products that users should have a contract for"
+                        colspan="4"
+                        />
+                    <field
+                        name="product_ids"
+                        colspan="4"
+                        nolabel="1"
+                        />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
