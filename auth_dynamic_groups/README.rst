@@ -25,9 +25,30 @@ Dynamic groups
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
 
-This module allows defining groups whose membership is a condition expressed as
-python code. For every user, it is evaluated during login if she belongs to
-the group or not.
+This module allows defining groups whose membership is a set dynamically.
+
+This can be based on a condition expressed as python code and / or on the
+categories attributed to the partner/user.
+
+In addition this module allows for easy extention to add other methods to
+determine group membership.
+
+To define a new way to determine group membership, add a field named
+`dynamic_method_<something>` to the res.groups model, and a corresponding
+method `dynamic_method_<something>_check`. Compare the fields/methods called
+`dynamic_method_formula[_check]` and `dynamic_method_category[_check]`
+to see how this is done.
+
+Criteria can be combined. The methods on res.users define wether a user
+satisfies some test, the value of the corresponding field on res.groups
+determine wether the condition will lead to exclusion of the group, inclusion
+of the group, be ignored, or needs to be combined with other conditions.
+
+If any condition excludes a user from a group, this always 'wins'
+
+Finally a group can be marked as being filled automatically. For instance
+groups that are maintained from an ldap connection can in this way be
+prevented from manual editting.
 
 **Table of contents**
 
@@ -37,12 +58,38 @@ the group or not.
 Configuration
 =============
 
-Check `Dynamic` on a group you want to be dynamic. Now fill in the condition,
-using `user` which is a browse record of the user in question that evaluates
-truthy if the user is supposed to be a member of the group and falsy if not.
+Normally group membership is maintained by the administrators. Either manually,
+or by granting authorities on the user record.
 
-There is a constraint on the field to check for validity if this expression.
-When you're satisfied, click the button `Evaluate` to prefill the group's
+You can select other criteria by which the membership of groups is maintained.
+
+You can have membership determined by a formula, and/or by the categories
+of the partner.
+
+Specify that you want to maintain group memebrship automatically by marking
+a group as dynamic. You can then set criteria on the tab page `Dynamic`.
+
+If you want to use a formula you will need to enter a condition that will
+need to evaluate to either True or False. Specify the condition, using `user`
+which is a browse record of the user in question.
+
+There is a constraint on the field to check for validity of this expression.
+
+If you want to base a group on partner category you can enter the categories
+that will include the users linked to a partner to the group.
+
+If a user needs to have a category AND needs to satisfy a certain formula,
+specify `use` for both criteria.
+
+If a user needs to EITHER have a category OR needs to satify a formula,
+specify `include` for both.
+
+If having a category, or satisfying a formula, should exclude a user from a
+group, specify `exclude` for that criterium.
+
+If a user is excluded from a group, that criterium always has priority.
+
+When you're satisfied, click the button `Refresh` to prefill the group's
 members. The condition will be checked now for every user who logs in.
 
 Usage
@@ -60,6 +107,10 @@ can start assigning local menus to it, adjust permissions, etc. Keep in mind
 that view overrides can also be restricted by a group id, this gives a lot of
 possibilities to dynamically adapt views based on arbitrary properties
 reachable via the user record.
+
+Or we want all partners that have the category 'Subscriber' to be added to
+be a group subscribers, to give them access to certain website pages or a
+subscriber portal.
 
 Bug Tracker
 ===========

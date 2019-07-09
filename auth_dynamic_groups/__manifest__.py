@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
     "name": "Dynamic groups",
-    "version": "11.0.1.0.0",
+    "version": "11.0.2.0.0",
     "author": "Odoo Community Association (OCA),Therp BV",
     "license": "AGPL-3",
     "website": "https://github.com/OCA/server-auth",
@@ -14,6 +14,7 @@
     ],
     "data": [
         'views/res_groups.xml',
+        'views/res_users.xml',
     ],
     "auto_install": False,
     "installable": True,

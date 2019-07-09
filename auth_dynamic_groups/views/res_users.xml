@@ -1,0 +1,18 @@
+<odoo>
+
+    <record id="view_users_form" model="ir.ui.view">
+        <field name="name">Res Users Form - add refresh dynamic groups button</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="model">res.users</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button
+                    type="object"
+                    name="action_refresh_groups"
+                    string="Refresh dynamic groups"
+                    />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

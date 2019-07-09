@@ -1,2 +1,4 @@
 # base_user_role
 server-backend
+contract
+partner-contact

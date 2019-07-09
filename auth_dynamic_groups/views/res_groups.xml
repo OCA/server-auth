@@ -1,30 +1,111 @@
 <odoo>
+
+    <record id="view_groups_search" model="ir.ui.view">
+        <field name="name">res.groups.search.dynamic</field>
+        <field name="inherit_id" ref="base.view_groups_search" />
+        <field name="model">res.groups</field>
+        <field name="arch" type="xml">
+            <filter name="no_share" position="after">
+                <filter
+                    name="dynamic"
+                    string="Dynamic Groups"
+                    domain="[('is_dynamic','=',True)]"
+                    />
+            </filter>
+        </field>
+    </record>
+
     <record id="view_groups_form" model="ir.ui.view">
         <field name="inherit_id" ref="base.view_groups_form" />
         <field name="model">res.groups</field>
         <field name="arch" type="xml">
-            <field name="name" position="after">
-                <field name="is_dynamic" />
-            </field>
-            <field name="users" position="attributes">
-                <attribute name="attrs">{'readonly': [('is_dynamic', '=', True)]}</attribute>
+            <field name="share" position="after">
+                <!-- Attribute dynamic excludes automatic and vice versa. -->
+                <field
+                    name="is_dynamic"
+                    attrs="{'invisible': [('is_automatic', '=', True)]}"
+                    />
+                <field
+                    name="is_automatic"
+                    attrs="{'invisible': [('is_dynamic', '=', True)]}"
+                    />
             </field>
             <field name="users" position="before">
                 <group
-                    name="auth_dynamic_groups"
+                    colspan="4" col="4"
                     attrs="{'invisible': [('is_dynamic', '=', False)]}"
                     >
-                    <field
-                        name="dynamic_group_condition"
-                        placeholder="Fill in your condition..."
-                        attrs="{'required': [('is_dynamic', '=', True)]}"
-                        colspan="4" nolabel="1" />
+                    <p>Use tab Dynamic to enter selection criteria</p>
                     <button
                         type="object"
-                        name="action_evaluate"
-                        string="Evaluate" />
+                        name="action_refresh_users"
+                        string="Refresh (max 512)"
+                        />
                 </group>
             </field>
+            <field name="users" position="attributes">
+                <attribute
+                    name="attrs"
+                    >{'readonly': ['|',('is_dynamic', '=', True),('is_automatic', '=', True)]}</attribute>
+            </field>
+            <xpath expr="//notebook/page" position="after">
+                <page
+                    id="page_dynamic"
+                    string="Dynamic"
+                    attrs="{'invisible': [('is_dynamic', '=', False)]}"
+                    >
+                    <group id="group_debug" colspan="6" col="4">
+                        <field name="enable_debug" />
+                    </group>
+                    <group
+                        id="group_criteria"
+                        string="Criteria to use"
+                        colspan="6"
+                        col="4"
+                        >
+                        <field name="dynamic_method_formula" />
+                        <field name="dynamic_method_category" />
+                    </group>
+                    <group
+                        id="group_formula"
+                        string="Formula"
+                        attrs="{'invisible': [('dynamic_method_formula', '=', False)]}"
+                        colspan="6"
+                        col="4"
+                        >
+                        <label
+                            for="dynamic_group_condition"
+                            string="Formula for dynamic group. Should evaluate to True or False."
+                            colspan="4"
+                            />
+                        <field
+                            name="dynamic_group_condition"
+                            placeholder="Fill in your condition..."
+                            colspan="4"
+                            nolabel="1"
+                            />
+                    </group>
+                    <group
+                        id="group_partner_category"
+                        string="Partner category"
+                        attrs="{'invisible': [('dynamic_method_category', '=', False)]}"
+                        colspan="6"
+                        col="4"
+                        >
+                        <label
+                            for="partner_category_ids"
+                            string="Select partner categories."
+                            colspan="4"
+                            />
+                        <field
+                            name="partner_category_ids"
+                            colspan="4"
+                            nolabel="1"
+                            />
+                    </group>
+                </page>
+            </xpath>
         </field>
     </record>
+
 </odoo>
