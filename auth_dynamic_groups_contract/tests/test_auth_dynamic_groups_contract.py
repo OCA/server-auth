@@ -43,14 +43,14 @@ class TestAuthDynamicGroups(TransactionCase):
         contract_model = self.env['account.analytic.account']
         line_model = self.env['account.analytic.invoice.line']
         self.demo_user = self.env.ref('base.user_demo')
-        contract_demo_user = contract_model.create({
+        self.contract_demo_user = contract_model.create({
             'name': 'Test Contract Demo User',
             'partner_id': self.demo_user.partner_id.id,
             'recurring_invoices': True,
             'date_start': '2016-02-15',
             'recurring_next_date': '2016-02-29'})
         line_model.create({
-            'analytic_account_id': contract_demo_user.id,
+            'analytic_account_id': self.contract_demo_user.id,
             'product_id': self.product_newsletter_subscription.id,
             'name': self.product_newsletter_subscription.name,
             'quantity': 1,
@@ -71,3 +71,7 @@ class TestAuthDynamicGroups(TransactionCase):
         self.assertFalse(group.users)
         self.env['res.users'].update_dynamic_groups(self.demo_user.id)
         self.assertIn(self.demo_user, group.users)
+        # Check contract expiration
+        self.contract_demo_user.write({'date_end': '2018-12-31'})
+        self.env['res.users'].update_dynamic_groups(self.demo_user.id)
+        self.assertNotIn(self.demo_user, group.users)

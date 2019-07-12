@@ -58,8 +58,7 @@ class ResGroups(models.Model):
             for category in self.partner_category_ids:
                 if category in user.partner_id.category_id:
                     return True
-                return False
-            return self.eval_dynamic_group_condition(user)
+            return False
         return user in self.users  # For completeness sake
 
     @api.multi
