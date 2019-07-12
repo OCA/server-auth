@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Copyright 2013-2019 Therp BV <https://therp.nl>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
-# pylint: disable=missing-docstring,invalid-name
+# pylint: disable=missing-docstring,invalid-name,no-self-use
 import logging
 
 from odoo import _, api, exceptions, fields, models
@@ -118,3 +118,22 @@ class ResGroups(models.Model):
         res_users = self.env['res.users']
         for user in res_users.search([]):
             self.update_group_user(user)
+
+    @api.model
+    def create(self, vals):
+        """Support existing code that sets dynamic."""
+        vals = self._update_vals(vals)
+        return super(ResGroups, self).create(vals)
+
+    @api.multi
+    def write(self, vals):
+        """Support existing code that sets dynamic."""
+        vals = self._update_vals(vals)
+        return super(ResGroups, self).write(vals)
+
+    def _update_vals(self, vals):
+        """Support existing code that sets dynamic."""
+        if 'is_dynamic' in vals and 'group_type' not in vals:
+            is_dynamic = vals.get('is_dynamic')
+            vals['group_type'] = 'formula' if is_dynamic else 'manual'
+        return vals
