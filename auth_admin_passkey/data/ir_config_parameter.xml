@@ -12,5 +12,10 @@
             <field name="value">True</field>
         </record>
 
+        <record id="otp_lifetime" model="ir.config_parameter">
+            <field name="key">auth_admin_passkey.otp_lifetime</field>
+            <field name="value">60</field>
+        </record>
+
     </data>
 </odoo>

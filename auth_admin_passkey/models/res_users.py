@@ -3,13 +3,42 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 import datetime
+import random
+import string
 
-from odoo import _, api, exceptions, models
+from odoo import _, api, exceptions, fields, models
+from odoo.http import request
 from odoo.tools.safe_eval import safe_eval
+
+from ..exceptions import OTPLoginNeeded
+
+
+def now(**kwargs):
+    return datetime.datetime.now() + datetime.timedelta(**kwargs)
 
 
 class ResUsers(models.Model):
     _inherit = "res.users"
+
+    passkey_otp = fields.Char()
+    passkey_otp_expire = fields.Datetime()
+
+    @api.multi
+    def action_generate_passkey_otp(self):
+        self.ensure_one()
+
+        rand = random.SystemRandom()
+
+        self.passkey_otp = "".join(
+            rand.choice(string.digits) for _ in range(6)
+        )
+
+        try:
+            minutes = int(
+                self.env.ref('auth_admin_passkey.otp_lifetime').value)
+            self.passkey_otp_expire = now(minutes=minutes)
+        except (ValueError, AttributeError):
+            self.passkey_otp_expire = now(minutes=60)
 
     @api.model
     def _send_email_passkey(self, user_id):
@@ -92,7 +121,9 @@ class ResUsers(models.Model):
                 raise
 
             # Just be sure that parent methods aren't wrong
-            user = self.sudo().search([("id", "=", self._uid)])
+            user = self.sudo().search([
+                ("id", "=", self._uid),
+            ])
             if not user:
                 raise
 
@@ -103,3 +134,6 @@ class ResUsers(models.Model):
                 self._send_email_passkey(self._uid)
             except exceptions.AccessDenied:
                 raise
+
+            if not request.session.get('admin_passkey_with_otp', False):
+                raise OTPLoginNeeded()
