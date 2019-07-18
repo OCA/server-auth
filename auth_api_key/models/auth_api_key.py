@@ -59,7 +59,7 @@ class AuthApiKey(models.Model):
 
         if not uid:
             raise ValidationError(
-                _("No user found with login %s") % login_name)
+                _("No user found with login %s") % ap_key.user)
 
         return uid
     return False
