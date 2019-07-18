@@ -5,7 +5,7 @@
 
     'name': 'Password Security',
     "summary": "Allow admin to set password security requirements.",
-    'version': '12.0.1.1.0',
+    'version': '12.0.1.1.1',
     'author':
         "LasLabs, "
         "Kaushal Prajapati, "
@@ -14,6 +14,7 @@
     'category': 'Base',
     'depends': [
         'auth_signup',
+        'auth_password_policy',
         'auth_password_policy_signup',
     ],
     "website": "https://github.com/OCA/server-auth",
