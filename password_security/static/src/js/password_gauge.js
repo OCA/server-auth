@@ -6,22 +6,6 @@ odoo.define('password_security.policy', function (require) {
     var core = require('web.core');
     var _t = core._t;
     var Policy = require('auth_password_policy').Policy;
-    require('auth_password_policy').recommendations.policies = [
-        new Policy({
-            password_length: 12,
-            password_upper: 3,
-            password_lower: 3,
-            password_numeric: 3,
-            password_special: 3,
-        }),
-        new Policy({
-            password_length: 16,
-            password_upper: 4,
-            password_lower: 4,
-            password_numeric: 4,
-            password_special: 4,
-        }),
-    ];
 
     Policy.include({
 
@@ -131,5 +115,27 @@ odoo.define('password_security.policy', function (require) {
                 numericscore * specialscore);
         },
     });
+
+    var recommendations = {
+        score: require('auth_password_policy').recommendations.score,
+        policies: [
+            new Policy({
+                password_length: 12,
+                password_upper: 3,
+                password_lower: 3,
+                password_numeric: 3,
+                password_special: 3,
+            }),
+            new Policy({
+                password_length: 16,
+                password_upper: 4,
+                password_lower: 4,
+                password_numeric: 4,
+                password_special: 4,
+            }),
+        ]
+    };
+
+    require('auth_password_policy').recommendations = recommendations;
 
 });
