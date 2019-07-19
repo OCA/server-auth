@@ -12,6 +12,6 @@
     "website": "https://acsone.eu/",
     "development_status": "Beta",
     "depends": ["server_environment"],
-    "data": [],
+    "data": ['security/ir.model.access.csv'],
     "demo": [],
 }
