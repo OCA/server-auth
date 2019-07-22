@@ -8,4 +8,3 @@ pyotp
 # auth_u2f
 python-u2flib-server
 responses
-libmysqlclient-dev
