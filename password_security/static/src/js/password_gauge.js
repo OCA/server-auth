@@ -5,7 +5,8 @@ odoo.define('password_security.policy', function (require) {
 
     var core = require('web.core');
     var _t = core._t;
-    var Policy = require('auth_password_policy').Policy;
+    var auth_password_policy = require('auth_password_policy');
+    var Policy = auth_password_policy.Policy;
 
     Policy.include({
 
@@ -117,7 +118,7 @@ odoo.define('password_security.policy', function (require) {
     });
 
     var recommendations = {
-        score: require('auth_password_policy').recommendations.score,
+        score: auth_password_policy.recommendations.score,
         policies: [
             new Policy({
                 password_length: 12,
@@ -136,6 +137,6 @@ odoo.define('password_security.policy', function (require) {
         ]
     };
 
-    require('auth_password_policy').recommendations = recommendations;
+    auth_password_policy.recommendations = recommendations;
 
 });
