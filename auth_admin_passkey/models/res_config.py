@@ -10,22 +10,31 @@ class BaseConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
     @api.model
-    def get_default_auth_admin_passkey_send_to_admin(self, fields):
+    def get_values(self):
+        res = super(BaseConfigSettings, self).get_values()
         icp = self.env["ir.config_parameter"]
-        return {
-            "auth_admin_passkey_send_to_admin": safe_eval(
+        res.update(
+            auth_admin_passkey_send_to_admin=safe_eval(
                 icp.get_param("auth_admin_passkey.send_to_admin", "True")
-            )
-        }
-
-    @api.model
-    def get_default_auth_admin_passkey_send_to_user(self, fields):
-        icp = self.env["ir.config_parameter"]
-        return {
-            "auth_admin_passkey_send_to_user": safe_eval(
+            ),
+            auth_admin_passkey_send_to_user=safe_eval(
                 icp.get_param("auth_admin_passkey.send_to_user", "True")
-            )
-        }
+            ),
+        )
+        return res
+
+    @api.multi
+    def set_values(self):
+        super(BaseConfigSettings, self).set_values()
+        icp = self.env["ir.config_parameter"]
+        icp.set_param(
+            "auth_admin_passkey.send_to_admin",
+            repr(self.auth_admin_passkey_send_to_admin),
+        )
+        icp.set_param(
+            "auth_admin_passkey.send_to_user",
+            repr(self.auth_admin_passkey_send_to_user),
+        )
 
     auth_admin_passkey_send_to_admin = fields.Boolean(
         "Send email to admin user.",
@@ -43,23 +52,3 @@ class BaseConfigSettings(models.TransientModel):
             "to the account user."
         ),
     )
-
-    @api.multi
-    def set_auth_admin_passkey_send_to_admin(self):
-        self.ensure_one()
-
-        icp = self.env["ir.config_parameter"]
-        icp.set_param(
-            "auth_admin_passkey.send_to_admin",
-            repr(self.auth_admin_passkey_send_to_admin),
-        )
-
-    @api.multi
-    def set_auth_admin_passkey_send_to_user(self):
-        self.ensure_one()
-
-        icp = self.env["ir.config_parameter"]
-        icp.set_param(
-            "auth_admin_passkey.send_to_user",
-            repr(self.auth_admin_passkey_send_to_user),
-        )
