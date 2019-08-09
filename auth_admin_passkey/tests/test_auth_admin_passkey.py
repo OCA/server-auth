@@ -19,9 +19,9 @@ class TestAuthAdminPasskey(common.TransactionCase):
         self.db = self.env.cr.dbname
 
         self.user_login = 'auth_admin_passkey_user'
-        self.user_password = 'auth_admin_passkey_password'
+        self.user_password = 'Auth_admin_passkey_password*1'
         self.sysadmin_passkey = 'SysAdminPasskeyPa$$w0rd'
-        self.bad_password = 'bad_password'
+        self.bad_password = 'Bad_password*000001'
         self.bad_login = 'bad_login'
 
         user = self.ResUsers.create({
