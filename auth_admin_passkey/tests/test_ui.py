@@ -22,9 +22,9 @@ class TestUI(common.HttpCase):
             env = self.env(test_cursor)
 
             self.user_login = 'auth_admin_passkey_user'
-            self.user_password = 'auth_admin_passkey_password'
+            self.user_password = 'Auth_admin_passkey_password*1'
             self.sysadmin_passkey = 'SysAdminPasskeyPa$$w0rd'
-            self.bad_password = 'bad_password'
+            self.bad_password = 'Bad_password*000001'
             self.bad_login = 'bad_login'
 
             self.user = env['res.users'].create({
@@ -33,15 +33,6 @@ class TestUI(common.HttpCase):
                 'name': 'auth_admin_passkey User'
             })
 
-            # self.admin_password = 'AdminPa$$w0rd'
-            # env.ref('base.user_root').password = self.admin_password
-            # self.passkey_password = 'PasskeyPa$$w0rd'
-            # self.passkey_user = env['res.users'].create({
-            #     'name': 'passkey',
-            #     'login': 'passkey',
-            #     'email': 'passkey',
-            #     'password': self.passkey_password
-            # })
             self.dbname = env.cr.dbname
 
         self.werkzeug_environ = {'REMOTE_ADDR': '127.0.0.1'}
