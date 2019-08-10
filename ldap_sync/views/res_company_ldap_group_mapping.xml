@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="res_company_ldap_group_mapping_form_view" model="ir.ui.view">
+        <field name="name">res.company.ldap.group.mapping.form</field>
+        <field name="model">res.company.ldap.group.mapping</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="company_ldap_id" invisible="1"/>
+                <field name="ldap_group_id" options="{'no_create': True}" required="1"/>
+                <field name="odoo_group_ids"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="res_company_ldap_group_mapping_tree_view" model="ir.ui.view">
+        <field name="name">res.company.ldap.group.mapping.tree</field>
+        <field name="model">res.company.ldap.group.mapping</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="company_ldap_id" invisible="1"/>
+                <field name="ldap_group_id" options="{'no_create': True}" required="1"/>
+                <field name="odoo_group_ids" widget="many2many_tags"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>

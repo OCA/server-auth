@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="view_ldap_installer_form" model="ir.ui.view">
+        <field name="name">res.company.ldap.form</field>
+        <field name="model">res.company.ldap</field>
+        <field name="inherit_id" ref="auth_ldap.view_ldap_installer_form"/>
+        <field name="arch" type="xml">
+            <form>
+                <group string="Directory Sync">
+                    <group colspan="2">
+                        <field name="scheduled_sync_enabled" string="Scheduled Sync"/>
+                        <field name="login_sync_enabled" string="On-Login Sync"/>
+                    </group>
+                    <group string="Users Sync">
+                        <field
+                            name="users_base_dn"
+                            string="Base DN"
+                            required="1"
+                        />
+                        <field
+                            name="user_object_filter"
+                            string="Filter"
+                            required="1"
+                        />
+                        <field
+                            name="user_login_attribute"
+                            string="Login attribute"
+                            required="1"
+                        />
+                        <field
+                            name="user_email_attribute"
+                            string="Email attribute"
+                            required="1"
+                        />
+                        <field
+                            name="user_name_attribute"
+                            string="Name attribute"
+                            required="1"
+                        />
+                        <field
+                            name="user_unique_identifier_attribute"
+                            string="Unique ID attribute"
+                            required="1"
+                        />
+                        <field
+                            name="user_group_membership_attribute"
+                            string="Group Membership attribute"
+                            required="1"
+                        />
+                        <field
+                            name="deactivate_unlinked_users"
+                            string="Deactivate unlinked users"
+                        />
+                        <field
+                            name="deactivate_non_ldap_users"
+                            string="Deactivate non-LDAP users"
+                        />
+                        <field
+                            name="ignore_non_ldap_user_ids"
+                            string="Ignored non-LDAP users"
+                            widget="many2many_tags"
+                            attrs="{'invisible':[('deactivate_unlinked_users','=',False), ('deactivate_non_ldap_users','=',False)],}"
+                        />
+                    </group>
+                    <group string="Groups Sync">
+                        <field
+                            name="groups_base_dn"
+                            string="Base DN"
+                            required="1"
+                        />
+                        <field
+                            name="group_object_filter"
+                            string="Filter"
+                            required="1"
+                        />
+                        <field
+                            name="group_name_attribute"
+                            string="Name attribute"
+                            required="1"
+                        />
+                        <field
+                            name="sync_group_membership"
+                            string="Sync membership"
+                        />
+                    </group>
+                    <group
+                        string="Group Membership Mapping"
+                        attrs="{'invisible': [('sync_group_membership', '=', False)]}"
+                    >
+                        <field name="ldap_group_mapping_ids" nolabel="1"/>
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_res_company_ldap_sync_directory" model="ir.actions.server">
+        <field name="name">Sync Directory</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="auth_ldap.model_res_company_ldap"/>
+        <field name="binding_model_id" ref="auth_ldap.model_res_company_ldap"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                records.sudo()._sync()
+        </field>
+    </record>
+
+</odoo>

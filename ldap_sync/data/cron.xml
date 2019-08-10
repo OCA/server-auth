@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+    Copyright 2019 Brainbean Apps (https://brainbeanapps.com)
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+-->
+<odoo noupdate="1">
+
+    <record id="ldap_directory_sync_cron" model="ir.cron">
+        <field name="name">LDAP Directory Sync</field>
+        <field name="model_id" ref="auth_ldap.model_res_company_ldap"/>
+        <field name="state">code</field>
+        <field name="code">model._scheduled_sync()</field>
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="True"/>
+    </record>
+
+</odoo>
