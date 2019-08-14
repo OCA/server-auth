@@ -25,6 +25,48 @@ class PasswordSecuritySession(Session):
 
 class PasswordSecurityHome(AuthSignupHome):
 
+    def get_auth_signup_qcontext(self):
+        res_users = request.env['res.users'].sudo()
+        qcontext = super(PasswordSecurityHome, self).get_auth_signup_qcontext()
+        login = qcontext.get('login')
+        if login:
+            user_ids = res_users.search(
+                [('login', '=', login)],
+                limit=1,
+            )
+            if not user_ids:
+                user_ids = res_users.search(
+                    [('email', '=', login)],
+                    limit=1,
+                )
+            company = user_ids.company_id
+        else:
+            company = request.env['res.company'].sudo()._company_default_get()
+        if company:
+            data = {
+                # re-write value from `auth_password_policy_signup`
+                "password_minimum_length": company.password_length,
+                # new values
+                "password_length": company.password_length,
+                "password_lower": company.password_lower,
+                "password_upper": company.password_upper,
+                "password_numeric": company.password_numeric,
+                "password_special": company.password_special,
+            }
+        else:
+            data = {
+                # re-write value from `auth_password_policy_signup`
+                "password_minimum_length": 8,
+                # default values
+                "password_length": 8,
+                "password_lower": 1,
+                "password_upper": 1,
+                "password_numeric": 1,
+                "password_special": 1,
+            }
+        qcontext.update(data)
+        return qcontext
+
     def do_signup(self, qcontext):
         password = qcontext.get('password')
         user_id = request.env.user

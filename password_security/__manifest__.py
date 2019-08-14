@@ -14,6 +14,7 @@
     'category': 'Base',
     'depends': [
         'auth_signup',
+        'auth_password_policy',
         'auth_password_policy_signup',
     ],
     "website": "https://github.com/OCA/server-auth",
@@ -21,6 +22,7 @@
     "data": [
         'views/password_security.xml',
         'views/res_config_settings_views.xml',
+        'views/signup_templates.xml',
         'security/ir.model.access.csv',
         'security/res_users_pass_history.xml',
     ],

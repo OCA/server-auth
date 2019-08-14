@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="fields" inherit_id="auth_password_policy_signup.fields" name="Password policy data for auth_signup/password_security">
+        <xpath expr="//input[@name='password']" position="attributes">
+            <!-- Remove original meter from `auth_password_policy_signup` -->
+            <attribute name="t-att-minlength"/>
+            <!-- Add new attributes required by `password_security` -->
+            <attribute name="t-att-password_length">password_length</attribute>
+            <attribute name="t-att-password_lower">password_lower</attribute>
+            <attribute name="t-att-password_upper">password_upper</attribute>
+            <attribute name="t-att-password_numeric">password_numeric</attribute>
+            <attribute name="t-att-password_special">password_special</attribute>
+        </xpath>
+    </template>
+
+</odoo>

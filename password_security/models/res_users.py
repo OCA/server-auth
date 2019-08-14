@@ -4,12 +4,15 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import re
+import logging
 
 from datetime import datetime, timedelta
 
 from odoo import api, fields, models, _
 
 from ..exceptions import PassError
+
+_logger = logging.getLogger(__name__)
 
 
 def delta_now(**kwargs):
@@ -164,20 +167,39 @@ class ResUsers(models.Model):
         :raises: PassError on reused password
         """
         crypt = self._crypt_context()
-        for rec_id in self:
-            recent_passes = rec_id.company_id.password_history
-            if recent_passes < 0:
-                recent_passes = rec_id.password_history_ids
+        for user in self:
+            password_history = user.company_id.password_history
+            recent_passes = user.password_history_ids
+            # If 0 - disable check
+            if password_history == 0:
+                _logger.info(
+                    "Password History for %s is disabled",
+                    user.company_id.name
+                )
+                continue
+            # If negative - check all of previous passwords
+            elif password_history < 0:
+                _logger.info(
+                    "Password History for %s is infinite",
+                    user.company_id.name
+                )
+                recent_passes = user.password_history_ids
+            # Otherwise - check count of previous passwords
             else:
-                recent_passes = rec_id.password_history_ids[
-                    0: recent_passes - 1
+                _logger.info(
+                    "Password History for %s is %d",
+                    user.company_id.name, password_history
+                )
+                recent_passes = user.password_history_ids[
+                    0: password_history - 1
                 ]
             if recent_passes.filtered(
                     lambda r: crypt.verify(password, r.password_crypt)):
-                raise PassError(
-                    _('Cannot use the most recent %d passwords') %
-                    rec_id.company_id.password_history
-                )
+                if password_history < 0:
+                    error_msg = _('Cannot use passwords that were previously used.')
+                else:
+                    error_msg = _('Cannot use the most recent %d passwords') % password_history
+                raise PassError(error_msg)
 
     def _set_encrypted_password(self, uid, pw):
         """ It saves password crypt history for history rules """
