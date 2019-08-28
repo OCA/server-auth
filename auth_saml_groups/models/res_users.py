@@ -94,7 +94,6 @@ class ResUser(models.Model):
 
     @api.model
     def auth_saml(self, provider, saml_response):
-
         saml_validate = self._auth_saml_validate(provider, saml_response)
         validation = saml_validate[0]
         attrs = saml_validate[1]

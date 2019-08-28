@@ -20,5 +20,6 @@
     'data': [
         'security/ir.model.access.csv',
         'views/auth_saml.xml',
+        'data/auth_saml_groups.xml',
     ],
 }
