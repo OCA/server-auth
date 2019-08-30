@@ -15,6 +15,7 @@ setuptools.setup(
         'odoo12-addon-auth_session_timeout',
         'odoo12-addon-auth_signup_verify_email',
         'odoo12-addon-auth_totp',
+        'odoo12-addon-auth_u2f',
         'odoo12-addon-base_user_show_email',
         'odoo12-addon-password_security',
         'odoo12-addon-users_ldap_groups',
