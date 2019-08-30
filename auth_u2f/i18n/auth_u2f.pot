@@ -1,0 +1,186 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* auth_u2f
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:57
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:33
+#, python-format
+msgid "A bad request was sent to your browser. This can happen when the URL\n"
+" you're on is not web.base.url or when this page is not served over HTTPS."
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:32
+#, python-format
+msgid "An unknown error occured"
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:55
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:64
+#, python-format
+msgid "An unknown error occurred."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_default
+msgid "Default"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,help:auth_u2f.field_u2f_device_default
+msgid "Device used during login."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model,name:auth_u2f.model_ir_http
+msgid "HTTP routing"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_id
+msgid "ID"
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:74
+#, python-format
+msgid "Insert your security key and tap the button or gold disk."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.ui.view,arch_db:auth_u2f.login
+msgid "Insert your security key into your computer's USB port. If it has a button, tap it."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.ui.view,arch_db:auth_u2f.u2f_device_form
+msgid "Make default"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.ui.view,arch_db:auth_u2f.view_users_form_simple_modif_inherit_auth_u2f
+msgid "Manage 2-step verification"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_name
+msgid "Name"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_json
+msgid "Scan"
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:72
+#, python-format
+msgid "Scanned key."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,help:auth_u2f.field_u2f_device_json
+msgid "Technical data returned by u2flib or the browser"
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:62
+#, python-format
+msgid "This device is already registered for this user."
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:36
+#, python-format
+msgid "This device is not registered as the default device for this user."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.ui.view,arch_db:auth_u2f.view_users_form_inherit_auth_u2f
+msgid "U2F"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.actions.act_window,name:auth_u2f.action_open_u2f_device_tree
+#: model:ir.model.fields,field_description:auth_u2f.field_res_users_u2f_device_ids
+msgid "U2F devices"
+msgstr ""
+
+#. module: auth_u2f
+#. openerp-web
+#: code:addons/auth_u2f/static/src/js/auth_u2f.js:60
+#: code:addons/auth_u2f/static/src/js/auth_u2f_frontend.js:35
+#, python-format
+msgid "U2F is not supported by this client."
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.ui.view,arch_db:auth_u2f.login
+msgid "Use your security key to sign in"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_user_id
+msgid "User"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model,name:auth_u2f.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: auth_u2f
+#: model:ir.model,name:auth_u2f.model_u2f_device
+msgid "u2f.device"
+msgstr ""
+

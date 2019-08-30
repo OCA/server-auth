@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_u2f_device_user,access_u2f_device_user,model_u2f_device,base.group_user,1,1,1,1
+access_u2f_device_portal,access_u2f_device_portal,model_u2f_device,base.group_portal,1,1,1,1
