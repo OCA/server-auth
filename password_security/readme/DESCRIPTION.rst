@@ -9,3 +9,4 @@ It contains features such as
 * Password minimum number of uppercase letters
 * Password minimum number of numbers
 * Password minimum number of special characters
+* Password strength estimation

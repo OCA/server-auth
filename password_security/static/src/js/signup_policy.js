@@ -19,6 +19,7 @@ odoo.define('password_security.signup.policy', function (require) {
         var password_upper = Number($password.attr('password_upper'));
         var password_numeric = Number($password.attr('password_numeric'));
         var password_special = Number($password.attr('password_special'));
+        var password_estimate = Number($password.attr('password_estimate'));
 
         var meter = new PasswordMeter(
             null,
@@ -28,6 +29,7 @@ odoo.define('password_security.signup.policy', function (require) {
                 password_upper: password_upper,
                 password_numeric: password_numeric,
                 password_special: password_special,
+                password_estimate: password_estimate,
             }),
             policy.recommendations
         );
