@@ -48,6 +48,9 @@
                             <div class="mt16">
                                 <span>Minimum number of special characters <field name="password_special" class="oe_inline"/></span>
                             </div>
+                            <div class="mt16">
+                                <span>Minimum number of strength estimation <field name="password_estimate" class="oe_inline"/></span>
+                            </div>
                         </div>
                     </div>
                 </div>

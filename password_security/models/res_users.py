@@ -3,6 +3,7 @@
 # Copyright 2018 Modoolar <info@modoolar.com>.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
+import logging
 import re
 
 from datetime import datetime, timedelta
@@ -10,6 +11,17 @@ from datetime import datetime, timedelta
 from odoo import api, fields, models, _
 
 from ..exceptions import PassError
+
+
+_logger = logging.getLogger(__name__)
+try:
+    import zxcvbn
+    zxcvbn.feedback._ = _
+except ImportError:
+    _logger.debug(
+        'Could not import zxcvbn. Please make sure this library is available'
+        ' in your environment.'
+    )
 
 
 def delta_now(**kwargs):
@@ -55,6 +67,7 @@ class ResUsers(models.Model):
                 "password_numeric": company_id.password_numeric,
                 "password_special": company_id.password_special,
                 "password_length": company_id.password_length,
+                "password_estimate": company_id.password_estimate,
             }
         )
         return data
@@ -68,6 +81,10 @@ class ResUsers(models.Model):
             self._check_password(password)
 
         return result
+
+    @api.model
+    def get_estimation(self, password):
+        return zxcvbn.zxcvbn(password)
 
     @api.multi
     def password_match_message(self):
@@ -116,6 +133,11 @@ class ResUsers(models.Model):
         ]
         if not re.search(''.join(password_regex), password):
             raise PassError(self.password_match_message())
+
+        estimation = self.get_estimation(password)
+        if estimation["score"] < company_id.password_estimate:
+            raise PassError(estimation["feedback"]["warning"])
+
         return True
 
     @api.multi

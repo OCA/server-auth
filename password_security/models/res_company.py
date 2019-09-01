@@ -2,7 +2,8 @@
 # Copyright 2017 Kaushal Prajapati <kbprajapati@live.com>.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-from odoo import models, fields
+from odoo import api, models, fields, _
+from odoo.exceptions import ValidationError
 
 
 class ResCompany(models.Model):
@@ -38,6 +39,11 @@ class ResCompany(models.Model):
         default=1,
         help='Require number of unique special characters',
     )
+    password_estimate = fields.Integer(
+        'Estimation',
+        default=3,
+        help='Required score for the strength estimation. Between 0 and 4',
+    )
     password_history = fields.Integer(
         'History',
         default=30,
@@ -49,3 +55,8 @@ class ResCompany(models.Model):
         default=24,
         help='Amount of hours until a user may change password again',
     )
+
+    @api.constrains('password_estimate')
+    def _check_password_estimate(self):
+        if 0 > self.password_estimate > 4:
+            raise ValidationError(_('The estimation must be between 0 and 4.'))
