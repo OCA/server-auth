@@ -31,6 +31,10 @@ class PasswordSecurityHome(AuthSignupHome):
         user_id._check_password(password)
         return super(PasswordSecurityHome, self).do_signup(qcontext)
 
+    @http.route('/password_security/estimate', auth='none', type='json')
+    def estimate(self, password):
+        return request.env['res.users'].get_estimation(password)
+
     @http.route()
     def web_login(self, *args, **kw):
         ensure_db()
