@@ -4,3 +4,5 @@ pyotp
 email_validator
 # auth_u2f
 python-u2flib-server
+# password_security
+zxcvbn
