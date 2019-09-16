@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_sms_provider_form" model="ir.ui.view">
+        <field name="model">sms.provider</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="sequence" widget="handle" />
+                <field name="provider" />
+                <field name="api_key" attrs="{'required': [('provider', '=', 'messagebird')]}" />
+                <field name="active" />
+                <button type="object" name="action_send_test" string="Send test SMS" />
+            </tree>
+        </field>
+    </record>
+    <act_window
+        id="action_sms_provider"
+        name="SMS providers"
+        res_model="sms.provider"
+        view_mode="tree"
+        view_id="view_sms_provider_form"
+    />
+    <menuitem
+        id="menu_sms_provider"
+        action="action_sms_provider"
+        parent="base.menu_custom"
+    />
+</odoo>

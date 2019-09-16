@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sms_provider" model="sms.provider">
+        <field name="provider">messagebird</field>
+        <field name="api_key">XXXXX</field>
+    </record>
+</odoo>
