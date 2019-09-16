@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+access_sms_provider,access_sms_provider,model_sms_provider,base.group_system,1,1,1,1
+access_auth_sms_code,access_auth_sms_code_system,model_auth_sms_code,base.group_system,1,1,1,1
+access_auth_sms_code_all,access_auth_sms_code_all,model_auth_sms_code,,1,0,0,0

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="demo_user" model="res.users" context="{'no_reset_password': True}">
+        <field name="login">auth_sms_demo_user</field>
+        <field name="password">auth_sms_demo_user</field>
+        <field name="name">Auth SMS demo user</field>
+        <field name="mobile">0123456789</field>
+        <field name="email">auth_sms_demo_user@yourcompany.com</field>
+        <field name="auth_sms_enabled" eval="True" />
+    </record>
+</odoo>
