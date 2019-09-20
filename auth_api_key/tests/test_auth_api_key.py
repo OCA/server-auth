@@ -1,37 +1,67 @@
 # Copyright 2018 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import SavepointCase
 from odoo.addons.server_environment import serv_config
 from odoo.exceptions import ValidationError, AccessError
 
 
-class TestAuthApiKey(TransactionCase):
+class TestAuthApiKey(SavepointCase):
     @classmethod
     def setUpClass(cls, *args, **kwargs):
-        super(TestAuthApiKey, cls).setUpClass(*args, **kwargs)
+        super().setUpClass(*args, **kwargs)
+        cls.AuthApiKey = cls.env["auth.api.key"]
+        cls.demo_user = cls.env.ref("base.user_demo")
+        cls.api_key_good = cls.AuthApiKey.create(
+            {"name": "good", "user_id": cls.demo_user.id, "key": "api_key"}
+        )
+        cls.api_key_from_env = cls.AuthApiKey.create(
+            {"name": "from_env", "key": "dummy", "user_id": cls.demo_user.id}
+        )
+        cls.api_key_from_env.refresh()
+        serv_config.add_section("auth_api_key.from_env")
+        serv_config.set("auth_api_key.from_env", "key", "api_key_from_env")
 
-        serv_config.add_section("api_key_good")
-        serv_config.set("api_key_good", "user", "demo")
-        serv_config.set("api_key_good", "key", "api_right_key")
-        serv_config.add_section("api_key_bad")
-        serv_config.set("api_key_bad", "user", "not_demo")
-        serv_config.set("api_key_bad", "key", "api_wrong_key")
-
-    def test_lookup(self):
+    def test_lookup_key_from_db(self):
         demo_user = self.env.ref("base.user_demo")
         self.assertEqual(
-            self.env["auth.api.key"]._retrieve_uid_from_api_key(
-                "api_right_key"),
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"),
             demo_user.id,
         )
+
+    def test_lookup_key_from_env(self):
+        self.assertEqual(
+            self.env["auth.api.key"]._retrieve_uid_from_api_key(
+                "api_key_from_env"
+            ),
+            self.demo_user.id,
+        )
+        with self.assertRaises(ValidationError):
+            # dummy key must be replace with the one from env and
+            # therefore should be unusable
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("dummy")
 
     def test_wrong_key(self):
         with self.assertRaises(ValidationError), self.env.cr.savepoint():
             self.env["auth.api.key"]._retrieve_uid_from_api_key(
-                "api_wrong_key")
+                "api_wrong_key"
+            )
 
     def test_user_not_allowed(self):
-        demo_user = self.env.ref("base.user_demo")
+        # only system users can check for key
         with self.assertRaises(AccessError), self.env.cr.savepoint():
-            self.env["auth.api.key"].sudo(user=demo_user).\
-                _retrieve_uid_from_api_key("api_wrong_key")
+            self.env["auth.api.key"].sudo(
+                user=self.demo_user
+            )._retrieve_uid_from_api_key("api_wrong_key")
+
+    def test_cache_invalidation(self):
+        self.assertEqual(
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"),
+            self.demo_user.id,
+        )
+        self.api_key_good.write({"key": "updated_key"})
+        self.assertEqual(
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("updated_key"),
+            self.demo_user.id,
+        )
+        with self.assertRaises(ValidationError):
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
