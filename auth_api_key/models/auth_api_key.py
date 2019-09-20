@@ -18,7 +18,10 @@ class AuthApiKey(models.Model):
     user_id = fields.Many2one(
         comodel_name="res.users",
         string="User",
-        required=True)
+        required=True,
+        help="""The user used to process the requests authenticated by
+        the api key"""
+    )
 
     @property
     def _server_env_fields(self):
@@ -49,18 +52,18 @@ class AuthApiKey(models.Model):
         return self._retrieve_api_key(key).user_id.id
 
     def _clear_key_cache(self):
-        self._retrieve_api_key_id.clear_cache()
-        self._retrieve_uid_from_api_key.clear_cache()
+        self._retrieve_api_key_id.clear_cache(self.env[self._name])
+        self._retrieve_uid_from_api_key.clear_cache(self.env[self._name])
 
     @api.model
     def create(self, vals):
-        record = super(AuthApikey, self).create(vals)
+        record = super(AuthApiKey, self).create(vals)
         if 'key' in vals:
             self._clear_key_cache()
         return record
 
     def write(self, vals):
-        super(AuthApikey, self).write(vals)
+        super(AuthApiKey, self).write(vals)
         if 'key' in vals:
             self._clear_key_cache()
         return True
