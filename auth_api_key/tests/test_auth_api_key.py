@@ -9,7 +9,7 @@ from odoo.exceptions import ValidationError, AccessError
 class TestAuthApiKey(SavepointCase):
     @classmethod
     def setUpClass(cls, *args, **kwargs):
-        super().setUpClass(*args, **kwargs)
+        super(TestAuthApiKey, cls).setUpClass(*args, **kwargs)
         cls.AuthApiKey = cls.env["auth.api.key"]
         cls.demo_user = cls.env.ref("base.user_demo")
         cls.api_key_good = cls.AuthApiKey.create(
@@ -19,8 +19,8 @@ class TestAuthApiKey(SavepointCase):
             {"name": "from_env", "key": "dummy", "user_id": cls.demo_user.id}
         )
         cls.api_key_from_env.refresh()
-        serv_config.add_section("auth_api_key.from_env")
-        serv_config.set("auth_api_key.from_env", "key", "api_key_from_env")
+        serv_config.add_section("api_key_from_env")
+        serv_config.set("api_key_from_env", "key", "api_key_from_env")
 
     def test_lookup_key_from_db(self):
         demo_user = self.env.ref("base.user_demo")
