@@ -14,7 +14,11 @@ class AuthApiKey(models.Model):
     _description = "API Key"
 
     name = fields.Char(required=True)
-    key = fields.Char(required=True)
+    key = fields.Char(
+        required=True,
+        help="""The API key. Enter a dummy value in this field if it is
+        obtained from the server environment configuration.""",
+    )
     user_id = fields.Many2one(
         comodel_name="res.users",
         string="User",
