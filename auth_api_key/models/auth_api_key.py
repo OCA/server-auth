@@ -11,7 +11,7 @@ from odoo.exceptions import ValidationError, AccessError
 class AuthApiKey(models.Model):
     _name = "auth.api.key"
     _inherit = "server.env.mixin"
-    _description = "API Key Retriever"
+    _description = "API Key"
 
     name = fields.Char(required=True)
     key = fields.Char(required=True)
@@ -20,15 +20,31 @@ class AuthApiKey(models.Model):
         string="User",
         required=True,
         help="""The user used to process the requests authenticated by
-        the api key"""
+        the api key""",
     )
+
+    _sql_constraints = [
+        ("name_uniq", "unique(name)", "Api Key name must be unique.")
+    ]
+
+    @api.multi
+    def _server_env_section_name(self):
+        """Name of the section in the configuration files
+
+        We override the default implementation to keep the compatibility
+        with the previous implementation of auth_api_key. The section name
+        into the configuration file must be formatted as
+
+            'api_key_{name}'
+
+        """
+        self.ensure_one()
+        return "api_key_{}".format(self.name)
 
     @property
     def _server_env_fields(self):
         base_fields = super()._server_env_fields
-        api_key_fields = {
-            "key": {},
-        }
+        api_key_fields = {"key": {}}
         api_key_fields.update(base_fields)
         return api_key_fields
 
@@ -58,12 +74,12 @@ class AuthApiKey(models.Model):
     @api.model
     def create(self, vals):
         record = super(AuthApiKey, self).create(vals)
-        if 'key' in vals:
+        if "key" in vals:
             self._clear_key_cache()
         return record
 
     def write(self, vals):
         super(AuthApiKey, self).write(vals)
-        if 'key' in vals:
+        if "key" in vals:
             self._clear_key_cache()
         return True

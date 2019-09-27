@@ -22,16 +22,18 @@ class IrHttp(models.AbstractModel):
         api_key = headers.get("HTTP_API_KEY")
         if api_key:
             request.uid = 1
-            api = request.env["auth.api.key"]._retrieve_api_key(api_key)
-            if api:
+            auth_api_key = request.env["auth.api.key"]._retrieve_api_key(
+                api_key
+            )
+            if auth_api_key:
                 # reset _env on the request since we change the uid...
                 # the next call to env will instantiate an new
                 # odoo.api.Environment with the user defined on the
                 # auth.api_key
                 request._env = None
-                request.uid = api.user_id.id
+                request.uid = auth_api_key.user_id.id
                 request.auth_api_key = api_key
-                request.auth_api_key_id = api.id
+                request.auth_api_key_id = auth_api_key.id
                 return True
         _logger.error("Wrong HTTP_API_KEY, access denied")
         raise AccessDenied()
