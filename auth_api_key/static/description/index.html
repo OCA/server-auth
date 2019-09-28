@@ -387,13 +387,15 @@ ul.auto-toc {
 </div>
 <div class="section" id="configuration">
 <h1><a class="toc-backref" href="#id1">Configuration</a></h1>
-<p>The api key must be provided by the configuration parameter named
-‘api_key_*.key’, and the user under the same option ‘api_key_*.user’.</p>
-<p>For instance :</p>
+<p>The api key menu is available into Settings &gt; Technical in debug mode.
+By default, when you create an API key, the key is saved into the database.
+It is also possible to provide the value of this key via the configuration
+file. This can be very useful to avoid mixing your keys between your various
+environments when restoring databases. All you have to do is to add a new
+section to your configuration file according to the following convention:</p>
 <pre class="code ini literal-block">
-<span class="k">[api_key_mykey]</span>
+<span class="k">[api_key_&lt;Record Name&gt;]</span>
 <span class="na">key</span><span class="o">=</span><span class="s">my_api_key</span>
-<span class="na">user</span><span class="o">=</span><span class="s">my_user</span>
 </pre>
 </div>
 <div class="section" id="usage">
