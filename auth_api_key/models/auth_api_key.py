@@ -1,38 +1,89 @@
 # Copyright 2018 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, models, tools, _
+from odoo import api, fields, models, tools, _
 
-from odoo.addons.server_environment import serv_config
 from odoo.tools import consteq
 
 from odoo.exceptions import ValidationError, AccessError
 
 
-class AuthApiKey(models.TransientModel):
+class AuthApiKey(models.Model):
     _name = "auth.api.key"
-    _description = "API Key Retriever"
+    _inherit = "server.env.mixin"
+    _description = "API Key"
+
+    name = fields.Char(required=True)
+    key = fields.Char(
+        required=True,
+        help="""The API key. Enter a dummy value in this field if it is
+        obtained from the server environment configuration.""",
+    )
+    user_id = fields.Many2one(
+        comodel_name="res.users",
+        string="User",
+        required=True,
+        help="""The user used to process the requests authenticated by
+        the api key""",
+    )
+
+    _sql_constraints = [
+        ("name_uniq", "unique(name)", "Api Key name must be unique.")
+    ]
+
+    @api.multi
+    def _server_env_section_name(self):
+        """Name of the section in the configuration files
+
+        We override the default implementation to keep the compatibility
+        with the previous implementation of auth_api_key. The section name
+        into the configuration file must be formatted as
+
+            'api_key_{name}'
+
+        """
+        self.ensure_one()
+        return "api_key_{}".format(self.name)
+
+    @property
+    def _server_env_fields(self):
+        base_fields = super()._server_env_fields
+        api_key_fields = {"key": {}}
+        api_key_fields.update(base_fields)
+        return api_key_fields
 
     @api.model
-    @tools.ormcache("api_key")
-    def _retrieve_uid_from_api_key(self, api_key):
+    def _retrieve_api_key(self, key):
+        return self.browse(self._retrieve_api_key_id(key))
+
+    @api.model
+    @tools.ormcache("key")
+    def _retrieve_api_key_id(self, key):
         if not self.env.user.has_group("base.group_system"):
             raise AccessError(_("User is not allowed"))
+        for api_key in self.search([]):
+            if consteq(key, api_key.key):
+                return api_key.id
+        raise ValidationError(_("The key %s is not allowed") % key)
 
-        for section in serv_config.sections():
-            if section.startswith("api_key_") and serv_config.has_option(
-                    section, "key"
-            ):
-                if not consteq(api_key, serv_config.get(section, "key")):
-                    continue
+    @api.model
+    @tools.ormcache("key")
+    def _retrieve_uid_from_api_key(self, key):
+        return self._retrieve_api_key(key).user_id.id
 
-                login_name = serv_config.get(section, "user")
-                uid = self.env["res.users"].search(
-                    [("login", "=", login_name)]).id
+    def _clear_key_cache(self):
+        self._retrieve_api_key_id.clear_cache(self.env[self._name])
+        self._retrieve_uid_from_api_key.clear_cache(self.env[self._name])
 
-                if not uid:
-                    raise ValidationError(
-                        _("No user found with login %s") % login_name)
+    @api.model
+    def create(self, vals):
+        record = super(AuthApiKey, self).create(vals)
+        if "key" in vals or "user_id" in vals:
+            self._clear_key_cache()
+        return record
 
-                return uid
-        return False
+    def write(self, vals):
+        super(AuthApiKey, self).write(vals)
+        if "key" in vals or "user_id" in vals:
+            self._clear_key_cache()
+        return True
