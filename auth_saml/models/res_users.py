@@ -251,4 +251,6 @@ class ResUser(models.Model):
             raise ValidationError(
                 _("This database disallows users to have both passwords "
                   "and SAML IDs. Errors for login %s").format(self.login))
-        super(ResUser, self)._set_encrypted_password(cr, uid, id_, encrypted, context=context)
+        super(ResUser, self)._set_encrypted_password(
+            cr, uid, id_, encrypted, context=context
+        )

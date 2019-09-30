@@ -29,9 +29,9 @@ def main():
     d = load_information_from_description_file(module)
     with open('manifest', 'w') as out:
         manifest_content = (
-                d['description']
-                if 'description' in d
-                else d['summary'] if 'summary' in d else '')
+            d['description']
+            if 'description' in d
+            else d['summary'] if 'summary' in d else '')
         out.write(manifest_content)
 
 
