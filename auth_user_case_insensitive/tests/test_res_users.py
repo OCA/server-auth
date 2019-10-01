@@ -3,6 +3,7 @@
 
 from odoo import api, registry
 from odoo.tests.common import TransactionCase
+from odoo.tools import mute_logger
 
 
 class TestResUsers(TransactionCase):
@@ -50,9 +51,10 @@ class TestResUsers(TransactionCase):
         rec_id = self._new_record()
         # We have to commit this cursor, because `_login` uses a fresh cursor
         self.env.cr.commit()
-        res_id = self.model_obj._login(
-            self.env.registry.db_name, self.login.upper(), 'password'
-        )
+        with mute_logger('odoo.addons.auth_ldap.models.res_company_ldap'):
+            res_id = self.model_obj._login(
+                self.env.registry.db_name, self.login.upper(), 'password'
+            )
         # Now clean up our mess to preserve idempotence
         with api.Environment.manage():
             with registry(self.env.registry.db_name).cursor() as new_cr:
