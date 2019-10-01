@@ -17,7 +17,7 @@ _logger = logging.getLogger(__name__)
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
-    @api.model_cr_context
+    @api.model
     def _auth_timeout_get_ignored_urls(self):
         """Pluggable method for calculating ignored urls
         Defaults to stored config param
@@ -25,7 +25,7 @@ class ResUsers(models.Model):
         params = self.env['ir.config_parameter']
         return params._auth_timeout_get_parameter_ignored_urls()
 
-    @api.model_cr_context
+    @api.model
     def _auth_timeout_deadline_calculate(self):
         """Pluggable method for calculating timeout deadline
         Defaults to current time minus delay using delay stored as config
@@ -37,7 +37,7 @@ class ResUsers(models.Model):
             return False
         return time() - delay
 
-    @api.model_cr_context
+    @api.model
     def _auth_timeout_session_terminate(self, session):
         """Pluggable method for terminating a timed-out session
 
@@ -53,7 +53,7 @@ class ResUsers(models.Model):
             session.logout(keep_db=True)
         return True
 
-    @api.model_cr_context
+    @api.model
     def _auth_timeout_check(self):
         """Perform session timeout validation and expire if needed."""
 
