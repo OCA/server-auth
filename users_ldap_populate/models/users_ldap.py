@@ -160,7 +160,25 @@ class CompanyLDAP(models.Model):
                 unknown_user_ids.append(unknown_user.id)
         return len(unknown_user_ids)
 
-    @api.multi
+    def get_ldap_entry_dicts(self, conf, user_name='*'):
+        """
+        Execute ldap query as defined in conf
+
+        Don't call self.query because it supresses possible exceptions
+        """
+        ldap_filter = filter_format(
+            conf['ldap_filter'], (user_name,)
+        ) if user_name != '*' else conf['ldap_filter'] % user_name
+        conn = self.connect(conf)
+        conn.simple_bind_s(conf['ldap_binddn'] or '',
+                           conf['ldap_password'] or '')
+        results = conn.search_st(conf['ldap_base'], ldap.SCOPE_SUBTREE,
+                                 ldap_filter.encode('utf8'), None,
+                                 timeout=60)
+        conn.unbind()
+
+        return results
+
     def populate_wizard(self):
         """
         GUI wrapper for the populate method that reports back
