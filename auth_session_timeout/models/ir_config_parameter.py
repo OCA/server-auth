@@ -27,7 +27,6 @@ class IrConfigParameter(models.Model):
         )
         return urls.split(',')
 
-    @api.multi
     def write(self, vals):
         res = super(IrConfigParameter, self).write(vals)
         self._auth_timeout_get_parameter_delay.clear_cache(
