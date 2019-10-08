@@ -150,9 +150,9 @@ class TestWizard(TestKeycloakWizBase):
             status=409,
             content_type='application/json',
         )
-        with self.assertRaises(exceptions.UserError) as err:
+        with self.assertRaises(exceptions.Warning) as err:
             self.wiz._get_or_create_user('TOKEN', self.user_mickey)
         self.assertEqual(len(responses.calls), 2)
         self.assertTrue(
-            err.exception.name.startswith('Conflict on user values.')
+            err.exception.message.startswith('Conflict on user values.')
         )
