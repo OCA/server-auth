@@ -56,7 +56,7 @@ class ResUsers(models.Model):
         )
         enabled = provider and provider.users_management_enabled
         if not enabled:
-            raise exceptions.UserError(
+            raise exceptions.Warning(
                 _('Keycloak provider not found or not configured properly.')
             )
         wiz = self.env['auth.keycloak.create.wiz'].create({

@@ -54,7 +54,7 @@ class KeycloakSyncMixin(models.AbstractModel):
         """Make sure we are ready to talk to Keycloak."""
         self.ensure_one()
         if not self.management_enabled:
-            raise exceptions.UserError(
+            raise exceptions.Warning(
                 _('Users management must be enabled on selected provider')
             )
 
@@ -68,7 +68,7 @@ class KeycloakSyncMixin(models.AbstractModel):
         try:
             return resp.json()
         except JSONDecodeError:
-            raise exceptions.UserError(
+            raise exceptions.Warning(
                 _('Something went wrong. Please check logs.')
             )
 
@@ -192,7 +192,7 @@ class KeycloakCreateWiz(models.TransientModel):
     def _validate_setup(self):
         super(KeycloakCreateWiz, self)._validate_setup()
         if not self.user_ids:
-            raise exceptions.UserError(
+            raise exceptions.Warning(
                 _('No user selected')
             )
 
@@ -206,7 +206,7 @@ class KeycloakCreateWiz(models.TransientModel):
             if resp.content and resp.json().get('errorMessage'):
                 # ie: {"errorMessage":"User exists with same username"}
                 detail = '\n' + resp.json().get('errorMessage')
-            raise exceptions.UserError(_(
+            raise exceptions.Warning(_(
                 'Conflict on user values. '
                 'Please verify that all values supposed to be unique '
                 'are really unique. %(detail)s'
