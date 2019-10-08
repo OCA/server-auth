@@ -4,7 +4,7 @@
 
 import responses
 import base64
-import odoo.tests.common as common
+import openerp.tests.common as common
 
 
 class TestKeycloakBase(common.SavepointCase):
