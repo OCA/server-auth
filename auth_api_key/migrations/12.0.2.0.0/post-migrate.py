@@ -1,9 +1,10 @@
-# -*- coding: utf-8 -*-
 # Copyright 2019 ACSONE SA/NV
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+
 import odoo
+
 from odoo.addons.server_environment import serv_config
 
 _logger = logging.Logger(__name__)
