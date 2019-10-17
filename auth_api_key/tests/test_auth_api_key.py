@@ -45,7 +45,7 @@ class TestAuthApiKey(SavepointCase):
     def test_user_not_allowed(self):
         # only system users can check for key
         with self.assertRaises(AccessError), self.env.cr.savepoint():
-            self.env["auth.api.key"].sudo(
+            self.env["auth.api.key"].with_user(
                 user=self.demo_user
             )._retrieve_uid_from_api_key("api_wrong_key")
 
