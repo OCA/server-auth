@@ -1,4 +1,4 @@
-Authenticate http requests from an API key. 
+Authenticate http requests from an API key.
 
 API keys are codes passed in (in the http header API-KEY) by programs calling an API in order to identify -in this case- the calling program's user.
 
