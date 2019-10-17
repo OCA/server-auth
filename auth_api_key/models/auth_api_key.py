@@ -1,11 +1,9 @@
 # Copyright 2018 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, fields, models, tools, _
-
+from odoo import _, api, fields, models, tools
+from odoo.exceptions import AccessError, ValidationError
 from odoo.tools import consteq
-
-from odoo.exceptions import ValidationError, AccessError
 
 
 class AuthApiKey(models.Model):
@@ -27,9 +25,7 @@ class AuthApiKey(models.Model):
         the api key""",
     )
 
-    _sql_constraints = [
-        ("name_uniq", "unique(name)", "Api Key name must be unique.")
-    ]
+    _sql_constraints = [("name_uniq", "unique(name)", "Api Key name must be unique.")]
 
     @api.multi
     def _server_env_section_name(self):
