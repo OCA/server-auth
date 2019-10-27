@@ -92,24 +92,18 @@ class ResUsers(models.Model):
         company_id = self.company_id
         message = []
         if company_id.password_lower:
-            message.append('\n* ' + 'Lowercase letter (At least ' + str(
-                company_id.password_lower) + ' character)')
+            message.append(_('* Lowercase letter (At least %d character).') % company_id.password_lower)
         if company_id.password_upper:
-            message.append('\n* ' + 'Uppercase letter (At least ' + str(
-                company_id.password_upper) + ' character)')
+            message.append(_('* Uppercase letter (At least %d character).') % company_id.password_upper)
         if company_id.password_numeric:
-            message.append('\n* ' + 'Numeric digit (At least ' + str(
-                company_id.password_numeric) + ' character)')
+            message.append(_('* Numeric digit (At least %d character).') % company_id.password_numeric)
         if company_id.password_special:
-            message.append('\n* ' + 'Special character (At least ' + str(
-                company_id.password_special) + ' character)')
-        if message:
-            message = [_('Must contain the following:')] + message
+            message.append(_('* Special character (At least %d character).') % company_id.password_special)
         if company_id.password_length:
-            message = ['Password must be %d characters or more.' %
-                       company_id.password_length
-                       ] + message
-        return '\r'.join(message)
+            message.append(_('* Password must be %d characters or more.') % company_id.password_length)
+        if message:
+            message.insert(0,_('Must contain the following:'))
+        return '<br/>'.join(message)
 
     @api.multi
     def _check_password(self, password):
@@ -188,6 +182,8 @@ class ResUsers(models.Model):
         crypt = self._crypt_context()
         for rec_id in self:
             recent_passes = rec_id.company_id.password_history
+            if recent_passes == 0:
+                continue
             if recent_passes < 0:
                 recent_passes = rec_id.password_history_ids
             else:

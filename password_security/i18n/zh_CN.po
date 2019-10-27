@@ -19,6 +19,37 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:95
+#, python-format
+msgid "* Lowercase letter (At least %d character)."
+msgstr "* 小写字母（至少包含%d个）"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:99
+#, python-format
+msgid "* Numeric digit (At least %d character)."
+msgstr "* 数字（字少包含%d个）"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:103
+#, python-format
+msgid "* Password must be %d characters or more."
+msgstr "* 密码长度至少大于等于%d"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:101
+#, python-format
+msgid "* Special character (At least %d character)."
+msgstr "* 特殊字符（至少包含%d个）"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:97
+#, python-format
+msgid "* Uppercase letter (At least %d character)."
+msgstr "* 大写字母（至少包含%d个）"
+
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_minimum
 msgid "Amount of hours until a user may change password again"
@@ -136,12 +167,12 @@ msgstr ""
 #: code:addons/password_security/models/res_users.py:64
 #, python-format
 msgid "Must contain the following:"
-msgstr ""
+msgstr "必须满足以下条件""
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_numeric
 msgid "Numeric"
-msgstr ""
+msgstr "数字""
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_password_history_ids
@@ -215,3 +246,39 @@ msgstr "用户"
 #: model:ir.model,name:password_security.model_res_users
 msgid "Users"
 msgstr "用户"
+
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:42
+#, python-format
+msgid "at least %d characters"
+msgstr "至少需要%d个字符"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:51
+#, python-format
+msgid "at least %d lower case characters"
+msgstr "至少需要%d个小写字母"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:69
+#, python-format
+msgid "at least %d numeric characters"
+msgstr "至少需要%d个数字"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:78
+#, python-format
+msgid "at least %d special characters"
+msgstr "至少需要%d个特殊字符"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:60
+#, python-format
+msgid "at least %d upper case characters"
+msgstr "至少需要%d个大写字符"
