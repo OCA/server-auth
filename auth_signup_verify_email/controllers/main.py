@@ -13,26 +13,16 @@ _logger = logging.getLogger(__name__)
 
 class SignupVerifyEmail(AuthSignupHome):
 
-    # HACK https://github.com/odoo/odoo/pull/34690
-    def get_auth_signup_qcontext(self):
-        vals = super().get_auth_signup_qcontext()
-        if not request.params.get("password"):
-            vals['error'] = "--HACK--"
-        return vals
-
     @route()
     def web_auth_signup(self, *args, **kw):
-        response = super(SignupVerifyEmail, self).web_auth_signup(*args, **kw)
         if (request.params.get("login") and not
                 request.params.get("password")):
-            return self.passwordless_signup(request.params, response.qcontext)
-        else:
-            return response
+            return self.passwordless_signup()
+        return super().web_auth_signup(*args, **kw)
 
-    def passwordless_signup(self, values, qcontext):
-        # HACK https://github.com/odoo/odoo/pull/34690
-        if qcontext['error'] == '--HACK--':
-            del qcontext['error']
+    def passwordless_signup(self):
+        values = request.params
+        qcontext = self.get_auth_signup_qcontext()
 
         # Check good format of e-mail
         try:
