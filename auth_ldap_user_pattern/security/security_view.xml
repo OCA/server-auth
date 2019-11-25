@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record model="res.groups" id="group_ldap_password_change">
+        <field name="name">Enable LDAP Password Change</field>
+    </record>
+</odoo>
