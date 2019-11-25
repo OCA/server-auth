@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- view_ldap_installer_form View Extends -->
+    <record id="view_ldap_installer_ext_form" model="ir.ui.view">
+        <field name="name">res.company.ldap.ext</field>
+        <field name="model">res.company.ldap</field>
+        <field name="inherit_id" ref="auth_ldap.view_ldap_installer_form"/>
+        <field name="arch" type="xml">
+            <field name="user" position="after">
+                <field name="user_pattern"/>
+            </field>
+        </field>
+    </record>
+</odoo>

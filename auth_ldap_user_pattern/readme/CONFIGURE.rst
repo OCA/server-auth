@@ -1,0 +1,2 @@
+- Settings > Setup Your LDAP Server > Open Record and provide user pattern
+- Enable LDAP Password Change security access right to change password of LDAP user.
