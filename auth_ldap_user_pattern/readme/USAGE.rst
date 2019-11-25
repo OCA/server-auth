@@ -1,0 +1,2 @@
+- Set user regex pattern to disable odoo password checking mechanism
+- Preferences wizard > Remove link of Password change for LDAP Users
