@@ -19,10 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: auth_user_case_insensitive
-#: code:addons/auth_user_case_insensitive/hooks.py:23
+#: code:addons/auth_user_case_insensitive/hooks.py:24
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
-msgstr "Käyttäjä `%s` on jo olemassa"
+msgstr ""
 
 #. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
