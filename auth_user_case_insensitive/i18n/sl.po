@@ -20,7 +20,7 @@ msgstr ""
 "%100==4 ? 2 : 3);\n"
 
 #. module: auth_user_case_insensitive
-#: code:addons/auth_user_case_insensitive/hooks.py:23
+#: code:addons/auth_user_case_insensitive/hooks.py:24
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
 msgstr ""
