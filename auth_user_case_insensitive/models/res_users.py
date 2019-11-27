@@ -6,11 +6,9 @@ from odoo import api, fields, models
 
 class ResUsers(models.Model):
 
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
-    login = fields.Char(
-        help='Used to log into the system. Case insensitive.',
-    )
+    login = fields.Char(help="Used to log into the system. Case insensitive.")
 
     @classmethod
     def _login(cls, db, login, password):
@@ -23,12 +21,11 @@ class ResUsers(models.Model):
     def create(self, vals_list):
         """ Overload create multiple to lowercase login """
         for val in vals_list:
-            val['login'] = val.get('login', '').lower()
+            val["login"] = val.get("login", "").lower()
         return super(ResUsers, self).create(vals_list)
 
-    @api.multi
     def write(self, vals):
         """ Overload write to lowercase login """
-        if vals.get('login'):
-            vals['login'] = vals['login'].lower()
+        if vals.get("login"):
+            vals["login"] = vals["login"].lower()
         return super(ResUsers, self).write(vals)
