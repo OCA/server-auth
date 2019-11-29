@@ -132,6 +132,11 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: auth_keycloak
+#: model:auth.oauth.provider,body:auth_keycloak.default_keycloak_provider
+msgid "Log in with Keycloak"
+msgstr ""
+
+#. module: auth_keycloak
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_login_match_key
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_login_match_key
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_login_match_key
