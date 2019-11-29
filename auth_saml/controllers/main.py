@@ -57,7 +57,10 @@ class SAMLLogin(Home):
         except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
             providers = []
-
+        for provider in providers:
+            # Compatibility with auth_oauth/controllers/main.py in order to
+            # avoid KeyError rendering template_auth_oauth_providers
+            provider['auth_link'] = ""
         return providers
 
     @http.route()
