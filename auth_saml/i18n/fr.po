@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:83
+#: code:addons/auth_saml/controllers/main.py:86
 #, python-format
 msgid "Access Denied"
 msgstr "Accès refusé"
@@ -170,7 +170,7 @@ msgid "Sequence"
 msgstr ""
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:81
+#: code:addons/auth_saml/controllers/main.py:84
 #, python-format
 msgid "Sign up is not allowed on this database."
 msgstr "L’inscription n’est pas autorisée sur cette base de donnée."
@@ -199,7 +199,7 @@ msgid "Users"
 msgstr "Utilisateurs"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:85
+#: code:addons/auth_saml/controllers/main.py:88
 #, python-format
 msgid ""
 "You do not have access to this database or your invitation has expired. "
