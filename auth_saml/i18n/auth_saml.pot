@@ -14,7 +14,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:83
+#: code:addons/auth_saml/controllers/main.py:86
 #, python-format
 msgid "Access Denied"
 msgstr ""
@@ -162,7 +162,7 @@ msgid "Sequence"
 msgstr ""
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:81
+#: code:addons/auth_saml/controllers/main.py:84
 #, python-format
 msgid "Sign up is not allowed on this database."
 msgstr ""
@@ -189,7 +189,7 @@ msgid "Users"
 msgstr ""
 
 #. module: auth_saml
-#: code:addons/auth_saml/controllers/main.py:85
+#: code:addons/auth_saml/controllers/main.py:88
 #, python-format
 msgid "You do not have access to this database or your invitation has expired. Please ask for an invitation and be sure to follow the link in your invitation email."
 msgstr ""
