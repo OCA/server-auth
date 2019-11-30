@@ -13,6 +13,7 @@ addons:
       - expect-dev  # provides unbuffer utility
       - python-lxml # because pip installation is slow
       - libmysqlclient-dev # To install mysqlclient and import MySQLdb
+      - python3-lasso # Used in auth_saml
 
 env:
   global:
