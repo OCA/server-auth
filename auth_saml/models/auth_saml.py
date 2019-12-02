@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2019 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -18,7 +18,7 @@ class AuthSamlProvider(models.Model):
 
     _name = 'auth.saml.provider'
     _description = 'SAML2 provider'
-    _order = 'name'
+    _order = 'sequence, name'
 
     @api.multi
     def _get_lasso_for_provider(self):
@@ -31,6 +31,10 @@ class AuthSamlProvider(models.Model):
             self.sp_metadata,
             self.sp_pkey
         )
+
+        # Requests are SHA1-signed by default -> Ask for SHA-256.
+        server.signatureMethod = lasso.SIGNATURE_METHOD_RSA_SHA256
+
         server.addProviderFromBuffer(
             lasso.PROVIDER_ROLE_IDP,
             self.idp_metadata
@@ -69,11 +73,12 @@ class AuthSamlProvider(models.Model):
         return login.msgUrl
 
     # Name of the OAuth2 entity, authentic, xcg...
-    name = fields.Char('Provider name')
+    name = fields.Char('Provider Name')
     idp_metadata = fields.Text('IDP Configuration')
     sp_metadata = fields.Text('SP Configuration')
     sp_pkey = fields.Text(
-        'Private key of our service provider (this openerpserver)'
+        string='SP Private key',
+        help='Private key of our service provider (this odoo server)',
     )
     matching_attribute = fields.Text(
         string='Matching Attribute',
@@ -84,3 +89,9 @@ class AuthSamlProvider(models.Model):
     sequence = fields.Integer('Sequence')
     css_class = fields.Char('CSS Class')
     body = fields.Char('Body')
+    autoredirect = fields.Boolean(
+        "Autoredirect",
+        default=False,
+        help="Only the provider with the most priority will be automatically"
+             " redirected",
+    )

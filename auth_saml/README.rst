@@ -1,6 +1,20 @@
-.. image:: https://img.shields.io/badge/licence-AGPL--3-blue.svg
-   :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
-   :alt: License: AGPL-3
+.. |badge1| image:: https://img.shields.io/badge/maturity-stable-green.png
+    :target: https://odoo-community.org/page/development-status
+    :alt: Stable
+
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
+    :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
+    :alt: License: AGPL-3
+
+.. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
+    :target: https://github.com/OCA/server-auth/tree/11.0/auth_saml
+    :alt: OCA/server-auth
+
+.. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
+    :target: https://runbot.odoo-community.org/runbot/251/11.0
+    :alt: Try me on Runbot
+
+|badge1| |badge2| |badge3| |badge5|
 
 ====================
 SAML2 authentication
@@ -13,6 +27,7 @@ external authentication system to provide SSO functionality (Single Sign On)
 between Odoo and other applications of your ecosystem.
 
 .. WARNING::
+
     This module requires auth_crypt. This is because you still have the
     option if not recommended to allow users to have a password stored in odoo
     at the same time as having a SAML provider and id.
@@ -42,7 +57,7 @@ Install as you would install any Odoo addon.
 Dependencies
 ------------
 
-This addon requires `lasso`_.
+This addon requires `lasso`_ ≥ 2.6.0.
 
 .. _lasso: http://lasso.entrouvert.org
 
@@ -58,14 +73,6 @@ Usage
 
 To use this module, you need an IDP server, properly set up. Go through the
 "Getting started" section for more information.
-
-
-Demo
-====
-
-.. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
-   :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/149/8.0
 
 
 Known issues / Roadmap
@@ -121,4 +128,4 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-To contribute to this module, please visit http://odoo-community.org.
+You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

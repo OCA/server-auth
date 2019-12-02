@@ -1,16 +1,15 @@
-.. include:: ../README.rst
+.. include:: manifest
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   README
    getting_started
+   modules
    NEWS
-   models
-   tests
    TODO
-
 
 Indices and tables
 ==================
