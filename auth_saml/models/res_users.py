@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016,2018 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -32,7 +32,7 @@ class ResUser(models.Model):
 
     @api.constrains('password_crypt', 'password', 'saml_uid')
     def check_no_password_with_saml(self):
-        """Ensure no Odoo user posesses both an SAML user ID and an Odoo
+        """Ensure no Odoo user possesses both an SAML user ID and an Odoo
         password. Except admin which is not constrained by this rule.
         """
         if self._allow_saml_and_password():
@@ -43,9 +43,9 @@ class ResUser(models.Model):
             # in the database
             if (self.password_crypt and self.saml_uid and
                     self.id is not SUPERUSER_ID):
-                raise ValidationError(_("This database disallows users to "
-                                        "have both passwords and SAML IDs. "
-                                        "Errors for login %s" % (self.login)))
+                raise ValidationError(
+                    _("This database disallows users to have both passwords "
+                      "and SAML IDs. Errors for login {}").format(self.login))
 
     _sql_constraints = [('uniq_users_saml_provider_saml_uid',
                          'unique(saml_provider_id, saml_uid)',
@@ -85,38 +85,28 @@ class ResUser(models.Model):
                 lformat = lasso.SAML2_ATTRIBUTE_NAME_FORMAT_BASIC
                 nickname = None
                 try:
-                    name = attribute.name.decode('ascii')
-                except Exception as e:
+                    name = attribute.name
+                except Exception:
                     _logger.warning('sso_after_response: error decoding name \
                         of attribute %s' % attribute.dump())
                 else:
-                    try:
-                        if attribute.nameFormat:
-                            lformat = attribute.nameFormat.decode('ascii')
-                        if attribute.friendlyName:
-                            nickname = attribute.friendlyName
-                    except Exception as e:
-                        message = 'sso_after_response: name or format of an \
-                            attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(message % (attribute.dump(), str(e)))
-                    try:
-                        if name:
-                            if lformat:
-                                if nickname:
-                                    key = (name, lformat, nickname)
-                                else:
-                                    key = (name, lformat)
+                    if attribute.nameFormat:
+                        lformat = attribute.nameFormat
+                    if attribute.friendlyName:
+                        nickname = attribute.friendlyName
+                    if name:
+                        if lformat:
+                            if nickname:
+                                key = (name, lformat, nickname)
                             else:
-                                key = name
-                        attrs[key] = list()
-                        for value in attribute.attributeValue:
-                            content = [a.exportToXml() for a in value.any]
-                            content = ''.join(content)
-                            attrs[key].append(content.decode('utf8'))
-                    except Exception as e:
-                        message = 'sso_after_response: value of an \
-                            attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(message % (attribute.dump(), str(e)))
+                                key = (name, lformat)
+                        else:
+                            key = name
+                    attrs[key] = list()
+                    for value in attribute.attributeValue:
+                        content = [a.exportToXml() for a in value.any]
+                        content = ''.join(content)
+                        attrs[key].append(content)
 
         matching_value = None
         for k in attrs:
@@ -231,10 +221,15 @@ class ResUser(models.Model):
         # - The "allow both" setting is disabled.
         if (vals and vals.get('saml_uid') and self.id is not SUPERUSER_ID and
                 not self._allow_saml_and_password()):
-            vals.update({
-                'password': False,
-                'password_crypt': False,
-            })
+            # adding password/password crypt does not work
+            for k in ('password', 'password_crypt'):
+                if k in vals:
+                    vals.pop(k)
+            self.env.cr.execute(
+                "UPDATE res_users SET password='', password_crypt='' WHERE "
+                "id=%s",
+                (self.id, ))
+            self.invalidate_cache()
 
         return super(ResUser, self).write(vals)
 
@@ -242,3 +237,17 @@ class ResUser(models.Model):
     def _allow_saml_and_password(self):
 
         return self.env['res.config.settings'].allow_saml_and_password()
+
+    def _set_encrypted_password(self, encrypted):
+        """Redefine auth_crypt method to block password change as it uses
+        a cursor to do it and the python constrains would not be called
+        """
+        if (
+            not self._allow_saml_and_password() and
+            self.saml_uid and
+            self.id is not SUPERUSER_ID
+        ):
+            raise ValidationError(
+                _("This database disallows users to have both passwords "
+                  "and SAML IDs. Errors for login %s").format(self.login))
+        super(ResUser, self)._set_encrypted_password(encrypted)

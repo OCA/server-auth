@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2019 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
@@ -50,10 +50,13 @@ def fragment_to_query_string(func):
 
 class SAMLLogin(Home):
 
-    def list_providers(self):
+    def list_providers(self, with_autoredirect=False):
         try:
+            domain = [('enabled', '=', True)]
+            if with_autoredirect:
+                domain.append(('autoredirect', '=', True))
             providers = request.env['auth.saml.provider'].sudo().search_read(
-                [('enabled', '=', True)])
+                domain)
         except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
             providers = []
@@ -62,6 +65,30 @@ class SAMLLogin(Home):
             # avoid KeyError rendering template_auth_oauth_providers
             provider['auth_link'] = ""
         return providers
+
+    def _saml_autoredirect(self):
+        # automatically redirect if any provider is set up to do that
+        autoredirect_providers = self.list_providers(True)
+        # do not redirect if asked too or if a SAML error has been found
+        disable_autoredirect = (
+            'disable_autoredirect' in request.params or
+            'error' in request.params)
+        if autoredirect_providers and not disable_autoredirect:
+            return werkzeug.utils.redirect(
+                '/auth_saml/get_auth_request?pid=%d' %
+                autoredirect_providers[0]['id'],
+                303)
+
+    @http.route()
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            result = self._saml_autoredirect()
+            if result:
+                return result
+            else:
+                return super(SAMLLogin, self).web_client(s_action, **kw)
+        return super(SAMLLogin, self).web_client(s_action, **kw)
 
     @http.route()
     def web_login(self, *args, **kw):
@@ -75,23 +102,27 @@ class SAMLLogin(Home):
             # Redirect if already logged in and redirect param is present
             return http.redirect_with_hash(request.params.get('redirect'))
 
+        if request.httprequest.method == 'GET':
+            result = self._saml_autoredirect()
+            if result:
+                return result
+
         providers = self.list_providers()
 
         response = super(SAMLLogin, self).web_login(*args, **kw)
         if response.is_qweb:
-            error = request.params.get('saml_error')
-            if error == '1':
+            error = None
+            error_code = request.params.get('error')
+            if error_code == 'saml1':
                 error = _("Sign up is not allowed on this database.")
-            elif error == '2':
+            elif error_code == 'saml2':
                 error = _("Access Denied")
-            elif error == '3':
+            elif error_code == 'saml3':
                 error = _(
                     "You do not have access to this database or your "
                     "invitation has expired. Please ask for an invitation "
                     "and be sure to follow the link in your invitation email."
                 )
-            else:
-                error = None
 
             response.qcontext['providers'] = providers
 
@@ -140,8 +171,8 @@ class AuthSAMLController(http.Controller):
 
         try:
             auth_request = request.env[
-                'auth.saml.provider'].sudo()._get_auth_request(provider_id,
-                                                               state)
+                'auth.saml.provider'].sudo().browse(
+                    provider_id)._get_auth_request(state)
 
         except Exception as e:
             _logger.exception("SAML2: %s" % str(e))
@@ -186,17 +217,18 @@ class AuthSAMLController(http.Controller):
                 action = state.get('a')
                 menu = state.get('m')
                 url = '/'
+                # XXX this probably should be changed for odoo 11
                 if action:
                     url = '/#action=%s' % action
                 elif menu:
                     url = '/#menu_id=%s' % menu
                 return login_and_redirect(*credentials, redirect_url=url)
 
-            except AttributeError as e:
+            except AttributeError:
                 # auth_signup is not installed
                 _logger.error("auth_signup not installed on database "
                               "saml sign up cancelled.")
-                url = "/#action=login&saml_error=1"
+                url = "/web/login?error=saml1"
 
             except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
@@ -205,7 +237,7 @@ class AuthSAMLController(http.Controller):
                              'in case a valid session exists, '
                              'without setting cookies')
 
-                url = "/#action=login&saml_error=3"
+                url = "/web/login?error=saml3"
                 redirect = werkzeug.utils.redirect(url, 303)
                 redirect.autocorrect_location_header = False
                 return redirect
@@ -213,6 +245,6 @@ class AuthSAMLController(http.Controller):
             except Exception as e:
                 # signup error
                 _logger.exception("SAML2: %s" % str(e))
-                url = "/#action=login&saml_error=2"
+                url = "//web/login?error=saml2"
 
         return set_cookie_and_redirect(url)
