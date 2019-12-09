@@ -72,22 +72,21 @@ class ResGroups(models.Model):
             _("Check user %(user)s for membership of dynamic group %(group)s"),
             message_parms)
         should_be_in = self.should_be_in(user)
-        if should_be_in:
-            if user in self.users:
-                self._debug_message(
-                    _("User %(user)s already member of group %(group)s"), message_parms)
-                return
+        is_in = user in self.with_context(active_test=False).users
+        if should_be_in and is_in:
+            self._debug_message(
+                _("User %(user)s already member of group %(group)s"), message_parms)
+        elif should_be_in and not is_in:
             self._add_group_user(user)
             _logger.info(
                 _("User %(user)s added to dynamic group %(group)s"), message_parms)
-            return
-        if user not in self.users:
+        elif not should_be_in and not is_in:
             self._debug_message(
                 _("User %(user)s is not a member of group %(group)s"), message_parms)
-            return
-        self._remove_group_user(user)
-        _logger.info(
-            _("User %(user)s removed from dynamic group %(group)s"), message_parms)
+        elif not should_be_in and is_in:
+            self._remove_group_user(user)
+            _logger.info(
+                _("User %(user)s removed from dynamic group %(group)s"), message_parms)
 
     def _add_group_user(self, user):
         """Add a single member to the group."""
