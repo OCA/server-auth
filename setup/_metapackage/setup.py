@@ -21,6 +21,7 @@ setuptools.setup(
         'odoo12-addon-base_user_show_email',
         'odoo12-addon-password_security',
         'odoo12-addon-users_ldap_groups',
+        'odoo12-addon-users_ldap_populate',
     ],
     classifiers=[
         'Programming Language :: Python',
