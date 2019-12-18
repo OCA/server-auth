@@ -1,10 +1,10 @@
-# © Daniel Reis (https://launchpad.com/~dreis-pt)
-# License AGPL-3.0 or later (http://www.gnu.org/licenses/gpl.html).
+# Copyright Daniel Reis (https://launchpad.com/~dreis-pt)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import models, fields
 
 import logging
-_log = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 class CompanyLDAP(models.Model):
@@ -22,7 +22,7 @@ class CompanyLDAP(models.Model):
         help="LDAP attribute to use to retrieve em-mail address.",
     )
 
-    def get_ldap_dicts(self):
+    def _get_ldap_dicts(self):
         """
         Copy of auth_ldap's funtion, changing only the SQL, so that it returns
         all fields in the table.
@@ -30,9 +30,8 @@ class CompanyLDAP(models.Model):
         return self.sudo().search([('ldap_server', '!=', False)],
                                   order='sequence').read([])
 
-    def map_ldap_attributes(self, conf, login, ldap_entry):
-        values = super(CompanyLDAP, self).map_ldap_attributes(conf, login,
-                                                              ldap_entry)
+    def _map_ldap_attributes(self, conf, login, ldap_entry):
+        values = super()._map_ldap_attributes(conf, login, ldap_entry)
         mapping = [
             ('name', 'name_attribute'),
             ('email', 'mail_attribute'),
@@ -42,6 +41,7 @@ class CompanyLDAP(models.Model):
                 if conf[conf_name]:
                     values[value_key] = ldap_entry[1][conf[conf_name]][0]
             except KeyError:
-                _log.warning('No LDAP attribute "%s" found for login  "%s"' % (
-                    conf.get(conf_name), values.get('login')))
+                _logger.warning(
+                    'No LDAP attribute "%s" found for login  "%s"' % (
+                        conf.get(conf_name), values.get('login')))
         return values
