@@ -20,7 +20,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: users_ldap_mail
-#: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap_name_attribute
+#: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap__name_attribute
 msgid ""
 "By default 'cn' is used. For ActiveDirectory you might use 'displayName' "
 "instead."
@@ -28,21 +28,21 @@ msgstr ""
 "Por padrão 'cn' é usado. Para ActiveDirectory você pode usar 'displayName'"
 
 #. module: users_ldap_mail
-#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap_mail_attribute
+#: model:ir.model,name:users_ldap_mail.model_res_company_ldap
+msgid "Company LDAP configuration"
+msgstr ""
+
+#. module: users_ldap_mail
+#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__mail_attribute
 msgid "E-mail attribute"
 msgstr "Atributo E-mail"
 
 #. module: users_ldap_mail
-#: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap_mail_attribute
+#: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap__mail_attribute
 msgid "LDAP attribute to use to retrieve em-mail address."
 msgstr "Use o atributo LDAP para recuperar o endereço de e-mail"
 
 #. module: users_ldap_mail
-#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap_name_attribute
+#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__name_attribute
 msgid "Name Attribute"
 msgstr "Atributo Nome"
-
-#. module: users_ldap_mail
-#: model:ir.model,name:users_ldap_mail.model_res_company_ldap
-msgid "res.company.ldap"
-msgstr ""
