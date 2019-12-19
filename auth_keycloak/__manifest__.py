@@ -4,7 +4,7 @@
 {
     "name": "Keycloak auth integration",
     "summary": "Integrate Keycloak into your SSO",
-    "version": "11.0.1.0.0",
+    "version": "12.0.1.0.0",
     'category': 'Tools',
     "website": "https://github.com/OCA/server-auth",
     'author': 'Camptocamp, Odoo Community Association (OCA)',
