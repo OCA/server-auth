@@ -16,9 +16,9 @@ class Users(models.Model):
         copy=False
     )
 
-    def check_credentials(self, password):
+    def _check_credentials(self, password):
         """Check credentials for SSO user"""
         res = self.sudo().search([('id', '=', self._uid),
                                   ('sso_key', '=', password)])
         if not res:
-            return super(Users, self).check_credentials(password)
+            return super()._check_credentials(password)

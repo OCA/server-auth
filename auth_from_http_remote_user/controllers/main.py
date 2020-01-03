@@ -17,7 +17,6 @@ _logger = logging.getLogger(__name__)
 
 
 class Home(main.Home):
-
     _REMOTE_USER_ATTRIBUTE = 'HTTP_REMOTE_USER'
 
     @http.route('/web', type='http', auth="none")
@@ -27,7 +26,7 @@ class Home(main.Home):
             self._bind_http_remote_user(http.request.session.db)
         except http.AuthenticationError:
             return werkzeug.exceptions.Unauthorized().get_response()
-        return super(Home, self).web_client(s_action, **kw)
+        return super().web_client(s_action, **kw)
 
     def search_user(self, users, login):
         """Search for an active user by login name"""

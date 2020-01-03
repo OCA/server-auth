@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, registry
+from odoo.exceptions import AccessDenied
 from odoo.tests import common
 from odoo.tests.common import TransactionCase
 import mock
@@ -44,9 +45,9 @@ class TestResUsers(TransactionCase):
         uid = res
         self.assertTrue(res, "Basic login must works as expected")
         token = "123456"
-        res = res_users_obj.authenticate(
-            common.get_db_name(), 'admin', token, None)
-        self.assertFalse(res)
+        with self.assertRaises(AccessDenied):
+            res_users_obj.authenticate(
+                common.get_db_name(), 'admin', token, None)
         # mimic what the new controller do when it finds a value in
         # the http header (HTTP_REMOTE_USER)
         user = self.env['res.users'].browse([uid])

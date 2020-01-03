@@ -4,7 +4,7 @@
 
 {
     'name': 'Authenticate via HTTP Remote User',
-    'version': '11.0.1.0.0',
+    'version': '12.0.1.0.0',
     'category': 'Tools',
     'author': "Acsone SA/NV,Odoo Community Association (OCA)",
     'maintainer': 'ACSONE SA/NV',
