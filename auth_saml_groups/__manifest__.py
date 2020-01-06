@@ -10,6 +10,7 @@
     'author': 'Savoir-faire Linux, Odoo Community Association (OCA)',
     'maintainer': 'Savoir-faire Linux',
     'website': 'https://github.com/OCA/server-auth',
+    'maintainers': ['eilst'],
     'license': 'AGPL-3',
     'category': 'Tools',
     'version': '11.0.1.0.0',
