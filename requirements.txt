@@ -1,8 +1,6 @@
 Pygments
 # auth_signup_verify_email
 email_validator
-# auth_saml
-lasso
 # auth_totp
 pyotp
 # auth_u2f
