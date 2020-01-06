@@ -17,6 +17,7 @@ setuptools.setup(
         'odoo11-addon-auth_oauth_multi_token',
         'odoo11-addon-auth_saml',
         'odoo11-addon-auth_saml_create_user',
+        'odoo11-addon-auth_saml_groups',
         'odoo11-addon-auth_session_timeout',
         'odoo11-addon-auth_signup_verify_email',
         'odoo11-addon-auth_totp',
