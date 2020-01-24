@@ -4,7 +4,7 @@
 {
     'name': 'MFA Support',
     'summary': 'Allows users to enable MFA and add optional trusted devices',
-    'version': '11.0.1.1.0',
+    'version': '11.0.1.1.1',
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-auth',
     'author': 'LasLabs, Odoo Community Association (OCA)',
