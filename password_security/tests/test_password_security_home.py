@@ -6,8 +6,7 @@ from unittest import mock
 
 from contextlib import contextmanager
 
-from odoo.tests.common import HttpCase, TransactionCase, \
-    at_install, post_install
+from odoo.tests.common import HttpCase, TransactionCase
 from odoo.http import Response
 
 from ..controllers import main
@@ -206,8 +205,6 @@ class TestPasswordSecurityHome(TransactionCase):
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
-@at_install(False)
-@post_install(True)
 class LoginCase(HttpCase):
     @mock.patch("odoo.http.redirect_with_hash",
                 return_value="redirected")
