@@ -7,14 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-22 00:55+0000\n"
-"PO-Revision-Date: 2018-06-14 16:44+0000\n"
-"Last-Translator: Luis González <lgonzalez@vauxoo.com>, 2016\n"
+"PO-Revision-Date: 2020-02-06 12:13+0000\n"
+"Last-Translator: Jairo Llopis <jairo.llopis@tecnativa.com>\n"
 "Language-Team: Spanish (https://www.transifex.com/oca/teams/23907/es/)\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 3.10\n"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_minimum
@@ -164,27 +165,23 @@ msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_lower
-#, fuzzy
 msgid "Require number of lowercase letters"
-msgstr "Requerir letras minúsculas"
+msgstr "Requerir esta cantidad de letras minúsculas"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_numeric
-#, fuzzy
 msgid "Require number of numeric digits"
-msgstr "Requerir dígitos numéricos"
+msgstr "Requerir esta cantidad de dígitos numéricos"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_special
-#, fuzzy
 msgid "Require number of unique special characters"
-msgstr "Requerir caracteres especiales"
+msgstr "Requerir esta cantidad de caracteres especiales únicos"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_upper
-#, fuzzy
 msgid "Require number of uppercase letters"
-msgstr "Requerir letras minúsculas"
+msgstr "Requerir esta cantidad de letras mayúsculas"
 
 #. module: password_security
 #: model:ir.ui.view,arch_db:password_security.view_company_form
