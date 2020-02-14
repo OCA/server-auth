@@ -47,26 +47,31 @@ class ResUsers(models.Model):
     def password_match_message(self):
         self.ensure_one()
         company_id = self.company_id
-        message = []
+        message = [_('Must contain the following:')]
         if company_id.password_lower:
-            message.append('\n* ' + 'Lowercase letter (At least ' + str(
-                company_id.password_lower) + ' character)')
+            message.append(
+                _("* %d lowercase characters.") % company_id.password_lower
+            )
         if company_id.password_upper:
-            message.append('\n* ' + 'Uppercase letter (At least ' + str(
-                company_id.password_upper) + ' character)')
+            message.append(
+                _("* %d uppercase characters.") % company_id.password_upper
+            )
         if company_id.password_numeric:
-            message.append('\n* ' + 'Numeric digit (At least ' + str(
-                company_id.password_numeric) + ' character)')
+            message.append(
+                _("* %d numbers.") % company_id.password_numeric
+            )
         if company_id.password_special:
-            message.append('\n* ' + 'Special character (At least ' + str(
-                company_id.password_special) + ' character)')
-        if message:
-            message = [_('Must contain the following:')] + message
+            message.append(
+                _("* %d special characters.") % company_id.password_special
+            )
         if company_id.password_length:
-            message = ['Password must be %d characters or more.' %
-                       company_id.password_length
-                       ] + message
-        return '\r'.join(message)
+            message.append(
+                _("* A length of at least %d characters.") %
+                company_id.password_length
+            )
+        if len(message) == 1:
+            return ""
+        return '\n'.join(message)
 
     @api.multi
     def _check_password(self, password):
