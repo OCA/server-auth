@@ -112,16 +112,20 @@ class ResUser(models.Model):
         return self.env.cr.dbname, login, saml_response
 
     @api.multi
-    def _auth_saml_signin(self, provider, validation, saml_response, attrs):
+    def _auth_saml_signin(self, provider_id, validation, saml_response, attrs):
+        provider = self.env['auth.saml.provider'].browse(provider_id)
+        if provider.create_user_if_mapping:
+            if len(provider._get_group_mappings(attrs)) < 1:
+                raise AccessDenied()
         login = super()._auth_saml_signin(
-            provider,
+            provider_id,
             validation,
             saml_response)
         saml_uid = validation['user_id']
         user_ids = self.search(
-            [('saml_uid', '=', saml_uid), ('saml_provider_id', '=', provider)])
+            [('saml_uid', '=', saml_uid), ('saml_provider_id', '=', provider_id)])
         user = user_ids[0]
-        self._set_user_groups(user, provider, attrs)
+        self._set_user_groups(user, provider_id, attrs)
         return login
 
     def _set_user_groups(self, user, provider_id, attrs):

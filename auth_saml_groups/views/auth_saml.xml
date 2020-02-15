@@ -8,6 +8,7 @@
             <xpath expr="//field[@name='sp_pkey']/.." position="after">
              <group string="Map User Groups" >   
                 <field name="only_saml_groups"/>
+                <field name = "create_user_if_mapping"/>
                 <label for="group_mapping_ids" />
                     <field name="group_mapping_ids" nolabel="1">
                         <tree editable="bottom">
