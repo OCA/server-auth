@@ -20,12 +20,45 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:53
+#, fuzzy, python-format
+#| msgid "Special character"
+msgid "* %d lowercase characters."
+msgstr "Caracter especial"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:61
+#, python-format
+msgid "* %d numbers."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:65
+#, fuzzy, python-format
+#| msgid "Special character"
+msgid "* %d special characters."
+msgstr "Caracter especial"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:57
+#, fuzzy, python-format
+#| msgid "Special character"
+msgid "* %d uppercase characters."
+msgstr "Caracter especial"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:69
+#, python-format
+msgid "* A length of at least %d characters."
+msgstr ""
+
+#. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_minimum
 msgid "Amount of hours until a user may change password again"
 msgstr "Nº de horas até que um utilizador possa alterar a senha novamente"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:156
+#: code:addons/password_security/models/res_users.py:161
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Não pode usar as %d senhas mais recentes"
@@ -135,7 +168,7 @@ msgid "Minimum number of characters"
 msgstr "Nº mínimo de caracteres"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:64
+#: code:addons/password_security/models/res_users.py:50
 #, python-format
 msgid "Must contain the following:"
 msgstr "Tem que conter o seguinte:"
@@ -156,7 +189,7 @@ msgid "Password Policy"
 msgstr "Política de Senhas"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:133
+#: code:addons/password_security/models/res_users.py:138
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -232,9 +265,6 @@ msgstr "Utilizadores"
 
 #~ msgid "Password must be %d characters or more."
 #~ msgstr "As senhas têm que ter %d ou mais caracteres."
-
-#~ msgid "Special character"
-#~ msgstr "Caracter especial"
 
 #~ msgid "Uppercase letter"
 #~ msgstr "Caracter maiúsculo"

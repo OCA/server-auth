@@ -21,12 +21,42 @@ msgstr ""
 "2:1));\n"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:53
+#, python-format
+msgid "* %d lowercase characters."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:61
+#, python-format
+msgid "* %d numbers."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:65
+#, python-format
+msgid "* %d special characters."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:57
+#, python-format
+msgid "* %d uppercase characters."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:69
+#, python-format
+msgid "* A length of at least %d characters."
+msgstr ""
+
+#. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_minimum
 msgid "Amount of hours until a user may change password again"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:156
+#: code:addons/password_security/models/res_users.py:161
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr ""
@@ -134,7 +164,7 @@ msgid "Minimum number of characters"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:64
+#: code:addons/password_security/models/res_users.py:50
 #, python-format
 msgid "Must contain the following:"
 msgstr ""
@@ -155,7 +185,7 @@ msgid "Password Policy"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:133
+#: code:addons/password_security/models/res_users.py:138
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "

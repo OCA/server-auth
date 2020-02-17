@@ -19,6 +19,39 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:53
+#, fuzzy, python-format
+#| msgid "Special character"
+msgid "* %d lowercase characters."
+msgstr "Caractère spécial"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:61
+#, python-format
+msgid "* %d numbers."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:65
+#, fuzzy, python-format
+#| msgid "Special character"
+msgid "* %d special characters."
+msgstr "Caractère spécial"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:57
+#, fuzzy, python-format
+#| msgid "Special character"
+msgid "* %d uppercase characters."
+msgstr "Caractère spécial"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:69
+#, python-format
+msgid "* A length of at least %d characters."
+msgstr ""
+
+#. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_minimum
 msgid "Amount of hours until a user may change password again"
 msgstr ""
@@ -26,7 +59,7 @@ msgstr ""
 "nouveau son mot de passe"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:156
+#: code:addons/password_security/models/res_users.py:161
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Interdire l'utilisation des %d mots de passe les plus récents"
@@ -136,7 +169,7 @@ msgid "Minimum number of characters"
 msgstr "Nombre minimal de caractères"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:64
+#: code:addons/password_security/models/res_users.py:50
 #, python-format
 msgid "Must contain the following:"
 msgstr "Doit contenir :"
@@ -157,7 +190,7 @@ msgid "Password Policy"
 msgstr "Politique des mots de passe"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:133
+#: code:addons/password_security/models/res_users.py:138
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -233,9 +266,6 @@ msgstr "Utilisateurs"
 
 #~ msgid "Password must be %d characters or more."
 #~ msgstr "Le mot de passe doit contenir %d caractères ou plus."
-
-#~ msgid "Special character"
-#~ msgstr "Caractère spécial"
 
 #~ msgid "Uppercase letter"
 #~ msgstr "Lettre majuscule"
