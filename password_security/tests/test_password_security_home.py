@@ -6,8 +6,7 @@ from unittest import mock
 
 from contextlib import contextmanager
 
-from odoo.tests.common import HttpCase, TransactionCase, \
-    at_install, post_install
+from odoo.tests.common import HttpCase, TransactionCase
 from odoo.http import Response
 
 from ..controllers import main
@@ -206,20 +205,15 @@ class TestPasswordSecurityHome(TransactionCase):
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
-@at_install(False)
-@post_install(True)
 class LoginCase(HttpCase):
-    @mock.patch("odoo.http.redirect_with_hash",
-                return_value="redirected")
-    def test_web_login_authenticate(self, redirect_mock, *args):
+    def test_web_login_authenticate(self, *args):
         """It should allow authenticating by login"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
         )
         # Redirected to /web because it succeeded
-        redirect_mock.assert_any_call("/web")
-        self.assertEqual(response.text, "redirected")
+        self.assertIn("window.location = '/web' + location.hash", response.text)
 
     def test_web_login_authenticate_fail(self, *args):
         """It should fail auth"""
