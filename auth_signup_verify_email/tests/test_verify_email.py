@@ -10,12 +10,15 @@ from odoo.tools.misc import mute_logger
 
 class UICase(HttpCase):
     def setUp(self):
-        super(UICase, self).setUp()
-        with self.cursor() as cr:
-            env = self.env(cr)
-            icp = env["ir.config_parameter"]
-            icp.set_param("auth_signup.allow_uninvited", "True")
-
+        super().setUp()
+        if "website" in self.env:
+            # Enable public signup in website if it is installed; otherwise
+            # tests here would fail
+            current_website = self.env['website'].get_current_website()
+            current_website.auth_signup_uninvited = "b2c"
+        self.env["ir.config_parameter"].set_param(
+            "auth_signup.invitation_scope", "b2c"
+        )
         self.data = {
             "csrf_token": self.csrf_token(),
             "name": "Somebody",
