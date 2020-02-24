@@ -206,14 +206,17 @@ class TestPasswordSecurityHome(TransactionCase):
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
 class LoginCase(HttpCase):
-    def test_web_login_authenticate(self, *args):
+    @mock.patch("odoo.http.redirect_with_hash",
+                return_value="redirected")
+    def test_web_login_authenticate(self, redirect_mock, *args):
         """It should allow authenticating by login"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
         )
         # Redirected to /web because it succeeded
-        self.assertIn("window.location = '/web' + location.hash", response.text)
+        redirect_mock.assert_any_call("/web")
+        self.assertEqual(response.text, "redirected")
 
     def test_web_login_authenticate_fail(self, *args):
         """It should fail auth"""
