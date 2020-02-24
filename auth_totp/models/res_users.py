@@ -103,6 +103,11 @@ class ResUsers(models.Model):
         super(ResUsers, self)._check_credentials(password)
         if request:
             request.session['mfa_login_needed'] = True
+            return http.local_redirect(
+                '/auth_totp/login',
+                query={'redirect': request.params.get('redirect')},
+                keep_hash=True,
+            )
         raise MfaLoginNeeded
 
     @api.multi
