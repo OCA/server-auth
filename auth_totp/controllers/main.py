@@ -10,7 +10,6 @@ from werkzeug.wrappers import Response as WerkzeugResponse
 from odoo import _, http
 from odoo.http import Response, request
 from odoo.addons.web.controllers.main import Home
-from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
 class JsonSecureCookie(SecureCookie):
@@ -55,12 +54,24 @@ class JsonSecureCookie(SecureCookie):
 
 
 class AuthTotp(Home):
+
     @http.route()
     def web_login(self, *args, **kwargs):
-        response = super(AuthTotp, self).web_login(*args, **kwargs)
-        if request.session.get('mfa_login_needed'):
-            return self.redirect(http)
-        return response
+        if request.params.get('login') and request.params.get('password'):
+            User = request.env["res.users"]
+            uid = User.sudo().authenticate(
+                request.params.get('db'),
+                request.params.get('login'),
+                request.params.get('password'),
+                {}
+            )
+            if uid:
+                user = User.browse(uid).sudo()
+                if user.mfa_enabled:
+                    return self.redirect(http)
+                elif user.has_group("base.group_user"):
+                    kwargs.update({'redirect': "/web"})
+        return super(AuthTotp, self).web_login(*args, **kwargs)
 
     def redirect(self, http=None, redirect=None):
         if request.session.get('mfa_login_needed'):
@@ -107,8 +118,8 @@ class AuthTotp(Home):
         user_model_sudo = request.env['res.users'].sudo()
         config_model_sudo = user_model_sudo.env['ir.config_parameter'].sudo()
 
-        user_login = request.session.get('uid')
-        user = user_model_sudo.search([('id', '=', user_login)])
+        user_login = request.session.get('login')
+        user = user_model_sudo.search([('login', '=', user_login)])
         if not user:
             return http.local_redirect(
                 '/web/login',
@@ -171,29 +182,3 @@ class AuthTotp(Home):
             )
 
         return response
-
-    @http.route('/web', type='http', auth="none")
-    def web_client(self, s_action=None, **kw):
-        if request.session.get('mfa_login_needed'):
-            request.session.update({
-                'mfa_login_needed': False,
-                'login': False,
-                'uid': False,
-                'sessions_token': False,
-            })
-            return http.local_redirect('/web/login')
-        return super(AuthTotp, self).web_client(s_action=s_action)
-
-
-class CustomerPortal(CustomerPortal):
-
-    @http.route(['/my', '/my/home'], type='http', auth="user", website=True)
-    def home(self, **kw):
-        if request.session.get('mfa_login_needed'):
-            request.session.update({
-                'mfa_login_needed': False,
-                'uid': False,
-                'session_token': False,
-            })
-            return request.redirect('/web/login')
-        return super(CustomerPortal, self).home()

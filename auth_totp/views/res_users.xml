@@ -34,7 +34,7 @@
                     <label for="mfa_enabled" colspan="3"/>
                     <field name="mfa_enabled" readonly="0" colspan="5" nolabel="1"/>
                     <label for="authenticator_ids" colspan="3"/>
-                    <field name="authenticator_ids" widget="many2many_tags" options="{'no_create': True}" colspan="4" readonly="0" nolabel="1"/>
+                    <field name="authenticator_ids" widget="many2many_tags" options="{'no_create': True}" domain="[('user_id', '=', id)]" colspan="4" readonly="0" nolabel="1"/>
                     <button string="Add New App/Device" type="action" name="%(res_users_authenticator_create_action)d" colspan="1"/>
                 </group>
             </xpath>
