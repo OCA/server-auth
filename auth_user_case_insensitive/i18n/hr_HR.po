@@ -21,9 +21,19 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: auth_user_case_insensitive
-#: code:addons/auth_user_case_insensitive/hooks.py:24
+#: code:addons/auth_user_case_insensitive/hooks.py:0
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
+msgstr ""
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__login
+msgid "Login"
+msgstr ""
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,help:auth_user_case_insensitive.field_res_users__login
+msgid "Used to log into the system. Case insensitive."
 msgstr ""
 
 #. module: auth_user_case_insensitive
