@@ -4,15 +4,12 @@
 import logging
 import passlib
 
-from odoo import api, fields, models, _, SUPERUSER_ID
+import lasso
+
+from odoo import api, fields, models, _, SUPERUSER_ID, tools
 from odoo.exceptions import ValidationError, AccessDenied
 
 _logger = logging.getLogger(__name__)
-
-try:
-    import lasso
-except ImportError:
-    _logger.debug('Cannot `import lasso`.')
 
 
 class ResUser(models.Model):
@@ -30,22 +27,19 @@ class ResUser(models.Model):
         help="SAML Provider user_id",
     )
 
-    @api.constrains('password_crypt', 'password', 'saml_uid')
+    @api.constrains('password', 'saml_uid')
     def check_no_password_with_saml(self):
         """Ensure no Odoo user posesses both an SAML user ID and an Odoo
         password. Except admin which is not constrained by this rule.
         """
-        if self._allow_saml_and_password():
-            pass
-
-        else:
+        if not self._allow_saml_and_password():
             # Super admin is the only user we allow to have a local password
             # in the database
-            if (self.password_crypt and self.saml_uid and
+            if (self.password and self.saml_uid and
                     self.id is not SUPERUSER_ID):
                 raise ValidationError(_("This database disallows users to "
                                         "have both passwords and SAML IDs. "
-                                        "Errors for login %s" % (self.login)))
+                                        "Errors for login %s") % (self.login))
 
     _sql_constraints = [('uniq_users_saml_provider_saml_uid',
                          'unique(saml_provider_id, saml_uid)',
@@ -60,16 +54,14 @@ class ResUser(models.Model):
         # we are not yet logged in, so the userid cannot have access to the
         # fields we need yet
         login = p.sudo()._get_lasso_for_provider()
-        matching_attribute = p._get_matching_attr_for_provider()
+        matching_attribute = p.matching_attribute
 
         try:
             login.processAuthnResponseMsg(token)
         except (lasso.DsError, lasso.ProfileCannotVerifySignatureError):
-            raise Exception('Lasso Profile cannot verify signature')
+            raise AccessDenied(_('Lasso Profile cannot verify signature'))
         except lasso.ProfileStatusNotSuccessError:
-            raise Exception('Profile Status Not Success Error')
-        except lasso.Error as e:
-            raise Exception(repr(e))
+            raise AccessDenied(_('Profile Status failure'))
 
         try:
             login.acceptSso()
@@ -86,19 +78,23 @@ class ResUser(models.Model):
                 nickname = None
                 try:
                     name = attribute.name.decode('ascii')
-                except Exception as e:
-                    _logger.warning('sso_after_response: error decoding name \
-                        of attribute %s' % attribute.dump())
+                except Exception:
+                    _logger.warning(
+                        'sso_after_response: error decoding attribute name %s',
+                        attribute.dump(),
+                    )
                 else:
                     try:
                         if attribute.nameFormat:
                             lformat = attribute.nameFormat.decode('ascii')
                         if attribute.friendlyName:
                             nickname = attribute.friendlyName
-                    except Exception as e:
+                    except Exception:
                         message = 'sso_after_response: name or format of an \
-                            attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(message % (attribute.dump(), str(e)))
+                            attribute failed to decode as ascii: %s'
+                        _logger.warning(
+                            message, attribute.dump(), exc_info=True
+                        )
                     try:
                         if name:
                             if lformat:
@@ -113,10 +109,12 @@ class ResUser(models.Model):
                             content = [a.exportToXml() for a in value.any]
                             content = ''.join(content)
                             attrs[key].append(content.decode('utf8'))
-                    except Exception as e:
+                    except Exception:
                         message = 'sso_after_response: value of an \
                             attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(message % (attribute.dump(), str(e)))
+                        _logger.warning(
+                            message, attribute.dump(), exc_info=True
+                        )
 
         matching_value = None
         for k in attrs:
@@ -150,18 +148,12 @@ class ResUser(models.Model):
         """
         token_osv = self.env['auth_saml.token']
         saml_uid = validation['user_id']
-
-        user_ids = self.search(
-            [('saml_uid', '=', saml_uid), ('saml_provider_id', '=', provider)])
-
-        if not user_ids:
+        user = self.search([
+            ('saml_uid', '=', saml_uid),
+            ('saml_provider_id', '=', provider),
+        ])
+        if len(user) != 1:
             raise AccessDenied()
-
-        # TODO replace assert by proper raise... asserts do not execute in
-        # production code...
-        assert len(user_ids) == 1
-        user = user_ids[0]
-
         # now find if a token for this user/provider already exists
         token_ids = token_osv.search(
             [('saml_provider_id', '=', provider), ('user_id', '=', user.id)])
@@ -211,33 +203,40 @@ class ResUser(models.Model):
             res = self.env['auth_saml.token'].sudo().search(
                 [('user_id', '=', self.env.user.id),
                  ('saml_access_token', '=', token)])
-
-            # if the user is not found we re-raise the AccessDenied
             if not res:
-                # TODO: maybe raise a defined exception instead of the last
-                # exception that occurred in our execution frame
-                raise
+                raise AccessDenied()
+
+    @api.multi
+    def _autoremove_password_if_saml(self):
+        """Helper to remove password if it is forbidden for SAML users."""
+        if self._allow_saml_and_password():
+            return
+        to_remove_password = self.filtered(
+            lambda rec: rec.id != SUPERUSER_ID and rec.saml_uid and
+            not (rec.password or rec.password_crypt)
+        )
+        to_remove_password.write({
+            'password': False,
+            'password_crypt': False,
+        })
 
     @api.multi
     def write(self, vals):
-        """Override to clear out the user's password when setting an SAML user
-        ID (as they can't cohabit).
-        """
+        result = super().write(vals)
+        self._autoremove_password_if_saml()
+        return result
 
-        # Clear out the pass when:
-        # - An SAML ID is being set.
-        # - The user is not the Odoo admin.
-        # - The "allow both" setting is disabled.
-        if (vals and vals.get('saml_uid') and self.id is not SUPERUSER_ID and
-                not self._allow_saml_and_password()):
-            vals.update({
-                'password': False,
-                'password_crypt': False,
-            })
-
-        return super(ResUser, self).write(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        result = super().create(vals_list)
+        result._autoremove_password_if_saml()
+        return result
 
     @api.model
     def _allow_saml_and_password(self):
-
-        return self.env['res.config.settings'].allow_saml_and_password()
+        """Know if both SAML and local password auth methods can coexist."""
+        return tools.str2bool(
+            self.env['ir.config_parameter'].sudo().get_param(
+                'auth_saml.allow_saml.uid_and_internal_password', 'True'
+            )
+        )

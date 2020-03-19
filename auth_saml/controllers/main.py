@@ -51,16 +51,11 @@ def fragment_to_query_string(func):
 class SAMLLogin(Home):
 
     def list_providers(self):
-        try:
-            providers = request.env['auth.saml.provider'].sudo().search_read(
-                [('enabled', '=', True)])
-        except Exception as e:
-            _logger.exception("SAML2: %s" % str(e))
-            providers = []
+        providers = request.env['auth.saml.provider'].sudo().search_read([])
         for provider in providers:
             # Compatibility with auth_oauth/controllers/main.py in order to
             # avoid KeyError rendering template_auth_oauth_providers
-            provider['auth_link'] = ""
+            provider.setdefault('auth_link', "")
         return providers
 
     @http.route()
@@ -77,14 +72,14 @@ class SAMLLogin(Home):
 
         providers = self.list_providers()
 
-        response = super(SAMLLogin, self).web_login(*args, **kw)
+        response = super().web_login(*args, **kw)
         if response.is_qweb:
             error = request.params.get('saml_error')
-            if error == '1':
+            if error == 'no-signup':
                 error = _("Sign up is not allowed on this database.")
-            elif error == '2':
+            elif error == 'access-denied':
                 error = _("Access Denied")
-            elif error == '3':
+            elif error == 'expired':
                 error = _(
                     "You do not have access to this database or your "
                     "invitation has expired. Please ask for an invitation "
@@ -126,10 +121,6 @@ class AuthSAMLController(http.Controller):
 
     @http.route('/auth_saml/get_auth_request', type='http', auth='none')
     def get_auth_request(self, pid):
-        """state is the JSONified state object and we need to pass
-        it inside our request as the RelayState argument
-        """
-
         provider_id = int(pid)
 
         auth_request = None
@@ -144,8 +135,8 @@ class AuthSAMLController(http.Controller):
             provider = Provider.browse(provider_id)
             auth_request = provider._get_auth_request(state)
 
-        except Exception as e:
-            _logger.exception("SAML2: %s" % str(e))
+        except Exception:
+            _logger.exception("SAML2 failure")
 
         # TODO: handle case when auth_request comes back as None
 
@@ -159,9 +150,9 @@ class AuthSAMLController(http.Controller):
         """client obtained a saml token and passed it back
         to us... we need to validate it
         """
-        saml_response = kw.get('SAMLResponse', None)
+        saml_response = kw.get('SAMLResponse')
 
-        if kw.get('RelayState', None) is None:
+        if kw.get('RelayState') is None:
             # here we are in front of a client that went through
             # some routes that "lost" its relaystate... this can happen
             # if the client visited his IDP and successfully logged in
@@ -183,7 +174,6 @@ class AuthSAMLController(http.Controller):
                 credentials = env['res.users'].sudo().auth_saml(
                     provider, saml_response
                 )
-                cr.commit()
                 action = state.get('a')
                 menu = state.get('m')
                 url = '/'
@@ -197,7 +187,7 @@ class AuthSAMLController(http.Controller):
                 # auth_signup is not installed
                 _logger.error("auth_signup not installed on database "
                               "saml sign up cancelled.")
-                url = "/#action=login&saml_error=1"
+                url = "/#action=login&saml_error=no-signup"
 
             except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
@@ -206,14 +196,14 @@ class AuthSAMLController(http.Controller):
                              'in case a valid session exists, '
                              'without setting cookies')
 
-                url = "/#action=login&saml_error=3"
+                url = "/#action=login&saml_error=expired"
                 redirect = werkzeug.utils.redirect(url, 303)
                 redirect.autocorrect_location_header = False
                 return redirect
 
-            except Exception as e:
+            except Exception:
                 # signup error
-                _logger.exception("SAML2: %s" % str(e))
-                url = "/#action=login&saml_error=2"
+                _logger.exception("SAML2: failure")
+                url = "/#action=login&saml_error=access-denied"
 
         return set_cookie_and_redirect(url)
