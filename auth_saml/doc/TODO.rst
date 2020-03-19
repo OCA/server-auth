@@ -1,7 +1,0 @@
-====
-TODO
-====
-
-.. todolist::
-
-.. include:: autotodo
