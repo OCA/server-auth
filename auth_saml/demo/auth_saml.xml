@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo noupdate="1">
     <record id="provider_local" model="auth.saml.provider">
-        <field name="name">Local Authentic server</field>
+        <field name="name">Local demo server</field>
         <field name="idp_metadata"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
             <ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" entityID="http://localhost:8000/idp/saml2/metadata">
                 <ns0:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
@@ -79,6 +79,6 @@ sIbngHtWnT36PTZS
         </field>
         <field name="css_class">zocial saml</field>
         <field name="body">Log in with Authentic</field>
-        <field name="enabled" eval="False"/>
+        <field name="active" eval="True"/>
     </record>
 </odoo>
