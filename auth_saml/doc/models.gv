@@ -1,7 +1,0 @@
-digraph model {
-
-        node [
-                shape = "record"
-        ]
-
-}
