@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo12-addon-auth_ldap_attribute_sync',
         'odoo12-addon-auth_ldaps',
         'odoo12-addon-auth_oauth_multi_token',
+        'odoo12-addon-auth_saml',
         'odoo12-addon-auth_session_timeout',
         'odoo12-addon-auth_signup_verify_email',
         'odoo12-addon-auth_totp',
