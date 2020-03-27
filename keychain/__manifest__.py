@@ -3,9 +3,9 @@
 {
     "name": "Keychain",
     "summary": "Store accounts and credentials",
-    "version": "11.0.3.0.0",
+    "version": "12.0.3.0.0",
     "category": "Uncategorized",
-    "website": "https://akretion.com/",
+    "website": "https://github.com/OCA/server-auth",
     "author": "Akretion, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "application": False,

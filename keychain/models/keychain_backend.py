@@ -7,6 +7,7 @@ from odoo.tools.config import config
 
 class KeychainBackend(models.AbstractModel):
     _name = 'keychain.backend'
+    _description = 'Keychain Backend'
     _backend_name = None
 
     name = fields.Char(required=True)
