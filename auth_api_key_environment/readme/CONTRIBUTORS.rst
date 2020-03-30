@@ -2,4 +2,4 @@
 * Laurent Mignon <laurent.mignon@acsone.eu>
 * Quentin Groulard <quentin.groulard@acsone.eu>
 * Sébastien Beau <sebastien.beau@akretion.com>
-
+* Daniel Reis <dreis@opensourceintegrators.com>
