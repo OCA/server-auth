@@ -1,34 +1,45 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <!-- view_ldap_installer_form View -->
     <record id="view_users_form_simple_modif_ldap" model="ir.ui.view">
         <field name="name">res.users.preferences.ldap.form</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form_simple_modif"/>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif" />
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="is_ldap_user" invisible="1"/>
+                <field name="is_ldap_user" invisible="1" />
             </field>
             <button name="preference_change_password" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_ldap_user', '=', True)]}</attribute>
+                <attribute
+                    name="attrs"
+                >{'invisible': [('is_ldap_user', '=', True)]}</attribute>
             </button>
         </field>
     </record>
-    
     <!-- auth_signup View extends-->
     <record id="res_users_form_view_ldap" model="ir.ui.view">
         <field name="name">res.users.ldap.form</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="auth_signup.res_users_form_view"/>
+        <field name="inherit_id" ref="auth_signup.res_users_form_view" />
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="is_ldap_user" invisible="1"/>
+                <field name="is_ldap_user" invisible="1" />
             </field>
-            <xpath expr="//button[@name='action_reset_password'][1]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|',('state', '!=', 'active'),('is_ldap_user', '=', True)]}</attribute>
+            <xpath
+                expr="//button[@name='action_reset_password'][1]"
+                position="attributes"
+            >
+                <attribute
+                    name="attrs"
+                >{'invisible': ['|',('state', '!=', 'active'),('is_ldap_user', '=', True)]}</attribute>
             </xpath>
-            <xpath expr="//button[@name='action_reset_password'][2]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|',('state', '!=', 'new'),('is_ldap_user', '=', True)]}</attribute>
+            <xpath
+                expr="//button[@name='action_reset_password'][2]"
+                position="attributes"
+            >
+                <attribute
+                    name="attrs"
+                >{'invisible': ['|',('state', '!=', 'new'),('is_ldap_user', '=', True)]}</attribute>
             </xpath>
         </field>
     </record>

@@ -8,21 +8,19 @@ from odoo import api, fields, models
 class CompanyLDAP(models.Model):
     _inherit = "res.company.ldap"
 
-    user_pattern = fields.Char(
-        string='User Pattern',
-        size=128
-    )
+    user_pattern = fields.Char(string="User Pattern", size=128)
 
     def map_ldap_attributes(self, conf, login, ldap_entry):
         res = super(CompanyLDAP, self).map_ldap_attributes(
-            conf=conf, login=login, ldap_entry=ldap_entry)
-        res.update({'is_ldap_user': True})
+            conf=conf, login=login, ldap_entry=ldap_entry
+        )
+        res.update({"is_ldap_user": True})
         return res
 
     @api.multi
     def get_ldap_dicts(self):
         res = super(CompanyLDAP, self).get_ldap_dicts()
         for value in res:
-            user_pattern = self.sudo().browse(value['id']).user_pattern
-            value.update({'user_pattern': user_pattern})
+            user_pattern = self.sudo().browse(value["id"]).user_pattern
+            value.update({"user_pattern": user_pattern})
         return res
