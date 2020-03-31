@@ -2,23 +2,26 @@
 # pylint: disable=W7935, W7936, W0403
 
 import click
-from urlparse import urljoin
+try:
+    from urlparse import urljoin
+except ImportError:
+    from urllib.parse import urljoin
 import os
 import sys
 import json
 from get_token import get_token
 from common import (
-    DATA_FILE, VALIDATE_PATH,
+    TOKEN_DATA_FILE, VALIDATE_PATH,
     USERINFO_PATH, USERS_PATH,
     do_request
 )
 
 
 def _read_data():
-    if not os.path.isfile(DATA_FILE):
+    if not os.path.isfile(TOKEN_DATA_FILE):
         click.echo('You must run `get_token` before.')
         sys.exit(0)
-    with open(DATA_FILE, 'r') as ff:
+    with open(TOKEN_DATA_FILE, 'r') as ff:
         return json.loads(ff.read())
 
 
