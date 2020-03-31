@@ -4,7 +4,7 @@
 
 {
     'name': 'LDAPS authentication',
-    'version': '12.0.1.0.0',
+    'version': '13.0.1.0.0',
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-auth',
     'author':
@@ -18,11 +18,6 @@
     'depends': [
         'auth_ldap',
     ],
-    'external_dependencies': {
-        'python': [
-            'ldap',
-        ],
-    },
     'data': [
         'views/res_company_ldap_views.xml',
     ],
