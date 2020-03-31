@@ -20,7 +20,7 @@
     <record id="res_users_form_view_ldap" model="ir.ui.view">
         <field name="name">res.users.ldap.form</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="auth_signup.res_users_form_view" />
+        <field name="inherit_id" ref="auth_signup.res_users_view_form" />
         <field name="arch" type="xml">
             <field name="name" position="after">
                 <field name="is_ldap_user" invisible="1" />

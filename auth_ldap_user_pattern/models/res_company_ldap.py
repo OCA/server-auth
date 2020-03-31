@@ -2,7 +2,7 @@
 # Copyright (C) 2019 Open Source Integrators
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class CompanyLDAP(models.Model):
@@ -17,7 +17,6 @@ class CompanyLDAP(models.Model):
         res.update({"is_ldap_user": True})
         return res
 
-    @api.multi
     def get_ldap_dicts(self):
         res = super(CompanyLDAP, self).get_ldap_dicts()
         for value in res:

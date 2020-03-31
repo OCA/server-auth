@@ -11,25 +11,25 @@ from odoo.exceptions import UserError
 class Users(models.Model):
     _inherit = "res.users"
 
-    is_ldap_user = fields.Boolean(string="Is LDAP User",)
+    is_ldap_user = fields.Boolean(string="Is LDAP User")
 
     @classmethod
     def _login(cls, db, login, password):
-        """ Overload _login to check login string matches with pattern
-        before passing to the super """
+        """Overload _login to check login string matches with pattern
+        before passing to the super"""
         login = login.lower()
         with registry(db).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
-            Ldap = env["res.company.ldap"]
-            for conf in Ldap.get_ldap_dicts():
+            ldap = env["res.company.ldap"]
+            for conf in ldap.get_ldap_dicts():
                 if conf["user_pattern"]:
                     pattern = re.compile(conf["user_pattern"])
                     if pattern.match(login):
                         # Bypass Standard Odoo authentication and only check
                         # user id
-                        entry = Ldap.authenticate(conf, login, password)
+                        entry = ldap.authenticate(conf, login, password)
                         if entry:
-                            user_id = Ldap.get_or_create_user(conf, login, entry)
+                            user_id = ldap.get_or_create_user(conf, login, entry)
                             if user_id:
                                 return user_id
         return super(Users, cls)._login(db, login, password)
@@ -38,7 +38,6 @@ class Users(models.Model):
 class ChangePasswordUser(models.TransientModel):
     _inherit = "change.password.user"
 
-    @api.multi
     def change_password_button(self):
         for line in self:
             if not line.new_passwd:
