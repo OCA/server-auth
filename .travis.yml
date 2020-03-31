@@ -5,6 +5,9 @@ cache: pip
 python:
   - "2.7"
 
+virtualenv:
+  system_site_packages: true
+
 addons:
   postgresql: "9.6"
   apt:
