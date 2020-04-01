@@ -8,3 +8,5 @@ python-u2flib-server
 zxcvbn
 # auth_saml
 lasso
+# auth_ldaps
+ldap
