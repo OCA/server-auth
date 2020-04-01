@@ -14,13 +14,13 @@ Inactive Sessions Timeout
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/12.0/auth_session_timeout
+    :target: https://github.com/OCA/server-auth/tree/13.0/auth_session_timeout
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-12-0/server-auth-12-0-auth_session_timeout
+    :target: https://translation.odoo-community.org/projects/server-auth-13-0/server-auth-13-0-auth_session_timeout
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/12.0
+    :target: https://runbot.odoo-community.org/runbot/251/13.0
     :alt: Try me on Runbot
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
@@ -28,7 +28,6 @@ Inactive Sessions Timeout
 This module was written to be able to kill(logout) all inactive sessions since
 a given delay. On each request the server checks if the session is yet valid
 regarding the expiration delay. If not a clean logout is operated.
-
 
 **Table of contents**
 
@@ -46,12 +45,10 @@ Two system parameters are available:
 * ``inactive_session_time_out_ignored_url``: technical urls where the check
   does not occur
 
-
 Usage
 =====
 
 Setup the session parameters as described above.
-
 
 Bug Tracker
 ===========
@@ -59,7 +56,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_session_timeout%0Aversion:%2012.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_session_timeout%0Aversion:%2013.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -83,7 +80,6 @@ Contributors
 * Dave Lasley <dave@laslabs.com>
 * Nadia Afakrouch <nadia.afa@gmail.com>
 
-
 Maintainers
 ~~~~~~~~~~~
 
@@ -97,6 +93,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/12.0/auth_session_timeout>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/13.0/auth_session_timeout>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
