@@ -1,5 +1,6 @@
 # Copyright 2016-2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+import base64
 
 import mock
 from odoo.exceptions import ValidationError
@@ -66,11 +67,15 @@ class TestResUsersAuthenticatorCreate(TransactionCase):
         """Should set field to image with encoded PyOTP URI if user present"""
         pyotp_mock.TOTP().provisioning_uri.return_value = 'test:uri'
         test_wiz = self._new_wizard()
-
+        barcode = self.env['ir.actions.report'].barcode(
+            'QR',
+            value='test:uri',
+            width=300,
+            height=300,
+        )
         self.assertEqual(
             test_wiz.qr_code_tag,
-            '<img src="/report/barcode/?type=QR&amp;value='
-            '%s&amp;width=300&amp;height=300">' % 'test:uri',
+            base64.b64encode(barcode),
         )
 
     def test_compute_qr_code_tag_pyotp_use(self, pyotp_mock):

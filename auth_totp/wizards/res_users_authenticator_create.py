@@ -1,10 +1,10 @@
 # Copyright 2016-2017 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
+import base64
 import logging
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
-from werkzeug import urls
 
 _logger = logging.getLogger(__name__)
 try:
@@ -31,7 +31,7 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
         default=lambda s: pyotp.random_base32(),
         required=True,
     )
-    qr_code_tag = fields.Html(
+    qr_code_tag = fields.Binary(
         compute='_compute_qr_code_tag',
         string='QR Code',
         help='Scan this image with your authentication app to add your'
@@ -75,16 +75,14 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
                 record.user_id.display_name.encode('utf-8'),
                 issuer_name=record.user_id.company_id.display_name,
             )
-            provisioning_uri = urls.url_quote(provisioning_uri)
 
-            qr_width = qr_height = 300
-            tag_base = '<img src="/report/barcode/?type=QR&amp;'
-            tag_params = 'value=%s&amp;width=%s&amp;height=%s">' % (
-                provisioning_uri,
-                qr_width,
-                qr_height
+            barcode = self.env['ir.actions.report'].barcode(
+                'QR',
+                value=provisioning_uri,
+                width=300,
+                height=300,
             )
-            record.qr_code_tag = tag_base + tag_params
+            record.qr_code_tag = base64.b64encode(barcode)
 
     @api.multi
     def action_create(self):
