@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo13-addon-auth_api_key',
+        'odoo13-addon-auth_session_timeout',
         'odoo13-addon-auth_user_case_insensitive',
     ],
     classifiers=[
