@@ -83,11 +83,9 @@ class ResUsers(models.Model):
             return super(ResUsers, self)._check_credentials(password)
 
         self._mfa_uid_cache[self.env.cr.dbname].add(self.env.uid)
-
         if request:
             if request.session.get('mfa_login_active') == self.env.uid:
                 return super(ResUsers, self)._check_credentials(password)
-
             cookie_key = 'trusted_devices_%d' % self.env.uid
             device_cook = request.httprequest.cookies.get(cookie_key)
             if device_cook:
@@ -100,9 +98,10 @@ class ResUsers(models.Model):
                 if device_cook:
                     return super(ResUsers, self)._check_credentials(password)
 
-        super(ResUsers, self)._check_credentials(password)
+        res = super(ResUsers, self)._check_credentials(password)
         if request:
             request.session['mfa_login_needed'] = True
+            return res
         raise MfaLoginNeeded
 
     @api.multi
