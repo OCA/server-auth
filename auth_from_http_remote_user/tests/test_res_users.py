@@ -5,13 +5,14 @@
 from odoo import api, registry
 from odoo.tests import common
 from odoo.tests.common import TransactionCase
+from odoo.exceptions import AccessDenied
 import mock
 from contextlib import contextmanager
 
 
 @contextmanager
 def mock_cursor(cr):
-    with mock.patch('openerp.sql_db.Connection.cursor') as mocked_cursor_call:
+    with mock.patch('odoo.sql_db.Connection.cursor') as mocked_cursor_call:
         org_close = cr.close
         org_autocommit = cr.autocommit
         try:
@@ -43,13 +44,16 @@ class TestResUsers(TransactionCase):
             common.get_db_name(), 'admin', 'admin', None)
         uid = res
         self.assertTrue(res, "Basic login must works as expected")
+        user = self.env['res.users'].browse([uid])
+        # Start with empty SSO as if it was the first time
+        # We shouldn't be able to connect
+        user.write({'sso_key': False})
         token = "123456"
-        res = res_users_obj.authenticate(
-            common.get_db_name(), 'admin', token, None)
-        self.assertFalse(res)
+        with self.assertRaises(AccessDenied):
+            res_users_obj.authenticate(
+                common.get_db_name(), 'admin', token, None)
         # mimic what the new controller do when it finds a value in
         # the http header (HTTP_REMOTE_USER)
-        user = self.env['res.users'].browse([uid])
         user.write({'sso_key': token})
 
         # Here we need to mock the cursor since the login is natively done
