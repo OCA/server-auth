@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
@@ -9,6 +8,7 @@ from ..controllers.main import Home
 class TestController(SingleTransactionCase):
 
     def setUp(self):
+        super().setUp()
         self.home = Home()
 
     def test_search_user(self):

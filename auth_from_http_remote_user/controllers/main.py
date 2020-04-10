@@ -76,8 +76,8 @@ class Home(main.Home):
                     key = self.login_http_remote_user(env, user)
             request.session.authenticate(db_name, login=login,
                                          password=key, uid=user.id)
-        except http.AuthenticationError as e:
+        except http.AuthenticationError:
             raise
-        except Exception as e:
+        except Exception:
             _logger.error("Error binding HTTP remote user", exc_info=True)
             raise
