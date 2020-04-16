@@ -3,12 +3,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
+
 import werkzeug
 
-from odoo import http
-from odoo import api
-from odoo import SUPERUSER_ID
+from odoo import SUPERUSER_ID, api, http
 from odoo.http import request
+
 from odoo.addons.web.controllers import main
 
 from .. import utils
@@ -18,9 +18,9 @@ _logger = logging.getLogger(__name__)
 
 class Home(main.Home):
 
-    _REMOTE_USER_ATTRIBUTE = 'HTTP_REMOTE_USER'
+    _REMOTE_USER_ATTRIBUTE = "HTTP_REMOTE_USER"
 
-    @http.route('/web', type='http', auth="none")
+    @http.route("/web", type="http", auth="none")
     def web_client(self, s_action=None, **kw):
         main.ensure_db()
         try:
@@ -31,10 +31,8 @@ class Home(main.Home):
 
     def search_user(self, users, login):
         """Search for an active user by login name"""
-        user = users.sudo().search([
-            ('login', '=', login),
-            ('active', '=', True)],
-            limit=1
+        user = users.sudo().search(
+            [("login", "=", login), ("active", "=", True)], limit=1
         )
         if user:
             return user[0]
@@ -45,8 +43,8 @@ class Home(main.Home):
 
         Generate a key for authentication and update the user
         """
-        key = utils.randomString(utils.KEY_LENGTH, '0123456789abcdef')
-        user.with_env(env).sudo().write({'sso_key': key})
+        key = utils.randomString(utils.KEY_LENGTH, "0123456789abcdef")
+        user.with_env(env).sudo().write({"sso_key": key})
         return key
 
     def _bind_http_remote_user(self, db_name):
@@ -63,7 +61,7 @@ class Home(main.Home):
             else:
                 request.session.logout(keep_db=True)
         try:
-            user = self.search_user(request.env['res.users'], login)
+            user = self.search_user(request.env["res.users"], login)
             if not user:
                 # HTTP_REMOTE_USER login not found in database
                 request.session.logout(keep_db=True)
@@ -74,8 +72,9 @@ class Home(main.Home):
                 with request.env.registry.cursor() as cr:
                     env = api.Environment(cr, SUPERUSER_ID, {})
                     key = self.login_http_remote_user(env, user)
-            request.session.authenticate(db_name, login=login,
-                                         password=key, uid=user.id)
+            request.session.authenticate(
+                db_name, login=login, password=key, uid=user.id
+            )
         except http.AuthenticationError:
             raise
         except Exception:
