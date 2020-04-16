@@ -1,4 +1,3 @@
-# Author: Laurent Mignon
 # Copyright 2014-2018 'ACSONE SA/NV'
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
@@ -27,7 +26,7 @@ class Home(main.Home):
             self._bind_http_remote_user(http.request.session.db)
         except http.AuthenticationError:
             return werkzeug.exceptions.Unauthorized().get_response()
-        return super(Home, self).web_client(s_action, **kw)
+        return super().web_client(s_action, **kw)
 
     def search_user(self, users, login):
         """Search for an active user by login name"""

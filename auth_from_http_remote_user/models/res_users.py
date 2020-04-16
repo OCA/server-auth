@@ -1,4 +1,3 @@
-# Author: Laurent Mignon
 # Copyright 2014-2018 'ACSONE SA/NV'
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
@@ -16,4 +15,4 @@ class Users(models.Model):
         """Check credentials for SSO user"""
         res = self.sudo().search([("id", "=", self._uid), ("sso_key", "=", password)])
         if not res:
-            return super(Users, self)._check_credentials(password)
+            return super()._check_credentials(password)
