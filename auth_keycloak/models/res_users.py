@@ -21,7 +21,7 @@ class ResUsers(models.Model):
         logger.debug('Calling: %s' % provider.validation_endpoint)
         resp = requests.post(
             provider.validation_endpoint,
-            data={'token': access_token},
+            data={'access_token': access_token},
             auth=(provider.client_id, provider.client_secret)
         )
         if not resp.ok:
