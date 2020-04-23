@@ -6,21 +6,19 @@
 
     'name': 'Password Security',
     "summary": "Allow admin to set password security requirements.",
-    'version': '12.0.1.1.2',
+    'version': '13.0.1.0.0',
     'author':
         "LasLabs, "
         "Kaushal Prajapati, "
         "Tecnativa, "
         "initOS GmbH, "
+        "Omar Nasr, "
         "Odoo Community Association (OCA)",
     'category': 'Base',
     'depends': [
         'auth_signup',
         'auth_password_policy_signup',
     ],
-    'external_dependencies': {
-        'python': ['zxcvbn'],
-    },
     "website": "https://github.com/OCA/server-auth",
     "license": "LGPL-3",
     "data": [

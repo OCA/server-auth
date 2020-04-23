@@ -49,7 +49,6 @@ class ResUsers(models.Model):
         vals['password_write_date'] = fields.Datetime.now()
         return super(ResUsers, self).create(vals)
 
-    @api.multi
     def write(self, vals):
         if vals.get('password'):
             self._check_password(vals['password'])
@@ -86,7 +85,6 @@ class ResUsers(models.Model):
     def get_estimation(self, password):
         return zxcvbn.zxcvbn(password)
 
-    @api.multi
     def password_match_message(self):
         self.ensure_one()
         company_id = self.company_id
@@ -111,13 +109,11 @@ class ResUsers(models.Model):
                        ] + message
         return '\r'.join(message)
 
-    @api.multi
     def _check_password(self, password):
         self._check_password_rules(password)
         self._check_password_history(password)
         return True
 
-    @api.multi
     def _check_password_rules(self, password):
         self.ensure_one()
         if not password:
@@ -140,7 +136,6 @@ class ResUsers(models.Model):
 
         return True
 
-    @api.multi
     def _password_has_expired(self):
         self.ensure_one()
         if not self.password_write_date:
@@ -152,7 +147,6 @@ class ResUsers(models.Model):
         days = (fields.Datetime.now() - self.password_write_date).days
         return days > self.company_id.password_expiration
 
-    @api.multi
     def action_expire_password(self):
         expiration = delta_now(days=+1)
         for rec_id in self:
@@ -160,7 +154,6 @@ class ResUsers(models.Model):
                 signup_type="reset", expiration=expiration
             )
 
-    @api.multi
     def _validate_pass_reset(self):
         """ It provides validations before initiating a pass reset email
         :raises: PassError on invalidated pass reset attempt
@@ -180,7 +173,6 @@ class ResUsers(models.Model):
                 )
         return True
 
-    @api.multi
     def _check_password_history(self, password):
         """ It validates proposed password against existing history
         :raises: PassError on reused password
