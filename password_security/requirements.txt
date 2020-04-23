@@ -1,0 +1,1 @@
+ zxcvbn-python==4.4.24 
