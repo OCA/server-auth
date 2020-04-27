@@ -124,13 +124,13 @@ class CompanyLDAP(models.Model):
         ldap_password = conf['ldap_password'] or ''
         ldap_binddn = conf['ldap_binddn'] or ''
         conn.simple_bind_s(
-            ldap_binddn.encode('utf-8'),
-            ldap_password.encode('utf-8')
+            ldap_binddn,
+            ldap_password
         )
         results = conn.search_st(
-            conf['ldap_base'].encode('utf-8'),
+            conf['ldap_base'],
             ldap.SCOPE_SUBTREE,
-            ldap_filter.encode('utf8'),
+            ldap_filter,
             None,
             timeout=timeout
         )
@@ -173,7 +173,7 @@ class CompanyLDAP(models.Model):
         conn.simple_bind_s(conf['ldap_binddn'] or '',
                            conf['ldap_password'] or '')
         results = conn.search_st(conf['ldap_base'], ldap.SCOPE_SUBTREE,
-                                 ldap_filter.encode('utf8'), None,
+                                 ldap_filter, None,
                                  timeout=60)
         conn.unbind()
 
