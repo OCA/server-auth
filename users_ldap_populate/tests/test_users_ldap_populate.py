@@ -12,7 +12,7 @@ class PatchLDAPConnection(object):
         return True
 
     def search_st(self, base, scope, ldap_filter, attributes, timeout=None):
-        if ldap_filter.decode() == '(uid=*)':
+        if ldap_filter == '(uid=*)':
             return self.results
         else:
             return []
