@@ -8,7 +8,6 @@ from odoo.tests.common import SavepointCase
 
 
 class TestMultiToken(SavepointCase):
-
     post_install = True
     at_install = False
 
@@ -18,7 +17,7 @@ class TestMultiToken(SavepointCase):
         cls.token_model = cls.env["auth.oauth.multi.token"]
         cls.provider_google = cls.env.ref("auth_oauth.provider_google")
         cls.user_model = cls.env["res.users"].with_context(
-            {"tracking_disable": True, "no_reset_password": True,}
+            {"tracking_disable": True, "no_reset_password": True, }
         )
         cls.user = cls.user_model.create(
             {
