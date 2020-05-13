@@ -21,15 +21,15 @@ msgstr ""
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
+msgstr ""
+
+#. module: auth_session_timeout
+#: model:ir.model,name:auth_session_timeout.model_ir_config_parameter
+msgid "System Parameter"
 msgstr ""
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_res_users
 msgid "Users"
 msgstr "Utilsateurs"
-
-#. module: auth_session_timeout
-#: model:ir.model,name:auth_session_timeout.model_ir_config_parameter
-msgid "ir.config_parameter"
-msgstr ""
