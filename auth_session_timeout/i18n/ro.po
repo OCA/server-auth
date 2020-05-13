@@ -22,7 +22,12 @@ msgstr ""
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
+msgstr ""
+
+#. module: auth_session_timeout
+#: model:ir.model,name:auth_session_timeout.model_ir_config_parameter
+msgid "System Parameter"
 msgstr ""
 
 #. module: auth_session_timeout
@@ -30,7 +35,5 @@ msgstr ""
 msgid "Users"
 msgstr "Utilizatori"
 
-#. module: auth_session_timeout
-#: model:ir.model,name:auth_session_timeout.model_ir_config_parameter
-msgid "ir.config_parameter"
-msgstr "ir.config_parameter"
+#~ msgid "ir.config_parameter"
+#~ msgstr "ir.config_parameter"
