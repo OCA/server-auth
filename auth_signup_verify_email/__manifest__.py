@@ -7,20 +7,11 @@
     "category": "Authentication",
     "website": "https://github.com/OCA/server-auth",
     "author": "Antiun Ingeniería S.L., "
-              "Tecnativa, "
-              "Odoo Community Association (OCA)",
+    "Tecnativa, "
+    "Odoo Community Association (OCA)",
     "license": "AGPL-3",
-    "depends": [
-        "auth_signup",
-    ],
-    "external_dependencies": {
-        "python": [
-            "lxml",
-            "email_validator",
-        ],
-    },
-    "data": [
-        "views/signup.xml",
-    ],
-    'installable': True,
+    "depends": ["auth_signup"],
+    "external_dependencies": {"python": ["lxml", "email_validator"]},
+    "data": ["views/signup.xml"],
+    "installable": True,
 }
