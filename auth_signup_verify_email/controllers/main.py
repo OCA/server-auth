@@ -42,7 +42,11 @@ class SignupVerifyEmail(AuthSignupHome):
             values["email"] = values.get("login")
 
         # preserve user lang
-        values["lang"] = request.lang
+        values["lang"] = request.context.get("lang", "")
+
+        # remove values that could raise "Invalid field '*' on model 'res.users'"
+        values.pop("redirect", "")
+        values.pop("token", "")
 
         # Remove password
         values["password"] = ""
