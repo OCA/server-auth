@@ -1,11 +1,13 @@
 # Copyright 2016 Jairo Llopis <jairo.llopis@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from mock import patch
 from lxml.html import document_fromstring
+from mock import patch
+
 from odoo.tests.common import HttpCase
-from odoo.addons.mail.models import mail_template
 from odoo.tools.misc import mute_logger
+
+from odoo.addons.mail.models import mail_template
 
 
 class UICase(HttpCase):
@@ -14,11 +16,9 @@ class UICase(HttpCase):
         if "website" in self.env:
             # Enable public signup in website if it is installed; otherwise
             # tests here would fail
-            current_website = self.env['website'].get_current_website()
+            current_website = self.env["website"].get_current_website()
             current_website.auth_signup_uninvited = "b2c"
-        self.env["ir.config_parameter"].set_param(
-            "auth_signup.invitation_scope", "b2c"
-        )
+        self.env["ir.config_parameter"].set_param("auth_signup.invitation_scope", "b2c")
         self.data = {
             "csrf_token": self.csrf_token(),
             "name": "Somebody",
@@ -41,7 +41,7 @@ class UICase(HttpCase):
         doc = self.html_doc(data=self.data)
         self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
 
-    @mute_logger('odoo.addons.auth_signup_verify_email.controllers.main')
+    @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
     def test_good_email(self):
         """Test acceptance of good emails."""
         self.data["login"] = "good@example.com"
