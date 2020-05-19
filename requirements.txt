@@ -5,3 +5,5 @@ pysaml2
 python-jose
 python-ldap
 zxcvbn
+# auth_signup_verify_email
+email_validator
