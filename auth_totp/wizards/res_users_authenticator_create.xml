@@ -20,7 +20,7 @@
                     <group name="data">
                         <field name="name"/>
                         <field name="user_id"/>
-                        <field name="secret_key" readonly="1"/>
+                        <field name="secret_key" readonly="1" force_save="1"/>
                         <field name="qr_code_tag"/>
                         <field name="confirmation_code"/>
                     </group>
