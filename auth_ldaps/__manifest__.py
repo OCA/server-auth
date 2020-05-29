@@ -4,7 +4,7 @@
 
 {
     "name": "LDAPS authentication",
-    "version": "12.0.1.0.0",
+    "version": "13.0.1.0.0",
     "category": "Tools",
     "website": "https://github.com/OCA/server-auth",
     "author": "Brainbean Apps (https://brainbeanapps.com), "
@@ -14,6 +14,6 @@
     "installable": True,
     "application": False,
     "summary": "Allows to use LDAP over SSL authentication",
-    "depends": ["auth_ldap",],
-    "data": ["views/res_company_ldap_views.xml",],
+    "depends": ["auth_ldap"],
+    "data": ["views/res_company_ldap_views.xml"],
 }
