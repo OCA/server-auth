@@ -21,7 +21,7 @@ msgstr ""
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: auth_from_http_remote_user
-#: model:ir.model.fields,field_description:auth_from_http_remote_user.field_res_users_sso_key
+#: model:ir.model.fields,field_description:auth_from_http_remote_user.field_res_users__sso_key
 msgid "SSO Key"
 msgstr ""
 

@@ -28,7 +28,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: auth_from_http_remote_user
-#: model:ir.model.fields,field_description:auth_from_http_remote_user.field_res_users_sso_key
+#: model:ir.model.fields,field_description:auth_from_http_remote_user.field_res_users__sso_key
 msgid "SSO Key"
 msgstr "Clé SSO"
 
