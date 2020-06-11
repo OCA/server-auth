@@ -16,8 +16,10 @@
         'auth_saml'
     ],
     'data': [
-        'data/auth_saml_create_user.xml',
         'views/auth_saml.xml',
+    ],
+    'demo': [
+        'demo/auth_saml_create_user.xml',
     ],
     'development_status': 'Stable',
 }
