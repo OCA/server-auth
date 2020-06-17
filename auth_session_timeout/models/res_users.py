@@ -76,8 +76,6 @@ class ResUsers(models.Model):
                 _logger.exception(
                     'Exception reading session file modified time.',
                 )
-                # Force expire the session. Will be resolved with new session.
-                expired = True
 
         # Try to terminate the session
         terminated = False
