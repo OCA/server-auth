@@ -55,7 +55,6 @@ msgstr "Annuler"
 #. module: auth_keycloak
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_client_secret
 #, fuzzy
-#| msgid "Client secret"
 msgid "Client Secret"
 msgstr "Secret du client"
 
@@ -151,7 +150,6 @@ msgstr "Dernière mise à jour le"
 #. module: auth_keycloak
 #: model:auth.oauth.provider,body:auth_keycloak.default_keycloak_provider
 #, fuzzy
-#| msgid "Login match key"
 msgid "Log in with Keycloak"
 msgstr "Clé correspondant au login"
 
@@ -160,7 +158,6 @@ msgstr "Clé correspondant au login"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_mixin_login_match_key
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_login_match_key
 #, fuzzy
-#| msgid "Login match key"
 msgid "Login Match Key"
 msgstr "Clé correspondant au login"
 
@@ -190,7 +187,6 @@ msgstr "Pousser sur Keycloak"
 #. module: auth_keycloak
 #: model:ir.actions.act_window,name:auth_keycloak.keycloak_create_users
 #, fuzzy
-#| msgid "Push to Keycloak"
 msgid "Push users to Keycloak"
 msgstr "Pousser sur Keycloak"
 
@@ -214,7 +210,6 @@ msgstr "Super utilisateur"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_pwd
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_superuser_pwd
 #, fuzzy
-#| msgid "Superuser pwd"
 msgid "Superuser Pwd"
 msgstr "Mot de passe du super utilisateur"
 
@@ -241,7 +236,6 @@ msgstr "Synchroniser les utilisateurs"
 #. module: auth_keycloak
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_create_wiz_user_ids
 #, fuzzy
-#| msgid "Users"
 msgid "User"
 msgstr "Utilisateurs"
 
@@ -264,7 +258,6 @@ msgstr "Utilisateurs"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_endpoint
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_users_endpoint
 #, fuzzy
-#| msgid "Users endpoint"
 msgid "Users Endpoint"
 msgstr "Endpoint utilisateurs"
 
@@ -274,7 +267,6 @@ msgstr "Endpoint utilisateurs"
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_keycloak_sync_wiz_management_enabled
 #: model:ir.model.fields,field_description:auth_keycloak.field_auth_oauth_provider_users_management_enabled
 #, fuzzy
-#| msgid "Users management enabled"
 msgid "Users Management Enabled"
 msgstr "Gestion des utilisateurs activée"
 
