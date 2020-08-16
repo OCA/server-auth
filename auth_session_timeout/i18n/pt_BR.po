@@ -22,7 +22,6 @@ msgstr ""
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_http
 #, fuzzy
-#| msgid "HTTP routing"
 msgid "HTTP Routing"
 msgstr "Roteamento HTTP"
 
