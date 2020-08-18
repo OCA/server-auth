@@ -3,8 +3,7 @@
 
 from odoo import api, fields, models
 
-
-_SAML_UID_AND_PASS_SETTING = 'auth_saml.allow_saml.uid_and_internal_password'
+_SAML_UID_AND_PASS_SETTING = "auth_saml.allow_saml.uid_and_internal_password"
 
 
 class ResConfigSettings(models.TransientModel):
@@ -16,11 +15,11 @@ class ResConfigSettings(models.TransientModel):
     details.
     """
 
-    _inherit = 'res.config.settings'
+    _inherit = "res.config.settings"
 
     allow_saml_uid_and_internal_password = fields.Boolean(
-        string='Allow SAML users to posess an Odoo password '
-               '(warning: decreases security)'
+        string="Allow SAML users to posess an Odoo password "
+        "(warning: decreases security)"
     )
 
     # take care to name the function with another name to not clash with column
@@ -30,30 +29,37 @@ class ResConfigSettings(models.TransientModel):
         Use the admin account to bypass security restrictions.
         """
 
-        config_obj = self.env['ir.config_parameter']
+        config_obj = self.env["ir.config_parameter"]
         config_objs = config_obj.sudo().search(
-            [('key', '=', _SAML_UID_AND_PASS_SETTING)], limit=1)
+            [("key", "=", _SAML_UID_AND_PASS_SETTING)], limit=1
+        )
 
         # no configuration found reply with default value
         if len(config_objs) == 0:
             return False
 
-        return (True if config_objs.value == '1' else False)
+        return True if config_objs.value == "1" else False
 
     @api.model
     def get_values(self):
         res = super(ResConfigSettings, self).get_values()
-        get_param = self.env['ir.config_parameter'].sudo().get_param
-        res.update(allow_saml_uid_and_internal_password=get_param(
-            'auth_saml.allow_saml_uid_and_internal_password'))
+        get_param = self.env["ir.config_parameter"].sudo().get_param
+        res.update(
+            allow_saml_uid_and_internal_password=get_param(
+                "auth_saml.allow_saml_uid_and_internal_password"
+            )
+        )
         return res
 
     @api.multi
     def set_values(self):
         super(ResConfigSettings, self).set_values()
-        set_param = self.env['ir.config_parameter'].sudo().set_param
+        set_param = self.env["ir.config_parameter"].sudo().set_param
         if self.allow_saml_uid_and_internal_password:
-            self.allow_saml_uid_and_internal_password = \
+            self.allow_saml_uid_and_internal_password = (
                 self.allow_saml_and_password()
-        set_param('auth_saml.allow_saml_uid_and_internal_password',
-                  repr(self.allow_saml_uid_and_internal_password))
+            )
+        set_param(
+            "auth_saml.allow_saml_uid_and_internal_password",
+            repr(self.allow_saml_uid_and_internal_password),
+        )

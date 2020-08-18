@@ -2,35 +2,28 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+
+from odoo import SUPERUSER_ID, _, api, fields, models
+from odoo.exceptions import AccessDenied, ValidationError
+
+import lasso
 import passlib
 
-from odoo import api, fields, models, _, SUPERUSER_ID
-from odoo.exceptions import ValidationError, AccessDenied
-
 _logger = logging.getLogger(__name__)
-
-try:
-    import lasso
-except ImportError:
-    _logger.debug('Cannot `import lasso`.')
 
 
 class ResUser(models.Model):
     """Add SAML login capabilities to Odoo users.
     """
 
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
     saml_provider_id = fields.Many2one(
-        'auth.saml.provider',
-        string='SAML Provider',
+        "auth.saml.provider", string="SAML Provider"
     )
-    saml_uid = fields.Char(
-        'SAML User ID',
-        help="SAML Provider user_id",
-    )
+    saml_uid = fields.Char("SAML User ID", help="SAML Provider user_id")
 
-    @api.constrains('password_crypt', 'password', 'saml_uid')
+    @api.constrains("password_crypt", "password", "saml_uid")
     def check_no_password_with_saml(self):
         """Ensure no Odoo user possesses both an SAML user ID and an Odoo
         password. Except admin which is not constrained by this rule.
@@ -41,21 +34,31 @@ class ResUser(models.Model):
         else:
             # Super admin is the only user we allow to have a local password
             # in the database
-            if (self.password_crypt and self.saml_uid and
-                    self.id is not SUPERUSER_ID):
+            if (
+                self.password_crypt
+                and self.saml_uid
+                and self.id is not SUPERUSER_ID
+            ):
                 raise ValidationError(
-                    _("This database disallows users to have both passwords "
-                      "and SAML IDs. Errors for login {}").format(self.login))
+                    _(
+                        "This database disallows users to have both passwords "
+                        "and SAML IDs. Errors for login {}"
+                    ).format(self.login)
+                )
 
-    _sql_constraints = [('uniq_users_saml_provider_saml_uid',
-                         'unique(saml_provider_id, saml_uid)',
-                         'SAML UID must be unique per provider')]
+    _sql_constraints = [
+        (
+            "uniq_users_saml_provider_saml_uid",
+            "unique(saml_provider_id, saml_uid)",
+            "SAML UID must be unique per provider",
+        )
+    ]
 
     @api.multi
     def _auth_saml_validate(self, provider_id, token):
         """ return the validation data corresponding to the access token """
 
-        p = self.env['auth.saml.provider'].browse(provider_id)
+        p = self.env["auth.saml.provider"].browse(provider_id)
 
         # we are not yet logged in, so the userid cannot have access to the
         # fields we need yet
@@ -65,9 +68,9 @@ class ResUser(models.Model):
         try:
             login.processAuthnResponseMsg(token)
         except (lasso.DsError, lasso.ProfileCannotVerifySignatureError):
-            raise Exception('Lasso Profile cannot verify signature')
+            raise Exception("Lasso Profile cannot verify signature")
         except lasso.ProfileStatusNotSuccessError:
-            raise Exception('Profile Status Not Success Error')
+            raise Exception("Profile Status Not Success Error")
         except lasso.Error as e:
             raise Exception(repr(e))
 
@@ -75,7 +78,8 @@ class ResUser(models.Model):
             login.acceptSso()
         except lasso.Error as error:
             raise Exception(
-                'Invalid assertion : %s' % lasso.strError(error[0]))
+                "Invalid assertion : %s" % lasso.strError(error[0])
+            )
 
         attrs = {}
 
@@ -87,8 +91,11 @@ class ResUser(models.Model):
                 try:
                     name = attribute.name
                 except Exception:
-                    _logger.warning('sso_after_response: error decoding name \
-                        of attribute %s' % attribute.dump())
+                    _logger.warning(
+                        "sso_after_response: error decoding name \
+                        of attribute %s"
+                        % attribute.dump()
+                    )
                 else:
                     if attribute.nameFormat:
                         lformat = attribute.nameFormat
@@ -105,7 +112,7 @@ class ResUser(models.Model):
                     attrs[key] = list()
                     for value in attribute.attributeValue:
                         content = [a.exportToXml() for a in value.any]
-                        content = ''.join(content)
+                        content = "".join(content)
                         attrs[key].append(content)
 
         matching_value = None
@@ -119,10 +126,11 @@ class ResUser(models.Model):
 
         elif not matching_value and matching_attribute != "subject.nameId":
             raise Exception(
-                "Matching attribute %s not found in user attrs: %s" % (
-                    matching_attribute, attrs))
+                "Matching attribute %s not found in user attrs: %s"
+                % (matching_attribute, attrs)
+            )
 
-        validation = {'user_id': matching_value}
+        validation = {"user_id": matching_value}
         return validation
 
     @api.multi
@@ -138,11 +146,12 @@ class ResUser(models.Model):
 
             This method can be overridden to add alternative signin methods.
         """
-        token_osv = self.env['auth_saml.token']
-        saml_uid = validation['user_id']
+        token_osv = self.env["auth_saml.token"]
+        saml_uid = validation["user_id"]
 
         user_ids = self.search(
-            [('saml_uid', '=', saml_uid), ('saml_provider_id', '=', provider)])
+            [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)]
+        )
 
         if not user_ids:
             raise AccessDenied()
@@ -154,14 +163,19 @@ class ResUser(models.Model):
 
         # now find if a token for this user/provider already exists
         token_ids = token_osv.search(
-            [('saml_provider_id', '=', provider), ('user_id', '=', user.id)])
+            [("saml_provider_id", "=", provider), ("user_id", "=", user.id)]
+        )
 
         if token_ids:
-            token_ids.write({'saml_access_token': saml_response})
+            token_ids.write({"saml_access_token": saml_response})
         else:
-            token_osv.create({'saml_access_token': saml_response,
-                              'saml_provider_id': provider,
-                              'user_id': user.id})
+            token_osv.create(
+                {
+                    "saml_access_token": saml_response,
+                    "saml_provider_id": provider,
+                    "user_id": user.id,
+                }
+            )
 
         return user.login
 
@@ -171,7 +185,7 @@ class ResUser(models.Model):
         validation = self._auth_saml_validate(provider, saml_response)
 
         # required check
-        if not validation.get('user_id'):
+        if not validation.get("user_id"):
             raise AccessDenied()
 
         # retrieve and sign in user
@@ -199,15 +213,24 @@ class ResUser(models.Model):
         except (AccessDenied, passlib.exc.PasswordSizeError):
             # since normal auth did not succeed we now try to find if the user
             # has an active token attached to his uid
-            res = self.env['auth_saml.token'].sudo().search(
-                [('user_id', '=', self.env.user.id),
-                 ('saml_access_token', '=', token)])
+            res = (
+                self.env["auth_saml.token"]
+                .sudo()
+                .search(
+                    [
+                        ("user_id", "=", self.env.user.id),
+                        ("saml_access_token", "=", token),
+                    ]
+                )
+            )
 
             # if the user is not found we re-raise the AccessDenied
             if not res:
                 # TODO: maybe raise a defined exception instead of the last
                 # exception that occurred in our execution frame
                 raise
+
+    # TODO check if there is an error on create
 
     @api.multi
     def write(self, vals):
@@ -219,16 +242,21 @@ class ResUser(models.Model):
         # - An SAML ID is being set.
         # - The user is not the Odoo admin.
         # - The "allow both" setting is disabled.
-        if (vals and vals.get('saml_uid') and self.id is not SUPERUSER_ID and
-                not self._allow_saml_and_password()):
+        if (
+            vals
+            and vals.get("saml_uid")
+            and self.id is not SUPERUSER_ID
+            and not self._allow_saml_and_password()
+        ):
             # adding password/password crypt does not work
-            for k in ('password', 'password_crypt'):
+            for k in ("password", "password_crypt"):
                 if k in vals:
                     vals.pop(k)
             self.env.cr.execute(
                 "UPDATE res_users SET password='', password_crypt='' WHERE "
                 "id=%s",
-                (self.id, ))
+                (self.id,),
+            )
             self.invalidate_cache()
 
         return super(ResUser, self).write(vals)
@@ -236,18 +264,21 @@ class ResUser(models.Model):
     @api.model
     def _allow_saml_and_password(self):
 
-        return self.env['res.config.settings'].allow_saml_and_password()
+        return self.env["res.config.settings"].allow_saml_and_password()
 
     def _set_encrypted_password(self, encrypted):
         """Redefine auth_crypt method to block password change as it uses
         a cursor to do it and the python constrains would not be called
         """
         if (
-            not self._allow_saml_and_password() and
-            self.saml_uid and
-            self.id is not SUPERUSER_ID
+            not self._allow_saml_and_password()
+            and self.saml_uid
+            and self.id is not SUPERUSER_ID
         ):
             raise ValidationError(
-                _("This database disallows users to have both passwords "
-                  "and SAML IDs. Errors for login %s").format(self.login))
+                _(
+                    "This database disallows users to have both passwords "
+                    "and SAML IDs. Errors for login %s"
+                ).format(self.login)
+            )
         super(ResUser, self)._set_encrypted_password(encrypted)

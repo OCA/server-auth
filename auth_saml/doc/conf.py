@@ -16,8 +16,8 @@
 
 import ast
 import configparser
-import sys
 import os
+import sys
 
 import odoo
 
@@ -61,9 +61,9 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = u"SAML2 authentication"
-copyright = u"2016, 2018 XCG Consulting"
-author = u"XCG Consulting, Odoo Community Association (OCA)"
+project = "SAML2 authentication"
+copyright = "2016, 2018 XCG Consulting"
+author = "XCG Consulting, Odoo Community Association (OCA)"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -240,8 +240,8 @@ latex_documents = [
     (
         master_doc,
         "SAML2Authentication.tex",
-        u"SAML2 authentication documentation",
-        u"XCG Consulting",
+        "SAML2 authentication documentation",
+        "XCG Consulting",
         "manual",
     )
 ]
@@ -275,7 +275,7 @@ man_pages = [
     (
         master_doc,
         "saml2authentication",
-        u"SAML2 authentication documentation",
+        "SAML2 authentication documentation",
         [author],
         1,
     )
@@ -294,7 +294,7 @@ texinfo_documents = [
     (
         master_doc,
         "SAML2Authentication",
-        u"SAML2 authentication documentation",
+        "SAML2 authentication documentation",
         author,
         "SAML2Authentication",
         "Let users log into Odoo via an SAML2 provider.",
@@ -337,12 +337,11 @@ superproject_path = os.path.dirname(
     os.path.dirname(os.path.dirname(os.path.dirname(os.getenv("PWD"))))
 )
 c = configparser.SafeConfigParser()
-c.read(os.path.join(superproject_path, "setup.cfg"))
-sphinxodoo_addons_path = []
+setup_path = os.path.join(superproject_path, "setup.cfg")
+if os.path.exists(setup_path):
+    c.read(setup_path)
 
-addon_dirs = set(
-    os.path.dirname(path) for path in c.get("odoo_scripts", "modules").split()
-)
-
-for line in addon_dirs:
-    sphinxodoo_addons_path.append(os.path.join(superproject_path, line))
+    for line in c.get("odoo_scripts", "addon_dirs").splitlines():
+        sphinxodoo_addons_path.append(os.path.join(superproject_path, line))
+else:
+    sphinxodoo_addons_path.append("/mnt/odoo/xcgd/server-auth/")

@@ -8,7 +8,6 @@ Contents:
    README
    getting_started
    modules
-   NEWS
    TODO
 
 Indices and tables

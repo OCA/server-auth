@@ -1,10 +1,16 @@
-Changelog
-=========
+11.0.3.0.0
+----------
+
+Backports some 12.0 changes:
+
+- moved sample server to demo data.
+- renamed SAML error.
+- split readme.
 
 11.0.2.0.0
 ----------
 
-- Sign auth requests with SHA-256 instead of SHA-1. ``lasso >= 2.6.0`` is
+- Sign auth requests with SHA-256 instead of SHA-1. ``lasso ≥ 2.6.0`` is
   expected.
 
 11.0.1.1.0

@@ -24,14 +24,18 @@ from odoo.modules import load_information_from_description_file
 
 
 def main():
-    module = os.path.basename(os.path.dirname(os.path.dirname(
-        os.path.realpath(__file__))))
+    module = os.path.basename(
+        os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    )
     d = load_information_from_description_file(module)
-    with open('manifest', 'w') as out:
+    with open("manifest", "w") as out:
         manifest_content = (
-            d['description']
-            if 'description' in d
-            else d['summary'] if 'summary' in d else '')
+            d["description"]
+            if "description" in d
+            else d["summary"]
+            if "summary" in d
+            else ""
+        )
         out.write(manifest_content)
 
 
