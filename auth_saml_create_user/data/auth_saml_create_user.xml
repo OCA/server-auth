@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+    <record id="provider_local_create_user" model="auth.saml.provider">
+        <field name="name">Local Authentic server</field>
+        <field name="create_user">True</field>
+        <field name="idp_metadata"><![CDATA[<?xml version="1.0"?>
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="http://localhost:8080/simplesaml/saml2/idp/metadata.php">
+  <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+    <md:KeyDescriptor use="signing">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:KeyDescriptor use="encryption">
+      <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+        <ds:X509Data>
+          <ds:X509Certificate>MIIDXTCCAkWgAwIBAgIJALmVVuDWu4NYMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNVBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBXaWRnaXRzIFB0eSBMdGQwHhcNMTYxMjMxMTQzNDQ3WhcNNDgwNjI1MTQzNDQ3WjBFMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUCFozgNb1h1M0jzNRSCjhOBnR+uVbVpaWfXYIR+AhWDdEe5ryY+CgavOg8bfLybyzFdehlYdDRgkedEB/GjG8aJw06l0qF4jDOAw0kEygWCu2mcH7XOxRt+YAH3TVHa/Hu1W3WjzkobqqqLQ8gkKWWM27fOgAZ6GieaJBN6VBSMMcPey3HWLBmc+TYJmv1dbaO2jHhKh8pfKw0W12VM8P1PIO8gv4Phu/uuJYieBWKixBEyy0lHjyixYFCR12xdh4CA47q958ZRGnnDUGFVE1QhgRacJCOZ9bd5t9mr8KLaVBYTCJo5ERE8jymab5dPqe5qKfJsCZiqWglbjUo9twIDAQABo1AwTjAdBgNVHQ4EFgQUxpuwcs/CYQOyui+r1G+3KxBNhxkwHwYDVR0jBBgwFoAUxpuwcs/CYQOyui+r1G+3KxBNhxkwDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAAiWUKs/2x/viNCKi3Y6blEuCtAGhzOOZ9EjrvJ8+COH3Rag3tVBWrcBZ3/uhhPq5gy9lqw4OkvEws99/5jFsX1FJ6MKBgqfuy7yh5s1YfM0ANHYczMmYpZeAcQf2CGAaVfwTTfSlzNLsF2lW/ly7yapFzlYSJLGoVE+OHEu8g5SlNACUEfkXw+5Eghh+KzlIN7R6Q7r2ixWNFBC/jWf7NKUfJyX8qIG5md1YUeT6GBW9Bm2/1/RiO24JTaYlfLdKK9TYb8sG5B+OLab2DImG99CJ25RkAcSobWNF5zD0O6lgOo3cEdB/ksCq3hmtlC/DlLZ/D8CJ+7VuZnS1rR2naQ==</ds:X509Certificate>
+        </ds:X509Data>
+      </ds:KeyInfo>
+    </md:KeyDescriptor>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SingleLogoutService.php"/>
+    <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="http://localhost:8080/simplesaml/saml2/idp/SSOService.php"/>
+  </md:IDPSSODescriptor>
+</md:EntityDescriptor>]]>
+        </field>
+        <field name="sp_metadata"><![CDATA[<?xml version="1.0"?>
+		<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
+		  xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+		  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+		  entityID="http://10.5.0.6:9999/metadata/">
+		<SPSSODescriptor
+		  AuthnRequestsSigned="true"
+		  protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+		  <KeyDescriptor><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIENzCCAx+gAwIBAgIJAPd0Z/WpwfcjMA0GCSqGSIb3DQEBCwUAMIGxMQswCQYDVQQGEwJDQTEPMA0GA1UECAwGUXVlYmVjMREwDwYDVQQHDAhNb250cmVhbDEbMBkGA1UECgwSU2F2b2lyLWZhaXJlIExpbnV4MQ0wCwYDVQQLDARPZG9vMSUwIwYDVQQDDBxzdGFnaW5nLWdlc3RldmUudW1vbnRyZWFsLmNhMSswKQYJKoZIhvcNAQkBFhxzdXBwb3J0QHNhdm9pcmZhaXJlbGludXguY29tMB4XDTE4MDgzMDE3MjkxNloXDTI4MDgyNzE3MjkxNlowgbExCzAJBgNVBAYTAkNBMQ8wDQYDVQQIDAZRdWViZWMxETAPBgNVBAcMCE1vbnRyZWFsMRswGQYDVQQKDBJTYXZvaXItZmFpcmUgTGludXgxDTALBgNVBAsMBE9kb28xJTAjBgNVBAMMHHN0YWdpbmctZ2VzdGV2ZS51bW9udHJlYWwuY2ExKzApBgkqhkiG9w0BCQEWHHN1cHBvcnRAc2F2b2lyZmFpcmVsaW51eC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDFENv1etOugsnjB/Sn1paHfuhfhz38rs8MBOpAwoqiD74gnCskIWVV5J4D7QRx+v2HHGPZxJhHIKxHVXRJyKZALcaSQnSoPIHmFhs/A+aYb6xjPLgVo+6boZL2KRQ5gWoSKiP24ae//pyTOJnkFBDJw1l8CLsS4vAS2jyuDVBgu1neHPn3xFlmuynbz/fv0SDuQ0LogmLbP5xBOQVJu199e11mGyjZVCeVv149wjjwif+voVGZR5m0A3Hk3KErLpZmG4hY2jlAOKuHE6AOM+EN8qH0m98mPWFPPSe+TEbqQzMp4djP0XGtmBFJjfjvUrXrWBBs/BNFDIoF116f/IbJAgMBAAGjUDBOMB0GA1UdDgQWBBTuOJKRdor1RFsCfgUmV2JLMDtW/TAfBgNVHSMEGDAWgBTuOJKRdor1RFsCfgUmV2JLMDtW/TAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBCwUAA4IBAQB3wAK+7pznrib0RQg92pf/48mxaxn7kiKhEm06r2Ja5RmfZsEnSh0ZslU7yL84SbA9lSC9eAWf4EKdll4v8c4SkLH/Xe+UDW58xiGAzGZtcKtBpuKfE3SVRTA8gAHB4hZu6WaZ6uUvmLaj+fzd6eY9a7avDDzflbRRikevRVD7GXB6R+7zCF3xDfWTks90JtwjDkJvfvCI5AnvGmbe/CBNdf21QX9qjEdDN9CElsQNFdTagAONxsDYDbftZ8BhoL9hjmprURrCYpB+iuMXLOnKzlnWakF6Nn7qL5/i655PpzwV724RIzD6OFS7SOKy3d9umiKistWI+SIltUD4IvIM</ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor>
+		<AssertionConsumerService isDefault="true" index="0"
+		  Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+		  Location="http://10.5.0.6:9999/auth_saml/signin" />
+		<NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</NameIDFormat>
+		</SPSSODescriptor>
+		<Organization>
+		 <OrganizationName xml:lang="en">Savoir-faire Linux</OrganizationName>
+		</Organization>
+		</EntityDescriptor>]]>
+        </field>
+        <field name="sp_pkey"><![CDATA[
+-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDFENv1etOugsnj
+B/Sn1paHfuhfhz38rs8MBOpAwoqiD74gnCskIWVV5J4D7QRx+v2HHGPZxJhHIKxH
+VXRJyKZALcaSQnSoPIHmFhs/A+aYb6xjPLgVo+6boZL2KRQ5gWoSKiP24ae//pyT
+OJnkFBDJw1l8CLsS4vAS2jyuDVBgu1neHPn3xFlmuynbz/fv0SDuQ0LogmLbP5xB
+OQVJu199e11mGyjZVCeVv149wjjwif+voVGZR5m0A3Hk3KErLpZmG4hY2jlAOKuH
+E6AOM+EN8qH0m98mPWFPPSe+TEbqQzMp4djP0XGtmBFJjfjvUrXrWBBs/BNFDIoF
+116f/IbJAgMBAAECggEALBmLv7GO8XyfRUkgfPbOlN/XjJktTACqoNvwuDFQ6Ndx
+Cscn+Fvo24Hfwq0l04QBfFzkE3WlRjWPmB8NeP2IBtC3oT9x77wqrZzA2Cc9UVuc
+TlDmOSGIYheUVbX3qq7FV+9KQRNagOKvk1qVRa8f2qb2vYUOqDlU1EM2VRTxqdOe
+aqOoFcbvfBlHmhT+PNqsgTYt8KVsKr4y+BAx1TL/okHwOh7okIgV8IzAoRINetBc
+8+tKZTl+2NVzbNeMe9VZ/ZnHEUW1POGmwMQeYl2GXgmCFPpl5+kT3KYea5BxZz56
+Moh0TW3qxJJ4SEj4P+XWTgBUGnoVLomlsXpEPKVyKQKBgQD1aCNM8TD3N8Q8AdvO
+xgsfMtj/b+zwCEwpoy8O7QLPpvhxweR0Stmbot3xL+lWUuH2wpW8s3fWwrq+IooQ
+fZUKXjgsZdmlwhUE+ILuBI933cFJwjuF39sWOVFl7FSQqogFdeek2G4NSLizz05q
+eoEf7HuRixk4auEJm5Ikpn6tgwKBgQDNkofsm6BiGHf/xY43Tf6tkH94Ghd6A0LO
+Akg1vFOnzLV/YeYDx1Y7OWNXy+yHw1zXYf3kIs1r1aoZNFLkIBwUwmKP4MPtaY+0
+nl1SX7vJyzLGFky/l75bUukD8lCT3g2cxWvbiiYe1+qgWmw7mR/RNPY5FPUMn7/5
+AwpNXnV0wwKBgD1eln1WT51zJ7Kt8E8MPZnGuHdggQshuBIticYcxTgylCy2hTAD
+y9lc6E25YovA3Fs+G/39j3l4ZwTHVGl9TjkyiK+ppL0MBP+iOfPV1h7uqLiORx5a
+dcpf+RgY+qjWzH85Ff2mVhciWXY14HFGQ2Y9WEV0WJFAQRiK/AgITuOLAoGALGm/
+AghxcyAUNOcqnZo1LqxsTbddYRf5Q+bMUQe6DyO0BqxQ9HoJkEwKwXomRQKZOVNL
+dhFqziRgVoeubOjfCEEi6DDIQ6+tw3j/cn+KY8OJ2bARrscK8lIMU7TzYa70w+0H
+K2xCZiGB6FkAzzN640kM9TIo6yxMXnEgtax1td8CgYEAk2V2k3nTuIrIDDgHjOXq
+zkrFG7D5AzpdpL5AAcqPKRn2ADQlJiHSJ8YsRl2Nrs+hO2T6i33+ZDraLLhsTro9
+FSa4t5YfVW3SmVsezfx21Nj3mUvLdLaKEkioYkJMRX/l6I3pGQ7eDkppN3qbwHyJ
+ugHzwWvstIVybywY3s0ya8o=
+-----END PRIVATE KEY-----
+        ]]>
+        </field>
+        <field name="css_class">zocial saml</field>
+        <field name="body">Log in with Authentic</field>
+        <field name="enabled" eval="True"/>
+        <field name="matching_attribute">email</field>
+    </record>
+</odoo>
