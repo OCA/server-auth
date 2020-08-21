@@ -1,0 +1,146 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* auth_saml_groups
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_create_date
+msgid "Created on"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,help:auth_saml_groups.field_auth_saml_provider_group_mapping_ids
+msgid "Define how Odoo groups are assigned to SAML users"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_display_name
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_operator_display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_ids
+msgid "Group mappings"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_id
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_operator_id
+msgid "ID"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,help:auth_saml_groups.field_auth_saml_provider_only_saml_groups
+msgid "If this is checked, manual changes to group membership are undone on every login (so Odoo groups are synchronous on loginwith SAML groups). If not, manually added groups are preserved."
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping___last_update
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_operator___last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.ui.view,arch_db:auth_saml_groups.view_saml_provider_form_inherit
+msgid "Map User Groups"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_group_id
+msgid "Odoo group"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_only_saml_groups
+msgid "Only SAML groups"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_operator
+msgid "Operator"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_saml_id
+msgid "SAML Provider"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_saml_attribute
+msgid "SAML attribute"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model,name:auth_saml_groups.model_auth_saml_provider_group_mapping
+msgid "SAML group mapping"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model,name:auth_saml_groups.model_auth_saml_provider
+msgid "SAML2 provider"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,help:auth_saml_groups.field_auth_saml_provider_group_mapping_group_id
+msgid "The Odoo group to assign"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,help:auth_saml_groups.field_auth_saml_provider_group_mapping_saml_attribute
+msgid "The SAML attribute to check.\n"
+""
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,help:auth_saml_groups.field_auth_saml_provider_group_mapping_operator
+msgid "The operator to check the attribute against the value\n"
+""
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,help:auth_saml_groups.field_auth_saml_provider_group_mapping_value
+msgid "The value to check the attribute against.\n"
+""
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model,name:auth_saml_groups.model_res_users
+msgid "Users"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model.fields,field_description:auth_saml_groups.field_auth_saml_provider_group_mapping_value
+msgid "Value"
+msgstr ""
+
+#. module: auth_saml_groups
+#: model:ir.model,name:auth_saml_groups.model_auth_saml_provider_operator
+msgid "auth.saml.provider.operator"
+msgstr ""
+
