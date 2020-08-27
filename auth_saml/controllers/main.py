@@ -174,6 +174,7 @@ class AuthSAMLController(http.Controller):
                 credentials = env['res.users'].sudo().auth_saml(
                     provider, saml_response
                 )
+                cr.commit()
                 action = state.get('a')
                 menu = state.get('m')
                 url = '/'
