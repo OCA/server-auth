@@ -3,7 +3,7 @@
 
 import json
 
-import lasso
+from lasso import Server, PROVIDER_ROLE_IDP, Login
 
 from odoo import api, fields, models
 
@@ -47,15 +47,15 @@ class AuthSamlProvider(models.Model):
 
         # TODO: we should cache those results somewhere because it is
         # really costly to always recreate a login variable from buffers
-        server = lasso.Server.newFromBuffers(
+        server = Server.newFromBuffers(
             self.sp_metadata,
             self.sp_pkey
         )
         server.addProviderFromBuffer(
-            lasso.PROVIDER_ROLE_IDP,
+            PROVIDER_ROLE_IDP,
             self.idp_metadata
         )
-        return lasso.Login(server)
+        return Login(server)
 
     @api.multi
     def _get_auth_request(self, state):

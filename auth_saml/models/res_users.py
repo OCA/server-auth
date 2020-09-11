@@ -4,7 +4,7 @@
 import logging
 import passlib
 
-import lasso
+from lasso import DsError, ProfileCannotVerifySignatureError, ProfileStatusNotSuccessError, Error, strError, SAML2_ATTRIBUTE_NAME_FORMAT_BASIC
 
 from odoo import api, fields, models, _, SUPERUSER_ID, tools
 from odoo.exceptions import ValidationError, AccessDenied
@@ -58,26 +58,26 @@ class ResUser(models.Model):
 
         try:
             login.processAuthnResponseMsg(token)
-        except (lasso.DsError, lasso.ProfileCannotVerifySignatureError):
+        except (DsError, ProfileCannotVerifySignatureError):
             raise AccessDenied(_('Lasso Profile cannot verify signature'))
-        except lasso.ProfileStatusNotSuccessError:
+        except ProfileStatusNotSuccessError:
             raise AccessDenied(_('Profile Status failure'))
 
         try:
             login.acceptSso()
-        except lasso.Error as error:
+        except Error as error:
             raise Exception(
-                'Invalid assertion : %s' % lasso.strError(error[0]))
+                'Invalid assertion : %s' % strError(error[0]))
 
         attrs = {}
 
         for att_statement in login.assertion.attributeStatement:
             for attribute in att_statement.attribute:
                 name = None
-                lformat = lasso.SAML2_ATTRIBUTE_NAME_FORMAT_BASIC
+                lformat = SAML2_ATTRIBUTE_NAME_FORMAT_BASIC
                 nickname = None
                 try:
-                    name = attribute.name.decode('ascii')
+                    name = attribute.name
                 except Exception:
                     _logger.warning(
                         'sso_after_response: error decoding attribute name %s',
@@ -86,7 +86,7 @@ class ResUser(models.Model):
                 else:
                     try:
                         if attribute.nameFormat:
-                            lformat = attribute.nameFormat.decode('ascii')
+                            lformat = attribute.nameFormat
                         if attribute.friendlyName:
                             nickname = attribute.friendlyName
                     except Exception:
@@ -108,7 +108,7 @@ class ResUser(models.Model):
                         for value in attribute.attributeValue:
                             content = [a.exportToXml() for a in value.any]
                             content = ''.join(content)
-                            attrs[key].append(content.decode('utf8'))
+                            attrs[key].append(content)
                     except Exception:
                         message = 'sso_after_response: value of an \
                             attribute failed to decode as ascii: %s due to %s'
@@ -164,7 +164,9 @@ class ResUser(models.Model):
             token_osv.create({'saml_access_token': saml_response,
                               'saml_provider_id': provider,
                               'user_id': user.id})
-
+        # Not sure why this is needed, but the token won't save without it.
+        # Maybe something to do with the redirect in the next step?
+        self.env.cr.commit()
         return user.login
 
     @api.model
