@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+    <record id="provider_local" model="auth.saml.provider">
+        <field name="name">Local demo server</field>
+        <field name="idp_metadata">{
+    "entityId": "http://localhost:8000/idp/saml2/metadata",
+    "singleSignOnService": {
+        "url": "http://localhost:8000/idp/saml2/sso",
+        "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "singleLogoutService": {
+        "url": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
+        "binding": "http://localhost:8000/idp/saml2/slo"
+    },
+    "x509cert": "MIIDIzCCAgugAwIBAgIJANUBoick1pDpMA0GCSqGSIb3DQEBBQUAMBUxEzARBgNVBAoTCkVudHJvdXZlcnQwHhcNMTAxMjE0MTUzMzAyWhcNMTEwMTEzMTUzMzAyWjAVMRMwEQYDVQQKEwpFbnRyb3V2ZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvxFkfPdndlGgQPDZgFGXbrNAc/79PULZBuNdWFHDD9P5hNhZn9Kqm4Cp06Pe/A6u+g5wLnYvbZQcFCgfQAEzziJtb3J55OOlB7iMEI/T2AX2WzrUH8QT8NGhABONKU2Gg4XiyeXNhH5R7zdHlUwcWq3ZwNbtbY0TVc+n665EbrfV/59xihSqsoFrkmBLH0CoepUXtAzA7WDYn8AzusIuMx3n8844pJwgxhTB7Gjuboptlz9Hri8JRdXiVT9OS9Wt69ubcNoM6zuKASmtm48UuGnhj8v6XwvbjKZrL9kA+xf8ziazZfvvw/VGTm+IVFYB7d1x457jY5zjjXJvNysoowIDAQABo3YwdDAdBgNVHQ4EFgQUeF8ePnu0fcAK50iBQDgAhHkOu8kwRQYDVR0jBD4wPIAUeF8ePnu0fcAK50iBQDgAhHkOu8mhGaQXMBUxEzARBgNVBAoTCkVudHJvdXZlcnSCCQDVAaInJNaQ6TAMBgNVHRMEBTADAQH/MA0GCSqGSIb3DQEBBQUAA4IBAQAy8l3GhUtpPHx0FxzbRHVaaUSgMwYKGPhEIdGhqekKUJIx8et4xpEMFBl5XQjBNq/mp5vO3SPb2h2PVSks7xWnG3cvEkqJSOeofEEhkqnM45b2MH1S5uxp4i8UilPG6kmQiXU2rEUBdRk9xnRWos7epVivTSIv1NcplG6l41SXp6YgIb2ToT+rOKdIGIQuGDlzeR88fDxWEU0vEujZv/v1PE1YOV0xKjTTJumlBc6IViKhJeo1wiBBrVRIIkKKevHKQzteK8pWm9CYWculxT26TZ4VWzGbo06jo2zbumirrLLqnt1gmBDvDvlOwC/zAAyL4chbz66eQHTiIYZZvYgy"
+}
+        </field>
+        <field name="sp_metadata">{
+    "entityId": "http://localhost:8069/metadata",
+    "assertionConsumerService": {
+        "url": "http://localhost:8069/auth_saml/signin",
+        "binding": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress"
+    },
+    #"singleLogoutService": {
+    #    "url": "http://localhost:8069/auth_saml/signout",
+    #    "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    #},
+    "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
+    "x509cert": "MIID7jCCA1egAwIBAgIBATANBgkqhkiG9w0BAQUFADCBkzELMAkGA1UEBhMCRlIxDDAKBgNVBAgTA0lERjEOMAwGA1UEBxMFUGFyaXMxDDAKBgNVBAoTA1hDRzEMMAoGA1UECxMDRFNJMQswCQYDVQQDEwJDQTEOMAwGA1UEKRMFWENHQ0ExLTArBgkqhkiG9w0BCQEWHmZsb3JlbnQuYWlkZUB4Y2ctY29uc3VsdGluZy5mcjAgFw0xMzEyMTcxMjExNTJaGA8yMjg3MTAwMTEyMTE1MlowgZUxCzAJBgNVBAYTAkZSMQwwCgYDVQQIEwNJREYxDjAMBgNVBAcTBVBhcmlzMQwwCgYDVQQKEwNYQ0cxDDAKBgNVBAsTA0RTSTEMMAoGA1UEAxMDc3AxMQ8wDQYDVQQpEwZYQ0dTUDExLTArBgkqhkiG9w0BCQEWHmZsb3JlbnQuYWlkZUB4Y2ctY29uc3VsdGluZy5mcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAzmzLtPlT6yJOomYstLom6XstTD8E5FQKfPP7UxTcRMXuJynFBSSl6SRVPpUKZQ8maNxOygdeZ5J6vBk2mZEnvk25ZTsXjJDnNZffswi8g/Naxadvh+5kkEx5hjILPTA5jMf7sS/7Am3Kd46vlEIov3OTd2Wh8SII1WgbFLOpy/0CAwEAAaOCAUowggFGMAkGA1UdEwQCMAAwLQYJYIZIAYb4QgENBCAWHkVhc3ktUlNBIEdlbmVyYXRlZCBDZXJ0aWZpY2F0ZTAdBgNVHQ4EFgQUPfwm8rjPco3WlV5ntveqm9+Z0iQwgcgGA1UdIwSBwDCBvYAUs++X2JBKjwPYDr7bTZL8ph6fIuShgZmkgZYwgZMxCzAJBgNVBAYTAkZSMQwwCgYDVQQIEwNJREYxDjAMBgNVBAcTBVBhcmlzMQwwCgYDVQQKEwNYQ0cxDDAKBgNVBAsTA0RTSTELMAkGA1UEAxMCQ0ExDjAMBgNVBCkTBVhDR0NBMS0wKwYJKoZIhvcNAQkBFh5mbG9yZW50LmFpZGVAeGNnLWNvbnN1bHRpbmcuZnKCCQCSGwHzqKuCBjATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJKoZIhvcNAQEFBQADgYEAU7Whu+ZAtIVEtTFCKl/EEWBg7I2m40UqYg/AnU6bPnLkBRXdWdBcP+jwPDh9xjAN07FehWBFGJdaa9p2GBfzkdLF0lJoNda98SYRQKaam53SZ7MIu1newG6joOPJqcliFTAsODGnRwD1dm+p2i6jUI2yiDbXi9ACkKdWfsa88Io=",
+}
+        </field>
+        <field name="sp_pkey"><![CDATA[
+-----BEGIN PRIVATE KEY-----
+MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAM5sy7T5U+siTqJm
+LLS6Jul7LUw/BORUCnzz+1MU3ETF7icpxQUkpekkVT6VCmUPJmjcTsoHXmeSerwZ
+NpmRJ75NuWU7F4yQ5zWX37MIvIPzWsWnb4fuZJBMeYYyCz0wOYzH+7Ev+wJtyneO
+r5RCKL9zk3dlofEiCNVoGxSzqcv9AgMBAAECgYAr+6p76RQkaa7vk227JF7eKMzC
+DjtwmyeQ8DuAvFUiojnYRmIgcmqXfpJbP05zsgKxHR/8lA1dbCySn5yuo+sfk0Js
+biR6wESqx1dj6ippWqZz18dyH3ZWWSRJEapBk11cmy7Nq/+ox/ogM5/wOlGGNrJu
+ieXRAl739Sj/cF/TgQJBAPGgQ6YoQ1bn/rhSUkdA90I1WMT7g1aKJSp35VYay2FN
+z6EmzAXTt9QuOhvRdUXN+LuKap8PfLzHMwAxUazvfEkCQQDatHPsLrOLHLYHn/HG
+3dKOrxiV+0eQlb9A52iUA3OJ3LTa8cWnc9XKLP40dcXrh5Jt9XKgga6LPhJhcURu
+W8oVAkEAn1t6omBVoUCav0gT2cigCnuSkz/qLC4qOuseRv6e+grOkFM9Je6vg/IF
+AwnO1X31uQKeNU+Kjhq2qT7dxjegeQJBAKNjhuse5LF8DJ3bpyQb2k8QjryV0pw4
+034oo59YiLuo8FBVqYV1a3W0cWE9z1Qrn4CYiz9QQtbx04eKuEX+OxUCQQCzgGzi
+Oi41nsy8uFr5s4joYfdZfDzezLz/GZNJ1q950Z69nJRVVTbQCvyJ2/Q+MtvojDXl
+sIbngHtWnT36PTZS
+-----END PRIVATE KEY-----
+        ]]>
+        </field>
+        <field name="css_class">zocial saml</field>
+        <field name="body">Log in with Authentic</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>
