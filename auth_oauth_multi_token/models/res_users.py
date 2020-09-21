@@ -54,17 +54,13 @@ class ResUsers(models.Model):
         user.ensure_one()
         # user found and unique: create a token
         self.multi_token_model.create(
-            {
-                "user_id": user.id,
-                "oauth_access_token": params["access_token"],
-                "active_token": True,
-            }
+            {"user_id": user.id, "oauth_access_token": params["access_token"]}
         )
         return res
 
     def action_oauth_clear_token(self):
         """Inactivate current user tokens."""
-        self.mapped("oauth_access_token_ids")._oauth_clear_token()
+        self.mapped("oauth_access_token_ids").unlink()
         for res in self:
             res.oauth_master_uuid = self._generate_oauth_master_uuid()
 
@@ -75,11 +71,7 @@ class ResUsers(models.Model):
             return super()._check_credentials(password)
         except exceptions.AccessDenied:
             res = self.multi_token_model.sudo().search(
-                [
-                    ("user_id", "=", self.env.uid),
-                    ("oauth_access_token", "=", password),
-                    ("active_token", "=", True),
-                ]
+                [("user_id", "=", self.env.uid), ("oauth_access_token", "=", password)]
             )
             if not res:
                 raise
