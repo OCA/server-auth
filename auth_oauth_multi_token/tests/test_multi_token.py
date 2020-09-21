@@ -18,7 +18,7 @@ class TestMultiToken(SavepointCase):
         cls.token_model = cls.env["auth.oauth.multi.token"]
         cls.provider_google = cls.env.ref("auth_oauth.provider_google")
         cls.user_model = cls.env["res.users"].with_context(
-            {"tracking_disable": True, "no_reset_password": True,}
+            {"tracking_disable": True, "no_reset_password": True}
         )
         cls.user = cls.user_model.create(
             {
@@ -79,14 +79,9 @@ class TestMultiToken(SavepointCase):
             )
         # exceed the number
         self._test_one_token()
-        # token count match max number + 1
+        # token count does not exceed max number
         self.assertEqual(
-            len(self.user.oauth_access_token_ids), self.user.oauth_access_max_token + 1
-        )
-        # but active tokens don't
-        self.assertEqual(
-            len(self.token_model._oauth_user_tokens(self.user.id)),
-            self.user.oauth_access_max_token,
+            len(self.user.oauth_access_token_ids), self.user.oauth_access_max_token
         )
 
     def test_remove_oauth_access_token(self):
@@ -96,7 +91,5 @@ class TestMultiToken(SavepointCase):
 
     def test_action_oauth_clear_token(self):
         self.user.action_oauth_clear_token()
-        active_token = self.user.oauth_access_token_ids.filtered(
-            lambda x: x.active_token
-        )
+        active_token = self.user.oauth_access_token_ids
         self.assertEqual(len(active_token), 0)
