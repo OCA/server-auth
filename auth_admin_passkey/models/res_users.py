@@ -18,9 +18,9 @@ class ResUsers(models.Model):
     def _send_email_passkey(self, login_user):
         """ Send a email to the system administrator and / or the user
             to inform passkey use."""
-        MailMail = self.env["mail.mail"].sudo()
+        MailMail = self.env["mail.mail"].with_user(SUPERUSER_ID)
 
-        admin_user = self.sudo().browse(SUPERUSER_ID)
+        admin_user = self.with_user(SUPERUSER_ID).browse(SUPERUSER_ID)
 
         send_to_user = config.get("auth_admin_passkey_send_to_user", True)
         sysadmin_email = config.get("auth_admin_passkey_sysadmin_email", False)
@@ -59,7 +59,7 @@ class ResUsers(models.Model):
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
-            users = self.sudo().search([("id", "=", self._uid)])
+            users = self.with_user(SUPERUSER_ID).search([("id", "=", self._uid)])
             if not users:
                 raise
 
