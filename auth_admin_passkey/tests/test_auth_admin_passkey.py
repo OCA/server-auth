@@ -31,7 +31,7 @@ class TestAuthAdminPasskey(common.TransactionCase):
                 "name": "auth_admin_passkey User",
             }
         )
-        self.user = user.sudo(user)
+        self.user = user.with_user(user)
 
     def test_01_normal_login_succeed(self):
         self.user._check_credentials(self.user_password)
