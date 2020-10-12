@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: server-tools (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-09-04 01:04+0000\n"
-"PO-Revision-Date: 2015-09-18 13:54+0000\n"
-"Last-Translator: <>\n"
+"PO-Revision-Date: 2020-10-12 17:08+0000\n"
+"Last-Translator: Pedro Castro Silva <pedrocs@exo.pt>\n"
 "Language-Team: Portuguese (http://www.transifex.com/oca/OCA-server-tools-8-0/"
 "language/pt/)\n"
 "Language: pt\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Weblate 3.10\n"
 
 #. module: auth_from_http_remote_user
 #: model:ir.model.fields,field_description:auth_from_http_remote_user.field_res_users_sso_key
@@ -26,7 +27,7 @@ msgstr ""
 #. module: auth_from_http_remote_user
 #: model:ir.model,name:auth_from_http_remote_user.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Utilizadores"
 
 #~ msgid "Display Name"
 #~ msgstr "Nome"
