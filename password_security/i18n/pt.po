@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-01 02:44+0000\n"
-"PO-Revision-Date: 2020-10-12 17:08+0000\n"
+"PO-Revision-Date: 2020-10-13 14:08+0000\n"
 "Last-Translator: Pedro Castro Silva <pedrocs@exo.pt>\n"
 "Language-Team: Portuguese (https://www.transifex.com/oca/teams/23907/pt/)\n"
 "Language: pt\n"
@@ -73,7 +73,7 @@ msgstr ""
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history_display_name
 msgid "Display Name"
-msgstr "Nome a Apresentar"
+msgstr "Nome"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history_password_crypt
@@ -164,36 +164,32 @@ msgid ""
 "administrator for assistance."
 msgstr ""
 "As senhas só podem ser alteradas após %d hora(s). Por favor, contacte um "
-"administrador para assistência"
+"administrador para assistência."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_lower
-#, fuzzy
 msgid "Require number of lowercase letters"
-msgstr "Requer letras minúsculas"
+msgstr "Nº requerido de letras minúsculas"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_numeric
-#, fuzzy
 msgid "Require number of numeric digits"
-msgstr "Requer dígitos numéricos"
+msgstr "Nº requerido de dígitos numéricos"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_special
-#, fuzzy
 msgid "Require number of unique special characters"
-msgstr "Requer caracteres especiais"
+msgstr "Nº requerido de caracteres especiais"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_upper
-#, fuzzy
 msgid "Require number of uppercase letters"
-msgstr "Requer letras maiúsculas"
+msgstr "Nº requerido de letras maiúsculas"
 
 #. module: password_security
 #: model:ir.ui.view,arch_db:password_security.view_company_form
 msgid "Required Characters"
-msgstr "Caracteres Requiridos"
+msgstr "Nº requerido de Caracteres"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users_pass_history
@@ -208,7 +204,7 @@ msgstr "Especial"
 #. module: password_security
 #: model:ir.ui.view,arch_db:password_security.view_company_form
 msgid "Timings"
-msgstr ""
+msgstr "Tempo"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company_password_upper
