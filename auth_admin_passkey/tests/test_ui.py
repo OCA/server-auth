@@ -7,11 +7,11 @@ from werkzeug.test import Client
 from werkzeug.wrappers import BaseResponse
 
 from odoo.service import wsgi_server
-from odoo.tests import common
+from odoo.tests import common, tagged
 from odoo.tools import config
 
 
-@common.post_install(True)
+@tagged("post_install", "-at_install")
 class TestUI(common.HttpCase):
     def setUp(self):
         super(TestUI, self).setUp()
