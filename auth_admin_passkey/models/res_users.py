@@ -16,8 +16,8 @@ class ResUsers(models.Model):
 
     @api.model
     def _send_email_passkey(self, login_user):
-        """ Send a email to the system administrator and / or the user
-            to inform passkey use."""
+        """Send a email to the system administrator and / or the user
+        to inform passkey use."""
         MailMail = self.env["mail.mail"].with_user(SUPERUSER_ID)
 
         admin_user = self.with_user(SUPERUSER_ID).browse(SUPERUSER_ID)
