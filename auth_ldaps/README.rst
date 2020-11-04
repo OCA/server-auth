@@ -48,7 +48,9 @@ Contributors
 ------------
 
 * Enric Tobella <etobella@creublanca.es>
-* Alexey Pelykh <alexey.pelykh@brainbeanapps.com>
+* `CorporateHub <https://corporatehub.eu/>`__
+
+  * Alexey Pelykh <alexey.pelykh@corphub.eu>
 
 Do not contact contributors directly about support or help with technical issues.
 
