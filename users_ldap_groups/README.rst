@@ -23,12 +23,12 @@ LDAP groups assignment
     :target: https://runbot.odoo-community.org/runbot/251/12.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5|
+|badge1| |badge2| |badge3| |badge4| |badge5| 
 
 .. image:: https://img.shields.io/badge/license-AGPL--3-blue.png
    :target: https://www.gnu.org/licenses/agpl
    :alt: License: AGPL-3
-
+    
 Adds user accounts to groups based on rules defined by the administrator.
 
 **Table of contents**
