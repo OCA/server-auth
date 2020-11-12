@@ -1,5 +1,6 @@
 # Copyright (C) 2017 Creu Blanca
 # Copyright (C) 2018 Brainbean Apps
+# Copyright 2020 CorporateHub (https://corporatehub.eu)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 {
@@ -8,7 +9,7 @@
     'category': 'Tools',
     'website': 'https://github.com/OCA/server-auth',
     'author':
-        'Brainbean Apps (https://brainbeanapps.com), '
+        'CorporateHub, '
         'Creu Blanca, '
         'Odoo Community Association (OCA)',
     'license': 'AGPL-3',
