@@ -181,6 +181,9 @@ class AuthSAMLController(http.Controller):
                     url = '/#action=%s' % action
                 elif menu:
                     url = '/#menu_id=%s' % menu
+                # otherwise login_and_redirect uses an env different from this
+                # "env" used here, where "saml_access_token" is not up to date
+                cr.commit()
                 return login_and_redirect(*credentials, redirect_url=url)
 
             except AttributeError as e:
