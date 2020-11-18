@@ -237,6 +237,6 @@ class ResUser(models.Model):
         """Know if both SAML and local password auth methods can coexist."""
         return tools.str2bool(
             self.env['ir.config_parameter'].sudo().get_param(
-                'auth_saml.allow_saml.uid_and_internal_password', 'True'
+                'auth_saml.allow_saml.uid_and_internal_password', 'False'
             )
         )
