@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright© 2016 ICTSTUDIO <http://www.ictstudio.eu>
+# Copyright 2016 ICTSTUDIO <http://www.ictstudio.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, api
@@ -16,7 +16,7 @@ class ResUsers(models.Model):
             return oauth_provider._parse_id_token(access_token)
         else:
             return super(ResUsers, self)._auth_oauth_validate()
-    
+
     @api.model
     def auth_oauth(self, provider, params):
         id_token = params.get('id_token')
