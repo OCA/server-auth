@@ -1,11 +1,16 @@
 # -*- coding: utf-8 -*-
-# Copyright© 2016 ICTSTUDIO <http://www.ictstudio.eu>
+# Copyright 2016 ICTSTUDIO <http://www.ictstudio.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, fields, api
-from jose import jwt
 import urllib2
 import json
+import logging
+
+try:
+    from jose import jwt
+except ImportError:
+    logging.getLogger(__name__).debug('jose library not installed')
 
 
 class AuthOauthProvider(models.Model):
