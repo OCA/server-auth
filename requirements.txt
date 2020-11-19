@@ -1,3 +1,5 @@
 # auth_keycloak test mocks
 responses
 
+# auth_oidc
+python-jose[cryptography]
