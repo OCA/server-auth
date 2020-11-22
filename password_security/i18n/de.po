@@ -21,7 +21,6 @@ msgstr ""
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:53
 #, fuzzy, python-format
-#| msgid "Special character"
 msgid "* %d lowercase characters."
 msgstr "Spezialzeichen"
 
@@ -34,14 +33,12 @@ msgstr ""
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:65
 #, fuzzy, python-format
-#| msgid "Special character"
 msgid "* %d special characters."
 msgstr "Spezialzeichen"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:57
 #, fuzzy, python-format
-#| msgid "Special character"
 msgid "* %d uppercase characters."
 msgstr "Spezialzeichen"
 
