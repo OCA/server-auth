@@ -27,7 +27,6 @@ msgstr ""
 #. module: users_ldap_populate
 #: model:ir.model,name:users_ldap_populate.model_res_company_ldap
 #, fuzzy
-#| msgid "LDAP Configuration"
 msgid "Company LDAP configuration"
 msgstr "LDAP 配置"
 
