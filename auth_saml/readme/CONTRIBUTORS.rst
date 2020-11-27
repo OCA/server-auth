@@ -9,3 +9,5 @@
   * Jairo Llopis
 * `GlodoUK <https://www.glodo.uk/>`__:
   * Karl Southern
+* `TAKOBI <https://takobi.online/>`__:
+  * Lorenzo Battistini

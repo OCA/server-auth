@@ -144,6 +144,10 @@ class AuthSamlProvider(models.Model):
             limit=1,
         )
 
+        attachment_location = self.env["ir.config_parameter"].sudo().get_param(
+            "ir_attachment.location", "file")
+        if attachment_location != 'file':
+            keys._save_to_file_system()
         keys_path = self.env["ir.attachment"]._full_path(keys.store_fname)
 
         settings = {
@@ -163,7 +167,10 @@ class AuthSamlProvider(models.Model):
                     "authn_requests_signed": True,
                     "logout_requests_signed": True,
                     "want_assertions_signed": True,
-                    "want_response_signed": True,
+                    # TODO: as we are not correctly generating metadata, don't require
+                    #  signed responses, since default metadata configurations
+                    #  do not require them
+                    "want_response_signed": False,
                 },
             },
             "cert_file": keys_path,
@@ -285,6 +292,10 @@ class AuthSamlProvider(models.Model):
             limit=1,
         )
 
+        attachment_location = self.env["ir.config_parameter"].sudo().get_param(
+            "ir_attachment.location", "file")
+        if attachment_location != 'file':
+            keys._save_to_file_system()
         keys_path = self.env["ir.attachment"]._full_path(keys.store_fname)
 
         sp_config = self._get_config_for_provider()

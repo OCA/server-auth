@@ -15,7 +15,7 @@ _logger = logging.getLogger(__name__)
 def gen_password(length=8, charset="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"):
     random_bytes = os.urandom(length)
     len_charset = len(charset)
-    indices = [int(len_charset * (ord(byte) / 256.0)) for byte in random_bytes]
+    indices = [int(len_charset * (byte / 256.0)) for byte in random_bytes]
     return "".join([charset[index] for index in indices])
 
 class ResUser(models.Model):
@@ -154,15 +154,17 @@ class ResUser(models.Model):
         to_remove_password = self.filtered(
             lambda rec: rec.id != SUPERUSER_ID
             and rec.saml_uid
-            and not (rec.password or rec.password_crypt)
+            and not rec.password
         )
-        to_remove_password.write(
-            {"password": gen_password(length=20)}
-        )
+        if to_remove_password:
+            to_remove_password.write(
+                {"password": gen_password(length=20)}
+            )
 
     def write(self, vals):
         result = super().write(vals)
-        self._autoremove_password_if_saml()
+        if not vals.get('password'):
+            self._autoremove_password_if_saml()
         self._ensure_saml_token_exists()
         return result
 
