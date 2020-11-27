@@ -179,7 +179,7 @@ class ResUser(models.Model):
         return tools.str2bool(
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("auth_saml.allow_saml.uid_and_internal_password", "True")
+            .get_param("auth_saml.allow_saml.uid_and_internal_password", "False")
         )
 
     def _ensure_saml_token_exists(self):
