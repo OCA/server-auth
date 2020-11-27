@@ -25,6 +25,6 @@ class SamlToken(models.Model):
     )
     saml_access_token = fields.Char(
         'Current SAML token for this user',
-        required=True,
+        required=False,
         help="The current SAML token in use",
     )
