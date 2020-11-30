@@ -1,0 +1,115 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* auth_ldap_attribute_sync
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__attribute_name
+msgid "Attribute"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model,name:auth_ldap_attribute_sync.model_res_company_ldap
+msgid "Company LDAP configuration"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,help:auth_ldap_attribute_sync.field_ldap_attribute_mapping__mode
+msgid "Defines mode of synchronization"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,help:auth_ldap_attribute_sync.field_ldap_attribute_mapping__field_name
+msgid "Entity field to where value is written"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__id
+msgid "ID"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model_terms:ir.ui.view,arch_db:auth_ldap_attribute_sync.ldap_attribute_mapping_view_tree
+msgid "LDAP Attribute Mapping"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model,name:auth_ldap_attribute_sync.model_ldap_attribute_mapping
+msgid "LDAP attribute mapping"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,help:auth_ldap_attribute_sync.field_ldap_attribute_mapping__attribute_name
+msgid "LDAP attribute name from where value is taken"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__ldap_id
+msgid "LDAP configuration"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model_terms:ir.ui.view,arch_db:auth_ldap_attribute_sync.view_ldap_installer_form
+msgid "Map User Attributes"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__field_name
+msgid "Mapped field"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_ldap_attribute_mapping__mode
+msgid "Sync mode"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model.fields,field_description:auth_ldap_attribute_sync.field_res_company_ldap__user_attributes_mapping
+msgid "User attributes mapping"
+msgstr ""
+
+#. module: auth_ldap_attribute_sync
+#: model:ir.model,name:auth_ldap_attribute_sync.model_res_users
+msgid "Users"
+msgstr ""
+
