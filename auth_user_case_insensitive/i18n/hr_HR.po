@@ -27,6 +27,16 @@ msgid "Conflicting user logins exist for `%s`"
 msgstr ""
 
 #. module: auth_user_case_insensitive
+#: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__login
+msgid "Login"
+msgstr ""
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,help:auth_user_case_insensitive.field_res_users__login
+msgid "Used to log into the system. Case insensitive."
+msgstr ""
+
+#. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
 msgid "Users"
 msgstr "Korisnici"
