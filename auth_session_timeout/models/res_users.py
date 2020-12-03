@@ -4,7 +4,7 @@
 
 import logging
 
-from os.path import getmtime
+from os.path import getmtime, exists
 from time import time
 from os import utime
 
@@ -70,8 +70,10 @@ class ResUsers(models.Model):
         if deadline is not False:
             path = http.root.session_store.get_session_filename(session.sid)
             try:
-
-                expired = getmtime(path) < deadline
+                if exists(path):
+                    expired = getmtime(path) < deadline
+                else:
+                    expired = True
             except OSError:
                 _logger.exception(
                     'Exception reading session file modified time.',
