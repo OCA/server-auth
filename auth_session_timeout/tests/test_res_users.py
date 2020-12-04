@@ -68,41 +68,57 @@ class TestResUsers(TransactionCase):
 
     def test_session_validity_logout(self):
         """ It should log out of session if past deadline """
-        with self._mock_assets(['http', 'getmtime', 'utime']) as assets:
+        mocks = ['http', 'getmtime', 'utime', 'exists']
+        with self._mock_assets(mocks) as assets:
             get_params = assets['http'].request.env[''].get_session_parameters
             get_params.return_value = -9999, []
             assets['getmtime'].return_value = 0
+            assets['exists'].return_value = True
             with self.assertRaises(SessionExpiredException):
                 self._auth_timeout_check(assets['http'])
             assets['http'].request.session.logout.assert_called_once_with(
                 keep_db=True,
             )
+            assets['exists'].assert_called_once_with(
+                assets['http'].root.session_store.get_session_filename(),
+            )
 
     def test_session_validity_updates_utime(self):
         """ It should update utime of session file if not expired """
-        with self._mock_assets(['http', 'getmtime', 'utime']) as assets:
+        mocks = ['http', 'getmtime', 'utime', 'exists']
+        with self._mock_assets(mocks) as assets:
             get_params = assets['http'].request.env[''].get_session_parameters
             get_params.return_value = 9999, []
             assets['getmtime'].return_value = time.time()
+            assets['exists'].return_value = True
             self._auth_timeout_check(assets['http'])
             assets['utime'].assert_called_once_with(
                 assets['http'].root.session_store.get_session_filename(),
                 None,
             )
+            assets['exists'].assert_called_once_with(
+                assets['http'].root.session_store.get_session_filename(),
+            )
 
     @mute_logger('odoo.addons.auth_session_timeout.models.res_users')
     def test_session_validity_os_error_guard(self):
         """ It should properly guard from OSError & return """
-        with self._mock_assets(['http', 'utime', 'getmtime']) as assets:
+        mocks = ['http', 'utime', 'getmtime', 'exists']
+        with self._mock_assets(mocks) as assets:
             get_params = assets['http'].request.env[''].get_session_parameters
             get_params.return_value = 0, []
             assets['getmtime'].side_effect = OSError
+            assets['exists'].return_value = True
             with self.assertRaises(SessionExpiredException):
                 self._auth_timeout_check(assets['http'])
+            assets['exists'].assert_called_once_with(
+                assets['http'].root.session_store.get_session_filename(),
+            )
 
     def test_on_timeout_session_loggedout(self):
-        with self._mock_assets(['http', 'getmtime']) as assets:
+        with self._mock_assets(['http', 'getmtime', 'exists']) as assets:
             assets['getmtime'].return_value = 0
+            assets['exists'].return_value = True
             assets['http'].request.session.uid = self.env.uid
             assets['http'].request.session.dbname = self.env.cr.dbname
             assets['http'].request.session.sid = 123
@@ -110,3 +126,22 @@ class TestResUsers(TransactionCase):
             with self.assertRaises(SessionExpiredException):
                 self.ResUsers._auth_timeout_check()
             self.assertTrue(assets['http'].request.session.logout.called)
+            assets['exists'].assert_called_once_with(
+                assets['http'].root.session_store.get_session_filename(),
+            )
+
+    def test_on_timeout_session_file_missing(self):
+        with self._mock_assets(['http', 'getmtime', 'exists']) as assets:
+            assets['getmtime'].return_value = 0
+            assets['exists'].return_value = False
+            assets['http'].request.session.uid = self.env.uid
+            assets['http'].request.session.dbname = self.env.cr.dbname
+            assets['http'].request.session.sid = 123
+            assets['http'].request.session.logout = mock.Mock()
+            with self.assertRaises(SessionExpiredException):
+                self.ResUsers._auth_timeout_check()
+            self.assertTrue(assets['http'].request.session.logout.called)
+            assets['exists'].assert_called_once_with(
+                assets['http'].root.session_store.get_session_filename(),
+            )
+            assets['getmtime'].assert_not_called()
