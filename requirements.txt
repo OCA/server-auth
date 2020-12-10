@@ -1,3 +1,5 @@
 # auth_signup_verify_email
 email_validator
 python-ldap==3.1.0
+# password_security
+zxcvbn-python==4.4.24
