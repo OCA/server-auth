@@ -5,22 +5,21 @@
 
 import logging
 import re
-
 from datetime import datetime, timedelta
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 
 from ..exceptions import PassError
-
 
 _logger = logging.getLogger(__name__)
 try:
     import zxcvbn
+
     zxcvbn.feedback._ = _
 except ImportError:
     _logger.debug(
-        'Could not import zxcvbn. Please make sure this library is available'
-        ' in your environment.'
+        "Could not import zxcvbn. Please make sure this library is available"
+        " in your environment."
     )
 
 
@@ -30,29 +29,27 @@ def delta_now(**kwargs):
 
 
 class ResUsers(models.Model):
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
     password_write_date = fields.Datetime(
-        'Last password update',
-        default=fields.Datetime.now,
-        readonly=True,
+        "Last password update", default=fields.Datetime.now, readonly=True,
     )
     password_history_ids = fields.One2many(
-        string='Password History',
-        comodel_name='res.users.pass.history',
-        inverse_name='user_id',
+        string="Password History",
+        comodel_name="res.users.pass.history",
+        inverse_name="user_id",
         readonly=True,
     )
 
     @api.model
     def create(self, vals):
-        vals['password_write_date'] = fields.Datetime.now()
+        vals["password_write_date"] = fields.Datetime.now()
         return super(ResUsers, self).create(vals)
 
     def write(self, vals):
-        if vals.get('password'):
-            self._check_password(vals['password'])
-            vals['password_write_date'] = fields.Datetime.now()
+        if vals.get("password"):
+            self._check_password(vals["password"])
+            vals["password_write_date"] = fields.Datetime.now()
         return super(ResUsers, self).write(vals)
 
     @api.model
@@ -90,24 +87,40 @@ class ResUsers(models.Model):
         company_id = self.company_id
         message = []
         if company_id.password_lower:
-            message.append('\n* ' + 'Lowercase letter (At least ' + str(
-                company_id.password_lower) + ' character)')
+            message.append(
+                "\n* "
+                + "Lowercase letter (At least "
+                + str(company_id.password_lower)
+                + " character)"
+            )
         if company_id.password_upper:
-            message.append('\n* ' + 'Uppercase letter (At least ' + str(
-                company_id.password_upper) + ' character)')
+            message.append(
+                "\n* "
+                + "Uppercase letter (At least "
+                + str(company_id.password_upper)
+                + " character)"
+            )
         if company_id.password_numeric:
-            message.append('\n* ' + 'Numeric digit (At least ' + str(
-                company_id.password_numeric) + ' character)')
+            message.append(
+                "\n* "
+                + "Numeric digit (At least "
+                + str(company_id.password_numeric)
+                + " character)"
+            )
         if company_id.password_special:
-            message.append('\n* ' + 'Special character (At least ' + str(
-                company_id.password_special) + ' character)')
+            message.append(
+                "\n* "
+                + "Special character (At least "
+                + str(company_id.password_special)
+                + " character)"
+            )
         if message:
-            message = [_('Must contain the following:')] + message
+            message = [_("Must contain the following:")] + message
         if company_id.password_length:
-            message = ['Password must be %d characters or more.' %
-                       company_id.password_length
-                       ] + message
-        return '\r'.join(message)
+            message = [
+                "Password must be %d characters or more." % company_id.password_length
+            ] + message
+        return "\r".join(message)
 
     def _check_password(self, password):
         self._check_password_rules(password)
@@ -120,14 +133,14 @@ class ResUsers(models.Model):
             return True
         company_id = self.company_id
         password_regex = [
-            '^',
-            '(?=.*?[a-z]){' + str(company_id.password_lower) + ',}',
-            '(?=.*?[A-Z]){' + str(company_id.password_upper) + ',}',
-            '(?=.*?\\d){' + str(company_id.password_numeric) + ',}',
-            r'(?=.*?[\W_]){' + str(company_id.password_special) + ',}',
-            '.{%d,}$' % int(company_id.password_length),
+            "^",
+            "(?=.*?[a-z]){" + str(company_id.password_lower) + ",}",
+            "(?=.*?[A-Z]){" + str(company_id.password_upper) + ",}",
+            "(?=.*?\\d){" + str(company_id.password_numeric) + ",}",
+            r"(?=.*?[\W_]){" + str(company_id.password_special) + ",}",
+            ".{%d,}$" % int(company_id.password_length),
         ]
-        if not re.search(''.join(password_regex), password):
+        if not re.search("".join(password_regex), password):
             raise PassError(self.password_match_message())
 
         estimation = self.get_estimation(password)
@@ -150,12 +163,12 @@ class ResUsers(models.Model):
     def action_expire_password(self):
         expiration = delta_now(days=+1)
         for rec_id in self:
-            rec_id.mapped('partner_id').signup_prepare(
+            rec_id.mapped("partner_id").signup_prepare(
                 signup_type="reset", expiration=expiration
             )
 
     def _validate_pass_reset(self):
-        """ It provides validations before initiating a pass reset email
+        """It provides validations before initiating a pass reset email
         :raises: PassError on invalidated pass reset attempt
         :return: True on allowed reset
         """
@@ -167,14 +180,16 @@ class ResUsers(models.Model):
             delta = timedelta(hours=pass_min)
             if write_date + delta > datetime.now():
                 raise PassError(
-                    _('Passwords can only be reset every %d hour(s). '
-                      'Please contact an administrator for assistance.') %
-                    pass_min,
+                    _(
+                        "Passwords can only be reset every %d hour(s). "
+                        "Please contact an administrator for assistance."
+                    )
+                    % pass_min,
                 )
         return True
 
     def _check_password_history(self, password):
-        """ It validates proposed password against existing history
+        """It validates proposed password against existing history
         :raises: PassError on reused password
         """
         crypt = self._crypt_context()
@@ -183,14 +198,13 @@ class ResUsers(models.Model):
             if recent_passes < 0:
                 recent_passes = rec_id.password_history_ids
             else:
-                recent_passes = rec_id.password_history_ids[
-                    0: recent_passes - 1
-                ]
+                recent_passes = rec_id.password_history_ids[0 : recent_passes - 1]
             if recent_passes.filtered(
-                    lambda r: crypt.verify(password, r.password_crypt)):
+                lambda r: crypt.verify(password, r.password_crypt)
+            ):
                 raise PassError(
-                    _('Cannot use the most recent %d passwords') %
-                    rec_id.company_id.password_history
+                    _("Cannot use the most recent %d passwords")
+                    % rec_id.company_id.password_history
                 )
 
     def _set_encrypted_password(self, uid, pw):
