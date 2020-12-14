@@ -21,25 +21,25 @@ msgstr ""
 "X-Generator: Weblate 3.8\n"
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:63
+#: code:addons/auth_signup_verify_email/controllers/main.py:69
 #, python-format
 msgid "Another user is already registered using this email address."
 msgstr "Drugi korisnik je već registriran sa ovom mail adresom."
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:73
+#: code:addons/auth_signup_verify_email/controllers/main.py:79
 #, python-format
 msgid "Check your email to activate your account!"
 msgstr "Provjerite svoj e-mail za aktivaciu računa!"
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:68
+#: code:addons/auth_signup_verify_email/controllers/main.py:74
 #, python-format
 msgid "Something went wrong, please try again later or contact us."
 msgstr "Nešto nije u redu, molimo pokušajte ponovo ili nas kontaktirajte."
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:34
+#: code:addons/auth_signup_verify_email/controllers/main.py:40
 #, python-format
 msgid "That does not seem to be an email address."
 msgstr "Ovo ne izgleda kao e-mail adresa."
