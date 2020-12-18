@@ -12,11 +12,13 @@ from odoo.exceptions import AccessDenied, ValidationError
 
 _logger = logging.getLogger(__name__)
 
-def gen_password(length=8, charset="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"):
+
+def gen_password(length=8, charset="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()"):  # noqa: E501
     random_bytes = os.urandom(length)
     len_charset = len(charset)
     indices = [int(len_charset * (byte / 256.0)) for byte in random_bytes]
     return "".join([charset[index] for index in indices])
+
 
 class ResUser(models.Model):
     """
@@ -76,7 +78,8 @@ class ResUser(models.Model):
             [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)]
         )
         if len(user) != 1:
-            _logger.info("Could not find matching saml user for '%s' against provider %d", saml_uid, provider)
+            _logger.info("Could not find matching saml user for '%s' against "
+                         "provider %d", saml_uid, provider)
             raise AccessDenied()
         # now find if a token for this user/provider already exists
         token_ids = token_osv.search(

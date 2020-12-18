@@ -7,4 +7,4 @@ python-u2flib-server
 # password_security
 zxcvbn
 # auth_saml
-lasso
+pysaml2==6.4.1
