@@ -8,7 +8,7 @@ def genUuid(max_chars=None):
     """Generate a unique ID and return its hex string representation.
 
     :param max_chars: Maximum amount of characters to return (might not be a
-    true UUID then...).
+        true UUID then...).
     :type max_chars: Integer.
 
     :rtype: String.
