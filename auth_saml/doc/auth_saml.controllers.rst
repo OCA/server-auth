@@ -1,17 +1,26 @@
 auth_saml.controllers package
 =============================
 
-Submodules
-----------
+Helpers
+-------
 
-odoo.addons.auth_saml.controllers.main module
----------------------------------------------
-
-.. automodule:: odoo.addons.auth_saml.controllers.main
+.. automodule:: odoo.addons.auth_saml.controllers.main.fragment_to_query_string
     :members:
     :undoc-members:
     :show-inheritance:
 
+Classes
+-------
+
+.. automodule:: odoo.addons.auth_saml.controllers.main.SAMLLogin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: odoo.addons.auth_saml.controllers.main.AuthSAMLController
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 Module contents
 ---------------
