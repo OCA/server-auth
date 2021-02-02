@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright 2018 Modoolar <info@modoolar.com>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+-->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form.password_security</field>
+        <field name="model">res.config.settings</field>
+        <field
+            name="inherit_id"
+            ref="auth_password_policy.res_config_settings_view_form"
+        />
+        <field name="arch" type="xml">
+            <!-- We hide Odoo's minlength sections so it does not create confusion -->
+            <xpath expr="//label[@for='minlength']/../.." position="attributes">
+                <attribute name="style">display: none</attribute>
+            </xpath>
+            <!-- Add our password policy fields -->
+            <xpath expr="//div[@id='access_rights']" position="before">
+                <div class="col-12 col-lg-6 o_setting_box" title="Password Policy">
+                    <div class="o_setting_left_pane" />
+                    <div class="o_setting_right_pane">
+                        <label string="Password Policy" for="password_expiration" />
+                        <div class="content-group">
+                            <div class="mt16">
+                                <span>
+                                    Password expires in
+                                    <field
+                                        name="password_expiration"
+                                        class="oe_inline"
+                                    />
+                                    days.
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    User can change password in
+                                    <field name="password_minimum" class="oe_inline" />
+                                    hours again.
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Disallow reuse of
+                                    <field name="password_history" class="oe_inline" />
+                                    previous passwords.
+                                </span>
+                                <div class="text-muted">
+                                    Use negative number for infinite, or 0 to disable
+                                </div>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Minimum number of characters
+                                    <field name="password_length" class="oe_inline" />
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Minimum number of lowercase characters
+                                    <field name="password_lower" class="oe_inline" />
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Minimum number of uppercase characters
+                                    <field name="password_upper" class="oe_inline" />
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Minimum number of numeric characters
+                                    <field name="password_numeric" class="oe_inline" />
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Minimum number of special characters
+                                    <field name="password_special" class="oe_inline" />
+                                </span>
+                            </div>
+                            <div class="mt16">
+                                <span>
+                                    Minimum number of strength estimation
+                                    <field name="password_estimate" class="oe_inline" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
