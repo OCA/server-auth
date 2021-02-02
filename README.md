@@ -21,6 +21,7 @@ addon | version | summary
 --- | --- | ---
 [auth_admin_passkey](auth_admin_passkey/) | 14.0.1.0.0 | Allows system administrator to authenticate with any account
 [auth_api_key](auth_api_key/) | 14.0.1.0.0 | Authenticate http requests from an API key
+[auth_ldaps](auth_ldaps/) | 14.0.1.0.0 | Allows to use LDAP over SSL authentication
 
 [//]: # (end addons)
 
