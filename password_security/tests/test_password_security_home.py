@@ -241,6 +241,7 @@ class LoginCase(HttpCase):
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
+            timeout=30,
         )
         # Password has expired, I'm redirected to reset it
         all_urls = [call[0][0] for call in redirect_mock.call_args_list
