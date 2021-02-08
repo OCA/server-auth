@@ -17,6 +17,7 @@ setuptools.setup(
         'odoo13-addon-auth_user_case_insensitive',
         'odoo13-addon-base_user_show_email',
         'odoo13-addon-password_security',
+        'odoo13-addon-users_ldap_mail',
     ],
     classifiers=[
         'Programming Language :: Python',
