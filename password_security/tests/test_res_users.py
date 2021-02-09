@@ -3,9 +3,8 @@
 
 import time
 
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
-
-from ..exceptions import PassError
 
 
 class TestResUsers(TransactionCase):
@@ -74,7 +73,7 @@ class TestResUsers(TransactionCase):
 
     def test_check_password_raises_error_for_invalid_password(self):
         rec_id = self._new_record()
-        with self.assertRaises(PassError):
+        with self.assertRaises(UserError):
             rec_id._check_password("password")
 
     def test_save_password_crypt(self):
@@ -87,7 +86,7 @@ class TestResUsers(TransactionCase):
     def test_check_password_crypt(self):
         """ It should raise PassError if previously used """
         rec_id = self._new_record()
-        with self.assertRaises(PassError):
+        with self.assertRaises(UserError):
             rec_id.write({"password": self.password})
 
     def test_password_is_expired_if_record_has_no_write_date(self):
@@ -129,7 +128,7 @@ class TestResUsers(TransactionCase):
     def test_validate_pass_reset_error(self):
         """ It should throw PassError on reset inside min threshold """
         rec_id = self._new_record()
-        with self.assertRaises(PassError):
+        with self.assertRaises(UserError):
             rec_id._validate_pass_reset()
 
     def test_validate_pass_reset_allow(self):
@@ -158,7 +157,7 @@ class TestResUsers(TransactionCase):
     def test_user_with_admin_rights_can_create_users(self):
         demo = self.env.ref("base.user_demo")
         demo.groups_id |= self.env.ref("base.group_erp_manager")
-        test1 = self.model_obj.sudo(demo).create(
+        test1 = self.model_obj.with_user(demo).create(
             {
                 "login": "test1",
                 "name": "test1",
