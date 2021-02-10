@@ -41,7 +41,9 @@ class TestPasswordSecuritySession(TransactionCase):
             check_password.side_effect = EndTestException
             with self.assertRaises(EndTestException):
                 self.password_security_session.change_password(self.fields)
-            check_password.assert_called_once_with(self.passwd,)
+            check_password.assert_called_once_with(
+                self.passwd,
+            )
 
     def test_change_password_return(self):
         """ It should return result of super """
