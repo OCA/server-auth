@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright 2019 Denis Mudarisov (IT-Projects LLC)
      License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
-
 <odoo>
 
 <record id="action_user_log" model="ir.actions.act_window">
@@ -19,10 +18,14 @@
     <field name="model">res.users.log</field>
     <field name="arch" type="xml">
         <search string="Test Search">
-            <field name="create_uid"/>
-            <field name="create_date"/>
+            <field name="create_uid" />
+            <field name="create_date" />
                 <group expand="0" string="Group By">
-                    <filter string="Date" name="groupby_date" context="{'group_by':'create_date:day'}"/>
+                    <filter
+                        string="Date"
+                        name="groupby_date"
+                        context="{'group_by':'create_date:day'}"
+                    />
                 </group>
         </search>
     </field>
@@ -31,10 +34,15 @@
 <record id="res_users_view_form" model="ir.ui.view">
     <field name="name">res.users.view.form</field>
     <field name="model">res.users</field>
-    <field name="inherit_id" ref="base.view_users_form"/>
+    <field name="inherit_id" ref="base.view_users_form" />
     <field name="arch" type="xml">
         <xpath expr="//button[hasclass('oe_stat_button')]" position="after">
-            <button name="user_log_view.action_user_log" type="action" string="Authentication logs" icon="fa-user-secret" />
+            <button
+                    name="user_log_view.action_user_log"
+                    type="action"
+                    string="Authentication logs"
+                    icon="fa-user-secret"
+                />
         </xpath>
     </field>
 </record>
@@ -44,8 +52,8 @@
     <field name="model">res.users.log</field>
     <field name="arch" type="xml">
         <tree create="false" default_order="create_date desc">
-            <field name="create_uid"/>
-            <field name="create_date"/>
+            <field name="create_uid" />
+            <field name="create_date" />
         </tree>
     </field>
 </record>
@@ -57,8 +65,8 @@
         <form create="false">
             <sheet>
                 <group>
-                    <field name="create_uid"/>
-                    <field name="create_date"/>
+                    <field name="create_uid" />
+                    <field name="create_date" />
                 </group>
             </sheet>
         </form>
