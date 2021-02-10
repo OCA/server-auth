@@ -72,7 +72,9 @@ class ResUsers(models.Model):
 
                 expired = getmtime(path) < deadline
             except OSError:
-                _logger.exception("Exception reading session file modified time.",)
+                _logger.exception(
+                    "Exception reading session file modified time.",
+                )
                 # Force expire the session. Will be resolved with new session.
                 expired = True
 
@@ -90,7 +92,9 @@ class ResUsers(models.Model):
 
         if http.request.httprequest.path not in ignored_urls:
             if "path" not in locals():
-                path = http.root.session_store.get_session_filename(session.sid,)
+                path = http.root.session_store.get_session_filename(
+                    session.sid,
+                )
             try:
                 utime(path, None)
             except OSError:

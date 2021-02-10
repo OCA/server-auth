@@ -14,8 +14,6 @@ from odoo.tools.misc import mute_logger
 class EndTestException(Exception):
     """ It stops tests from continuing """
 
-    pass
-
 
 class TestResUsers(TransactionCase):
     def setUp(self):
@@ -24,7 +22,7 @@ class TestResUsers(TransactionCase):
 
     @contextmanager
     def _mock_assets(self, assets=None):
-        """ It provides mocked imports from res_users.py
+        """It provides mocked imports from res_users.py
         :param assets: (list) Name of imports to mock. Mocks `http` if None
         :return: (dict) Dictionary of mocks, keyed by module name
         """
@@ -74,7 +72,9 @@ class TestResUsers(TransactionCase):
             assets["getmtime"].return_value = 0
             with self.assertRaises(SessionExpiredException):
                 self._auth_timeout_check(assets["http"])
-            assets["http"].request.session.logout.assert_called_once_with(keep_db=True,)
+            assets["http"].request.session.logout.assert_called_once_with(
+                keep_db=True,
+            )
 
     def test_session_validity_updates_utime(self):
         """ It should update utime of session file if not expired """
@@ -84,7 +84,8 @@ class TestResUsers(TransactionCase):
             assets["getmtime"].return_value = time.time()
             self._auth_timeout_check(assets["http"])
             assets["utime"].assert_called_once_with(
-                assets["http"].root.session_store.get_session_filename(), None,
+                assets["http"].root.session_store.get_session_filename(),
+                None,
             )
 
     @mute_logger("odoo.addons.auth_session_timeout.models.res_users")

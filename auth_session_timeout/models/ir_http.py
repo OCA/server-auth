@@ -8,8 +8,8 @@ class IrHttp(models.AbstractModel):
     _inherit = "ir.http"
 
     @classmethod
-    def _authenticate(cls, auth_method="user"):
-        res = super(IrHttp, cls)._authenticate(auth_method=auth_method)
+    def _authenticate(cls, endpoint):
+        res = super(IrHttp, cls)._authenticate(endpoint=endpoint)
         if request and request.env and request.env.user:
             request.env.user._auth_timeout_check()
         return res
