@@ -13,12 +13,26 @@ class IrConfigParameter(models.Model):
     @api.model
     @tools.ormcache("self.env.cr.dbname")
     def _auth_timeout_get_parameter_delay(self):
-        return int(self.env["ir.config_parameter"].sudo().get_param(DELAY_KEY, 7200,))
+        return int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                DELAY_KEY,
+                7200,
+            )
+        )
 
     @api.model
     @tools.ormcache("self.env.cr.dbname")
     def _auth_timeout_get_parameter_ignored_urls(self):
-        urls = self.env["ir.config_parameter"].sudo().get_param(IGNORED_PATH_KEY, "",)
+        urls = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                IGNORED_PATH_KEY,
+                "",
+            )
+        )
         return urls.split(",")
 
     def write(self, vals):
