@@ -11,7 +11,15 @@ class ResUsersPassHistory(models.Model):
     _order = "user_id, date desc"
 
     user_id = fields.Many2one(
-        string="User", comodel_name="res.users", ondelete="cascade", index=True,
+        string="User",
+        comodel_name="res.users",
+        ondelete="cascade",
+        index=True,
     )
-    password_crypt = fields.Char(string="Encrypted Password",)
-    date = fields.Datetime(default=lambda s: fields.Datetime.now(), index=True,)
+    password_crypt = fields.Char(
+        string="Encrypted Password",
+    )
+    date = fields.Datetime(
+        default=lambda s: fields.Datetime.now(),
+        index=True,
+    )

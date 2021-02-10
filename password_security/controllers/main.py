@@ -74,8 +74,14 @@ class PasswordSecurityHome(AuthSignupHome):
             and "token" not in qcontext
         ):
             login = qcontext.get("login")
-            user_ids = request.env.sudo().search([("login", "=", login)], limit=1,)
+            user_ids = request.env.sudo().search(
+                [("login", "=", login)],
+                limit=1,
+            )
             if not user_ids:
-                user_ids = request.env.sudo().search([("email", "=", login)], limit=1,)
+                user_ids = request.env.sudo().search(
+                    [("email", "=", login)],
+                    limit=1,
+                )
             user_ids._validate_pass_reset()
         return super(PasswordSecurityHome, self).web_auth_reset_password(*args, **kw)
