@@ -35,7 +35,8 @@ class TestResUsers(TransactionCase):
     def test_password_write_date_is_saved_on_create(self):
         rec_id = self._new_record()
         self.assertTrue(
-            rec_id.password_write_date, "Password write date was not saved to db.",
+            rec_id.password_write_date,
+            "Password write date was not saved to db.",
         )
 
     def test_password_write_date_is_updated_on_write(self):
@@ -79,7 +80,8 @@ class TestResUsers(TransactionCase):
     def test_save_password_crypt(self):
         rec_id = self._new_record()
         self.assertEqual(
-            1, len(rec_id.password_history_ids),
+            1,
+            len(rec_id.password_history_ids),
         )
 
     def test_check_password_crypt(self):
@@ -103,7 +105,8 @@ class TestResUsers(TransactionCase):
         rec_id.write({"password_write_date": old_write_date})
         rec_id.refresh()
         self.assertTrue(
-            rec_id._password_has_expired(), "Password is out of date but check failed.",
+            rec_id._password_has_expired(),
+            "Password is out of date but check failed.",
         )
 
     def test_a_new_password_is_not_expired(self):
@@ -119,7 +122,8 @@ class TestResUsers(TransactionCase):
         rec_id.refresh()
         token = rec_id.partner_id.signup_token
         self.assertTrue(
-            token, "A token was not generated.",
+            token,
+            "A token was not generated.",
         )
 
     def test_validate_pass_reset_error(self):
@@ -133,7 +137,8 @@ class TestResUsers(TransactionCase):
         rec_id = self._new_record()
         rec_id.password_write_date = "2016-01-01"
         self.assertEqual(
-            True, rec_id._validate_pass_reset(),
+            True,
+            rec_id._validate_pass_reset(),
         )
 
     def test_validate_pass_reset_zero(self):
@@ -141,7 +146,8 @@ class TestResUsers(TransactionCase):
         rec_id = self._new_record()
         rec_id.company_id.password_minimum = 0
         self.assertEqual(
-            True, rec_id._validate_pass_reset(),
+            True,
+            rec_id._validate_pass_reset(),
         )
 
     def test_underscore_is_special_character(self):
@@ -152,5 +158,10 @@ class TestResUsers(TransactionCase):
     def test_user_with_admin_rights_can_create_users(self):
         demo = self.env.ref("base.user_demo")
         demo.groups_id |= self.env.ref("base.group_erp_manager")
-        test1 = self.model_obj.sudo(demo).create({"login": "test1", "name": "test1",})
+        test1 = self.model_obj.sudo(demo).create(
+            {
+                "login": "test1",
+                "name": "test1",
+            }
+        )
         test1.unlink()
