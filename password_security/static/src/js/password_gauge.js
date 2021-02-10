@@ -1,6 +1,6 @@
 //  Copyright 2018 Modoolar <info@modoolar.com>
 //  License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-odoo.define("password_security.policy", function(require) {
+odoo.define("password_security.policy", function (require) {
     "use strict";
 
     var core = require("web.core");
@@ -20,7 +20,7 @@ odoo.define("password_security.policy", function(require) {
          * @param {Number} [info.password_special=1]
          * @param {Number} [info.password_estimate=3]
          */
-        init: function(info) {
+        init: function (info) {
             this._super(info);
 
             this._password_length = info.password_length || 4;
@@ -31,7 +31,7 @@ odoo.define("password_security.policy", function(require) {
             this._password_estimate = info.password_estimate || 3;
         },
 
-        toString: function() {
+        toString: function () {
             var msgs = [];
 
             if (this._password_length > 0) {
@@ -79,7 +79,7 @@ odoo.define("password_security.policy", function(require) {
             return msgs.join(", ");
         },
 
-        _calculate_password_score: function(pattern, min_count, password) {
+        _calculate_password_score: function (pattern, min_count, password) {
             var matchMinCount = new RegExp(
                 "(.*" + pattern + ".*){" + min_count + ",}",
                 "g"
@@ -98,11 +98,11 @@ odoo.define("password_security.policy", function(require) {
             return Math.min(count / min_count, 1.0);
         },
 
-        _estimate: function(password) {
+        _estimate: function (password) {
             return Math.min(zxcvbn(password).score / 4.0, 1.0);
         },
 
-        score: function(password) {
+        score: function (password) {
             var lengthscore = Math.min(password.length / this._password_length, 1.0);
             var loverscore = this._calculate_password_score(
                 "[a-z]",

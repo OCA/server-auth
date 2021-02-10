@@ -10,22 +10,34 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     password_expiration = fields.Integer(
-        "Days", default=60, help="How many days until passwords expire",
+        "Days",
+        default=60,
+        help="How many days until passwords expire",
     )
     password_length = fields.Integer(
-        "Characters", default=12, help="Minimum number of characters",
+        "Characters",
+        default=12,
+        help="Minimum number of characters",
     )
     password_lower = fields.Integer(
-        "Lowercase", default=1, help="Require number of lowercase letters",
+        "Lowercase",
+        default=1,
+        help="Require number of lowercase letters",
     )
     password_upper = fields.Integer(
-        "Uppercase", default=1, help="Require number of uppercase letters",
+        "Uppercase",
+        default=1,
+        help="Require number of uppercase letters",
     )
     password_numeric = fields.Integer(
-        "Numeric", default=1, help="Require number of numeric digits",
+        "Numeric",
+        default=1,
+        help="Require number of numeric digits",
     )
     password_special = fields.Integer(
-        "Special", default=1, help="Require number of unique special characters",
+        "Special",
+        default=1,
+        help="Require number of unique special characters",
     )
     password_estimate = fields.Integer(
         "Estimation",
