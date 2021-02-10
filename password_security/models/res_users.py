@@ -32,7 +32,9 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     password_write_date = fields.Datetime(
-        "Last password update", default=fields.Datetime.now, readonly=True,
+        "Last password update",
+        default=fields.Datetime.now,
+        readonly=True,
     )
     password_history_ids = fields.One2many(
         string="Password History",

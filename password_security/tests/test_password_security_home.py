@@ -58,7 +58,11 @@ class TestPasswordSecurityHome(TransactionCase):
                     with mock.patch("%s.http" % IMPORT) as http:
                         http.redirect_with_hash.return_value = MockResponse()
                         mocks.update(
-                            {"request": request, "ensure_db": ensure, "http": http,}
+                            {
+                                "request": request,
+                                "ensure_db": ensure,
+                                "http": http,
+                            }
                         )
                         yield mocks
 
@@ -69,7 +73,9 @@ class TestPasswordSecurityHome(TransactionCase):
             check_password.side_effect = EndTestException
             with self.assertRaises(EndTestException):
                 self.password_security_home.do_signup(self.qcontext)
-            check_password.assert_called_once_with(self.passwd,)
+            check_password.assert_called_once_with(
+                self.passwd,
+            )
 
     def test_do_signup_return(self):
         """ It should return result of super """
@@ -115,7 +121,8 @@ class TestPasswordSecurityHome(TransactionCase):
             user._password_has_expired.return_value = True
             res = self.password_security_home.web_login()
             self.assertEqual(
-                assets["http"].redirect_with_hash(), res,
+                assets["http"].redirect_with_hash(),
+                res,
             )
 
     def test_web_auth_signup_valid(self):
@@ -123,14 +130,16 @@ class TestPasswordSecurityHome(TransactionCase):
         with self.mock_assets() as assets:
             res = self.password_security_home.web_auth_signup()
             self.assertEqual(
-                assets["web_auth_signup"](), res,
+                assets["web_auth_signup"](),
+                res,
             )
 
     def test_web_auth_signup_invalid_qcontext(self):
         """ It should catch PassError and get signup qcontext """
         with self.mock_assets() as assets:
             with mock.patch.object(
-                main.AuthSignupHome, "get_auth_signup_qcontext",
+                main.AuthSignupHome,
+                "get_auth_signup_qcontext",
             ) as qcontext:
                 assets["web_auth_signup"].side_effect = MockPassError
                 qcontext.side_effect = EndTestException
@@ -146,10 +155,12 @@ class TestPasswordSecurityHome(TransactionCase):
                 assets["web_auth_signup"].side_effect = MockPassError
                 res = self.password_security_home.web_auth_signup()
                 assets["request"].render.assert_called_once_with(
-                    "auth_signup.signup", qcontext(),
+                    "auth_signup.signup",
+                    qcontext(),
                 )
                 self.assertEqual(
-                    assets["request"].render(), res,
+                    assets["request"].render(),
+                    res,
                 )
 
     def test_web_auth_reset_password_fail_login(self):
@@ -192,7 +203,8 @@ class TestPasswordSecurityHome(TransactionCase):
                 assets["request"].httprequest.method = "POST"
                 res = self.password_security_home.web_auth_reset_password()
                 self.assertEqual(
-                    assets["web_auth_reset_password"](), res,
+                    assets["web_auth_reset_password"](),
+                    res,
                 )
 
 
@@ -201,7 +213,10 @@ class TestPasswordSecurityHome(TransactionCase):
 class LoginCase(HttpCase):
     def test_web_login_authenticate(self, redirect_mock, *args):
         """It should allow authenticating by login"""
-        response = self.url_open("/web/login", {"login": "admin", "password": "admin"},)
+        response = self.url_open(
+            "/web/login",
+            {"login": "admin", "password": "admin"},
+        )
         # Redirected to /web because it succeeded
         redirect_mock.assert_any_call("/web")
         self.assertEqual(response.text, "redirected")
@@ -209,11 +224,13 @@ class LoginCase(HttpCase):
     def test_web_login_authenticate_fail(self, redirect_mock, *args):
         """It should fail auth"""
         response = self.url_open(
-            "/web/login", {"login": "admin", "password": "noadmin"},
+            "/web/login",
+            {"login": "admin", "password": "noadmin"},
         )
         redirect_mock.assert_not_called()
         self.assertIn(
-            "Wrong login/password", response.text,
+            "Wrong login/password",
+            response.text,
         )
 
     def test_web_login_expire_pass(self, redirect_mock, *args):
@@ -224,7 +241,10 @@ class LoginCase(HttpCase):
             user = env["res.users"].search([("login", "=", "admin")])
             user.password_write_date = three_days_ago
             user.company_id.password_expiration = 1
-        response = self.url_open("/web/login", {"login": "admin", "password": "admin"},)
+        response = self.url_open(
+            "/web/login",
+            {"login": "admin", "password": "admin"},
+        )
         # Password has expired, I'm redirected to reset it
         all_urls = [
             call[0][0]
