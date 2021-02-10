@@ -1,4 +1,5 @@
 # Copyright 2015-2017 LasLabs Inc.
+# Copyright 2021 Open Source Integrators
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo import api, registry
@@ -50,7 +51,10 @@ class TestResUsers(TransactionCase):
         self.env.cr.commit()
         with mute_logger("odoo.addons.auth_ldap.models.res_company_ldap"):
             res_id = self.model_obj._login(
-                self.env.registry.db_name, self.login.upper(), "password"
+                self.env.registry.db_name,
+                self.login.upper(),
+                "password",
+                {"interactive": True},
             )
         # Now clean up our mess to preserve idempotence
         with api.Environment.manage():
