@@ -6,61 +6,63 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2021-02-12 10:45+0000\n"
+"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_auth_api_key
 msgid "API Key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: auth_api_key
 #: model:ir.model.constraint,message:auth_api_key.constraint_auth_api_key_name_uniq
 msgid "Api Key name must be unique."
-msgstr ""
+msgstr "La chiave API deve essere univoca."
 
 #. module: auth_api_key
 #: model:ir.actions.act_window,name:auth_api_key.auth_api_key_act_window
 #: model:ir.ui.menu,name:auth_api_key.auth_api_key_menu
 msgid "Auth Api Key"
-msgstr ""
+msgstr "Chiave API di autenticazione"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creata da"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creata il"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
 #: model:ir.model.fields,field_description:auth_api_key.field_ir_http__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Instradamento HTTP"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__id
 #: model:ir.model.fields,field_description:auth_api_key.field_ir_http__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key
 msgid "Key"
-msgstr ""
+msgstr "Chiave"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_default
@@ -76,27 +78,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
 #: model:ir.model.fields,field_description:auth_api_key.field_ir_http____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__server_env_defaults
 msgid "Server Env Defaults"
-msgstr ""
+msgstr "Variabili ambiente predefinite del server"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
@@ -104,12 +106,14 @@ msgid ""
 "The API key. Enter a dummy value in this field if it is\n"
 "        obtained from the server environment configuration."
 msgstr ""
+"Chiave API. Se viene acquisita dalla configurazione\n"
+"        ambiente del server, inserire nel campo un valore fittizio."
 
 #. module: auth_api_key
 #: code:addons/auth_api_key/models/auth_api_key.py:0
 #, python-format
 msgid "The key %s is not allowed"
-msgstr ""
+msgstr "Chiave %s non autorizzata"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__user_id
@@ -117,14 +121,16 @@ msgid ""
 "The user used to process the requests authenticated by\n"
 "        the api key"
 msgstr ""
+"Utente utilizzato per elaborare le richieste autenticate\n"
+"        dalla chiave API"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__user_id
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #. module: auth_api_key
 #: code:addons/auth_api_key/models/auth_api_key.py:0
 #, python-format
 msgid "User is not allowed"
-msgstr ""
+msgstr "Utente non autorizzato"
