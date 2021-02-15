@@ -65,6 +65,7 @@ def get_fake_ldap(self):
 
 class TestUsersLdapPopulate(TransactionCase):
     def test_users_ldap_populate(self):
+        previous_users_count = self.env["res.users"].search_count([])
         with patch_ldap(
             self,
             [
@@ -75,7 +76,43 @@ class TestUsersLdapPopulate(TransactionCase):
             ],
         ):
             ldap = get_fake_ldap(self)
-            ldap.populate_wizard()
+            res = ldap.populate_wizard()
+            ldap_populate_wizard = self.env["res.company.ldap.populate_wizard"].browse(
+                res["res_id"]
+            )
+            self.assertEquals(ldap_populate_wizard.users_created, 1)
+            self.assertEquals(
+                ldap_populate_wizard.users_deactivated, previous_users_count - 1
+            )  # Admin is not deactivated
             self.assertFalse(self.env.ref("base.user_demo").active)
             self.assertTrue(self.env.ref("base.user_admin").active)
             self.assertTrue(self.env["res.users"].search([("login", "=", "fake")]))
+
+    def test_users_ldap_populate_reactivate(self):
+        # Create deactivated user
+        inactive_user = self.env["res.users"].create(
+            {"name": "test_inactive", "login": "test_inactive", "active": False,}
+        )
+        with patch_ldap(
+            self,
+            [
+                (
+                    "DN=test_inactive",
+                    {
+                        "cn": ["test_inactive"],
+                        "uid": ["test_inactive"],
+                        "mail": ["test_inactive@fakery.com"],
+                    },
+                )
+            ],
+        ):
+            ldap = get_fake_ldap(self)
+            res = ldap.populate_wizard()
+            ldap_populate_wizard = self.env["res.company.ldap.populate_wizard"].browse(
+                res["res_id"]
+            )
+            self.assertEquals(ldap_populate_wizard.users_created, 1)
+            self.assertTrue(inactive_user.active)
+            self.assertTrue(
+                self.env["res.users"].search([("login", "=", "test_inactive")])
+            )
