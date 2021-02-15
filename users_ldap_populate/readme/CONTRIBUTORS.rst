@@ -1,2 +1,5 @@
 * Therp BV <https://therp.nl>
-* Alexandre Díaz - Tecnativa <alexandre.diaz@tecnativa.com>
+* Tecnativa <www.tecnativa.com>
+
+  * Alexandre Díaz
+  * João Marques

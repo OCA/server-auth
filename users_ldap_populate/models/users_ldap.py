@@ -1,11 +1,12 @@
 # Copyright 2012 Therp BV (<http://therp.nl>)
+# Copyright 2021 Tecnativa - João Marques
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/gpl.html).
 
 import logging
 import re
 
-from odoo import SUPERUSER_ID, _, api, fields, models
-from odoo.exceptions import UserError
+from odoo import SUPERUSER_ID, _, fields, models
+from odoo.exceptions import AccessDenied, UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -25,14 +26,13 @@ class CompanyLDAP(models.Model):
         column1="ldap_id",
         column2="user_id",
         string="Users never to deactivate",
-        help="List users who never should be deactivated by" " the deactivation wizard",
+        help="List users who never should be deactivated by the deactivation wizard",
         default=lambda self: [(6, 0, [SUPERUSER_ID])],
     )
     deactivate_unknown_users = fields.Boolean(
         string="Deactivate unknown users", default=False,
     )
 
-    @api.multi
     def action_populate(self):
         """
         Prepopulate the user table from one or more LDAP resources.
@@ -65,14 +65,16 @@ class CompanyLDAP(models.Model):
             results = self._get_ldap_entry_dicts(conf)
             for result in results:
                 login = result[1][login_attr][0].lower().strip()
-                user_id = self.with_context(no_reset_password=True)._get_or_create_user(
-                    conf, login, result
-                )
-                if not user_id:
+                user_id = None
+                try:
+                    user_id = self.with_context(
+                        no_reset_password=True
+                    )._get_or_create_user(conf, login, result)
+                except AccessDenied:
                     # this happens if the user exists but is active = False
                     # -> fetch the user again and reactivate it
                     self.env.cr.execute(
-                        "SELECT id FROM res_users " "WHERE lower(login)=%s", (login,)
+                        "SELECT id FROM res_users WHERE lower(login)=%s", (login,)
                     )
                     res = self.env.cr.fetchone()
                     _logger.debug("unarchiving user %s", login)
@@ -85,7 +87,8 @@ class CompanyLDAP(models.Model):
                         raise UserError(
                             _("Unable to process user with login %s") % login
                         )
-                known_user_ids.append(user_id)
+                finally:
+                    known_user_ids.append(user_id)
         users_created = users_model.search_count([]) - users_count_before
 
         deactivated_users_count = 0

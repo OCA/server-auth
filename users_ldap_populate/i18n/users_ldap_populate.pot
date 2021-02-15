@@ -1,12 +1,12 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* users_ldap_populate
+# 	* users_ldap_populate
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 12.0\n"
+"Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: <>\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -79,9 +79,10 @@ msgid "Name"
 msgstr ""
 
 #. module: users_ldap_populate
-#: code:addons/users_ldap_populate/models/users_ldap.py:62
+#: code:addons/users_ldap_populate/models/users_ldap.py:0
 #, python-format
-msgid "No login attribute found: Could not extract login attribute from filter %s"
+msgid ""
+"No login attribute found: Could not extract login attribute from filter %s"
 msgstr ""
 
 #. module: users_ldap_populate
@@ -115,7 +116,7 @@ msgid "Populate users from LDAP"
 msgstr ""
 
 #. module: users_ldap_populate
-#: code:addons/users_ldap_populate/models/users_ldap.py:89
+#: code:addons/users_ldap_populate/models/users_ldap.py:0
 #, python-format
 msgid "Unable to process user with login %s"
 msgstr ""
@@ -124,4 +125,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
 msgid "Users never to deactivate"
 msgstr ""
-

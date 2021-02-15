@@ -7,7 +7,7 @@
                 <group>
                     <field name="users_created" />
                     <field name="users_deactivated" />
-                    <button icon="gtk-ok" string="OK" special="cancel" />
+                    <button icon="fa-check-circle" string="OK" special="cancel" />
                 </group>
             </form>
         </field>
