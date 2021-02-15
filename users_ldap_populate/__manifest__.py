@@ -5,16 +5,9 @@
     "version": "12.0.1.0.1",
     "author": "Therp BV, Odoo Community Association (OCA)",
     "license": "AGPL-3",
-    "category": 'Tools',
-    "depends": [
-        'auth_ldap',
-    ],
-    'external_dependencies': {
-        'python': ['ldap'],
-    },
-    "data": [
-        'views/users_ldap.xml',
-        'views/populate_wizard.xml',
-    ],
-    'installable': True,
+    "category": "Tools",
+    "depends": ["auth_ldap",],
+    "external_dependencies": {"python": ["ldap"],},
+    "data": ["views/users_ldap.xml", "views/populate_wizard.xml",],
+    "installable": True,
 }
