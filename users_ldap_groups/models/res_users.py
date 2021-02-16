@@ -5,7 +5,7 @@ from odoo import SUPERUSER_ID, api, models, registry
 
 
 class ResUsers(models.Model):
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
     @classmethod
     def _login(cls, db, login, password):
@@ -14,11 +14,11 @@ class ResUsers(models.Model):
             return user_id
         with registry(db).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
-            user = env['res.users'].browse(user_id)
+            user = env["res.users"].browse(user_id)
             # check if this user came from ldap, rerun get_or_create_user in
             # this case to apply ldap groups if necessary
             ldaps = user.company_id.ldaps
-            if user.active and any(ldaps.mapped('only_ldap_groups')):
+            if user.active and any(ldaps.mapped("only_ldap_groups")):
                 for conf in ldaps._get_ldap_dicts():
                     entry = ldaps._authenticate(conf, login, password)
                     if entry:
