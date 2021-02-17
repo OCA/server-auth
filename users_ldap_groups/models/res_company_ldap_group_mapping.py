@@ -15,7 +15,7 @@ class ResCompanyLdapGroupMapping(models.Model):
     )
     ldap_attribute = fields.Char(
         "LDAP attribute",
-        help=("The LDAP attribute to check.\n" "For active directory, use memberOf."),
+        help=("The LDAP attribute to check.\nFor active directory, use memberOf."),
     )
     operator = fields.Selection(
         lambda self: [
