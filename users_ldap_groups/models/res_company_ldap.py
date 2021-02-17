@@ -34,24 +34,19 @@ class ResCompanyLdap(models.Model):
         if not user_id:
             return user_id
         this = self.browse(conf["id"])
-        user = self.env["res.users"].browse(user_id)
-
+        SudoUser = self.env["res.users"].sudo().with_context(no_reset_password=True)
+        user = SudoUser.browse(user_id)
         groups = []
-
         if this.only_ldap_groups:
             _logger.debug("deleting all groups from user %d", user_id)
             groups.append((5, False, False))
-
         for mapping in this.group_mapping_ids:
             operator = getattr(op_obj, mapping.operator)
             _logger.debug("checking mapping %s", mapping)
-
             if operator(ldap_entry, mapping):
                 _logger.debug(
                     "adding user %d to group %s", user, mapping.group_id.name,
                 )
                 groups.append((4, mapping.group_id.id, False))
-
         user.write({"groups_id": groups})
-
         return user_id
