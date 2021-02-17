@@ -1,4 +1,4 @@
-Define mappings in Settings / General Settings / LDAP Parameters
+Define mappings in Settings / General Settings / Integrations / LDAP Authentication / LDAP Server
 
 Decide whether you want only groups mapped from LDAP (`Only LDAP groups` checked) or a mix of manually set groups and LDAP groups (`Only LDAP groups` unchecked). Setting this to 'no' will result in users never losing privileges when you remove them from a LDAP group, so that's a potential security issue. It is still the default to prevent losing group information by accident.
 
