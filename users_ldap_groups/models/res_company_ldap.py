@@ -1,9 +1,11 @@
 # Copyright 2012-2018 Therp BV <https://therp.nl>
 # Copyright 2018 Brainbean Apps <https://brainbeanapps.com>
+# Copyright 2021 Tecnativa - João Marques
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 from logging import getLogger
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 _logger = getLogger(__name__)
 
@@ -36,6 +38,11 @@ class ResCompanyLdap(models.Model):
         this = self.browse(conf["id"])
         SudoUser = self.env["res.users"].sudo().with_context(no_reset_password=True)
         user = SudoUser.browse(user_id)
+        essential_groups = [
+            self.env.ref("base.group_user").id,
+            self.env.ref("base.group_portal").id,
+            self.env.ref("base.group_public").id,
+        ]
         groups = []
         if this.only_ldap_groups:
             _logger.debug("deleting all groups from user %d", user_id)
@@ -48,5 +55,16 @@ class ResCompanyLdap(models.Model):
                     "adding user %d to group %s", user, mapping.group_id.name,
                 )
                 groups.append((4, mapping.group_id.id, False))
+        if (
+            this.only_ldap_groups
+            and len([g[1] for g in groups if g[0] == 4 and g[1] in essential_groups])
+            != 1
+        ):
+            raise UserError(
+                _(
+                    "The created user needs to have one (and only one) of the"
+                    " 'User types /' groups defined."
+                )
+            )
         user.write({"groups_id": groups})
         return user_id
