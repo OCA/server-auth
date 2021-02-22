@@ -75,7 +75,6 @@ odoo.define("password_security.policy", function (require) {
                     )
                 );
             }
-
             return msgs.join(", ");
         },
 
