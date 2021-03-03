@@ -11,6 +11,7 @@ setuptools.setup(
         'odoo14-addon-auth_admin_passkey',
         'odoo14-addon-auth_api_key',
         'odoo14-addon-auth_ldaps',
+        'odoo14-addon-auth_user_case_insensitive',
     ],
     classifiers=[
         'Programming Language :: Python',
