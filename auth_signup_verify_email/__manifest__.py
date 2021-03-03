@@ -3,7 +3,7 @@
 {
     "name": "Verify email at signup",
     "summary": "Force uninvited users to use a good email for signup",
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.0.2",
     "category": "Authentication",
     "website": "https://github.com/OCA/server-auth",
     "author": "Antiun Ingeniería S.L., "

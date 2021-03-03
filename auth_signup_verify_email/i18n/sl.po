@@ -21,26 +21,26 @@ msgstr ""
 "%100==4 ? 2 : 3);\n"
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:85
+#: code:addons/auth_signup_verify_email/controllers/main.py:69
 #, python-format
 msgid "Another user is already registered using this email address."
 msgstr ""
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:95
+#: code:addons/auth_signup_verify_email/controllers/main.py:79
 #, python-format
 msgid "Check your email to activate your account!"
 msgstr "Preverite svojo e-pošto za aktiviranje računa!"
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:90
+#: code:addons/auth_signup_verify_email/controllers/main.py:74
 #, python-format
 msgid "Something went wrong, please try again later or contact us."
 msgstr ""
 "Nekaj je narobe. Ponovno poskusite kasneje ali pa stopite v stik z nami."
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:56
+#: code:addons/auth_signup_verify_email/controllers/main.py:40
 #, python-format
 msgid "That does not seem to be an email address."
 msgstr "Kaže, da to ni e-poštni naslov."

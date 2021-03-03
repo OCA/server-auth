@@ -24,6 +24,12 @@ class SignupVerifyEmail(AuthSignupHome):
         values = request.params
         qcontext = self.get_auth_signup_qcontext()
 
+        if 'error' in qcontext and request.httprequest.method == 'POST':
+            # Stop and show error if error was detected in qcontext
+            # This is required to be compatible with other modules, that
+            # override qcontext to add some pre-processing of signup
+            return request.render("auth_signup.signup", qcontext)
+
         # Check good format of e-mail
         try:
             validate_email(values.get("login", ""))

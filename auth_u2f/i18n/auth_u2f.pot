@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
@@ -38,37 +38,37 @@ msgid "An unknown error occurred."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_create_uid
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_create_date
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_default
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__default
 msgid "Default"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,help:auth_u2f.field_u2f_device_default
+#: model:ir.model.fields,help:auth_u2f.field_u2f_device__default
 msgid "Device used during login."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_display_name
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: auth_u2f
 #: model:ir.model,name:auth_u2f.model_ir_http
-msgid "HTTP routing"
+msgid "HTTP Routing"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_id
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__id
 msgid "ID"
 msgstr ""
 
@@ -80,42 +80,42 @@ msgid "Insert your security key and tap the button or gold disk."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.ui.view,arch_db:auth_u2f.login
+#: model_terms:ir.ui.view,arch_db:auth_u2f.login
 msgid "Insert your security key into your computer's USB port. If it has a button, tap it."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device___last_update
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_write_uid
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_write_date
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.ui.view,arch_db:auth_u2f.u2f_device_form
+#: model_terms:ir.ui.view,arch_db:auth_u2f.u2f_device_form
 msgid "Make default"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.ui.view,arch_db:auth_u2f.view_users_form_simple_modif_inherit_auth_u2f
+#: model_terms:ir.ui.view,arch_db:auth_u2f.view_users_form_simple_modif_inherit_auth_u2f
 msgid "Manage 2-step verification"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_name
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__name
 msgid "Name"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_json
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__json
 msgid "Scan"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgid "Scanned key."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,help:auth_u2f.field_u2f_device_json
+#: model:ir.model.fields,help:auth_u2f.field_u2f_device__json
 msgid "Technical data returned by u2flib or the browser"
 msgstr ""
 
@@ -146,13 +146,18 @@ msgid "This device is not registered as the default device for this user."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.ui.view,arch_db:auth_u2f.view_users_form_inherit_auth_u2f
+#: model_terms:ir.ui.view,arch_db:auth_u2f.view_users_form_inherit_auth_u2f
 msgid "U2F"
 msgstr ""
 
 #. module: auth_u2f
+#: model:ir.model,name:auth_u2f.model_u2f_device
+msgid "U2F Device"
+msgstr ""
+
+#. module: auth_u2f
 #: model:ir.actions.act_window,name:auth_u2f.action_open_u2f_device_tree
-#: model:ir.model.fields,field_description:auth_u2f.field_res_users_u2f_device_ids
+#: model:ir.model.fields,field_description:auth_u2f.field_res_users__u2f_device_ids
 msgid "U2F devices"
 msgstr ""
 
@@ -165,22 +170,17 @@ msgid "U2F is not supported by this client."
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.ui.view,arch_db:auth_u2f.login
+#: model_terms:ir.ui.view,arch_db:auth_u2f.login
 msgid "Use your security key to sign in"
 msgstr ""
 
 #. module: auth_u2f
-#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device_user_id
+#: model:ir.model.fields,field_description:auth_u2f.field_u2f_device__user_id
 msgid "User"
 msgstr ""
 
 #. module: auth_u2f
 #: model:ir.model,name:auth_u2f.model_res_users
 msgid "Users"
-msgstr ""
-
-#. module: auth_u2f
-#: model:ir.model,name:auth_u2f.model_u2f_device
-msgid "u2f.device"
 msgstr ""
 

@@ -8,7 +8,7 @@
         <field name="name">auth.api.key.form (in auth_api_key)</field>
         <field name="model">auth.api.key</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false">
+            <form>
                 <sheet>
                     <label for="name" class="oe_edit_only"/>
                     <h1>

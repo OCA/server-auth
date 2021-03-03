@@ -19,26 +19,26 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:85
+#: code:addons/auth_signup_verify_email/controllers/main.py:69
 #, python-format
 msgid "Another user is already registered using this email address."
 msgstr ""
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:95
+#: code:addons/auth_signup_verify_email/controllers/main.py:79
 #, python-format
 msgid "Check your email to activate your account!"
 msgstr "Un email vous à été envoyé pour activer votre compte."
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:90
+#: code:addons/auth_signup_verify_email/controllers/main.py:74
 #, python-format
 msgid "Something went wrong, please try again later or contact us."
 msgstr ""
 "Une erreur est survenue, veuillez réessayer plus tard ou contactez nous."
 
 #. module: auth_signup_verify_email
-#: code:addons/auth_signup_verify_email/controllers/main.py:56
+#: code:addons/auth_signup_verify_email/controllers/main.py:40
 #, python-format
 msgid "That does not seem to be an email address."
 msgstr "Veuillez fournir une adresse email valide."

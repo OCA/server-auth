@@ -6,7 +6,7 @@
 
     'name': 'Password Security',
     "summary": "Allow admin to set password security requirements.",
-    'version': '12.0.1.1.1',
+    'version': '12.0.1.1.3',
     'author':
         "LasLabs, "
         "Kaushal Prajapati, "

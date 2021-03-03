@@ -11,8 +11,8 @@ msgstr ""
 "POT-Creation-Date: 2017-05-17 21:08+0000\n"
 "PO-Revision-Date: 2019-11-24 19:58+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (https://www.transifex.com/oca/teams/"
-"23907/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (https://www.transifex.com/oca/"
+"teams/23907/pt_BR/)\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,6 +25,16 @@ msgstr ""
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
 msgstr "Existem logins de usuário conflitantes para `%s`"
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__login
+msgid "Login"
+msgstr ""
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,help:auth_user_case_insensitive.field_res_users__login
+msgid "Used to log into the system. Case insensitive."
+msgstr ""
 
 #. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
