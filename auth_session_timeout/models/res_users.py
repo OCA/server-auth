@@ -56,7 +56,7 @@ class ResUsers(models.Model):
     def _auth_timeout_check(self):
         """Perform session timeout validation and expire if needed."""
 
-        if not http.request:
+        if not http.request or self.has_group("base.group_public"):
             return
 
         session = http.request.session
