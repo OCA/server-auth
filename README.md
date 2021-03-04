@@ -24,6 +24,7 @@ addon | version | summary
 [auth_ldaps](auth_ldaps/) | 14.0.1.0.0 | Allows to use LDAP over SSL authentication
 [auth_session_timeout](auth_session_timeout/) | 14.0.1.0.0 | This module disable all inactive sessions since a given delay
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 14.0.1.0.0 | Makes the user login field case insensitive
+[user_log_view](user_log_view/) | 14.0.1.0.0 | Allow to see user's actions log
 
 [//]: # (end addons)
 
