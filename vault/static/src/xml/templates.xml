@@ -1,16 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-extend="UserMenu.Actions">
         <t t-jquery="[data-menu='settings']" t-operation="before">
-            <a role="menuitem" href="#" data-menu="keys" class="dropdown-item">Key Management</a>
+            <a
+                role="menuitem"
+                href="#"
+                data-menu="keys"
+                class="dropdown-item"
+            >Key Management</a>
         </t>
     </t>
 
     <t t-name="vault.buttons">
-        <button class="btn fa fa-eye o_vault_show" t-if="show" title="Show" aria-label="Show"/>
-        <button class="btn fa fa-eye-slash o_vault_show" t-else="" title="Hide" aria-label="Hide"/>
-        <button class="btn fa fa-clipboard o_vault_clipboard" title="Copy to clipboard" aria-label="Copy to clipboard"/>
-        <button class="btn fa fa-share-alt o_vault_send" title="Send the secret to an user" aria-label="Send the secret to an user"/>
+        <button
+            class="btn fa fa-eye o_vault_show"
+            t-if="show"
+            title="Show"
+            aria-label="Show"
+        />
+        <button
+            class="btn fa fa-eye-slash o_vault_show"
+            t-else=""
+            title="Hide"
+            aria-label="Hide"
+        />
+        <button
+            class="btn fa fa-clipboard o_vault_clipboard"
+            title="Copy to clipboard"
+            aria-label="Copy to clipboard"
+        />
+        <button
+            class="btn fa fa-share-alt o_vault_send"
+            title="Send the secret to an user"
+            aria-label="Send the secret to an user"
+        />
     </t>
 
     <div t-name="vault.askpass" class="o_form_view">
@@ -24,7 +47,12 @@
                     <label class="o_form_label">Enter your password:</label>
                 </td>
                 <td class="col-12">
-                    <input type="password" name="password" id="password" required="required"/>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required="required"
+                    />
                 </td>
             </tr>
             <tr t-if="confirm">
@@ -32,7 +60,12 @@
                     <label class="o_form_label">Confirm your password:</label>
                 </td>
                 <td class="col-12">
-                    <input type="password" name="confirm" id="confirm" required="required"/>
+                    <input
+                        type="password"
+                        name="confirm"
+                        id="confirm"
+                        required="required"
+                    />
                 </td>
             </tr>
             <tr>
@@ -40,7 +73,12 @@
                     <label class="o_form_label">Keyfile:</label>
                 </td>
                 <td class="col-12">
-                    <input type="file" name="keyfile" id="keyfile" required="required"/>
+                    <input
+                        type="file"
+                        name="keyfile"
+                        id="keyfile"
+                        required="required"
+                    />
                 </td>
             </tr>
         </table>
@@ -57,7 +95,7 @@
                     <label class="o_form_label">Password:</label>
                 </td>
                 <td class="col-12">
-                    <span id="password" class="col-12 text-monospace"/>
+                    <span id="password" class="col-12 text-monospace" />
                 </td>
             </tr>
             <tr>
@@ -65,7 +103,14 @@
                     <label class="o_form_label">Length:</label>
                 </td>
                 <td class="col-12">
-                    <input type="range" id="length" min="8" max="64" value="15" class="col-12 custom-range align-middle"/>
+                    <input
+                        type="range"
+                        id="length"
+                        min="8"
+                        max="64"
+                        value="15"
+                        class="col-12 custom-range align-middle"
+                    />
                 </td>
             </tr>
             <tr>
@@ -73,16 +118,16 @@
                     <label class="o_form_label">Characters:</label>
                 </td>
                 <td class="col-12">
-                    <input type="checkbox" id="big_letter" checked="checked"/>
+                    <input type="checkbox" id="big_letter" checked="checked" />
                     <label class="o_form_label">A-Z</label>
 
-                    <input type="checkbox" id="small_letter" checked="checked"/>
+                    <input type="checkbox" id="small_letter" checked="checked" />
                     <label class="o_form_label">a-z</label>
 
-                    <input type="checkbox" id="digits" checked="checked"/>
+                    <input type="checkbox" id="digits" checked="checked" />
                     <label class="o_form_label">0-9</label>
 
-                    <input type="checkbox" id="special"/>
+                    <input type="checkbox" id="special" />
                     <label class="o_form_label">Special</label>
                 </td>
             </tr>
@@ -91,29 +136,43 @@
 
     <t t-name="FieldVault">
         <div class="o_vault" t-if="widget.mode == 'edit'">
-            <button class="btn fa fa-lock o_vault_generate" title="Generate" aria-label="Generate"/>
-            <input class="o_vault_value" t-esc="value"/>
+            <button
+                class="btn fa fa-lock o_vault_generate"
+                title="Generate"
+                aria-label="Generate"
+            />
+            <input class="o_vault_value" t-esc="value" />
         </div>
         <div class="o_vault" t-else="">
-            <t t-call="vault.buttons"/>
-            <span class="o_vault_value" t-esc="value"/>
+            <t t-call="vault.buttons" />
+            <span class="o_vault_value" t-esc="value" />
         </div>
     </t>
 
     <t t-name="FieldVaultInbox">
         <div class="o_vault">
-            <t t-call="vault.buttons"/>
-            <button class="btn fa fa-save o_vault_save" title="Save in a vault" aria-label="Save in a vault"/>
+            <t t-call="vault.buttons" />
+            <button
+                class="btn fa fa-save o_vault_save"
+                title="Save in a vault"
+                aria-label="Save in a vault"
+            />
 
-            <span class="o_vault_inbox" t-esc="value"/>
+            <span class="o_vault_inbox" t-esc="value" />
         </div>
     </t>
 
     <t t-name="FileVaultInbox">
         <div class="o_vault">
-            <button class="btn fa fa-save o_vault_save" title="Save in a vault" aria-label="Save in a vault"/>
+            <button
+                class="btn fa fa-save o_vault_save"
+                title="Save in a vault"
+                aria-label="Save in a vault"
+            />
 
-            <span class="link"><span class="fa fa-download"/> <t t-esc="filename"/></span>
+            <span class="link"><span class="fa fa-download" /> <t
+                    t-esc="filename"
+                /></span>
         </div>
     </t>
 </templates>

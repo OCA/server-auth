@@ -18,9 +18,7 @@ class Controller(http.Controller):
         user = request.env["res.users"].sudo().find_user_of_inbox(token)
         _logger.info("%s: %s", inbox, user)
         if len(inbox) == 1 and inbox.accesses > 0:
-            ctx.update(
-                {"name": inbox.name, "public": inbox.user_id.active_key.public}
-            )
+            ctx.update({"name": inbox.name, "public": inbox.user_id.active_key.public})
         elif len(inbox) == 0 and len(user) == 1:
             ctx["public"] = user.active_key.public
 
