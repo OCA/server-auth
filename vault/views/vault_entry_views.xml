@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_entry_tree" model="ir.ui.view">
+        <field name="model">vault.entry</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="expired">
+                <field name="expired" invisible="1" />
+                <field name="complete_name" />
+                <field name="tags" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vault_entry_full_tree" model="ir.ui.view">
+        <field name="model">vault.entry</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="expired">
+                <field name="expired" invisible="1" />
+                <field name="vault_id" />
+                <field name="complete_name" />
+                <field name="tags" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vault_entry_form" model="ir.ui.view">
+        <field name="model">vault.entry</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        type="object"
+                        name="action_open_import_wizard"
+                        string="Import from file"
+                    />
+                    <button
+                        type="object"
+                        name="action_open_export_wizard"
+                        string="Export to file"
+                    />
+                </header>
+                <sheet>
+                    <field name="vault_id" invisible="1" />
+                    <field name="perm_user" invisible="1" />
+                    <field name="allowed_share" invisible="1" />
+                    <field name="allowed_write" invisible="1" />
+                    <field name="allowed_delete" invisible="1" />
+
+                    <group>
+                        <group>
+                            <field name="complete_name" />
+                            <field name="name" />
+                            <field name="url" widget="url" />
+                            <field name="tags" widget="many2many_tags" />
+                        </group>
+                        <group>
+                            <field
+                                name="parent_id"
+                                readonly="1"
+                                attrs="{'invisible':[('parent_id', '=', False)]}"
+                            />
+                            <field name="create_date" />
+                            <field name="write_date" />
+                            <field name="expire_date" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Content">
+                            <label for="field_ids" />
+                            <field
+                                name="field_ids"
+                                context="{'default_entry_id': active_id}"
+                                options="{'create': [('allowed_write', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': true}"
+                            >
+                                <tree editable="bottom">
+                                    <field name="vault_id" invisible="1" />
+                                    <field name="entry_id" invisible="1" />
+                                    <field name="iv" invisible="1" />
+                                    <field name="master_key" invisible="1" />
+                                    <field name="name" />
+                                    <field
+                                        name="value"
+                                        widget="vault"
+                                        type="field_type"
+                                    />
+                                    <field name="write_date" />
+                                </tree>
+                            </field>
+
+                            <label for="file_ids" />
+                            <field
+                                name="file_ids"
+                                context="{'default_entry_id': active_id}"
+                                options="{'create': [('allowed_write', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': True}"
+                            >
+                                <tree editable="bottom">
+                                    <field name="vault_id" invisible="1" />
+                                    <field name="entry_id" invisible="1" />
+                                    <field name="iv" invisible="1" />
+                                    <field name="master_key" invisible="1" />
+                                    <field name="name" invisible="1" />
+                                    <field
+                                        name="value"
+                                        widget="vault_file"
+                                        filename="name"
+                                    />
+                                    <field name="write_date" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Note">
+                            <field name="note" />
+                        </page>
+                        <page string="Childs">
+                            <field
+                                name="child_ids"
+                                context="{'default_parent_id': active_id, 'default_vault_id': vault_id}"
+                            />
+                        </page>
+                        <page string="Log">
+                            <field name="log_ids" options="{'no_open': True}" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vault_entry_search" model="ir.ui.view">
+        <field name="name">vault.entry.search</field>
+        <field name="model">vault.entry</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="complete_name" operator="ilike" />
+                <field name="name" operator="ilike" />
+                <field name="tags" operator="ilike" />
+                <field name="note" operator="ilike" />
+                <searchpanel>
+                    <field
+                        name="parent_id"
+                        select="category"
+                        string="Entries"
+                        enable_counters="1"
+                    />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

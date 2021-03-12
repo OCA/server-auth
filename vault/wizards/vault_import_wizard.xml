@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_import_wizard" model="ir.ui.view">
+        <field name="model">vault.import.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="master_key" invisible="1" />
+                    <field name="vault_id" invisible="1" />
+                    <field name="crypted_content" invisible="1" />
+                    <field name="name" invisible="1" />
+                    <field name="uuid" invisible="1" />
+
+                    <div>The files must end on one of the supported file type:</div>
+                    <ul>
+                        <li>Custom JSON format <b>.json</b></li>
+                        <li>Keepass Database <b>.kdbx</b></li>
+                    </ul>
+
+                    <group>
+                        <field name="content" filename="name" />
+                        <field
+                            name="parent_id"
+                            options="{'no_create_edit': True, 'no_open': True}"
+                        />
+                        <field
+                            name="path"
+                            attrs="{'invisible': [('crypted_content', '=', False)]}"
+                            options="{'no_create_edit': True, 'no_open': True}"
+                        />
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        type="object"
+                        name="action_import"
+                        string="Import"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('crypted_content', '=', False)]}"
+                    />
+                    <button
+                        type="object"
+                        name="action_import"
+                        string="Import"
+                        attrs="{'invisible': [('crypted_content', '!=', False)]}"
+                    />
+                    or
+                    <button type="special" string="Cancel" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
