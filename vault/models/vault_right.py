@@ -19,7 +19,11 @@ class VaultRight(models.Model):
             rec.public_key = rec.user_id.active_key.public
 
     vault_id = fields.Many2one(
-        "vault", "Vault", readonly=True, required=True, ondelete="cascade",
+        "vault",
+        "Vault",
+        readonly=True,
+        required=True,
+        ondelete="cascade",
     )
     master_key = fields.Char(related="vault_id.master_key", readonly=True, store=False)
     user_id = fields.Many2one(
@@ -27,13 +31,19 @@ class VaultRight(models.Model):
     )
     public_key = fields.Char(compute=_compute_public_key, readonly=True, store=False)
     perm_write = fields.Boolean(
-        "Write", default=_get_is_owner, help="Allow to write to the vault",
+        "Write",
+        default=_get_is_owner,
+        help="Allow to write to the vault",
     )
     perm_share = fields.Boolean(
-        "Share", default=_get_is_owner, help="Allow to share a vault with new users",
+        "Share",
+        default=_get_is_owner,
+        help="Allow to share a vault with new users",
     )
     perm_delete = fields.Boolean(
-        "Delete", default=_get_is_owner, help="Allow to delete a vault",
+        "Delete",
+        default=_get_is_owner,
+        help="Allow to delete a vault",
     )
 
     perm_user = fields.Many2one(related="vault_id.perm_user", store=False)
