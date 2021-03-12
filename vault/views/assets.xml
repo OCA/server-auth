@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/vault/static/lib/kdbxweb/kdbxweb.min.js"
+            />
+            <script type="text/javascript" src="/vault/static/src/js/user_menu.js" />
+            <script type="text/javascript" src="/vault/static/src/js/vault.js" />
+            <script
+                type="text/javascript"
+                src="/vault/static/src/js/vault_controller.js"
+            />
+            <script type="text/javascript" src="/vault/static/src/js/vault_export.js" />
+            <script type="text/javascript" src="/vault/static/src/js/vault_import.js" />
+            <script type="text/javascript" src="/vault/static/src/js/vault_utils.js" />
+            <script type="text/javascript" src="/vault/static/src/js/vault_widget.js" />
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/vault/static/src/scss/vault.scss"
+            />
+        </xpath>
+    </template>
+
+    <template id="tests_assets" inherit_id="web.tests_assets">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/vault/static/tests/vault_tests.js" />
+        </xpath>
+    </template>
+
+    <template id="inbox_frontend">
+        <script type="text/javascript" src="/vault/static/src/js/vault_utils.js" />
+        <script type="text/javascript" src="/vault/static/src/js/vault_inbox.js" />
+    </template>
+</odoo>
