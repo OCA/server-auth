@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="action_vault_share" model="ir.actions.act_window">
         <field name="name">Shares</field>
@@ -6,5 +6,11 @@
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_vault_share" groups="base.group_user" parent="vault.menu_vault" action="action_vault_share" sequence="60"/>
+    <menuitem
+        id="menu_vault_share"
+        groups="base.group_user"
+        parent="vault.menu_vault"
+        action="action_vault_share"
+        sequence="60"
+    />
 </odoo>

@@ -28,7 +28,9 @@ class ResUsers(models.Model):
             rec.inbox_link = f"{base_url}/vault/inbox/{rec.inbox_token}"
 
     active_key = fields.Many2one(
-        "res.users.key", compute=_compute_active_key, store=False,
+        "res.users.key",
+        compute=_compute_active_key,
+        store=False,
     )
     keys = fields.One2many("res.users.key", "user_id", readonly=True)
     vault_right_ids = fields.One2many("vault.right", "user_id", readonly=True)

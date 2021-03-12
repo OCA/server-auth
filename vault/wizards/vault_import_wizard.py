@@ -32,7 +32,9 @@ class ImportWizard(models.TransientModel):
 
     vault_id = fields.Many2one("vault", "Vault")
     parent_id = fields.Many2one(
-        "vault.entry", "Parent Entry", domain="[('vault_id', '=', vault_id)]",
+        "vault.entry",
+        "Parent Entry",
+        domain="[('vault_id', '=', vault_id)]",
     )
     master_key = fields.Char(related="vault_id.master_key")
     name = fields.Char()
@@ -52,9 +54,7 @@ class ImportWizard(models.TransientModel):
         p = f"{path} / {entry['name']}" if path else entry["name"]
 
         if "name" in entry:
-            self.env["vault.import.wizard.path"].create(
-                {"uuid": self.uuid, "name": p}
-            )
+            self.env["vault.import.wizard.path"].create({"uuid": self.uuid, "name": p})
 
         for child in entry.get("childs", []):
             self._create_path(child, p)
@@ -97,9 +97,7 @@ class ImportWizard(models.TransientModel):
                     {"vault_id": self.vault_id.id, "parent_id": parent.id, **vals}
                 )
             else:
-                rec.write(
-                    {"parent_id": parent.id, **vals}
-                )
+                rec.write({"parent_id": parent.id, **vals})
 
             # Create/update the entry fields
             for field in entry.get("fields", []):
