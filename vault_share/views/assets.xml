@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script
+                type="text/javascript"
+                src="/vault_share/static/src/js/vault_fields.js"
+            />
+            <script
+                type="text/javascript"
+                src="/vault_share/static/src/js/vault_share_widget.js"
+            />
+            <script
+                type="text/javascript"
+                src="/vault_share/static/src/js/vault_utils.js"
+            />
+            <link
+                rel="stylesheet"
+                type="text/scss"
+                href="/vault_share/static/src/scss/vault_share.scss"
+            />
+        </xpath>
+    </template>
+
+    <template id="share_frontend">
+        <script type="text/javascript" src="/vault/static/src/js/vault_utils.js" />
+        <script
+            type="text/javascript"
+            src="/vault_share/static/src/js/vault_share.js"
+        />
+    </template>
+</odoo>
