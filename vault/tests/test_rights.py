@@ -116,9 +116,7 @@ class TestAccessRights(TransactionCase):
         )
 
         with self.assertRaises(AccessError):
-            right.with_user(self.user).create(
-                {"vault_id": self.vault.id, "user_id": 2}
-            )
+            right.with_user(self.user).create({"vault_id": self.vault.id, "user_id": 2})
 
     def test_user_share_granted(self):
         # Granted permission to share

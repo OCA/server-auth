@@ -76,7 +76,10 @@ class Vault(models.Model):
         required=True,
     )
     right_ids = fields.One2many(
-        "vault.right", "vault_id", "Rights", default=_get_default_rights,
+        "vault.right",
+        "vault_id",
+        "Rights",
+        default=_get_default_rights,
     )
     entry_ids = fields.One2many("vault.entry", "vault_id", "Entries")
     field_ids = fields.One2many("vault.field", "vault_id", "Fields")
@@ -91,7 +94,9 @@ class Vault(models.Model):
     allowed_delete = fields.Boolean(compute=_compute_access, store=False)
 
     master_key = fields.Char(
-        compute=_compute_master_key, inverse=_inverse_master_key, store=False,
+        compute=_compute_master_key,
+        inverse=_inverse_master_key,
+        store=False,
     )
 
     uuid = fields.Char(default=lambda self: uuid4(), required=True, readonly=True)

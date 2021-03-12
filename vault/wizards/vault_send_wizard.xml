@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_vault_send_wizard" model="ir.ui.view">
         <field name="model">vault.send.wizard</field>
@@ -6,19 +6,24 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="iv" invisible="1"/>
-                        <field name="key" invisible="1"/>
-                        <field name="key_user" invisible="1"/>
-                        <field name="secret" invisible="1"/>
-                        <field name="public" invisible="1"/>
-                        <field name="user_id"/>
-                        <field name="name"/>
+                        <field name="iv" invisible="1" />
+                        <field name="key" invisible="1" />
+                        <field name="key_user" invisible="1" />
+                        <field name="secret" invisible="1" />
+                        <field name="public" invisible="1" />
+                        <field name="user_id" />
+                        <field name="name" />
                     </group>
                 </sheet>
                 <footer>
-                    <button type="object" name="action_send" string="Send" class="oe_highlight"/>
+                    <button
+                        type="object"
+                        name="action_send"
+                        string="Send"
+                        class="oe_highlight"
+                    />
                     or
-                    <button type="special" string="Cancel" special="cancel"/>
+                    <button type="special" string="Cancel" special="cancel" />
                 </footer>
             </form>
         </field>

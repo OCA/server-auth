@@ -1,17 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="view_right_tree" model="ir.ui.view">
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
-                <field name="vault_id" invisible="1"/>
-                <field name="master_key" invisible="1"/>
-                <field name="key" invisible="1"/>
-                <field name="public_key" invisible="1"/>
-                <field name="user_id"/>
-                <field name="perm_write"/>
-                <field name="perm_share"/>
-                <field name="perm_delete"/>
+                <field name="vault_id" invisible="1" />
+                <field name="master_key" invisible="1" />
+                <field name="key" invisible="1" />
+                <field name="public_key" invisible="1" />
+                <field name="user_id" />
+                <field name="perm_write" />
+                <field name="perm_share" />
+                <field name="perm_delete" />
             </tree>
         </field>
     </record>
@@ -22,10 +22,10 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="user_id"/>
-                        <field name="perm_write"/>
-                        <field name="perm_share"/>
-                        <field name="perm_delete"/>
+                        <field name="user_id" />
+                        <field name="perm_write" />
+                        <field name="perm_share" />
+                        <field name="perm_delete" />
                     </group>
                 </sheet>
             </form>
@@ -36,11 +36,11 @@
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
-                <field name="vault_id"/>
-                <field name="user_id"/>
-                <field name="perm_write"/>
-                <field name="perm_share"/>
-                <field name="perm_delete"/>
+                <field name="vault_id" />
+                <field name="user_id" />
+                <field name="perm_write" />
+                <field name="perm_share" />
+                <field name="perm_delete" />
             </tree>
         </field>
     </record>
@@ -50,11 +50,19 @@
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
             <search>
-                <field name="user_id" operator="ilike"/>
-                <field name="vault_id" operator="ilike"/>
+                <field name="user_id" operator="ilike" />
+                <field name="vault_id" operator="ilike" />
                 <group expand="0" string="Grouped">
-                    <filter name="user_id" string="By user" context="{'group_by': 'user_id'}"/>
-                    <filter name="vault_id" string="By vault" context="{'group_by': 'vault_id'}"/>
+                    <filter
+                        name="user_id"
+                        string="By user"
+                        context="{'group_by': 'user_id'}"
+                    />
+                    <filter
+                        name="vault_id"
+                        string="By vault"
+                        context="{'group_by': 'vault_id'}"
+                    />
                 </group>
             </search>
         </field>

@@ -19,7 +19,10 @@ class VaultStoreWizard(models.TransientModel):
 
     vault_id = fields.Many2one("vault", "Vault", required=True)
     entry_id = fields.Many2one(
-        "vault.entry", "Entry", domain="[('vault_id', '=', vault_id)]", required=True,
+        "vault.entry",
+        "Entry",
+        domain="[('vault_id', '=', vault_id)]",
+        required=True,
     )
     model = fields.Char(required=True)
     master_key = fields.Char(compute=_compute_master_key, store=False)

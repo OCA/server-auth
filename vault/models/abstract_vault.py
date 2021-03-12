@@ -23,10 +23,17 @@ class VaultLog(models.Model):
         ]
 
     vault_id = fields.Many2one(
-        "vault", "Vault", ondelete="cascade", required=True, readonly=True,
+        "vault",
+        "Vault",
+        ondelete="cascade",
+        required=True,
+        readonly=True,
     )
     entry_id = fields.Many2one(
-        "vault.entry", "Entry", ondelete="cascade", readonly=True,
+        "vault.entry",
+        "Entry",
+        ondelete="cascade",
+        readonly=True,
     )
     user_id = fields.Many2one("res.users", "User", required=True, readonly=True)
     state = fields.Selection(_get_log_state, readonly=True)
@@ -41,12 +48,12 @@ class VaultLog(models.Model):
 
 
 class AbstractVault(models.AbstractModel):
-    """ Models must have the following fields:
-      `perm_user`: The permissions are computed for this user
-      `allowed_write`: The current user can read from the vault
-      `allowed_write`: The current user has write access to the vault
-      `allowed_share`: The current user can share the vault with other users
-      `allowed_delete`: The current user can delete the vault or entries of it
+    """Models must have the following fields:
+    `perm_user`: The permissions are computed for this user
+    `allowed_write`: The current user can read from the vault
+    `allowed_write`: The current user has write access to the vault
+    `allowed_share`: The current user can share the vault with other users
+    `allowed_delete`: The current user can delete the vault or entries of it
     """
 
     _name = "vault.abstract"
@@ -56,7 +63,8 @@ class AbstractVault(models.AbstractModel):
     def raise_access_error(self):
         raise AccessError(
             _(
-                "The requested operation can not be completed due to security restrictions."
+                "The requested operation can not be completed due to security "
+                "restrictions."
             )
         )
 
