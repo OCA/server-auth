@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_log_tree" model="ir.ui.view">
+        <field name="model">vault.log</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-danger="state == 'error'"
+                decoration-warning="state == 'warn'"
+                decoration-info="state == 'info'"
+            >
+                <field name="user_id" />
+                <field name="message" />
+                <field name="create_date" />
+                <field name="state" invisible="1" />
+            </tree>
+        </field>
+    </record>
+</odoo>
