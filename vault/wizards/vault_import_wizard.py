@@ -131,5 +131,4 @@ class ImportWizard(models.TransientModel):
 
             self.vault_id.log_entry(f"Imported entries from file {self.name}")
         except Exception as e:
-            _logger.exception(e)
             raise UserError(_("Invalid file to import from")) from e
