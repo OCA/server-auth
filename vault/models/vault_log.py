@@ -28,7 +28,7 @@ class VaultLog(models.Model):
         readonly=True,
     )
     user_id = fields.Many2one("res.users", "User", required=True, readonly=True)
-    state = fields.Selection("_get_log_state", readonly=True)
+    state = fields.Selection(lambda self: self._get_log_state(), readonly=True)
     message = fields.Char(readonly=True, required=True)
 
     def _get_log_state(self):
