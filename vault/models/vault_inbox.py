@@ -57,6 +57,7 @@ class VaultInbox(models.Model):
     ]
 
     def read(self, *args, **kwargs):
+        # Always load the binary instead of the size
         return super(VaultInbox, self.with_context(bin_size=False)).read(
             *args, **kwargs
         )
