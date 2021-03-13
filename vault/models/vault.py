@@ -26,7 +26,7 @@ class Vault(models.Model):
         "vault.right",
         "vault_id",
         "Rights",
-        default="_get_default_rights",
+        default=lambda self: self._get_default_rights(),
     )
     entry_ids = fields.One2many("vault.entry", "vault_id", "Entries")
     field_ids = fields.One2many("vault.field", "vault_id", "Fields")

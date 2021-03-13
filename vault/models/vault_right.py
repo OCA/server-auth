@@ -10,14 +10,6 @@ class VaultRight(models.Model):
     _inherit = ["vault.abstract"]
     _order = "user_id"
 
-    def _get_is_owner(self):
-        return self.env.user == self.vault_id.user_id
-
-    @api.depends("user_id")
-    def _compute_public_key(self):
-        for rec in self:
-            rec.public_key = rec.user_id.active_key.public
-
     vault_id = fields.Many2one(
         "vault",
         "Vault",
@@ -29,20 +21,20 @@ class VaultRight(models.Model):
     user_id = fields.Many2one(
         "res.users", "User", domain=[("keys", "!=", False)], required=True
     )
-    public_key = fields.Char(compute=_compute_public_key, readonly=True, store=False)
+    public_key = fields.Char(compute="_compute_public_key", readonly=True, store=False)
     perm_write = fields.Boolean(
         "Write",
-        default=_get_is_owner,
+        default=lambda self: self._get_is_owner(),
         help="Allow to write to the vault",
     )
     perm_share = fields.Boolean(
         "Share",
-        default=_get_is_owner,
+        default=lambda self: self._get_is_owner(),
         help="Allow to share a vault with new users",
     )
     perm_delete = fields.Boolean(
         "Delete",
-        default=_get_is_owner,
+        default=lambda self: self._get_is_owner(),
         help="Allow to delete a vault",
     )
 
@@ -58,6 +50,14 @@ class VaultRight(models.Model):
     _sql_constraints = (
         ("user_uniq", "UNIQUE(user_id, vault_id)", "The user must be unique"),
     )
+
+    def _get_is_owner(self):
+        return self.env.user == self.vault_id.user_id
+
+    @api.depends("user_id")
+    def _compute_public_key(self):
+        for rec in self:
+            rec.public_key = rec.user_id.active_key.public
 
     def log_access(self):
         self.ensure_one()
