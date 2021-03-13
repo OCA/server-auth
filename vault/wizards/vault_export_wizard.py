@@ -19,7 +19,7 @@ class ExportWizard(models.TransientModel):
         "vault.entry", "Entries", domain="[('vault_id', '=', vault_id)]"
     )
     master_key = fields.Char(related="vault_id.master_key")
-    name = fields.Char(default="_default_name")
+    name = fields.Char(default=lambda self: self._default_name())
     content = fields.Binary("Download", attachment=False)
     include_childs = fields.Boolean(default=True)
 
