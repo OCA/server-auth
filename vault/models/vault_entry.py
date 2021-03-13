@@ -10,38 +10,12 @@ from odoo import _, api, fields, models
 _logger = logging.getLogger(__name__)
 
 
-class VaultTag(models.Model):
-    _name = "vault.tag"
-    _description = _("Vault tag")
-    _order = "name"
-
-    name = fields.Char(required=True)
-
-    _sql_constraints = [
-        ("name_uniq", "unique(name)", "The tag must be unique!"),
-    ]
-
-
 class VaultEntry(models.Model):
     _name = "vault.entry"
     _description = _("Entry inside a vault")
     _inherit = ["vault.abstract"]
     _order = "complete_name"
     _rec_name = "complete_name"
-
-    @api.depends("name", "parent_id.complete_name")
-    def _compute_complete_name(self):
-        for rec in self:
-            if rec.parent_id:
-                rec.complete_name = f"{rec.parent_id.complete_name} / {rec.name}"
-            else:
-                rec.complete_name = rec.name
-
-    @api.depends("expire_date")
-    def _compute_expired(self):
-        now = datetime.now()
-        for rec in self:
-            rec.expired = rec.expire_date and now > rec.expire_date
 
     parent_id = fields.Many2one("vault.entry", "Parent", ondelete="cascade")
     child_ids = fields.One2many("vault.entry", "parent_id", "Child")
@@ -59,7 +33,7 @@ class VaultEntry(models.Model):
     allowed_delete = fields.Boolean(related="vault_id.allowed_delete", store=False)
 
     complete_name = fields.Char(
-        compute=_compute_complete_name,
+        compute="_compute_complete_name",
         store=True,
         readonly=True,
     )
@@ -69,11 +43,25 @@ class VaultEntry(models.Model):
     note = fields.Text()
     tags = fields.Many2many("vault.tag")
     expire_date = fields.Datetime("Expires on", default=False)
-    expired = fields.Boolean(compute=_compute_expired, store=False)
+    expired = fields.Boolean(compute="_compute_expired", store=False)
 
     _sql_constraints = [
         ("vault_uuid_uniq", "UNIQUE(vault_id, uuid)", _("The UUID must be unique.")),
     ]
+
+    @api.depends("name", "parent_id.complete_name")
+    def _compute_complete_name(self):
+        for rec in self:
+            if rec.parent_id:
+                rec.complete_name = f"{rec.parent_id.complete_name} / {rec.name}"
+            else:
+                rec.complete_name = rec.name
+
+    @api.depends("expire_date")
+    def _compute_expired(self):
+        now = datetime.now()
+        for rec in self:
+            rec.expired = rec.expire_date and now > rec.expire_date
 
     def log_change(self, action):
         self.ensure_one()

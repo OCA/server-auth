@@ -14,6 +14,15 @@ class ExportWizard(models.TransientModel):
     _name = "vault.export.wizard"
     _description = _("Export wizard for vaults")
 
+    vault_id = fields.Many2one("vault", "Vault")
+    entry_id = fields.Many2one(
+        "vault.entry", "Entries", domain="[('vault_id', '=', vault_id)]"
+    )
+    master_key = fields.Char(related="vault_id.master_key")
+    name = fields.Char(default="_default_name")
+    content = fields.Binary("Download", attachment=False)
+    include_childs = fields.Boolean(default=True)
+
     @api.onchange("vault_id", "entry_id")
     def _change_content(self):
         for rec in self.with_context(skip_log=True):
@@ -29,15 +38,6 @@ class ExportWizard(models.TransientModel):
 
     def _default_name(self):
         return datetime.now().strftime("database-%Y%m%d-%H%M.json")
-
-    vault_id = fields.Many2one("vault", "Vault")
-    entry_id = fields.Many2one(
-        "vault.entry", "Entries", domain="[('vault_id', '=', vault_id)]"
-    )
-    master_key = fields.Char(related="vault_id.master_key")
-    name = fields.Char(default=_default_name)
-    content = fields.Binary("Download", attachment=False)
-    include_childs = fields.Boolean(default=True)
 
     @api.model
     def _export_field(self, rec):
