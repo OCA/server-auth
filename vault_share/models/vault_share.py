@@ -14,20 +14,11 @@ class VaultShare(models.Model):
     _name = "vault.share"
     _description = _("Vault share outgoing secrets")
 
-    def _default_expiration(self):
-        return datetime.now() + timedelta(days=7)
-
-    @api.depends("token")
-    def _compute_url(self):
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        for rec in self:
-            rec.share_link = f"{base_url}/vault/share/{rec.token}"
-
     user_id = fields.Many2one("res.users", default=lambda self: self.env.uid)
     name = fields.Char(required=True)
     share_link = fields.Char(
         "Share URL",
-        compute=_compute_url,
+        compute="_compute_url",
         store=False,
         help="Using this link and pin people can access the secret.",
     )
@@ -44,7 +35,7 @@ class VaultShare(models.Model):
         help="Specifies how often a share can be accessed before deletion.",
     )
     expiration = fields.Datetime(
-        default=_default_expiration,
+        default=lambda self: datetime.now() + timedelta(days=7),
         help="Specifies how long a share can be accessed until deletion.",
     )
 
@@ -55,6 +46,12 @@ class VaultShare(models.Model):
             _("No value found"),
         ),
     ]
+
+    @api.depends("token")
+    def _compute_url(self):
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        for rec in self:
+            rec.share_link = f"{base_url}/vault/share/{rec.token}"
 
     @api.model
     def get(self, token):

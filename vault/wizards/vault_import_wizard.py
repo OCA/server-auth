@@ -23,13 +23,6 @@ class ImportWizard(models.TransientModel):
     _name = "vault.import.wizard"
     _description = _("Import wizard for vaults")
 
-    @api.onchange("crypted_content", "content")
-    def _onchange_content(self):
-        for rec in self:
-            if rec.crypted_content:
-                for entry in json.loads(rec.crypted_content or []):
-                    rec._create_path(entry)
-
     vault_id = fields.Many2one("vault", "Vault")
     parent_id = fields.Many2one(
         "vault.entry",
@@ -48,6 +41,13 @@ class ImportWizard(models.TransientModel):
         default="",
         domain="[('uuid', '=', uuid)]",
     )
+
+    @api.onchange("crypted_content", "content")
+    def _onchange_content(self):
+        for rec in self:
+            if rec.crypted_content:
+                for entry in json.loads(rec.crypted_content or []):
+                    rec._create_path(entry)
 
     def _create_path(self, entry, path=None):
         self.ensure_one()
@@ -132,4 +132,4 @@ class ImportWizard(models.TransientModel):
             self.vault_id.log_entry(f"Imported entries from file {self.name}")
         except Exception as e:
             _logger.exception(e)
-            raise UserError(_("Invalid file to import from"))
+            raise UserError(_("Invalid file to import from")) from e
