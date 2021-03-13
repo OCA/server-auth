@@ -66,7 +66,7 @@ TestData = [
 
 class TestWidgets(TransactionCase):
     def setUp(self):
-        super(TestWidgets, self).setUp()
+        super().setUp()
 
         self.vault = self.env["vault"].create({"name": "Vault"})
         self.entry = self.env["vault.entry"].create(

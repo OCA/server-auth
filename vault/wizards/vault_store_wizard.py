@@ -12,11 +12,6 @@ class VaultStoreWizard(models.TransientModel):
     _name = "vault.store.wizard"
     _description = _("Wizard store a shared secret in a vault")
 
-    @api.depends("entry_id", "vault_id")
-    def _compute_master_key(self):
-        for rec in self:
-            rec.master_key = rec.vault_id.master_key
-
     vault_id = fields.Many2one("vault", "Vault", required=True)
     entry_id = fields.Many2one(
         "vault.entry",
@@ -25,12 +20,17 @@ class VaultStoreWizard(models.TransientModel):
         required=True,
     )
     model = fields.Char(required=True)
-    master_key = fields.Char(compute=_compute_master_key, store=False)
+    master_key = fields.Char(compute="_compute_master_key", store=False)
     name = fields.Char(required=True)
     iv = fields.Char(required=True)
     key = fields.Char(required=True)
     secret = fields.Char(required=True)
     secret_temporary = fields.Char(required=True)
+
+    @api.depends("entry_id", "vault_id")
+    def _compute_master_key(self):
+        for rec in self:
+            rec.master_key = rec.vault_id.master_key
 
     def action_store(self):
         self.ensure_one()
