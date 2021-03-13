@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class TestVault(TransactionCase):
     def setUp(self):
-        super(TestVault, self).setUp()
+        super().setUp()
 
         self.vault = self.env["vault"].create({"name": "Vault"})
         self.entry = self.env["vault.entry"].create(
@@ -127,6 +127,5 @@ class TestVault(TransactionCase):
         self.env["res.users.key"].create(data)
 
         keys = self.env.user.get_vault_keys()
-        _logger.error("%s", dir(self))
         for key in ["private", "public", "iv", "salt", "iterations"]:
             self.assertEqual(keys[key], data[key])

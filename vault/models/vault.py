@@ -15,6 +15,45 @@ class Vault(models.Model):
     _inherit = ["vault.abstract"]
     _order = "name"
 
+    user_id = fields.Many2one(
+        "res.users",
+        "Owner",
+        readonly=True,
+        default=lambda self: self.env.user,
+        required=True,
+    )
+    right_ids = fields.One2many(
+        "vault.right",
+        "vault_id",
+        "Rights",
+        default="_get_default_rights",
+    )
+    entry_ids = fields.One2many("vault.entry", "vault_id", "Entries")
+    field_ids = fields.One2many("vault.field", "vault_id", "Fields")
+    file_ids = fields.One2many("vault.file", "vault_id", "Files")
+    log_ids = fields.One2many("vault.log", "vault_id", "Log", readonly=True)
+
+    # Access control
+    perm_user = fields.Many2one("res.users", compute="_compute_access", store=False)
+    allowed_read = fields.Boolean(compute="_compute_access", store=False)
+    allowed_share = fields.Boolean(compute="_compute_access", store=False)
+    allowed_write = fields.Boolean(compute="_compute_access", store=False)
+    allowed_delete = fields.Boolean(compute="_compute_access", store=False)
+
+    master_key = fields.Char(
+        compute="_compute_master_key",
+        inverse="_inverse_master_key",
+        store=False,
+    )
+
+    uuid = fields.Char(default=lambda self: uuid4(), required=True, readonly=True)
+    name = fields.Char(required=True)
+    note = fields.Text()
+
+    _sql_constraints = [
+        ("uuid_uniq", "UNIQUE(uuid)", _("The UUID must be unique.")),
+    ]
+
     @api.depends("right_ids.user_id")
     def _compute_access(self):
         user = self.env.user
@@ -67,45 +106,6 @@ class Vault(models.Model):
                 },
             )
         ]
-
-    user_id = fields.Many2one(
-        "res.users",
-        "Owner",
-        readonly=True,
-        default=lambda self: self.env.user,
-        required=True,
-    )
-    right_ids = fields.One2many(
-        "vault.right",
-        "vault_id",
-        "Rights",
-        default=_get_default_rights,
-    )
-    entry_ids = fields.One2many("vault.entry", "vault_id", "Entries")
-    field_ids = fields.One2many("vault.field", "vault_id", "Fields")
-    file_ids = fields.One2many("vault.file", "vault_id", "Files")
-    log_ids = fields.One2many("vault.log", "vault_id", "Log", readonly=True)
-
-    # Access control
-    perm_user = fields.Many2one("res.users", compute=_compute_access, store=False)
-    allowed_read = fields.Boolean(compute=_compute_access, store=False)
-    allowed_share = fields.Boolean(compute=_compute_access, store=False)
-    allowed_write = fields.Boolean(compute=_compute_access, store=False)
-    allowed_delete = fields.Boolean(compute=_compute_access, store=False)
-
-    master_key = fields.Char(
-        compute=_compute_master_key,
-        inverse=_inverse_master_key,
-        store=False,
-    )
-
-    uuid = fields.Char(default=lambda self: uuid4(), required=True, readonly=True)
-    name = fields.Char(required=True)
-    note = fields.Text()
-
-    _sql_constraints = [
-        ("uuid_uniq", "UNIQUE(uuid)", _("The UUID must be unique.")),
-    ]
 
     def _log_entry(self, msg, state):
         self.ensure_one()
