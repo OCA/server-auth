@@ -14,18 +14,9 @@ class VaultInbox(models.Model):
     _name = "vault.inbox"
     _description = _("Vault share incoming secrets")
 
-    def _default_expiration(self):
-        return datetime.now() + timedelta(days=7)
-
-    @api.depends("token")
-    def _compute_inbox_link(self):
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        for rec in self:
-            rec.inbox_link = f"{base_url}/vault/inbox/{rec.token}"
-
     token = fields.Char(default=lambda self: uuid4(), readonly=True)
     inbox_link = fields.Char(
-        compute=_compute_inbox_link,
+        compute="_compute_inbox_link",
         readonly=True,
         help="Using this link you can write to the current inbox. If you want people "
         "to create new inboxes you should give them your inbox link from your key "
@@ -44,7 +35,7 @@ class VaultInbox(models.Model):
         help="If this is 0 the inbox will be read-only for the owner.",
     )
     expiration = fields.Datetime(
-        default=_default_expiration,
+        default=lambda self: datetime.now() + timedelta(days=7),
         help="If expired the inbox will be read-only for the owner.",
     )
 
@@ -55,6 +46,12 @@ class VaultInbox(models.Model):
             _("No value found"),
         ),
     ]
+
+    @api.depends("token")
+    def _compute_inbox_link(self):
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        for rec in self:
+            rec.inbox_link = f"{base_url}/vault/inbox/{rec.token}"
 
     def read(self, *args, **kwargs):
         # Always load the binary instead of the size

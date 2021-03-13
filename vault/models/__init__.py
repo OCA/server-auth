@@ -3,11 +3,13 @@
 
 from . import (
     abstract_vault,
+    abstract_vault_field,
     res_users,
     res_users_key,
     vault,
     vault_entry,
     vault_field,
+    vault_file,
     vault_inbox,
     vault_log,
     vault_right,
