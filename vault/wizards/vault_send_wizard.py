@@ -16,7 +16,10 @@ class VaultSendWizard(models.TransientModel):
         "res.users",
         "User",
         required=True,
-        domain=[("active_key", "!=", False), ("inbox_enabled", "=", True)],
+        domain=[
+            ("keys.public", "!=", False),
+            ("inbox_enabled", "=", True),
+        ],
     )
     name = fields.Char(required=True)
     public = fields.Char(related="user_id.active_key.public")
