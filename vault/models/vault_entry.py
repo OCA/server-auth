@@ -33,9 +33,7 @@ class VaultEntry(models.Model):
     allowed_delete = fields.Boolean(related="vault_id.allowed_delete", store=False)
 
     complete_name = fields.Char(
-        compute="_compute_complete_name",
-        store=True,
-        readonly=True,
+        compute="_compute_complete_name", store=True, readonly=True,
     )
     uuid = fields.Char(default=lambda self: uuid4(), required=True)
     name = fields.Char(required=True)

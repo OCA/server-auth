@@ -23,13 +23,12 @@
             />
         </xpath>
     </template>
-
+    <!--
     <template id="tests_assets" inherit_id="web.tests_assets">
         <xpath expr="." position="inside">
             <script type="text/javascript" src="/vault/static/tests/vault_tests.js" />
         </xpath>
-    </template>
-
+    </template> -->
     <template id="inbox_frontend">
         <script type="text/javascript" src="/vault/static/src/js/vault_utils.js" />
         <script type="text/javascript" src="/vault/static/src/js/vault_inbox.js" />

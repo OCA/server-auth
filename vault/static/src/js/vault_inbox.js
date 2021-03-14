@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.inbox", function (require) {
+odoo.define("vault.inbox", function(require) {
     "use strict";
 
     require("web.dom_ready");
@@ -55,7 +55,7 @@ odoo.define("vault.inbox", function (require) {
         return Boolean(val);
     }
 
-    document.getElementById("secret").onchange = async function () {
+    document.getElementById("secret").onchange = async function() {
         if (!this.value) return;
 
         const required = await encrypt_and_store(this.value, "encrypted");
@@ -63,7 +63,7 @@ odoo.define("vault.inbox", function (require) {
         toggle_required(data.secret_file, !required);
     };
 
-    document.getElementById("secret_file").onchange = async function () {
+    document.getElementById("secret_file").onchange = async function() {
         if (!this.files.length) return;
 
         const file = this.files[0];

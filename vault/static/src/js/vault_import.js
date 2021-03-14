@@ -3,7 +3,7 @@
 
 /* global kdbxweb */
 
-odoo.define("vault.import", function (require) {
+odoo.define("vault.import", function(require) {
     "use strict";
 
     var core = require("web.core");
@@ -47,7 +47,7 @@ odoo.define("vault.import", function (require) {
          * @param {CryptoKey} master_key
          * @param {Object} node
          */
-        _import_json_entry: async function (master_key, node) {
+        _import_json_entry: async function(master_key, node) {
             for (const field of node.fields || []) {
                 field.iv = utils.generate_iv_base64();
                 field.value = await utils.sym_encrypt(
@@ -75,7 +75,7 @@ odoo.define("vault.import", function (require) {
          * @param {String} data
          * @returns the encrypted entry for the database
          */
-        _import_json_data: async function (master_key, data) {
+        _import_json_data: async function(master_key, data) {
             for (const node of data) await this._import_json_entry(master_key, node);
             return data;
         },
@@ -89,7 +89,7 @@ odoo.define("vault.import", function (require) {
          * @param {Object} content
          * @returns the encrypted entry for the database
          */
-        _import_encrypted_json: async function (master_key, content) {
+        _import_encrypted_json: async function(master_key, content) {
             const askpass = await utils.askpass(
                 _t("Please enter the password for the database")
             );
@@ -117,7 +117,7 @@ odoo.define("vault.import", function (require) {
          * @param {String} data
          * @returns the encrypted entry for the database
          */
-        _import_json: async function (master_key, data) {
+        _import_json: async function(master_key, data) {
             // Unwrap the master key and encrypt the entries
             const result = JSON.parse(data);
             switch (result.type) {
@@ -138,7 +138,7 @@ odoo.define("vault.import", function (require) {
          * @param {Object} entry
          * @returns the encrypted entry for the database
          */
-        _import_kdbx_entry: async function (master_key, entry) {
+        _import_kdbx_entry: async function(master_key, entry) {
             let pass = entry.fields.Password;
             if (pass) pass = pass.getText();
 
@@ -179,7 +179,7 @@ odoo.define("vault.import", function (require) {
          * @param {Object} group
          * @returns the encrypted entry for the database
          */
-        _import_kdbx_group: async function (master_key, group) {
+        _import_kdbx_group: async function(master_key, group) {
             const res = {
                 uuid: group.uuid && group.uuid.id,
                 name: group.name,
@@ -204,7 +204,7 @@ odoo.define("vault.import", function (require) {
          * @param {String} data
          * @returns the encrypted data for the backend
          */
-        _import_kdbx: async function (master_key, data) {
+        _import_kdbx: async function(master_key, data) {
             // Get the credentials of the keepass database
             const askpass = await utils.askpass(
                 _t("Please enter the password for the keepass database")
@@ -246,7 +246,7 @@ odoo.define("vault.import", function (require) {
          * @param {String} content
          * @returns the data importable by the backend or false on error
          */
-        import: async function (master_key, filename, content) {
+        import: async function(master_key, filename, content) {
             if (filename.endsWith(".json"))
                 return await this._import_json(master_key, content);
             else if (filename.endsWith(".kdbx"))

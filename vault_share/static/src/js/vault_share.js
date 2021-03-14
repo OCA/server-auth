@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.share", function (require) {
+odoo.define("vault.share", function(require) {
     "use strict";
 
     require("web.dom_ready");
@@ -18,7 +18,7 @@ odoo.define("vault.share", function (require) {
             }
     }
 
-    document.getElementById("pin").onchange = async function () {
+    document.getElementById("pin").onchange = async function() {
         find_elements();
 
         // Derive the key from the pin

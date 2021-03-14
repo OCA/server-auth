@@ -15,17 +15,10 @@ class VaultLog(models.Model):
     _rec_name = "message"
 
     vault_id = fields.Many2one(
-        "vault",
-        "Vault",
-        ondelete="cascade",
-        required=True,
-        readonly=True,
+        "vault", "Vault", ondelete="cascade", required=True, readonly=True,
     )
     entry_id = fields.Many2one(
-        "vault.entry",
-        "Entry",
-        ondelete="cascade",
-        readonly=True,
+        "vault.entry", "Entry", ondelete="cascade", readonly=True,
     )
     user_id = fields.Many2one("res.users", "User", required=True, readonly=True)
     state = fields.Selection(lambda self: self._get_log_state(), readonly=True)

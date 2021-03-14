@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.controller", function (require) {
+odoo.define("vault.controller", function(require) {
     "use strict";
 
     var core = require("web.core");
@@ -22,7 +22,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _applyChangesSendWizard: async function (record, changes, options) {
+        _applyChangesSendWizard: async function(record, changes, options) {
             if (!changes.user_id || !record.data.public) return;
 
             const key = await vault.unwrap(record.data.key);
@@ -41,7 +41,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _applyChangesStoreWizard: async function (record, changes, options) {
+        _applyChangesStoreWizard: async function(record, changes, options) {
             if (
                 !changes.entry_id ||
                 !record.data.master_key ||
@@ -70,7 +70,7 @@ odoo.define("vault.controller", function (require) {
          *
          * @private
          */
-        _newVaultKeyPair: async function () {
+        _newVaultKeyPair: async function() {
             const master_keys = await this._rpc({route: "/vault/rights/get"});
 
             // Get the current private key
@@ -101,7 +101,7 @@ odoo.define("vault.controller", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onGenerateKeys: async function (ev) {
+        _onGenerateKeys: async function(ev) {
             ev.stopPropagation();
             var self = this;
 
@@ -109,7 +109,7 @@ odoo.define("vault.controller", function (require) {
                 self,
                 _t("Do you really want to create a new key pair and set it active?"),
                 {
-                    confirm_callback: function () {
+                    confirm_callback: function() {
                         return self._newVaultKeyPair();
                     },
                 }
@@ -121,7 +121,7 @@ odoo.define("vault.controller", function (require) {
          *
          * @private
          */
-        renderButtons: function () {
+        renderButtons: function() {
             this._super.apply(this, arguments);
 
             if (this.modelName !== "res.users") return;
@@ -143,7 +143,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _changedVaultRightUser: async function (record, changes, options) {
+        _changedVaultRightUser: async function(record, changes, options) {
             if (!changes.data.user_id) return;
 
             const params = {user_id: changes.data.user_id.id};
@@ -183,7 +183,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _deleteVaultRight: async function (record, changes, options) {
+        _deleteVaultRight: async function(record, changes, options) {
             const master_key = await utils.generate_key();
             const current_key = await vault.unwrap(record.data.master_key);
 
@@ -265,7 +265,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _applyChangesVault: async function (record, changes, options) {
+        _applyChangesVault: async function(record, changes, options) {
             if (!record.data.master_key && !changes.master_key) {
                 const master_key = await vault.wrap(await utils.generate_key());
                 await this._applyChanges(record.id, {master_key: master_key}, options);
@@ -283,7 +283,7 @@ odoo.define("vault.controller", function (require) {
                         "This will re-encrypt everything in the vault. Do you want to proceed?"
                     ),
                     {
-                        confirm_callback: async function () {
+                        confirm_callback: async function() {
                             await this._deleteVaultRight(
                                 record,
                                 changes.right_ids,
@@ -303,7 +303,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _applyChangesImportWizard: async function (record, changes, options) {
+        _applyChangesImportWizard: async function(record, changes, options) {
             if (!changes.content) return;
 
             // Try to import the file on the fly and store the compatible JSON in the
@@ -331,7 +331,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _applyChanges: async function (dataPointID, changes, options) {
+        _applyChanges: async function(dataPointID, changes, options) {
             const result = await this._super.apply(this, arguments);
 
             const record = this.model.get(dataPointID);

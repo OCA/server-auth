@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.export", function (require) {
+odoo.define("vault.export", function(require) {
     "use strict";
 
     var core = require("web.core");
@@ -32,7 +32,7 @@ odoo.define("vault.export", function (require) {
          * @param {CryptoKey} master_key
          * @param {Object} node
          */
-        _export_json_entry: async function (master_key, node) {
+        _export_json_entry: async function(master_key, node) {
             const fields = [];
             for (const field of node.fields || [])
                 fields.push({
@@ -70,7 +70,7 @@ odoo.define("vault.export", function (require) {
          * @param {Object} data
          * @returns the encrypted entry for the database
          */
-        _export_json_data: async function (master_key, data) {
+        _export_json_data: async function(master_key, data) {
             const result = [];
             for (const node of data)
                 result.push(await this._export_json_entry(master_key, node));
@@ -88,7 +88,7 @@ odoo.define("vault.export", function (require) {
          * @param {String} data
          * @returns the encrypted entry for the database
          */
-        _export_json: async function (master_key, data) {
+        _export_json: async function(master_key, data) {
             // Get the password for the exported file from the user
             const askpass = await utils.askpass(
                 _t("Please enter the password for the database")
@@ -123,7 +123,7 @@ odoo.define("vault.export", function (require) {
          * @param {String} content
          * @returns the data importable by the backend or false on error
          */
-        export: async function (master_key, filename, content) {
+        export: async function(master_key, filename, content) {
             if (filename.endsWith(".json"))
                 return await this._export_json(master_key, content);
             return false;

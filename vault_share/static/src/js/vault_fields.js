@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.share.fields", function (require) {
+odoo.define("vault.share.fields", function(require) {
     "use strict";
 
     var core = require("web.core");
@@ -24,7 +24,7 @@ odoo.define("vault.share.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onShareValue: async function (ev) {
+        _onShareValue: async function(ev) {
             ev.stopPropagation();
 
             const iv = await utils.generate_iv_base64();

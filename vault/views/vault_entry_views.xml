@@ -10,7 +10,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_vault_entry_full_tree" model="ir.ui.view">
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
@@ -22,7 +21,6 @@
             </tree>
         </field>
     </record>
-
     <record id="view_vault_entry_form" model="ir.ui.view">
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
@@ -45,7 +43,6 @@
                     <field name="allowed_share" invisible="1" />
                     <field name="allowed_write" invisible="1" />
                     <field name="allowed_delete" invisible="1" />
-
                     <group>
                         <group>
                             <field name="complete_name" />
@@ -64,7 +61,6 @@
                             <field name="expire_date" />
                         </group>
                     </group>
-
                     <notebook>
                         <page string="Content">
                             <label for="field_ids" />
@@ -87,7 +83,6 @@
                                     <field name="write_date" />
                                 </tree>
                             </field>
-
                             <label for="file_ids" />
                             <field
                                 name="file_ids"
@@ -126,7 +121,6 @@
             </form>
         </field>
     </record>
-
     <record id="view_vault_entry_search" model="ir.ui.view">
         <field name="name">vault.entry.search</field>
         <field name="model">vault.entry</field>
@@ -136,14 +130,14 @@
                 <field name="name" operator="ilike" />
                 <field name="tags" operator="ilike" />
                 <field name="note" operator="ilike" />
-                <searchpanel>
+                <!-- <searchpanel>
                     <field
                         name="parent_id"
                         select="category"
                         string="Entries"
                         enable_counters="1"
                     />
-                </searchpanel>
+                </searchpanel> -->
             </search>
         </field>
     </record>
