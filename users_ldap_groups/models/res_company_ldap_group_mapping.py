@@ -11,7 +11,10 @@ class ResCompanyLdapGroupMapping(models.Model):
     _order = "ldap_attribute"
 
     ldap_id = fields.Many2one(
-        "res.company.ldap", "LDAP server", required=True, ondelete="cascade",
+        "res.company.ldap",
+        "LDAP server",
+        required=True,
+        ondelete="cascade",
     )
     ldap_attribute = fields.Char(
         "LDAP attribute",
