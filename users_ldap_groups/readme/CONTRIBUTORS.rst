@@ -6,3 +6,4 @@
 * Tecnativa <https://www.tecnativa.com>
 
   * João Marques
+* Dhara Solanki <dhara.solanki@initos.com>
