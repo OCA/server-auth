@@ -52,7 +52,9 @@ class ResCompanyLdap(models.Model):
             _logger.debug("checking mapping %s", mapping)
             if operator(ldap_entry, mapping):
                 _logger.debug(
-                    "adding user %d to group %s", user, mapping.group_id.name,
+                    "adding user %d to group %s",
+                    user,
+                    mapping.group_id.name,
                 )
                 groups.append((4, mapping.group_id.id, False))
         if (
