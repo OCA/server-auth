@@ -8,8 +8,8 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     @classmethod
-    def _login(cls, db, login, password):
-        user_id = super()._login(db, login, password)
+    def _login(cls, db, login, password, user_agent_env):
+        user_id = super()._login(db, login, password, user_agent_env)
         if not user_id:
             return user_id
         with registry(db).cursor() as cr:
