@@ -74,6 +74,7 @@ class Home(main.Home):
             request.session.authenticate(
                 db_name, login=login, password=key, uid=user.id
             )
+            user.with_user(user=user)._update_last_login()
         except http.AuthenticationError:
             raise
         except Exception:
