@@ -10,6 +10,7 @@ class IrHttp(models.AbstractModel):
     @classmethod
     def _authenticate(cls, endpoint):
         res = super(IrHttp, cls)._authenticate(endpoint=endpoint)
-        if request and request.env and request.env.user:
+        auth_method = endpoint.routing["auth"]
+        if auth_method == "user" and request and request.env and request.env.user:
             request.env.user._auth_timeout_check()
         return res
