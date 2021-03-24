@@ -25,4 +25,22 @@ Setup for Microsoft Azure
 Setup for Keycloak
 ~~~~~~~~~~~~~~~~~~
 
-write me...
+In Keycloak:
+
+# configure a new Client
+# make sure Implicit Flow is Enabled.
+# configure the redirect url to be "<url of your server>/auth_oauth/signin"
+
+In Odoo, create a new Oauth Provider with the following parameters:
+
+* Provider name: Keycloak (or any name you like that identify your keycloak
+provider)
+* Auth Flow: OpenID Connect
+* Client ID: the same Client ID you entered when configuring the client in Keycloak
+* Allowed: yes
+* Body: the link text to appear on the login page, such as Login with Keycloak
+* Authentication URL: The "authorization_endpoint" URL found in the
+  OpenID Endpoint Configuration of your Keycloak realm
+* Scope: email
+* Validation URL: The "jwks_uri" URL found in the
+  OpenID Endpoint Configuration of your Keycloak realm
