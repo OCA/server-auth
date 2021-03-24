@@ -9,26 +9,27 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-03-18 02:19+0000\n"
-"PO-Revision-Date: 2017-03-18 02:19+0000\n"
-"Last-Translator: Alexandre Papin <papin.alexandre@me.com>, 2017\n"
+"PO-Revision-Date: 2021-03-24 13:46+0000\n"
+"Last-Translator: Yann Papouin <y.papouin@dec-industrie.com>\n"
 "Language-Team: French (https://www.transifex.com/oca/teams/23907/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:69
 #, python-format
 msgid "Another user is already registered using this email address."
-msgstr ""
+msgstr "Un autre utilisateur est déjà enregistré avec cette adresse e-mail."
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:79
 #, python-format
 msgid "Check your email to activate your account!"
-msgstr "Un email vous à été envoyé pour activer votre compte."
+msgstr "Vérifiez votre boite e-mail pour activer votre compte !"
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:74
@@ -41,4 +42,4 @@ msgstr ""
 #: code:addons/auth_signup_verify_email/controllers/main.py:40
 #, python-format
 msgid "That does not seem to be an email address."
-msgstr "Veuillez fournir une adresse email valide."
+msgstr "Veuillez fournir une adresse e-mail valide."
