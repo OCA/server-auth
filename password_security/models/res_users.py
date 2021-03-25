@@ -8,8 +8,7 @@ import re
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
-
-from ..exceptions import PassError
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 try:
@@ -32,9 +31,7 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     password_write_date = fields.Datetime(
-        "Last password update",
-        default=fields.Datetime.now,
-        readonly=True,
+        "Last password update", default=fields.Datetime.now, readonly=True
     )
     password_history_ids = fields.One2many(
         string="Password History",
@@ -90,37 +87,38 @@ class ResUsers(models.Model):
         message = []
         if company_id.password_lower:
             message.append(
-                "\n* "
-                + "Lowercase letter (At least "
-                + str(company_id.password_lower)
-                + " character)"
+                _(
+                    "\n* Lowercase letter (at least %s characters)"
+                    % str(company_id.password_lower)
+                )
             )
         if company_id.password_upper:
             message.append(
-                "\n* "
-                + "Uppercase letter (At least "
-                + str(company_id.password_upper)
-                + " character)"
+                _(
+                    "\n* Uppercase letter (at least %s characters)"
+                    % str(company_id.password_upper)
+                )
             )
         if company_id.password_numeric:
             message.append(
-                "\n* "
-                + "Numeric digit (At least "
-                + str(company_id.password_numeric)
-                + " character)"
+                _(
+                    "\n* Numeric digit (at least %s characters)"
+                    % str(company_id.password_numeric)
+                )
             )
         if company_id.password_special:
             message.append(
-                "\n* "
-                + "Special character (At least "
-                + str(company_id.password_special)
-                + " character)"
+                _(
+                    "\n* Special character (at least % characters)"
+                    % str(company_id.password_special)
+                )
             )
         if message:
             message = [_("Must contain the following:")] + message
         if company_id.password_length:
             message = [
-                "Password must be %d characters or more." % company_id.password_length
+                _("Password must be %d characters or more.")
+                % company_id.password_length
             ] + message
         return "\r".join(message)
 
@@ -143,11 +141,11 @@ class ResUsers(models.Model):
             ".{%d,}$" % int(company_id.password_length),
         ]
         if not re.search("".join(password_regex), password):
-            raise PassError(self.password_match_message())
+            raise UserError(self.password_match_message())
 
         estimation = self.get_estimation(password)
         if estimation["score"] < company_id.password_estimate:
-            raise PassError(estimation["feedback"]["warning"])
+            raise UserError(estimation["feedback"]["warning"])
 
         return True
 
@@ -171,7 +169,7 @@ class ResUsers(models.Model):
 
     def _validate_pass_reset(self):
         """It provides validations before initiating a pass reset email
-        :raises: PassError on invalidated pass reset attempt
+        :raises: UserError on invalidated pass reset attempt
         :return: True on allowed reset
         """
         for rec_id in self:
@@ -181,18 +179,18 @@ class ResUsers(models.Model):
             write_date = rec_id.password_write_date
             delta = timedelta(hours=pass_min)
             if write_date + delta > datetime.now():
-                raise PassError(
+                raise UserError(
                     _(
                         "Passwords can only be reset every %d hour(s). "
                         "Please contact an administrator for assistance."
                     )
-                    % pass_min,
+                    % pass_min
                 )
         return True
 
     def _check_password_history(self, password):
         """It validates proposed password against existing history
-        :raises: PassError on reused password
+        :raises: UserError on reused password
         """
         crypt = self._crypt_context()
         for rec_id in self:
@@ -204,7 +202,7 @@ class ResUsers(models.Model):
             if recent_passes.filtered(
                 lambda r: crypt.verify(password, r.password_crypt)
             ):
-                raise PassError(
+                raise UserError(
                     _("Cannot use the most recent %d passwords")
                     % rec_id.company_id.password_history
                 )
