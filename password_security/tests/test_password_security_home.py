@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta
 from unittest import mock
 
+from odoo.exceptions import UserError
 from odoo.http import Response
 from odoo.tests.common import HttpCase, TransactionCase
 
@@ -22,7 +23,7 @@ class MockResponse(object):
         return mock.Mock(spec=Response)
 
 
-class MockPassError(main.PassError):
+class MockPassError(UserError):
     def __init__(self):
         super(MockPassError, self).__init__("Message")
 
