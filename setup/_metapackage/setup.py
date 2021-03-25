@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo14-addon-auth_ldaps',
         'odoo14-addon-auth_session_timeout',
         'odoo14-addon-auth_user_case_insensitive',
+        'odoo14-addon-password_security',
         'odoo14-addon-user_log_view',
     ],
     classifiers=[
