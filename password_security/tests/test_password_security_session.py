@@ -2,8 +2,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from contextlib import contextmanager
-
-import mock
+from unittest import mock
 
 from odoo.tests.common import TransactionCase
 
