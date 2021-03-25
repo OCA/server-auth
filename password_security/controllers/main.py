@@ -4,12 +4,11 @@
 import operator
 
 from odoo import http
+from odoo.exceptions import UserError
 from odoo.http import request
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 from odoo.addons.web.controllers.main import Session, ensure_db
-
-from ..exceptions import PassError
 
 
 class PasswordSecuritySession(Session):
@@ -55,7 +54,7 @@ class PasswordSecurityHome(AuthSignupHome):
     def web_auth_signup(self, *args, **kw):
         try:
             return super(PasswordSecurityHome, self).web_auth_signup(*args, **kw)
-        except PassError as e:
+        except UserError as e:
             qcontext = self.get_auth_signup_qcontext()
             qcontext["error"] = str(e)
             return request.render("auth_signup.signup", qcontext)
