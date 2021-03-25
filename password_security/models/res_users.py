@@ -205,4 +205,7 @@ class ResUsers(models.Model):
         """ It saves password crypt history for history rules """
         super(ResUsers, self)._set_encrypted_password(uid, pw)
 
-        self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
+        self.env["res.users.pass.history"].create({
+            "user_id": uid,
+            "password_crypt": pw
+        })
