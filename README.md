@@ -26,6 +26,7 @@ addon | version | summary
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 14.0.1.0.0 | Makes the user login field case insensitive
 [password_security](password_security/) | 14.0.1.0.0 | Allow admin to set password security requirements.
 [user_log_view](user_log_view/) | 14.0.1.0.0 | Allow to see user's actions log
+[users_ldap_groups](users_ldap_groups/) | 14.0.1.0.0 | Adds user accounts to groups based on rules defined by the administrator.
 
 [//]: # (end addons)
 
