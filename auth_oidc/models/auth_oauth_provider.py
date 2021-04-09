@@ -18,7 +18,11 @@ class AuthOauthProvider(models.Model):
     _inherit = "auth.oauth.provider"
 
     flow = fields.Selection(
-        [("access_token", "OAuth2"), ("id_token", "OpenID Connect (implicit flow")],
+        [
+            ("access_token", "OAuth2"),
+            ("id_token", "OpenID Connect (implicit flow)"),
+            ("id_token_code", "OpenID Connect (authorization code flow)"),
+        ],
         string="Auth Flow",
         required=True,
         default="access_token",
@@ -35,10 +39,11 @@ class AuthOauthProvider(models.Model):
         help="For OpenID Connect this should be the location for public keys "
     )
 
+    client_secret = fields.Char()
+    token_endpoint = fields.Char(string="Token URL")
+
     @tools.ormcache("self.validation_endpoint", "kid")
     def _get_key(self, kid):
-        if self.flow != "id_token":
-            return False
         r = requests.get(self.validation_endpoint)
         r.raise_for_status()
         response = r.json()
