@@ -1,4 +1,5 @@
 # Copyright 2016 ICTSTUDIO <http://www.ictstudio.eu>
+# Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import uuid
@@ -13,10 +14,12 @@ class OpenIDLogin(OAuthLogin):
         providers = super(OpenIDLogin, self).list_providers()
         for provider in providers:
             if provider.get("flow") == "id_token":
-                provider["nonce"] = uuid.uuid1().hex
+                provider["nonce"] = uuid.uuid1().hex  # TODO Better nonce
                 params = werkzeug.url_decode(provider["auth_link"].split("?")[-1])
                 params.pop("response_type")
-                params.update(dict(response_type="id_token", nonce=provider["nonce"]))
+                params.update(
+                    dict(response_type="id_token token", nonce=provider["nonce"])
+                )
                 if provider.get("scope"):
                     params["scope"] = provider["scope"]
                 provider["auth_link"] = "{}?{}".format(
