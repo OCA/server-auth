@@ -1,9 +1,9 @@
 # Copyright 2016 ICTSTUDIO <http://www.ictstudio.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import json
 import logging
-import urllib2
+
+import requests
 
 from odoo import api, fields, models
 
@@ -38,8 +38,9 @@ class AuthOauthProvider(models.Model):
     def _get_key(self, header):
         if self.flow != "id_token":
             return False
-        f = urllib2.urlopen(self.validation_endpoint)
-        response = json.loads(f.read())
+        r = requests.get(self.validation_endpoint)
+        r.raise_for_status()
+        response = r.json()
         rsa_key = {}
         for key in response["keys"]:
             if key["kid"] == header.get("kid"):
@@ -47,7 +48,7 @@ class AuthOauthProvider(models.Model):
         return rsa_key
 
     @api.model
-    def map_token_values(self, res):
+    def _map_token_values(self, res):
         if self.token_map:
             for pair in self.token_map.split(" "):
                 from_key, to_key = pair.split(":")
@@ -55,7 +56,6 @@ class AuthOauthProvider(models.Model):
                     res[to_key] = res.get(from_key, "")
         return res
 
-    @api.multi
     def _parse_id_token(self, id_token):
         self.ensure_one()
         res = {}
@@ -69,5 +69,5 @@ class AuthOauthProvider(models.Model):
             )
         )
 
-        res.update(self.map_token_values(res))
+        res.update(self._map_token_values(res))
         return res
