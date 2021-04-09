@@ -1,4 +1,5 @@
 # Copyright 2016 ICTSTUDIO <http://www.ictstudio.eu>
+# Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -17,7 +18,7 @@ class AuthOauthProvider(models.Model):
     _inherit = "auth.oauth.provider"
 
     flow = fields.Selection(
-        [("access_token", "OAuth2"), ("id_token", "OpenID Connect")],
+        [("access_token", "OAuth2"), ("id_token", "OpenID Connect (implicit flow")],
         string="Auth Flow",
         required=True,
         default="access_token",
@@ -56,7 +57,7 @@ class AuthOauthProvider(models.Model):
                     res[to_key] = res.get(from_key, "")
         return res
 
-    def _parse_id_token(self, id_token):
+    def _parse_id_token(self, id_token, access_token):
         self.ensure_one()
         res = {}
         header = jwt.get_unverified_header(id_token)
@@ -66,6 +67,7 @@ class AuthOauthProvider(models.Model):
                 self._get_key(header),
                 algorithms=["RS256"],
                 audience=self.client_id,
+                access_token=access_token,
             )
         )
 
