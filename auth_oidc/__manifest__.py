@@ -8,7 +8,7 @@
     "author": "ICTSTUDIO, André Schenkels, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
     "summary": "Allow users to login through OpenID Connect Provider",
-    "external_dependencies": {"python": ["jose", "cryptography"]},
+    "external_dependencies": {"python": ["python-jose"]},
     "depends": ["auth_oauth"],
     "data": ["views/auth_oauth_provider.xml"],
 }
