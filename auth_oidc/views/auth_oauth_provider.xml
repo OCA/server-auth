@@ -12,6 +12,12 @@
                     placeholder="e.g from:to upn:email sub:user_id"
                 />
             </field>
+            <field name="client_id" position="after">
+                <field name="client_secret" />
+            </field>
+            <field name="auth_endpoint" position="after">
+                <field name="token_endpoint" />
+            </field>
         </field>
     </record>
 </odoo>
