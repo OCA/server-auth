@@ -6,7 +6,7 @@ import logging
 
 import requests
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 try:
     from jose import jwt
@@ -35,7 +35,6 @@ class AuthOauthProvider(models.Model):
         help="For OpenID Connect this should be the location for public keys "
     )
 
-    @api.model
     def _get_key(self, header):
         if self.flow != "id_token":
             return False
@@ -48,7 +47,6 @@ class AuthOauthProvider(models.Model):
                 rsa_key = key
         return rsa_key
 
-    @api.model
     def _map_token_values(self, res):
         if self.token_map:
             for pair in self.token_map.split(" "):
