@@ -27,24 +27,20 @@ class AuthOauthProvider(models.Model):
         required=True,
         default="access_token",
     )
-
     token_map = fields.Char(
         help="Some Oauth providers don't map keys in their responses "
         "exactly as required.  It is important to ensure user_id and "
         "email at least are mapped. For OpenID Connect user_id is "
         "the sub key in the standard."
     )
-
-    validation_endpoint = fields.Char(
-        help="For OpenID Connect this should be the location for public keys "
-    )
-
     client_secret = fields.Char()
+    validation_endpoint = fields.Char(required=False)
     token_endpoint = fields.Char(string="Token URL")
+    jwks_uri = fields.Char(string="JWKS URL")
 
-    @tools.ormcache("self.validation_endpoint", "kid")
+    @tools.ormcache("self.jwks_uri", "kid")
     def _get_key(self, kid):
-        r = requests.get(self.validation_endpoint)
+        r = requests.get(self.jwks_uri)
         r.raise_for_status()
         response = r.json()
         for key in response["keys"]:

@@ -15,8 +15,9 @@
             <field name="client_id" position="after">
                 <field name="client_secret" />
             </field>
-            <field name="auth_endpoint" position="after">
+            <field name="validation_endpoint" position="after">
                 <field name="token_endpoint" />
+                <field name="jwks_uri" />
             </field>
         </field>
     </record>
