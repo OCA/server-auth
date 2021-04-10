@@ -3,7 +3,7 @@
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-import uuid
+import secrets
 
 import werkzeug.utils
 
@@ -19,7 +19,7 @@ class OpenIDLogin(OAuthLogin):
             flow = provider.get("flow")
             if flow in ("id_token", "id_token_code"):
                 params = werkzeug.url_decode(provider["auth_link"].split("?")[-1])
-                params["nonce"] = uuid.uuid1().hex  # TODO Better nonce
+                params["nonce"] = secrets.token_urlsafe()
                 if flow == "id_token":
                     # https://openid.net/specs/openid-connect-core-1_0.html
                     # #ImplicitAuthRequest
