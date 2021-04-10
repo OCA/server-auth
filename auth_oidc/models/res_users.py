@@ -30,14 +30,18 @@ class ResUsers(models.Model):
             # https://openid.net/specs/openid-connect-core-1_0.html#AuthResponse
             code = params.get("code")
             # https://openid.net/specs/openid-connect-core-1_0.html#TokenRequest
+            auth = None
+            if oauth_provider.client_secret:
+                auth = (oauth_provider.client_id, oauth_provider.client_secret)
             response = requests.post(
                 oauth_provider.token_endpoint,
                 data=dict(
+                    client_id=oauth_provider.client_id,
                     grant_type="authorization_code",
                     code=code,
                     redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
                 ),
-                auth=(oauth_provider.client_id, oauth_provider.client_secret),
+                auth=auth,
             )
             response.raise_for_status()
             response_json = response.json()
