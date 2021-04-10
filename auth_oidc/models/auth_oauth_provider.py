@@ -20,8 +20,8 @@ class AuthOauthProvider(models.Model):
     flow = fields.Selection(
         [
             ("access_token", "OAuth2"),
-            ("id_token", "OpenID Connect (implicit flow)"),
             ("id_token_code", "OpenID Connect (authorization code flow)"),
+            ("id_token", "OpenID Connect (implicit flow, not recommended)"),
         ],
         string="Auth Flow",
         required=True,
@@ -33,10 +33,14 @@ class AuthOauthProvider(models.Model):
         "email at least are mapped. For OpenID Connect user_id is "
         "the sub key in the standard."
     )
-    client_secret = fields.Char()
+    client_secret = fields.Char(
+        help="Required for OpenID Connect authorization code flow."
+    )
     validation_endpoint = fields.Char(required=False)
-    token_endpoint = fields.Char(string="Token URL")
-    jwks_uri = fields.Char(string="JWKS URL")
+    token_endpoint = fields.Char(
+        string="Token URL", help="Required for OpenID Connect authorization code flow."
+    )
+    jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_key(self, kid):
