@@ -2,11 +2,15 @@
 # Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import logging
+
 import requests
 
 from odoo import api, models
 from odoo.exceptions import AccessDenied
 from odoo.http import request
+
+_logger = logging.getLogger(__name__)
 
 
 class ResUsers(models.Model):
@@ -40,9 +44,16 @@ class ResUsers(models.Model):
             # https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
             access_token = response_json.get("access_token")
             id_token = response_json.get("id_token")
+        if not access_token:
+            _logger.error("No access_token in response.")
+            raise AccessDenied()
+        if not id_token:
+            _logger.error("No id_token in response.")
+            raise AccessDenied()
         validation = oauth_provider._parse_id_token(id_token, access_token)
         # required check
         if not validation.get("user_id"):
+            _logger.error("user_id claim not found in id_token (after mapping).")
             raise AccessDenied()
         # retrieve and sign in user
         params["access_token"] = access_token
