@@ -39,6 +39,7 @@ class ResUsers(models.Model):
                     client_id=oauth_provider.client_id,
                     grant_type="authorization_code",
                     code=code,
+                    code_verifier=oauth_provider.code_verifier,  # PKCE
                     redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
                 ),
                 auth=auth,

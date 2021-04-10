@@ -3,6 +3,7 @@
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
+import secrets
 
 import requests
 
@@ -34,7 +35,10 @@ class AuthOauthProvider(models.Model):
         "the sub key in the standard."
     )
     client_secret = fields.Char(
-        help="Required for OpenID Connect authorization code flow."
+        help="Used in OpenID Connect authorization code flow for confidential clients.",
+    )
+    code_verifier = fields.Char(
+        default=lambda self: secrets.token_urlsafe(32), help="Used for PKCE."
     )
     validation_endpoint = fields.Char(required=False)
     token_endpoint = fields.Char(
