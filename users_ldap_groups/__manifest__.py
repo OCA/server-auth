@@ -5,6 +5,7 @@
 {
     "name": "LDAP groups assignment",
     "version": "13.0.1.0.0",
+    "website": "https://github.com/OCA/server-auth",
     "depends": ["auth_ldap"],
     "author": "Therp BV, " "Odoo Community Association (OCA)",
     "license": "AGPL-3",

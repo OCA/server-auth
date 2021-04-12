@@ -13,7 +13,7 @@ class ResCompanyLdapOperator(models.AbstractModel):
     """Define operators for group mappings"""
 
     _name = "res.company.ldap.operator"
-    _description = "Definition op LDAP operations"
+    _description = "Definition of LDAP operations"
 
     @api.model
     def operators(self):
