@@ -62,6 +62,7 @@ class ResUsers(models.Model):
         """Inactivate current user tokens."""
         self.mapped("oauth_access_token_ids").unlink()
         for res in self:
+            res.oauth_access_token = False
             res.oauth_master_uuid = self._generate_oauth_master_uuid()
 
     @api.model
