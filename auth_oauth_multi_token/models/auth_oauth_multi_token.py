@@ -17,7 +17,11 @@ class AuthOauthMultiToken(models.Model):
         string="OAuth Access Token", readonly=True, copy=False
     )
     user_id = fields.Many2one(
-        comodel_name="res.users", string="User", required=True, readonly=True
+        comodel_name="res.users",
+        string="User",
+        required=True,
+        readonly=True,
+        index=True,
     )
 
     @api.model
