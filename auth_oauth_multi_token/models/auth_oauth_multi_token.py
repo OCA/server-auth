@@ -22,6 +22,7 @@ class AuthOauthMultiToken(models.Model):
         required=True,
         readonly=True,
         index=True,
+        ondelete="cascade",
     )
 
     @api.model
