@@ -9,7 +9,7 @@
     "author": "Florent de Labarre, Camptocamp, Odoo Community Association (OCA)",
     "summary": """Allow multiple connection with the same OAuth account""",
     "category": "Tool",
-    "website": "https://github.com/OCA/server-auth/",
+    "website": "https://github.com/OCA/server-auth",
     "depends": ["auth_oauth"],
     "data": [
         "security/ir.model.access.csv",
