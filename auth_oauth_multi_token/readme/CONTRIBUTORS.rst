@@ -3,3 +3,5 @@
 * `Tecnativa <https://www.tecnativa.com/>`__:
 
   * Jairo Llopis
+
+  * Stéphane Bidoul <stephane.bidoul@acsone.eu>
