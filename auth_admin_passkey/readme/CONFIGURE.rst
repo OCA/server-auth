@@ -30,3 +30,6 @@ No keys to add.
     auth_admin_passkey_send_to_user = True
     auth_admin_passkey_sysadmin_email = SYSADMIN_PASSWORD
     auth_admin_passkey_sysadmin_lang = SYSADMIN_LANG
+
+* To avoid the usage of the admin passkey with some users go to the User record
+  and check the "Block Admin Passkey" checkbox.

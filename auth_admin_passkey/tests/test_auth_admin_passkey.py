@@ -19,6 +19,7 @@ class TestAuthAdminPasskey(common.TransactionCase):
         self.db = self.env.cr.dbname
 
         self.user_login = 'auth_admin_passkey_user'
+        self.user_login_block_admin_password = 'auth_admin_passkey_block'
         self.user_password = 'Auth_admin_passkey_password*1'
         self.sysadmin_passkey = 'SysAdminPasskeyPa$$w0rd'
         self.bad_password = 'Bad_password*000001'
@@ -29,7 +30,14 @@ class TestAuthAdminPasskey(common.TransactionCase):
             'password': self.user_password,
             'name': 'auth_admin_passkey User'
         })
+        user_block_admin_password = self.ResUsers.create({
+            'login': self.user_login_block_admin_password,
+            'password': self.user_password,
+            'name': 'auth_admin_passkey_block User',
+            'block_admin_passkey': True
+        })
         self.user = user.sudo(user)
+        self.user_block_admin_password = user.sudo(user_block_admin_password)
 
     def test_01_normal_login_succeed(self):
         self.user._check_credentials(self.user_password)
@@ -56,3 +64,9 @@ class TestAuthAdminPasskey(common.TransactionCase):
         with self.assertRaises(exceptions.AccessDenied):
             self.ResUsers.authenticate(
                 self.db, self.bad_login, self.sysadmin_passkey, {})
+
+    def test_06_passkey_block_user(self):
+        # This should failed, because user has the option blocked
+        with self.assertRaises(exceptions.AccessDenied):
+            self.user_block_admin_password._check_credentials(
+                self.sysadmin_passkey)
