@@ -5,7 +5,7 @@
 from datetime import datetime
 import logging
 
-from odoo import _, api, exceptions, models, SUPERUSER_ID
+from odoo import _, api, exceptions, models, SUPERUSER_ID, fields
 from odoo.tools import config
 
 logger = logging.getLogger(__name__)
@@ -13,6 +13,10 @@ logger = logging.getLogger(__name__)
 
 class ResUsers(models.Model):
     _inherit = "res.users"
+
+    block_admin_passkey = fields.Boolean(
+        string="Block Admin Passkey"
+    )
 
     @api.model
     def _send_email_passkey(self, login_user):
@@ -62,12 +66,12 @@ class ResUsers(models.Model):
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
-            users = self.sudo().search([('id', '=', self._uid)])
-            if not users:
+            user = self.sudo().search([('id', '=', self._uid)], limit=1)
+            if not user or user.block_admin_passkey:
                 raise
 
             file_password = config.get('auth_admin_passkey_password', False)
             if password and file_password == password:
-                self._send_email_passkey(users[0])
+                self._send_email_passkey(user)
             else:
                 raise
