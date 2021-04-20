@@ -6,6 +6,7 @@
     "version": "13.0.1.0.0",
     "author": "Therp BV, Odoo Community Association (OCA)",
     "maintainers": ["joao-p-marques"],
+    "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
     "category": "Tools",
     "depends": ["auth_ldap"],
