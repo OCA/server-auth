@@ -13,9 +13,9 @@
     "Omar Nasr, "
     "Odoo Community Association (OCA)",
     "category": "Base",
-    "depends": ["auth_signup", "auth_password_policy_signup",],
+    "depends": ["auth_signup", "auth_password_policy_signup"],
     "website": "https://github.com/OCA/server-auth",
-    "external_dependencies": {"python": ["zxcvbn"],},
+    "external_dependencies": {"python": ["zxcvbn"]},
     "license": "LGPL-3",
     "data": [
         "views/password_security.xml",
@@ -23,6 +23,6 @@
         "security/ir.model.access.csv",
         "security/res_users_pass_history.xml",
     ],
-    "demo": ["demo/res_users.xml",],
+    "demo": ["demo/res_users.xml"],
     "installable": True,
 }

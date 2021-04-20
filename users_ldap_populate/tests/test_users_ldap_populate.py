@@ -53,7 +53,7 @@ def get_fake_ldap(self):
                         "ldap_base": "fake",
                         "deactivate_unknown_users": True,
                         "no_deactivate_user_ids": [
-                            (6, 0, [self.env.ref("base.user_admin").id,])
+                            (6, 0, [self.env.ref("base.user_admin").id])
                         ],
                     },
                 )
@@ -71,7 +71,7 @@ class TestUsersLdapPopulate(TransactionCase):
             [
                 (
                     "DN=fake",
-                    {"cn": ["fake"], "uid": ["fake"], "mail": ["fake@fakery.com"],},
+                    {"cn": ["fake"], "uid": ["fake"], "mail": ["fake@fakery.com"]},
                 )
             ],
         ):
@@ -91,7 +91,7 @@ class TestUsersLdapPopulate(TransactionCase):
     def test_users_ldap_populate_reactivate(self):
         # Create deactivated user
         inactive_user = self.env["res.users"].create(
-            {"name": "test_inactive", "login": "test_inactive", "active": False,}
+            {"name": "test_inactive", "login": "test_inactive", "active": False}
         )
         with patch_ldap(
             self,

@@ -152,5 +152,5 @@ class TestResUsers(TransactionCase):
     def test_user_with_admin_rights_can_create_users(self):
         demo = self.env.ref("base.user_demo")
         demo.groups_id |= self.env.ref("base.group_erp_manager")
-        test1 = self.model_obj.sudo(demo).create({"login": "test1", "name": "test1",})
+        test1 = self.model_obj.sudo(demo).create({"login": "test1", "name": "test1"})
         test1.unlink()

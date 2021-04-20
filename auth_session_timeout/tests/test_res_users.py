@@ -14,8 +14,6 @@ from odoo.tools.misc import mute_logger
 class EndTestException(Exception):
     """ It stops tests from continuing """
 
-    pass
-
 
 class TestResUsers(TransactionCase):
     def setUp(self):
