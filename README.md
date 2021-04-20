@@ -15,7 +15,22 @@ None
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | summary
+--- | --- | ---
+[auth_api_key](auth_api_key/) | 13.0.1.0.0 | Authenticate http requests from an API key
+[auth_from_http_remote_user](auth_from_http_remote_user/) | 13.0.1.0.0 | Authenticate via HTTP Remote User
+[auth_ldaps](auth_ldaps/) | 13.0.1.0.1 | Allows to use LDAP over SSL authentication
+[auth_oauth_multi_token](auth_oauth_multi_token/) | 13.0.1.0.0 | Allow multiple connection with the same OAuth account
+[auth_session_timeout](auth_session_timeout/) | 13.0.1.0.0 | This module disable all inactive sessions since a given delay
+[auth_signup_verify_email](auth_signup_verify_email/) | 13.0.1.0.1 | Force uninvited users to use a good email for signup
+[auth_user_case_insensitive](auth_user_case_insensitive/) | 13.0.1.0.0 | Makes the user login field case insensitive
+[base_user_show_email](base_user_show_email/) | 13.0.1.0.0 | Untangle user login and email
+[password_security](password_security/) | 13.0.1.0.0 | Allow admin to set password security requirements.
+[users_ldap_groups](users_ldap_groups/) | 13.0.1.0.0 | Adds user accounts to groups based on rules defined by the administrator.
+[users_ldap_mail](users_ldap_mail/) | 13.0.1.0.0 | LDAP mapping for user name and e-mail
+[users_ldap_populate](users_ldap_populate/) | 13.0.1.0.0 | LDAP Populate
 
 [//]: # (end addons)
 
