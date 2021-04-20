@@ -8,7 +8,7 @@
     "version": "13.0.1.0.0",
     "license": "LGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
-    "website": "https://acsone.eu/",
+    "website": "https://github.com/OCA/server-auth",
     "development_status": "Beta",
     "depends": ["server_environment"],
     "data": ["security/ir.model.access.csv", "views/auth_api_key.xml"],

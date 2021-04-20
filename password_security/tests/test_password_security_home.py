@@ -58,7 +58,7 @@ class TestPasswordSecurityHome(TransactionCase):
                     with mock.patch("%s.http" % IMPORT) as http:
                         http.redirect_with_hash.return_value = MockResponse()
                         mocks.update(
-                            {"request": request, "ensure_db": ensure, "http": http,}
+                            {"request": request, "ensure_db": ensure, "http": http}
                         )
                         yield mocks
 

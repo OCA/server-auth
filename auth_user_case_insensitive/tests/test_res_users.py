@@ -47,7 +47,7 @@ class TestResUsers(TransactionCase):
         """ It should verify the login is set to lowercase on login """
         rec_id = self._new_record()
         # We have to commit this cursor, because `_login` uses a fresh cursor
-        self.env.cr.commit()
+        self.env.cr.commit()  # pylint: disable=invalid-commit
         with mute_logger("odoo.addons.auth_ldap.models.res_company_ldap"):
             res_id = self.model_obj._login(
                 self.env.registry.db_name, self.login.upper(), "password"

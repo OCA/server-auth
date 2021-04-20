@@ -11,7 +11,7 @@
     "LasLabs, "
     "Odoo Community Association (OCA)",
     "maintainer": "Odoo Community Association (OCA)",
-    "website": "http://www.github.com/OCA/server-auth",
+    "website": "https://github.com/OCA/server-auth",
     "category": "Tools",
     "version": "13.0.1.0.0",
     "license": "AGPL-3",
