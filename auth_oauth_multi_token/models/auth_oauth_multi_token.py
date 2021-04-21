@@ -46,4 +46,8 @@ class AuthOauthMultiToken(models.Model):
         max_token = self.user_id.oauth_access_max_token
         if user_tokens and len(user_tokens) > max_token:
             # clear last token
-            user_tokens[max_token - 1].unlink()
+            user_tokens[max_token - 1]._oauth_clear_token()
+
+    def _oauth_clear_token(self):
+        """Disable current token records."""
+        self.unlink()

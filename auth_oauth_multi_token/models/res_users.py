@@ -60,7 +60,7 @@ class ResUsers(models.Model):
 
     def action_oauth_clear_token(self):
         """Inactivate current user tokens."""
-        self.mapped("oauth_access_token_ids").unlink()
+        self.mapped("oauth_access_token_ids")._oauth_clear_token()
         for res in self:
             res.oauth_access_token = False
             res.oauth_master_uuid = self._generate_oauth_master_uuid()
