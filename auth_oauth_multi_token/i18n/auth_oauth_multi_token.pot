@@ -14,11 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: auth_oauth_multi_token
-#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__active_token
-msgid "Active"
-msgstr ""
-
-#. module: auth_oauth_multi_token
 #: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
 msgid "Clear Tokens"
 msgstr ""
