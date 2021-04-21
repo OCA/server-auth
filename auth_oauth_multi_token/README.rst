@@ -68,6 +68,8 @@ Contributors
 
   * Jairo Llopis
 
+  * Stéphane Bidoul <stephane.bidoul@acsone.eu>
+
 Maintainers
 ~~~~~~~~~~~
 
