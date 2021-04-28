@@ -1,1 +1,1 @@
-This module requires the ``python-jose`` library to be installed.
+This module requires the ``pyjwt`` library to be installed.
