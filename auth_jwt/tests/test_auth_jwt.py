@@ -5,7 +5,7 @@ import contextlib
 import time
 from unittest.mock import Mock
 
-from jose import jwt
+import jwt
 
 import odoo.http
 from odoo.exceptions import ValidationError
