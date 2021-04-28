@@ -56,7 +56,9 @@ class AuthJwtValidator(models.Model):
         ],
         default="RS256",
     )
-    audience = fields.Char(required=True, help="To validate aud.")
+    audience = fields.Char(
+        required=True, help="Comma separated list of audiences, to validate aud."
+    )
     issuer = fields.Char(required=True, help="To validate iss.")
     user_id_strategy = fields.Selection(
         [("static", "Static")], required=True, default="static"
@@ -131,7 +133,7 @@ class AuthJwtValidator(models.Model):
                     verify_aud=True,
                     verify_iss=True,
                 ),
-                audience=[self.audience],
+                audience=self.audience.split(","),
                 issuer=self.issuer,
             )
         except Exception as e:
