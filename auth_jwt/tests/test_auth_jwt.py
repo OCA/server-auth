@@ -203,6 +203,16 @@ class TestAuthMethod(TransactionCase):
         with self.assertRaises(UnauthorizedInvalidToken):
             validator._decode(token)
 
+    def test_multiple_aud(self):
+        validator = self._create_validator("validator", audience="a1,a2")
+        token = self._create_token(audience="a1")
+        validator._decode(token)
+        token = self._create_token(audience="a2")
+        validator._decode(token)
+        token = self._create_token(audience="a3")
+        with self.assertRaises(UnauthorizedInvalidToken):
+            validator._decode(token)
+
     def test_auth_method_registration_on_create(self):
         IrHttp = self.env["ir.http"]
         self.assertFalse(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
