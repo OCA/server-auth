@@ -1,1 +1,1 @@
-python-jose[cryptography]
+pyjwt[cryptography]
