@@ -1,0 +1,14 @@
+<odoo>
+    <record id="demo_validator" model="auth.jwt.validator">
+        <field name="name">demo</field>
+        <field name="audience">auth_jwt_test_api</field>
+        <field name="issuer">theissuer</field>
+        <field name="signature_type">secret</field>
+        <field name="secret_algorithm">HS256</field>
+        <field name="secret_key">thesecret</field>
+        <field name="user_id_strategy">static</field>
+        <field name="static_user_id">1</field>
+        <field name="partner_id_strategy">email</field>
+        <field name="partner_id_required" eval="False" />
+    </record>
+</odoo>
