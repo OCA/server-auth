@@ -45,11 +45,14 @@ class TestAuthMethod(TransactionCase):
         audience="me",
         issuer="http://the.issuer",
         exp_delta=100,
+        nbf=None,
         email=None,
     ):
         payload = dict(aud=audience, iss=issuer, exp=time.time() + exp_delta)
         if email:
             payload["email"] = email
+        if nbf:
+            payload["nbf"] = nbf
         return jwt.encode(payload, key=key, algorithm="HS256")
 
     def _create_validator(self, name, audience="me", partner_id_required=False):
@@ -210,6 +213,14 @@ class TestAuthMethod(TransactionCase):
         token = self._create_token(audience="a2")
         validator._decode(token)
         token = self._create_token(audience="a3")
+        with self.assertRaises(UnauthorizedInvalidToken):
+            validator._decode(token)
+
+    def test_nbf(self):
+        validator = self._create_validator("validator")
+        token = self._create_token(nbf=time.time() - 60)
+        validator._decode(token)
+        token = self._create_token(nbf=time.time() + 60)
         with self.assertRaises(UnauthorizedInvalidToken):
             validator._decode(token)
 
