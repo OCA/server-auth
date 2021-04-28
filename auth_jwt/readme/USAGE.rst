@@ -15,7 +15,8 @@ The JWT validator can be configured with the following properties:
 
 * ``name``: the validator name, to match the ``auth="jwt_{validator-name}"``
   route property.
-* ``audience``: used to validate the ``aud`` claim.
+* ``audience``: a comma-separated list of allowed audiences, used to validate
+  the ``aud`` claim.
 * ``issuer``: used to validate the ``iss`` claim.
 * Signature type (secret or public key), algorithm, secret and JWK URI
   are used to validate the token signature.
