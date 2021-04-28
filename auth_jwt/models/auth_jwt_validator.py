@@ -4,8 +4,8 @@
 import logging
 from functools import partial
 
+import jwt  # pylint: disable=missing-manifest-dependency
 import requests
-from jose import jwt  # pylint: disable=missing-manifest-dependency
 from werkzeug.exceptions import InternalServerError
 
 from odoo import _, api, fields, models, tools
@@ -94,7 +94,7 @@ class AuthJwtValidator(models.Model):
         else:
             try:
                 header = jwt.get_unverified_header(token)
-            except jwt.JWTError as e:
+            except Exception as e:
                 _logger.info("Invalid token: %s", e)
                 raise UnauthorizedInvalidToken()
             key = self._get_key(header.get("kid"))
@@ -105,12 +105,15 @@ class AuthJwtValidator(models.Model):
                 key=key,
                 algorithms=[algorithm],
                 options=dict(
-                    require_exp=True, verify_exp=True, verify_aud=True, verify_iss=True
+                    require=["exp", "aud", "iss"],
+                    verify_exp=True,
+                    verify_aud=True,
+                    verify_iss=True,
                 ),
-                audience=self.audience,
+                audience=[self.audience],
                 issuer=self.issuer,
             )
-        except jwt.JWTError as e:
+        except Exception as e:
             _logger.info("Invalid token: %s", e)
             raise UnauthorizedInvalidToken()
         return payload
