@@ -30,11 +30,32 @@ class AuthJwtValidator(models.Model):
         [("secret", "Secret"), ("public_key", "Public key")], required=True
     )
     secret_key = fields.Char()
-    secret_algorithm = fields.Selection([("HS256", "HS256")], default="HS256")  # TODO
+    secret_algorithm = fields.Selection(
+        [
+            # https://pyjwt.readthedocs.io/en/stable/algorithms.html
+            ("HS256", "HS256 - HMAC using SHA-256 hash algorithm"),
+            ("HS384", "HS384 - HMAC using SHA-384 hash algorithm"),
+            ("HS512", "HS512 - HMAC using SHA-512 hash algorithm"),
+        ],
+        default="HS256",
+    )
     public_key_jwk_uri = fields.Char()
     public_key_algorithm = fields.Selection(
-        [("RS256", "RS256")], default="RS256"
-    )  # TODO
+        [
+            # https://pyjwt.readthedocs.io/en/stable/algorithms.html
+            ("ES256", "ES256 - ECDSA using SHA-256"),
+            ("ES256K", "ES256K - ECDSA with secp256k1 curve using SHA-256"),
+            ("ES384", "ES384 - ECDSA using SHA-384"),
+            ("ES512", "ES512 - ECDSA using SHA-512"),
+            ("RS256", "RS256 - RSASSA-PKCS1-v1_5 using SHA-256"),
+            ("RS384", "RS384 - RSASSA-PKCS1-v1_5 using SHA-384"),
+            ("RS512", "RS512 - RSASSA-PKCS1-v1_5 using SHA-512"),
+            ("PS256", "PS256 - RSASSA-PSS using SHA-256 and MGF1 padding with SHA-256"),
+            ("PS384", "PS384 - RSASSA-PSS using SHA-384 and MGF1 padding with SHA-384"),
+            ("PS512", "PS512 - RSASSA-PSS using SHA-512 and MGF1 padding with SHA-512"),
+        ],
+        default="RS256",
+    )
     audience = fields.Char(required=True, help="To validate aud.")
     issuer = fields.Char(required=True, help="To validate iss.")
     user_id_strategy = fields.Selection(
