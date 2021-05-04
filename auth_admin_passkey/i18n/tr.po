@@ -19,13 +19,18 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: auth_admin_passkey
-#: code:addons/auth_admin_passkey/models/res_users.py:46
+#: model:ir.model.fields,field_description:auth_admin_passkey.field_res_users__block_admin_passkey
+msgid "Block Admin Passkey"
+msgstr ""
+
+#. module: auth_admin_passkey
+#: code:addons/auth_admin_passkey/models/res_users.py:50
 #, python-format
 msgid "Passkey used"
 msgstr "Kullanılan parola"
 
 #. module: auth_admin_passkey
-#: code:addons/auth_admin_passkey/models/res_users.py:47
+#: code:addons/auth_admin_passkey/models/res_users.py:51
 #, python-format
 msgid ""
 "System Administrator user used his passkey to login with %(login)s.\n"
