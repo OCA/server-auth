@@ -5,7 +5,7 @@
 {
     'name': 'Authentification - System Administrator Passkey',
     'summary': "Allows system administrator to authenticate with any account",
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.1.0',
     'category': 'base',
     'author': "GRAP,Odoo Community Association (OCA)",
     'website': 'https://www.github.com/OCA/server-auth',
