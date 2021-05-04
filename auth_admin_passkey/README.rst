@@ -74,6 +74,9 @@ No keys to add.
     auth_admin_passkey_sysadmin_email = SYSADMIN_PASSWORD
     auth_admin_passkey_sysadmin_lang = SYSADMIN_LANG
 
+* To avoid the usage of the admin passkey with some users go to the User record
+  and check the "Block Admin Passkey" checkbox.
+
 Bug Tracker
 ===========
 
@@ -98,6 +101,7 @@ Contributors
 * Eugen Don <eugen.don@don-systems.de>
 * Alexandre Papin (https://twitter.com/Fenkiou)
 * Sylvain LE GAL (https://twitter.com/legalsylvain)
+* Manuel Regidor <manuel.regidor@sygel.es>
 
 Maintainers
 ~~~~~~~~~~~
