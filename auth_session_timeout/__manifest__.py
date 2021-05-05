@@ -13,7 +13,7 @@
     "maintainer": "Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
     "category": "Tools",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "license": "AGPL-3",
     "data": ["data/ir_config_parameter_data.xml"],
     "installable": True,
