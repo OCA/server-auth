@@ -71,6 +71,10 @@ class ResUsers(models.Model):
             try:
 
                 expired = getmtime(path) < deadline
+            except FileNotFoundError:
+                _logger.exception("Exception reading session file modified time.")
+                # Abort timeout check in case session file does not exists
+                return
             except OSError:
                 _logger.exception("Exception reading session file modified time.",)
                 # Force expire the session. Will be resolved with new session.
