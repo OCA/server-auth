@@ -23,7 +23,7 @@ Saml2 Authentication
     :target: https://runbot.odoo-community.org/runbot/251/12.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| |badge5|
 
 Let users log into Odoo via an SAML2 provider.
 
@@ -53,86 +53,14 @@ between Odoo and other applications of your ecosystem.
 Installation
 ============
 
-This addon requires `lasso`_.
-
-.. _lasso: http://lasso.entrouvert.org
-
-Configuration
-=============
-
-To use this module, you need an IDP server, properly set up. Go through the
-"Getting started" section for more information.
-
-Getting started with Authentic2
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This is quick howto to help setup a service provider that will be able
-to use the IDP from Authentic2
-
-We will mostly cover how to setup your rsa keys and certificates
-
-
-Creating the certs
-------------------
-
-Use easy-rsa from the easy-rsa package (or from the openvpn project)
-
-Example script below with comment saying what you should do between each
-command:
-
-.. code-block:: bash
-
-    #clean your vars
-
-    source ./vars
-
-    ./build-dh
-    ./pkitool --initca
-
-    #change your vars to math a new client cert
-
-    source ./vars
-
-    ./pkitool myclient
-
-
-Congratulations, you now have a client certificate signed by a shiny new
-CA under you own private control.
-
-Configuring authentic
----------------------
-
-We will not describe how to compile requirements nor start an authentic server.
-
-Just log into your authentic admin panel::
-
-  https://myauthenticserver/admin
-
-
-and create a new "liberty provider".
-
-You'll need to create a metadata xml file from a template (TODO)
-
-You'll need to make sure it is activated and that the default protocol rules
-are applied (ie: the requests are signed and signatures are verified)
-
-Configuring Odoo
-----------------
-
-#. Go to *Settings > Activate the developer mode*.
-#. **Configure your auth provider** going to *Settings > Users & Companies >
-   SAML Providers > Create*. Your provider should provide you all that info.
-#. Go to *Settings > Users & Companies > Users* and edit each user that will
-   authenticate through SAML.
-#. Go to the *SAML* tab and fill both fields.
-#. Go to *Settings > General settings* and uncheck *Allow SAML users to posess
-   an Odoo password* if you want your SAML users to authenticate only
-   through SAML.
+This addon requires `pysaml2`.
 
 Usage
 =====
 
-#. Configure it (see corresponding section in README)
+#. Configure it according to your IDP's instructions
+   (Settings > Users & Companies > SAML Providers).
+#. Pre-create your users and set the SAML information against the user.
 #. Just login with your SAML-provided password.
 
 Known issues / Roadmap
@@ -143,6 +71,11 @@ Known issues / Roadmap
 
 Changelog
 =========
+
+3.0
+~~~
+
+* Migrate from lasso to pysaml2
 
 2.0
 ~~~
@@ -179,6 +112,8 @@ Contributors
 * Bhavesh Odedra <bodedra@opensourceintegrators.com>
 * `Tecnativa <https://www.tecnativa.com/>`__:
   * Jairo Llopis
+* `GlodoUK <https://www.glodo.uk/>`__:
+  * Karl Southern
 
 Maintainers
 ~~~~~~~~~~~
