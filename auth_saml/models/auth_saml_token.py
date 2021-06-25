@@ -4,7 +4,7 @@
 from odoo import fields, models
 
 
-class SamlToken(models.Model):
+class AuthSamlToken(models.Model):
     _name = "auth_saml.token"
     _rec_name = "user_id"
     _description = "SAML Token"
@@ -25,6 +25,6 @@ class SamlToken(models.Model):
     )
     saml_access_token = fields.Char(
         "Current SAML token for this user",
-        required=True,
+        required=False,
         help="The current SAML token in use",
     )
