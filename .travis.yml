@@ -12,6 +12,7 @@ addons:
   apt:
     packages:
       - expect-dev # provides unbuffer utility
+      - xmlsec1 # required for auth_saml
 
 stages:
   - test
