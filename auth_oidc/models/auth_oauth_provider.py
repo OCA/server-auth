@@ -59,7 +59,7 @@ class AuthOauthProvider(models.Model):
     def _map_token_values(self, res):
         if self.token_map:
             for pair in self.token_map.split(" "):
-                from_key, to_key = pair.split(":")
+                from_key, to_key = [k.strip() for k in pair.split(":", 1)]
                 if to_key not in res:
                     res[to_key] = res.get(from_key, "")
         return res
