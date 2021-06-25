@@ -2,32 +2,31 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-import passlib
 
 import lasso
+import passlib
 
-from odoo import api, fields, models, _, SUPERUSER_ID, tools
-from odoo.exceptions import ValidationError, AccessDenied
+from odoo import SUPERUSER_ID, _, api, fields, models, tools
+from odoo.exceptions import AccessDenied, ValidationError
 
 _logger = logging.getLogger(__name__)
 
 
 class ResUser(models.Model):
-    """Add SAML login capabilities to Odoo users.
-    """
+    """Add SAML login capabilities to Odoo users."""
 
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
     saml_provider_id = fields.Many2one(
-        'auth.saml.provider',
-        string='SAML Provider',
+        "auth.saml.provider",
+        string="SAML Provider",
     )
     saml_uid = fields.Char(
-        'SAML User ID',
+        "SAML User ID",
         help="SAML Provider user_id",
     )
 
-    @api.constrains('password', 'saml_uid')
+    @api.constrains("password", "saml_uid")
     def check_no_password_with_saml(self):
         """Ensure no Odoo user posesses both an SAML user ID and an Odoo
         password. Except admin which is not constrained by this rule.
@@ -35,21 +34,29 @@ class ResUser(models.Model):
         if not self._allow_saml_and_password():
             # Super admin is the only user we allow to have a local password
             # in the database
-            if (self.password and self.saml_uid and
-                    self.id is not SUPERUSER_ID):
-                raise ValidationError(_("This database disallows users to "
-                                        "have both passwords and SAML IDs. "
-                                        "Errors for login %s") % (self.login))
+            if self.password and self.saml_uid and self.id is not SUPERUSER_ID:
+                raise ValidationError(
+                    _(
+                        "This database disallows users to "
+                        "have both passwords and SAML IDs. "
+                        "Errors for login %s"
+                    )
+                    % (self.login)
+                )
 
-    _sql_constraints = [('uniq_users_saml_provider_saml_uid',
-                         'unique(saml_provider_id, saml_uid)',
-                         'SAML UID must be unique per provider')]
+    _sql_constraints = [
+        (
+            "uniq_users_saml_provider_saml_uid",
+            "unique(saml_provider_id, saml_uid)",
+            "SAML UID must be unique per provider",
+        )
+    ]
 
     @api.multi
     def _auth_saml_validate(self, provider_id, token):
         """ return the validation data corresponding to the access token """
 
-        p = self.env['auth.saml.provider'].browse(provider_id)
+        p = self.env["auth.saml.provider"].browse(provider_id)
 
         # we are not yet logged in, so the userid cannot have access to the
         # fields we need yet
@@ -59,15 +66,14 @@ class ResUser(models.Model):
         try:
             login.processAuthnResponseMsg(token)
         except (lasso.DsError, lasso.ProfileCannotVerifySignatureError):
-            raise AccessDenied(_('Lasso Profile cannot verify signature'))
+            raise AccessDenied(_("Lasso Profile cannot verify signature"))
         except lasso.ProfileStatusNotSuccessError:
-            raise AccessDenied(_('Profile Status failure'))
+            raise AccessDenied(_("Profile Status failure"))
 
         try:
             login.acceptSso()
         except lasso.Error as error:
-            raise Exception(
-                'Invalid assertion : %s' % lasso.strError(error[0]))
+            raise Exception("Invalid assertion : %s" % lasso.strError(error[0]))
 
         attrs = {}
 
@@ -77,24 +83,22 @@ class ResUser(models.Model):
                 lformat = lasso.SAML2_ATTRIBUTE_NAME_FORMAT_BASIC
                 nickname = None
                 try:
-                    name = attribute.name.decode('ascii')
+                    name = attribute.name.decode("ascii")
                 except Exception:
                     _logger.warning(
-                        'sso_after_response: error decoding attribute name %s',
+                        "sso_after_response: error decoding attribute name %s",
                         attribute.dump(),
                     )
                 else:
                     try:
                         if attribute.nameFormat:
-                            lformat = attribute.nameFormat.decode('ascii')
+                            lformat = attribute.nameFormat.decode("ascii")
                         if attribute.friendlyName:
                             nickname = attribute.friendlyName
                     except Exception:
-                        message = 'sso_after_response: name or format of an \
-                            attribute failed to decode as ascii: %s'
-                        _logger.warning(
-                            message, attribute.dump(), exc_info=True
-                        )
+                        message = "sso_after_response: name or format of an \
+                            attribute failed to decode as ascii: %s"
+                        _logger.warning(message, attribute.dump(), exc_info=True)
                     try:
                         if name:
                             if lformat:
@@ -107,14 +111,12 @@ class ResUser(models.Model):
                         attrs[key] = list()
                         for value in attribute.attributeValue:
                             content = [a.exportToXml() for a in value.any]
-                            content = ''.join(content)
-                            attrs[key].append(content.decode('utf8'))
+                            content = "".join(content)
+                            attrs[key].append(content.decode("utf8"))
                     except Exception:
-                        message = 'sso_after_response: value of an \
-                            attribute failed to decode as ascii: %s due to %s'
-                        _logger.warning(
-                            message, attribute.dump(), exc_info=True
-                        )
+                        message = "sso_after_response: value of an \
+                            attribute failed to decode as ascii: %s due to %s"
+                        _logger.warning(message, attribute.dump(), exc_info=True)
 
         matching_value = None
         for k in attrs:
@@ -127,15 +129,16 @@ class ResUser(models.Model):
 
         elif not matching_value and matching_attribute != "subject.nameId":
             raise Exception(
-                "Matching attribute %s not found in user attrs: %s" % (
-                    matching_attribute, attrs))
+                "Matching attribute %s not found in user attrs: %s"
+                % (matching_attribute, attrs)
+            )
 
-        validation = {'user_id': matching_value}
+        validation = {"user_id": matching_value}
         return validation
 
     @api.multi
     def _auth_saml_signin(self, provider, validation, saml_response):
-        """ retrieve and sign into openerp the user corresponding to provider
+        """retrieve and sign into openerp the user corresponding to provider
         and validated access token
 
             :param provider: saml provider id (int)
@@ -146,24 +149,31 @@ class ResUser(models.Model):
 
             This method can be overridden to add alternative signin methods.
         """
-        token_osv = self.env['auth_saml.token']
-        saml_uid = validation['user_id']
-        user = self.search([
-            ('saml_uid', '=', saml_uid),
-            ('saml_provider_id', '=', provider),
-        ])
+        token_osv = self.env["auth_saml.token"]
+        saml_uid = validation["user_id"]
+        user = self.search(
+            [
+                ("saml_uid", "=", saml_uid),
+                ("saml_provider_id", "=", provider),
+            ]
+        )
         if len(user) != 1:
             raise AccessDenied()
         # now find if a token for this user/provider already exists
         token_ids = token_osv.search(
-            [('saml_provider_id', '=', provider), ('user_id', '=', user.id)])
+            [("saml_provider_id", "=", provider), ("user_id", "=", user.id)]
+        )
 
         if token_ids:
-            token_ids.write({'saml_access_token': saml_response})
+            token_ids.write({"saml_access_token": saml_response})
         else:
-            token_osv.create({'saml_access_token': saml_response,
-                              'saml_provider_id': provider,
-                              'user_id': user.id})
+            token_osv.create(
+                {
+                    "saml_access_token": saml_response,
+                    "saml_provider_id": provider,
+                    "user_id": user.id,
+                }
+            )
 
         return user.login
 
@@ -173,7 +183,7 @@ class ResUser(models.Model):
         validation = self._auth_saml_validate(provider, saml_response)
 
         # required check
-        if not validation.get('user_id'):
+        if not validation.get("user_id"):
             raise AccessDenied()
 
         # retrieve and sign in user
@@ -200,9 +210,16 @@ class ResUser(models.Model):
         except (AccessDenied, passlib.exc.PasswordSizeError):
             # since normal auth did not succeed we now try to find if the user
             # has an active token attached to his uid
-            res = self.env['auth_saml.token'].sudo().search(
-                [('user_id', '=', self.env.user.id),
-                 ('saml_access_token', '=', token)])
+            res = (
+                self.env["auth_saml.token"]
+                .sudo()
+                .search(
+                    [
+                        ("user_id", "=", self.env.user.id),
+                        ("saml_access_token", "=", token),
+                    ]
+                )
+            )
             if not res:
                 raise AccessDenied()
 
@@ -212,13 +229,16 @@ class ResUser(models.Model):
         if self._allow_saml_and_password():
             return
         to_remove_password = self.filtered(
-            lambda rec: rec.id != SUPERUSER_ID and rec.saml_uid and
-            not (rec.password or rec.password_crypt)
+            lambda rec: rec.id != SUPERUSER_ID
+            and rec.saml_uid
+            and not (rec.password or rec.password_crypt)
         )
-        to_remove_password.write({
-            'password': False,
-            'password_crypt': False,
-        })
+        to_remove_password.write(
+            {
+                "password": False,
+                "password_crypt": False,
+            }
+        )
 
     @api.multi
     def write(self, vals):
@@ -236,7 +256,7 @@ class ResUser(models.Model):
     def _allow_saml_and_password(self):
         """Know if both SAML and local password auth methods can coexist."""
         return tools.str2bool(
-            self.env['ir.config_parameter'].sudo().get_param(
-                'auth_saml.allow_saml.uid_and_internal_password', 'True'
-            )
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("auth_saml.allow_saml.uid_and_internal_password", "True")
         )
