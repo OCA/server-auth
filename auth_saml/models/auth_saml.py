@@ -10,26 +10,27 @@ from odoo import api, fields, models
 
 class AuthSamlProvider(models.Model):
     """Configuration values of a SAML2 provider"""
-    _name = 'auth.saml.provider'
-    _description = 'SAML2 provider'
-    _order = 'sequence, name'
+
+    _name = "auth.saml.provider"
+    _description = "SAML2 provider"
+    _order = "sequence, name"
 
     # Name of the OAuth2 entity, authentic, xcg...
-    name = fields.Char('Provider name', required=True, index=True)
+    name = fields.Char("Provider name", required=True, index=True)
     idp_metadata = fields.Text(
-        string='IDP Configuration',
+        string="IDP Configuration",
         help="Configuration for this Identity Provider",
     )
     sp_metadata = fields.Text(
-        string='SP Configuration',
+        string="SP Configuration",
         help="Configuration for the Service Provider (this Odoo instance)",
     )
     sp_pkey = fields.Text(
-        string='SP private key',
+        string="SP private key",
         help="Private key for the Service Provider (this Odoo instance)",
     )
     matching_attribute = fields.Char(
-        default='subject.nameId',
+        default="subject.nameId",
         required=True,
     )
     active = fields.Boolean(default=True)
@@ -47,20 +48,13 @@ class AuthSamlProvider(models.Model):
 
         # TODO: we should cache those results somewhere because it is
         # really costly to always recreate a login variable from buffers
-        server = lasso.Server.newFromBuffers(
-            self.sp_metadata,
-            self.sp_pkey
-        )
-        server.addProviderFromBuffer(
-            lasso.PROVIDER_ROLE_IDP,
-            self.idp_metadata
-        )
+        server = lasso.Server.newFromBuffers(self.sp_metadata, self.sp_pkey)
+        server.addProviderFromBuffer(lasso.PROVIDER_ROLE_IDP, self.idp_metadata)
         return lasso.Login(server)
 
     @api.multi
     def _get_auth_request(self, state):
-        """build an authentication request and give it back to our client
-        """
+        """build an authentication request and give it back to our client"""
 
         self.ensure_one()
 
