@@ -5,7 +5,7 @@ import logging
 from functools import partial
 
 import jwt  # pylint: disable=missing-manifest-dependency
-import requests
+from jwt import PyJWKClient
 from werkzeug.exceptions import InternalServerError
 
 from odoo import _, api, fields, models, tools
@@ -101,13 +101,8 @@ class AuthJwtValidator(models.Model):
 
     @tools.ormcache("self.public_key_jwk_uri", "kid")
     def _get_key(self, kid):
-        r = requests.get(self.public_key_jwk_uri)
-        r.raise_for_status()
-        response = r.json()
-        for key in response["keys"]:
-            if key["kid"] == kid:
-                return key
-        return {}
+        jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
+        return jwks_client.get_signing_key(kid).key
 
     def _decode(self, token):
         """Validate and decode a JWT token, return the payload."""
