@@ -10,12 +10,12 @@ class SamlToken(models.Model):
     _description = "SAML Token"
 
     saml_provider_id = fields.Many2one(
-        'auth.saml.provider',
-        string='SAML Provider that issued the token',
+        "auth.saml.provider",
+        string="SAML Provider that issued the token",
         required=True,
     )
     user_id = fields.Many2one(
-        'res.users',
+        "res.users",
         string="User",
         required=True,
         # we want the token to be destroyed if the corresponding res.users
@@ -24,7 +24,7 @@ class SamlToken(models.Model):
         index=True,
     )
     saml_access_token = fields.Char(
-        'Current SAML token for this user',
+        "Current SAML token for this user",
         required=True,
         help="The current SAML token in use",
     )
