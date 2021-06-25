@@ -1,3 +1,3 @@
-This addon requires `lasso`_.
+This addon requires ``pysaml2``.
 
-.. _lasso: http://lasso.entrouvert.org
+``pysaml2`` requires ``xmlsec1`` (on Ubuntu you can ``apt-get install xmlsec1``)
