@@ -1,3 +1,8 @@
+3.0
+~~~
+
+* Migrate from lasso to pysaml2
+
 2.0
 ~~~
 

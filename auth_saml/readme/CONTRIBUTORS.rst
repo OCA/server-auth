@@ -7,3 +7,7 @@
 * Bhavesh Odedra <bodedra@opensourceintegrators.com>
 * `Tecnativa <https://www.tecnativa.com/>`__:
   * Jairo Llopis
+* `GlodoUK <https://www.glodo.uk/>`__:
+  * Karl Southern
+* `TAKOBI <https://takobi.online/>`__:
+  * Lorenzo Battistini
