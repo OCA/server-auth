@@ -1,8 +1,10 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo noupdate="1">
     <record id="provider_local" model="auth.saml.provider">
         <field name="name">Local demo server</field>
-        <field name="idp_metadata"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+        <field
+            name="idp_metadata"
+        ><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
             <ns0:EntityDescriptor xmlns:ns0="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ns1="http://www.w3.org/2000/09/xmldsig#" entityID="http://localhost:8000/idp/saml2/metadata">
                 <ns0:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
                     <ns0:KeyDescriptor>
@@ -38,7 +40,9 @@
                 </ns0:IDPSSODescriptor>
             </ns0:EntityDescriptor>]]>
         </field>
-        <field name="sp_metadata"><![CDATA[<?xml version="1.0"?>
+        <field
+            name="sp_metadata"
+        ><![CDATA[<?xml version="1.0"?>
 <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
   xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
   xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
@@ -58,7 +62,9 @@
 </Organization>
 </EntityDescriptor>]]>
         </field>
-        <field name="sp_pkey"><![CDATA[
+        <field
+            name="sp_pkey"
+        ><![CDATA[
 -----BEGIN PRIVATE KEY-----
 MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAM5sy7T5U+siTqJm
 LLS6Jul7LUw/BORUCnzz+1MU3ETF7icpxQUkpekkVT6VCmUPJmjcTsoHXmeSerwZ
@@ -79,6 +85,6 @@ sIbngHtWnT36PTZS
         </field>
         <field name="css_class">zocial saml</field>
         <field name="body">Log in with Authentic</field>
-        <field name="active" eval="True"/>
+        <field name="active" eval="True" />
     </record>
 </odoo>
