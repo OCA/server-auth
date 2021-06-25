@@ -16,39 +16,46 @@ _logger = logging.getLogger(__name__)
 class ResUsers(models.Model):
     _inherit = "res.users"
 
+    def _auth_oauth_get_tokens_implicit_flow(self, oauth_provider, params):
+        # https://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthResponse
+        return params.get("access_token"), params.get("id_token")
+
+    def _auth_oauth_get_tokens_auth_code_flow(self, oauth_provider, params):
+        # https://openid.net/specs/openid-connect-core-1_0.html#AuthResponse
+        code = params.get("code")
+        # https://openid.net/specs/openid-connect-core-1_0.html#TokenRequest
+        auth = None
+        if oauth_provider.client_secret:
+            auth = (oauth_provider.client_id, oauth_provider.client_secret)
+        response = requests.post(
+            oauth_provider.token_endpoint,
+            data=dict(
+                client_id=oauth_provider.client_id,
+                grant_type="authorization_code",
+                code=code,
+                code_verifier=oauth_provider.code_verifier,  # PKCE
+                redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
+            ),
+            auth=auth,
+        )
+        response.raise_for_status()
+        response_json = response.json()
+        # https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
+        return response_json.get("access_token"), response_json.get("id_token")
+
     @api.model
     def auth_oauth(self, provider, params):
         oauth_provider = self.env["auth.oauth.provider"].browse(provider)
-        if oauth_provider.flow not in ("id_token", "id_token_code"):
-            return super(ResUsers, self).auth_oauth(provider, params)
-
         if oauth_provider.flow == "id_token":
-            # https://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthResponse
-            access_token = params.get("access_token")
-            id_token = params.get("id_token")
-        elif oauth_provider.flow == "id_token_code":
-            # https://openid.net/specs/openid-connect-core-1_0.html#AuthResponse
-            code = params.get("code")
-            # https://openid.net/specs/openid-connect-core-1_0.html#TokenRequest
-            auth = None
-            if oauth_provider.client_secret:
-                auth = (oauth_provider.client_id, oauth_provider.client_secret)
-            response = requests.post(
-                oauth_provider.token_endpoint,
-                data=dict(
-                    client_id=oauth_provider.client_id,
-                    grant_type="authorization_code",
-                    code=code,
-                    code_verifier=oauth_provider.code_verifier,  # PKCE
-                    redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
-                ),
-                auth=auth,
+            access_token, id_token = self._auth_oauth_get_tokens_implicit_flow(
+                oauth_provider, params
             )
-            response.raise_for_status()
-            response_json = response.json()
-            # https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse
-            access_token = response_json.get("access_token")
-            id_token = response_json.get("id_token")
+        elif oauth_provider.flow == "id_token_code":
+            access_token, id_token = self._auth_oauth_get_tokens_auth_code_flow(
+                oauth_provider, params
+            )
+        else:
+            return super(ResUsers, self).auth_oauth(provider, params)
         if not access_token:
             _logger.error("No access_token in response.")
             raise AccessDenied()
