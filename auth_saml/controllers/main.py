@@ -1,11 +1,13 @@
+# Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
 # Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
-import json as simplejson
+import json
 import logging
 
 import werkzeug.utils
+from werkzeug.urls import url_quote_plus
 
 import odoo
 from odoo import SUPERUSER_ID, _, api, http, registry as registry_get
@@ -51,8 +53,16 @@ def fragment_to_query_string(func):
 
 
 class SAMLLogin(Home):
+    def _list_saml_providers_domain(self):
+        return []
+
     def list_providers(self):
-        providers = request.env["auth.saml.provider"].sudo().search_read([])
+        providers = (
+            request.env["auth.saml.provider"]
+            .sudo()
+            .search_read(self._list_saml_providers_domain())
+        )
+
         for provider in providers:
             # Compatibility with auth_oauth/controllers/main.py in order to
             # avoid KeyError rendering template_auth_oauth_providers
@@ -82,9 +92,8 @@ class SAMLLogin(Home):
                 error = _("Access Denied")
             elif error == "expired":
                 error = _(
-                    "You do not have access to this database or your "
-                    "invitation has expired. Please ask for an invitation "
-                    "and be sure to follow the link in your invitation email."
+                    "You do not have access to this database. Please contact"
+                    " support."
                 )
             else:
                 error = None
@@ -98,24 +107,24 @@ class SAMLLogin(Home):
 
 
 class AuthSAMLController(http.Controller):
-    def get_state(self, provider_id):
-        """Compute a state to be sent to the IDP so it can forward it back to
-        us.
+    def _get_saml_extra_relaystate(self):
+        """
+        Compute any additional extra state to be sent to the IDP so it can
+        forward it back to us. This is called RelayState.
 
-        :rtype: Dictionary.
+        The provider will automatically set things like the dbname, provider
+        id, etc.
         """
 
         redirect = request.params.get("redirect") or "web"
         if not redirect.startswith(("//", "http://", "https://")):
-            redirect = "%s%s" % (
+            redirect = "{}{}".format(
                 request.httprequest.url_root,
                 redirect[1:] if redirect[0] == "/" else redirect,
             )
 
         state = {
-            "d": request.session.db,
-            "p": provider_id,
-            "r": werkzeug.url_quote_plus(redirect),
+            "r": url_quote_plus(redirect),
         }
         return state
 
@@ -123,30 +132,25 @@ class AuthSAMLController(http.Controller):
     def get_auth_request(self, pid):
         provider_id = int(pid)
 
-        auth_request = None
+        provider = request.env["auth.saml.provider"].sudo().browse(provider_id)
+        redirect_url = provider._get_auth_request(
+            self._get_saml_extra_relaystate(), request.httprequest.url_root.rstrip("/")
+        )
+        if not redirect_url:
+            raise Exception(
+                "Failed to get auth request from provider. "
+                "Either misconfigured SAML provider or unknown provider."
+            )
 
-        # store a RelayState on the request to our IDP so that the IDP
-        # can send us back this info alongside the obtained token
-        state = self.get_state(provider_id)
-
-        try:
-            Provider = request.env["auth.saml.provider"].sudo()
-            provider = Provider.browse(provider_id)
-            auth_request = provider._get_auth_request(state)
-
-        except Exception:
-            _logger.exception("SAML2 failure")
-
-        # TODO: handle case when auth_request comes back as None
-
-        redirect = werkzeug.utils.redirect(auth_request, 303)
+        redirect = werkzeug.utils.redirect(redirect_url, 303)
         redirect.autocorrect_location_header = True
         return redirect
 
     @http.route("/auth_saml/signin", type="http", auth="none", csrf=False)
     @fragment_to_query_string
     def signin(self, req, **kw):
-        """client obtained a saml token and passed it back
+        """
+        Client obtained a saml token and passed it back
         to us... we need to validate it
         """
         saml_response = kw.get("SAMLResponse")
@@ -162,15 +166,24 @@ class AuthSAMLController(http.Controller):
             redirect.autocorrect_location_header = True
             return redirect
 
-        state = simplejson.loads(kw["RelayState"])
+        state = json.loads(kw["RelayState"])
         provider = state["p"]
         dbname = state["d"]
         context = state.get("c", {})
         registry = registry_get(dbname)
+
         with registry.cursor() as cr:
             try:
                 env = api.Environment(cr, SUPERUSER_ID, context)
-                credentials = env["res.users"].sudo().auth_saml(provider, saml_response)
+                credentials = (
+                    env["res.users"]
+                    .sudo()
+                    .auth_saml(
+                        provider,
+                        saml_response,
+                        request.httprequest.url_root.rstrip("/"),
+                    )
+                )
                 action = state.get("a")
                 menu = state.get("m")
                 url = "/"
@@ -178,35 +191,45 @@ class AuthSAMLController(http.Controller):
                     url = "/#action=%s" % action
                 elif menu:
                     url = "/#menu_id=%s" % menu
-                # otherwise login_and_redirect uses an env different from this
-                # "env" used here, where "saml_access_token" is not up to date
-                cr.commit()
                 return login_and_redirect(*credentials, redirect_url=url)
-
-            except AttributeError:
-                # auth_signup is not installed
-                _logger.error(
-                    "auth_signup not installed on database " "saml sign up cancelled."
-                )
-                url = "/#action=login&saml_error=no-signup"
 
             except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
                 # user could be on a temporary session
-                _logger.info(
-                    "SAML2: access denied, redirect to main page "
-                    "in case a valid session exists, "
-                    "without setting cookies"
-                )
+                _logger.info("SAML2: access denied")
 
-                url = "/#action=login&saml_error=expired"
+                url = "/web/login?saml_error=expired"
                 redirect = werkzeug.utils.redirect(url, 303)
                 redirect.autocorrect_location_header = False
                 return redirect
 
-            except Exception:
+            except Exception as e:
                 # signup error
-                _logger.exception("SAML2: failure")
-                url = "/#action=login&saml_error=access-denied"
+                _logger.exception("SAML2: failure - %s", str(e))
+                url = "/web/login?saml_error=access-denied"
 
         return set_cookie_and_redirect(url)
+
+    @http.route("/auth_saml/metadata", type="http", auth="none", csrf=False)
+    def saml_metadata(self, req, **kw):
+        provider = kw.get("p")
+        dbname = kw.get("d")
+        valid = kw.get("valid", None)
+
+        if not dbname or not provider:
+            raise Exception("Missing parameters")
+
+        provider = int(provider)
+
+        registry = registry_get(dbname)
+
+        with registry.cursor() as cr:
+            env = api.Environment(cr, SUPERUSER_ID, {})
+            client = env["auth.saml.provider"].sudo().browse(provider)
+
+            return request.make_response(
+                client._metadata_string(
+                    valid, request.httprequest.url_root.rstrip("/")
+                ),
+                [("Content-Type", "text/xml")],
+            )
