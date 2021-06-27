@@ -25,7 +25,7 @@ class TestRegisterHook(tests.HttpCase):
         if email:
             payload["email"] = email
         access_token = jwt.encode(
-            payload, key=validator.secret_key, algorithm=validator.secret_algorithm,
+            payload, key=validator.secret_key, algorithm=validator.secret_algorithm
         )
         return "Bearer " + access_token
 
