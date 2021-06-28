@@ -1,0 +1,2 @@
+# eslint complains on ES modules
+auth_jwt_test/tests/spa/js/*.js
