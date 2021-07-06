@@ -6,8 +6,8 @@ from odoo.tests.common import TransactionCase
 class TestAuthDynamicGroups(TransactionCase):
     def test_auth_dynamic_groups(self):
         # without this, the below happens in another transaction we don't see
-        self.env.registry.enter_test_mode()
-        env = self.env(cr=self.env.registry.cursor())
+        self.env.registry.enter_test_mode(self.cr)
+        env = self.env(cr=self.registry.cursor())
         demo_user = env.ref("base.user_demo")
         group = env["res.groups"].create(
             {
@@ -21,7 +21,7 @@ class TestAuthDynamicGroups(TransactionCase):
         self.assertIn(demo_user, group.users)
         group.write({"users": [(6, False, [])]})
         self.assertFalse(group.users)
-        self.env["res.users"]._login(self.env.cr.dbname, "demo", "demo")
+        self.env["res.users"]._login(self.env.cr.dbname, "demo", "demo", env)
         group.refresh()
         self.assertIn(demo_user, group.users)
         self.env.registry.leave_test_mode()

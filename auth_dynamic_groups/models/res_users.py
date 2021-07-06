@@ -8,17 +8,17 @@ class ResUsers(models.Model):
     _inherit = "res.users"
 
     @classmethod
-    def _login(self, db, login, password):
-        uid = super(ResUsers, self)._login(db, login, password)
+    def _login(cls, db, login, password, user_agent_env):
+        uid = super(ResUsers, cls)._login(db, login, password, user_agent_env)
 
         if uid and uid != SUPERUSER_ID:
-            self.update_dynamic_groups(uid, db)
+            cls.update_dynamic_groups(uid, db)
 
         return uid
 
     @classmethod
-    def update_dynamic_groups(self, uid, db):
-        with self.pool.cursor() as cr:
+    def update_dynamic_groups(cls, uid, db):
+        with cls.pool.cursor() as cr:
             env = Environment(cr, SUPERUSER_ID, {})
             dynamic_groups = env["res.groups"].search([("is_dynamic", "=", True)])
             if dynamic_groups:

@@ -15,12 +15,22 @@ class ResGroups(models.Model):
         "time, you get `user` passed as a browse record",
     )
 
-    @api.multi
+    def check_expression(
+        self, expr, gd=None, ld=None, mode="eval", nocp=False, lb=False
+    ):
+        try:
+            result = safe_eval(expr, gd, ld, mode, nocp, lb)
+        except Exception as e:
+            raise exceptions.UserError(_("Format: %s" % e))
+        else:
+            return result
+        return False
+
     def eval_dynamic_group_condition(self, uid=None):
         user = self.env["res.users"].browse([uid]) if uid else self.env.user
         result = all(
             self.mapped(
-                lambda this: safe_eval(
+                lambda this: self.check_expression(
                     this.dynamic_group_condition or "False",
                     {
                         "user": user.sudo(),
@@ -33,7 +43,6 @@ class ResGroups(models.Model):
         )
         return result
 
-    @api.multi
     @api.constrains("dynamic_group_condition")
     def _check_dynamic_group_condition(self):
         try:
@@ -43,7 +52,6 @@ class ResGroups(models.Model):
                 _("The condition doesn't evaluate correctly!")
             )
 
-    @api.multi
     def action_evaluate(self):
         res_users = self.env["res.users"]
         for user in res_users.search([]):

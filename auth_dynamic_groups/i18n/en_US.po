@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-06 11:26+0000\n"
-"PO-Revision-Date: 2021-07-06 11:26+0000\n"
+"POT-Creation-Date: 2021-07-06 11:24+0000\n"
+"PO-Revision-Date: 2021-07-06 11:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: auth_dynamic_groups
 #: model:ir.model,name:auth_dynamic_groups.model_res_groups
 msgid "Access Groups"
-msgstr "Toegangsgroepen"
+msgstr ""
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__dynamic_group_condition
@@ -29,7 +29,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__display_name
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users__display_name
 msgid "Display Name"
-msgstr "Schermnaam"
+msgstr ""
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__is_dynamic
@@ -62,7 +62,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups____last_update
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users____last_update
 msgid "Last Modified on"
-msgstr "Laatst gewijzigd op"
+msgstr ""
 
 #. module: auth_dynamic_groups
 #: code:addons/auth_dynamic_groups/models/res_groups.py:0
@@ -81,4 +81,4 @@ msgstr ""
 #. module: auth_dynamic_groups
 #: model:ir.model,name:auth_dynamic_groups.model_res_users
 msgid "Users"
-msgstr "Gebruikers"
+msgstr ""
