@@ -8,18 +8,20 @@ class TestAuthDynamicGroups(TransactionCase):
         # without this, the below happens in another transaction we don't see
         self.env.registry.enter_test_mode()
         env = self.env(cr=self.env.registry.cursor())
-        demo_user = env.ref('base.user_demo')
-        group = env['res.groups'].create({
-            'name': 'dynamic group',
-            'is_dynamic': True,
-            'dynamic_group_condition': "'Demo' in user.name",
-        })
+        demo_user = env.ref("base.user_demo")
+        group = env["res.groups"].create(
+            {
+                "name": "dynamic group",
+                "is_dynamic": True,
+                "dynamic_group_condition": "'Demo' in user.name",
+            }
+        )
         group.action_evaluate()
         group.refresh()
         self.assertIn(demo_user, group.users)
-        group.write({'users': [(6, False, [])]})
+        group.write({"users": [(6, False, [])]})
         self.assertFalse(group.users)
-        self.env['res.users']._login(self.env.cr.dbname, 'demo', 'demo')
+        self.env["res.users"]._login(self.env.cr.dbname, "demo", "demo")
         group.refresh()
         self.assertIn(demo_user, group.users)
         self.env.registry.leave_test_mode()

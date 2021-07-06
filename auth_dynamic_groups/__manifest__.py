@@ -7,13 +7,13 @@
     "license": "AGPL-3",
     "website": "https://github.com/OCA/server-auth",
     "complexity": "normal",
-    'summary': 'Have membership conditions for certain groups',
+    "summary": "Have membership conditions for certain groups",
     "category": "Tools",
     "depends": [
-        'base',
+        "base",
     ],
     "data": [
-        'views/res_groups.xml',
+        "views/res_groups.xml",
     ],
     "auto_install": False,
     "installable": True,
