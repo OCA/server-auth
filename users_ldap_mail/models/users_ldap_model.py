@@ -20,7 +20,7 @@ class CompanyLDAP(models.Model):
     mail_attribute = fields.Char(
         "E-mail attribute",
         default="mail",
-        help="LDAP attribute to use to retrieve em-mail address.",
+        help="LDAP attribute to use to retrieve e-mail address.",
     )
 
     def _get_ldap_dicts(self):
