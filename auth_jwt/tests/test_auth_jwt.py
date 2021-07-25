@@ -75,13 +75,24 @@ class TestAuthMethod(TransactionCase):
         validator = self._create_validator(
             name=name, audience=audience, partner_id_required=partner_id_required
         )
-        # commit because IrHttp._auth_method_jwt will look for validator in another tx
-        self.env.cr.commit()  # pylint: disable=invalid-commit
+
+        def _mocked_get_validator_by_name(self, validator_name):
+            if validator_name == name:
+                return validator
+            return self.env["auth.jwt.validator"]._get_validator_by_name.origin(
+                self, validator_name
+            )
+
         try:
+            # Patch _get_validator_by_name because IrHttp._auth_method_jwt
+            # will look for the validator in another transaction,
+            # where the validator we created above would not be visible.
+            self.env["auth.jwt.validator"]._patch_method(
+                "_get_validator_by_name", _mocked_get_validator_by_name
+            )
             yield validator
         finally:
-            validator.unlink()
-            self.env.cr.commit()  # pylint: disable=invalid-commit
+            self.env["auth.jwt.validator"]._revert_method("_get_validator_by_name")
 
     def test_missing_authorization_header(self):
         with self._mock_request(authorization=None):
