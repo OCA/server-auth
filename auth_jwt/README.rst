@@ -51,7 +51,7 @@ To use it, you must:
   you want to protect where ``{validator-name}`` corresponds to the name
   attribute of the JWT validator record.
 
-The ``auth_jwt_test`` module provides examples.
+The ``auth_jwt_demo`` module provides examples.
 
 The JWT validator can be configured with the following properties:
 
