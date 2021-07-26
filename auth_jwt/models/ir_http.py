@@ -38,7 +38,10 @@ class IrHttpJwt(models.AbstractModel):
                     'A route with auth="jwt" must not be used within a user session.'
                 )
                 raise UnauthorizedSessionMismatch()
-            if request.uid:
+            # Odoo calls _authenticate more than once (in v14? why?), so
+            # on the second call we have a request uid and that is not an error
+            # because _authenticate will not call _auth_method_jwt a second time.
+            if request.uid and not hasattr(request, "jwt_payload"):
                 _logger.error(
                     'A route with auth="jwt" should not have a request.uid here.'
                 )
