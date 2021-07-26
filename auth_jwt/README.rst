@@ -57,7 +57,8 @@ The JWT validator can be configured with the following properties:
 
 * ``name``: the validator name, to match the ``auth="jwt_{validator-name}"``
   route property.
-* ``audience``: used to validate the ``aud`` claim.
+* ``audience``: a comma-separated list of allowed audiences, used to validate
+  the ``aud`` claim.
 * ``issuer``: used to validate the ``iss`` claim.
 * Signature type (secret or public key), algorithm, secret and JWK URI
   are used to validate the token signature.
@@ -71,14 +72,34 @@ If the token is valid, the request executes with the configured user id. By
 default the user id selection strategy is ``static`` (i.e. the same for all
 requests) and the selected user is configured on the JWT validator. Additional
 strategies can be provided by overriding the ``_get_uid()`` method and
-extending the ``user_id_strategy`` selection field..
+extending the ``user_id_strategy`` selection field.
+
+The selected user is *not* stored in the session. It is only available in
+``request.uid`` (and thus it is the one used in ``request.env``). To avoid any
+confusion and mismatches between the bearer token and the session, this module
+rejects requests made with an authenticated user session.
 
 Additionally, if a ``partner_id_strategy`` is configured, a partner is searched
-and if found, its id is stored in the ``request.partner_id`` attribute. If
+and if found, its id is stored in the ``request.jwt_partner_id`` attribute. If
 ``partner_id_required`` is set, a 401 (Unauthorized) is returned if no partner
-was found. Otherwise ``request.partner_id`` is left falsy. Additional
+was found. Otherwise ``request.jwt_partner_id`` is left falsy. Additional
 strategies can be provided by overriding the ``_get_partner_id()`` method
 and extending the ``partner_id_strategy`` selection field.
+
+The decoded JWT payload is stored in ``request.jwt_payload``.
+
+Known issues / Roadmap
+======================
+
+CORS support is problematic in Odoo before 14.0.
+This means the demo SPA in ``auth_jwt_demo`` does not work as is.
+To make it work, you need to serve it from the same URL as Odoo,
+or backport https://github.com/odoo/odoo/pull/56029.
+
+This might also be worked around in ``auth_jwt`` by detecting
+the cors preflight request and not requiring auth in that case.
+
+This is left for future work, as my current focus is Odoo 14.0.
 
 Bug Tracker
 ===========
