@@ -80,7 +80,7 @@ async function whoami() {
     let user = await client.getUser();
     try {
         let response = await fetch(
-            "http://localhost:8069/auth_jwt_test/keycloak/whoami",
+            "http://localhost:8069/auth_jwt_demo/keycloak/whoami",
             {
                 headers: {
                     ...(user && {Authorization: `Bearer ${user.access_token}`}),

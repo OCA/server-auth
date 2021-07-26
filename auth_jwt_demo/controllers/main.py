@@ -8,7 +8,7 @@ from odoo.http import Controller, Response, request, route
 
 class JWTTestController(Controller):
     @route(
-        "/auth_jwt_test/whoami",
+        "/auth_jwt_demo/whoami",
         type="http",
         auth="jwt_demo",
         csrf=False,
@@ -24,7 +24,7 @@ class JWTTestController(Controller):
         return Response(json.dumps(data), content_type="application/json", status=200)
 
     @route(
-        "/auth_jwt_test/keycloak/whoami",
+        "/auth_jwt_demo/keycloak/whoami",
         type="http",
         auth="jwt_demo_keycloak",
         csrf=False,

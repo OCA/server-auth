@@ -1,5 +1,5 @@
 This modules creates a JWT validator named ``demo``, and adds a
-``/auth_jwt_test/whoami`` route which returns information about the partner
+``/auth_jwt_demo/whoami`` route which returns information about the partner
 identified in the token.
 
 The ``whoami`` endpoint can be invoked as such, assuming `python-jose
@@ -25,7 +25,7 @@ The ``whoami`` endpoint can be invoked as such, assuming `python-jose
         algorithm=jwt.ALGORITHMS.HS256,
     )
     r = requests.get(
-        "http://localhost:8069/auth_jwt_test/whoami",
+        "http://localhost:8069/auth_jwt_demo/whoami",
         headers={"Authorization": "Bearer " + token},
     )
     r.raise_for_status()

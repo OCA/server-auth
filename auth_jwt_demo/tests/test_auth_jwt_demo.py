@@ -33,7 +33,7 @@ class TestRegisterHook(tests.HttpCase):
         """A end-to-end test with positive authentication and partner retrieval."""
         partner = self.env["res.users"].search([("email", "!=", False)])[0]
         token = self._get_token(email=partner.email)
-        resp = self.url_open("/auth_jwt_test/whoami", headers={"Authorization": token})
+        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         resp.raise_for_status()
         whoami = resp.json()
         self.assertEqual(whoami.get("name"), partner.name)
@@ -41,11 +41,11 @@ class TestRegisterHook(tests.HttpCase):
         # Try again in a user session, it will be rejected because auth_jwt
         # is not designed to work in user session.
         self.authenticate("demo", "demo")
-        resp = self.url_open("/auth_jwt_test/whoami", headers={"Authorization": token})
+        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
 
     def test_forbidden(self):
         """A end-to-end test with negative authentication."""
         token = self._get_token(aud="invalid")
-        resp = self.url_open("/auth_jwt_test/whoami", headers={"Authorization": token})
+        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
