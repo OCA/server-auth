@@ -14,6 +14,7 @@ class JWTTestController(Controller):
         csrf=False,
         cors="*",
         save_session=False,
+        methods=["GET", "OPTIONS"],
     )
     def whoami(self):
         data = {}
@@ -29,6 +30,7 @@ class JWTTestController(Controller):
         csrf=False,
         cors="*",
         save_session=False,
+        methods=["GET", "OPTIONS"],
     )
     def whoami_keycloak(self):
         """To use with the demo_keycloak validator.
