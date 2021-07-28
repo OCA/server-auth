@@ -14,13 +14,13 @@ Auth JWT
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/13.0/auth_jwt
+    :target: https://github.com/OCA/server-auth/tree/14.0/auth_jwt
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-13-0/server-auth-13-0-auth_jwt
+    :target: https://translation.odoo-community.org/projects/server-auth-14-0/server-auth-14-0-auth_jwt
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/13.0
+    :target: https://runbot.odoo-community.org/runbot/251/14.0
     :alt: Try me on Runbot
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
@@ -57,7 +57,8 @@ The JWT validator can be configured with the following properties:
 
 * ``name``: the validator name, to match the ``auth="jwt_{validator-name}"``
   route property.
-* ``audience``: used to validate the ``aud`` claim.
+* ``audience``: a comma-separated list of allowed audiences, used to validate
+  the ``aud`` claim.
 * ``issuer``: used to validate the ``iss`` claim.
 * Signature type (secret or public key), algorithm, secret and JWK URI
   are used to validate the token signature.
@@ -71,14 +72,21 @@ If the token is valid, the request executes with the configured user id. By
 default the user id selection strategy is ``static`` (i.e. the same for all
 requests) and the selected user is configured on the JWT validator. Additional
 strategies can be provided by overriding the ``_get_uid()`` method and
-extending the ``user_id_strategy`` selection field..
+extending the ``user_id_strategy`` selection field.
+
+The selected user is *not* stored in the session. It is only available in
+``request.uid`` (and thus it is the one used in ``request.env``). To avoid any
+confusion and mismatches between the bearer token and the session, this module
+rejects requests made with an authenticated user session.
 
 Additionally, if a ``partner_id_strategy`` is configured, a partner is searched
-and if found, its id is stored in the ``request.partner_id`` attribute. If
+and if found, its id is stored in the ``request.jwt_partner_id`` attribute. If
 ``partner_id_required`` is set, a 401 (Unauthorized) is returned if no partner
-was found. Otherwise ``request.partner_id`` is left falsy. Additional
+was found. Otherwise ``request.jwt_partner_id`` is left falsy. Additional
 strategies can be provided by overriding the ``_get_partner_id()`` method
 and extending the ``partner_id_strategy`` selection field.
+
+The decoded JWT payload is stored in ``request.jwt_payload``.
 
 Bug Tracker
 ===========
@@ -86,7 +94,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_jwt%0Aversion:%2013.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_jwt%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -124,6 +132,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-sbidoul| 
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/13.0/auth_jwt>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/14.0/auth_jwt>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
