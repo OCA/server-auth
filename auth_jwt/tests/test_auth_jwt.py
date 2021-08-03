@@ -64,7 +64,7 @@ class TestAuthMethod(TransactionCase):
             payload["email"] = email
         if nbf:
             payload["nbf"] = nbf
-        return jwt.encode(payload, key=key, algorithm="HS256")
+        return jwt.encode(payload, key=key, algorithm="HS256").decode()
 
     def _create_validator(self, name, audience="me", partner_id_required=False):
         return self.env["auth.jwt.validator"].create(
