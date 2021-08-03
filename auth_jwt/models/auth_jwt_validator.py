@@ -4,8 +4,7 @@
 import logging
 from functools import partial
 
-import jwt  # pylint: disable=missing-manifest-dependency
-from jwt import PyJWKClient
+
 from werkzeug.exceptions import InternalServerError
 
 from odoo import _, api, fields, models, tools
@@ -20,6 +19,11 @@ from ..exceptions import (
 
 _logger = logging.getLogger(__name__)
 
+try:
+    import jwt
+    from jwt import PyJWKClient
+except (ImportError, IOError) as err:
+    _logger.debug(err)
 
 class AuthJwtValidator(models.Model):
     _name = "auth.jwt.validator"
