@@ -11,7 +11,6 @@ import odoo.http
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 from odoo.tools import mute_logger
-from odoo.tools.misc import DotDict
 
 from ..exceptions import (
     AmbiguousJwtValidator,
@@ -21,6 +20,18 @@ from ..exceptions import (
     UnauthorizedMissingAuthorizationHeader,
     UnauthorizedPartnerNotFound,
 )
+
+
+# Taken from odoo.tools.misc of odoo 14.0
+class DotDict(dict):
+    """Helper for dot.notation access to dictionary attributes
+        E.g.
+          foo = DotDict({'bar': False})
+          return foo.bar
+    """
+    def __getattr__(self, attrib):
+        val = self.get(attrib)
+        return DotDict(val) if type(val) is dict else val
 
 
 class TestAuthMethod(TransactionCase):
