@@ -21,9 +21,15 @@ _logger = logging.getLogger(__name__)
 
 try:
     import jwt
-    from jwt import PyJWKClient
 except (ImportError, IOError) as err:
     _logger.debug(err)
+
+try:
+    from jwt import PyJWKClient
+except (ImportError, IOError) as err:
+    PyJWKClient = None
+    _logger.debug(err)
+
 
 class AuthJwtValidator(models.Model):
     _name = "auth.jwt.validator"
@@ -105,6 +111,9 @@ class AuthJwtValidator(models.Model):
 
     @tools.ormcache("self.public_key_jwk_uri", "kid")
     def _get_key(self, kid):
+        if not PyJWKClient:
+            raise NotImplementedError("PyJWK isn't supported")
+
         jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
         return jwks_client.get_signing_key(kid).key
 
