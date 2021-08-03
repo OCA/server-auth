@@ -14,13 +14,13 @@ Auth JWT
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/14.0/auth_jwt
+    :target: https://github.com/OCA/server-auth/tree/11.0/auth_jwt
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-14-0/server-auth-14-0-auth_jwt
+    :target: https://translation.odoo-community.org/projects/server-auth-11-0/server-auth-11-0-auth_jwt
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/14.0
+    :target: https://runbot.odoo-community.org/runbot/251/11.0
     :alt: Try me on Runbot
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
@@ -88,13 +88,26 @@ and extending the ``partner_id_strategy`` selection field.
 
 The decoded JWT payload is stored in ``request.jwt_payload``.
 
+Known issues / Roadmap
+======================
+
+CORS support is problematic in Odoo before 14.0.
+This means the demo SPA in ``auth_jwt_demo`` does not work as is.
+To make it work, you need to serve it from the same URL as Odoo,
+or backport https://github.com/odoo/odoo/pull/56029.
+
+This might also be worked around in ``auth_jwt`` by detecting
+the cors preflight request and not requiring auth in that case.
+
+This is left for future work, as my current focus is Odoo 14.0.
+
 Bug Tracker
 ===========
 
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_jwt%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_jwt%0Aversion:%2011.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -132,6 +145,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-sbidoul| 
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/14.0/auth_jwt>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/11.0/auth_jwt>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

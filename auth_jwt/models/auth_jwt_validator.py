@@ -189,7 +189,8 @@ class AuthJwtValidator(models.Model):
             except AttributeError:
                 pass
 
-    @api.model_create_multi
+    # model_create_multi cannot be used in 11.0
+    # @api.model_create_multi
     def create(self, vals):
         rec = super().create(vals)
         rec._register_auth_method()
