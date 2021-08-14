@@ -17,24 +17,24 @@ None
 
 Available addons
 ----------------
-addon | version | summary
---- | --- | ---
-[auth_api_key](auth_api_key/) | 13.0.1.0.0 | Authenticate http requests from an API key
-[auth_from_http_remote_user](auth_from_http_remote_user/) | 13.0.1.0.0 | Authenticate via HTTP Remote User
-[auth_jwt](auth_jwt/) | 13.0.1.0.1 | JWT bearer token authentication.
-[auth_jwt_demo](auth_jwt_demo/) | 13.0.1.0.1 | Test/demo module for auth_jwt.
-[auth_ldaps](auth_ldaps/) | 13.0.1.0.1 | Allows to use LDAP over SSL authentication
-[auth_oauth_multi_token](auth_oauth_multi_token/) | 13.0.2.0.0 | Allow multiple connection with the same OAuth account
-[auth_oidc](auth_oidc/) | 13.0.1.0.1 | Allow users to login through OpenID Connect Provider
-[auth_saml](auth_saml/) | 13.0.1.0.0 | Saml2 Authentication
-[auth_session_timeout](auth_session_timeout/) | 13.0.1.1.0 | This module disable all inactive sessions since a given delay
-[auth_signup_verify_email](auth_signup_verify_email/) | 13.0.1.0.1 | Force uninvited users to use a good email for signup
-[auth_user_case_insensitive](auth_user_case_insensitive/) | 13.0.1.0.0 | Makes the user login field case insensitive
-[base_user_show_email](base_user_show_email/) | 13.0.1.0.0 | Untangle user login and email
-[password_security](password_security/) | 13.0.1.0.0 | Allow admin to set password security requirements.
-[users_ldap_groups](users_ldap_groups/) | 13.0.1.0.0 | Adds user accounts to groups based on rules defined by the administrator.
-[users_ldap_mail](users_ldap_mail/) | 13.0.1.0.0 | LDAP mapping for user name and e-mail
-[users_ldap_populate](users_ldap_populate/) | 13.0.1.0.0 | LDAP Populate
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[auth_api_key](auth_api_key/) | 13.0.1.0.0 |  | Authenticate http requests from an API key
+[auth_from_http_remote_user](auth_from_http_remote_user/) | 13.0.1.0.0 |  | Authenticate via HTTP Remote User
+[auth_jwt](auth_jwt/) | 13.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | JWT bearer token authentication.
+[auth_jwt_demo](auth_jwt_demo/) | 13.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
+[auth_ldaps](auth_ldaps/) | 13.0.1.0.1 |  | Allows to use LDAP over SSL authentication
+[auth_oauth_multi_token](auth_oauth_multi_token/) | 13.0.2.0.0 |  | Allow multiple connection with the same OAuth account
+[auth_oidc](auth_oidc/) | 13.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
+[auth_saml](auth_saml/) | 13.0.1.0.0 |  | Saml2 Authentication
+[auth_session_timeout](auth_session_timeout/) | 13.0.1.1.0 |  | This module disable all inactive sessions since a given delay
+[auth_signup_verify_email](auth_signup_verify_email/) | 13.0.1.0.1 |  | Force uninvited users to use a good email for signup
+[auth_user_case_insensitive](auth_user_case_insensitive/) | 13.0.1.0.0 |  | Makes the user login field case insensitive
+[base_user_show_email](base_user_show_email/) | 13.0.1.0.0 |  | Untangle user login and email
+[password_security](password_security/) | 13.0.1.0.0 |  | Allow admin to set password security requirements.
+[users_ldap_groups](users_ldap_groups/) | 13.0.1.0.0 |  | Adds user accounts to groups based on rules defined by the administrator.
+[users_ldap_mail](users_ldap_mail/) | 13.0.1.0.0 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP mapping for user name and e-mail
+[users_ldap_populate](users_ldap_populate/) | 13.0.1.0.0 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP Populate
 
 [//]: # (end addons)
 
