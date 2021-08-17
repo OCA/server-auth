@@ -13,7 +13,6 @@ class JWTTestController(Controller):
         auth="jwt_demo",
         csrf=False,
         cors="*",
-        save_session=False,
         methods=["GET", "OPTIONS"],
     )
     def whoami(self):
@@ -29,7 +28,6 @@ class JWTTestController(Controller):
         auth="jwt_demo_keycloak",
         csrf=False,
         cors="*",
-        save_session=False,
         methods=["GET", "OPTIONS"],
     )
     def whoami_keycloak(self):
