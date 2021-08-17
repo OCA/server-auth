@@ -11,7 +11,7 @@
     'website': 'https://github.com/OCA/server-auth',
     'license': 'AGPL-3',
     'category': 'Tools',
-    'version': '11.0.1.0.0',
+    'version': '11.0.1.0.1',
     'depends': [
         'auth_saml'
     ],
