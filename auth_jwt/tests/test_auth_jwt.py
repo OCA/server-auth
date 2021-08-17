@@ -3,7 +3,7 @@
 
 import contextlib
 import time
-from unittest.mock import Mock
+from mock import Mock
 
 import jwt
 
@@ -11,7 +11,6 @@ import odoo.http
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase
 from odoo.tools import mute_logger
-from odoo.tools.misc import DotDict
 
 from ..exceptions import (
     AmbiguousJwtValidator,
@@ -31,13 +30,15 @@ class TestAuthMethod(TransactionCase):
             db=self.env.cr.dbname,
             uid=None,
             httprequest=Mock(environ={"HTTP_AUTHORIZATION": authorization}),
-            session=DotDict(),
+            session=odoo.http.OpenERPSession(data={}, sid=None),
         )
 
-        with contextlib.ExitStack() as s:
-            odoo.http._request_stack.push(request)
-            s.callback(odoo.http._request_stack.pop)
+        odoo.http._request_stack.push(request)
+        try:
             yield request
+        finally:
+            odoo.http._request_stack.pop()
+
 
     def _create_token(
         self,
