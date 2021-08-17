@@ -19,5 +19,5 @@
         'data/auth_saml_create_user.xml',
         'views/auth_saml.xml',
     ],
-    'development_status': 'Stable',
+    'development_status': 'Production/Stable',
 }
