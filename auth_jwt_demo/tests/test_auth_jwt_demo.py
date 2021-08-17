@@ -3,13 +3,20 @@
 
 import time
 
-import jwt
+from jose import jwt
+import requests
 
 from odoo import tests
 
 
-@tests.tagged("post_install", "-at_install")
+@tests.common.at_install(False)
+@tests.common.post_install(True)
 class TestRegisterHook(tests.HttpCase):
+    def _url_open(self, url, headers):
+        if url.startswith('/'):
+            url = "http://%s:%s%s" % ("127.0.0.1", 8069, url)
+        return requests.get(url, headers=headers)
+
     def test_auth_method_exists(self):
         validator = self.env["auth.jwt.validator"].search([("name", "=", "demo")])
         self.assertEqual(len(validator), 1)
@@ -33,7 +40,7 @@ class TestRegisterHook(tests.HttpCase):
         """A end-to-end test with positive authentication and partner retrieval."""
         partner = self.env["res.users"].search([("email", "!=", False)])[0]
         token = self._get_token(email=partner.email)
-        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
+        resp = self._url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         resp.raise_for_status()
         whoami = resp.json()
         self.assertEqual(whoami.get("name"), partner.name)
@@ -41,11 +48,11 @@ class TestRegisterHook(tests.HttpCase):
         # Try again in a user session, it will be rejected because auth_jwt
         # is not designed to work in user session.
         self.authenticate("demo", "demo")
-        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
+        resp = self._url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
 
     def test_forbidden(self):
         """A end-to-end test with negative authentication."""
         token = self._get_token(aud="invalid")
-        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
+        resp = self._url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
