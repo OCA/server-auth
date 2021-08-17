@@ -3,6 +3,8 @@
 
 import logging
 from functools import partial
+import re
+import tokenize
 
 import jwt  # pylint: disable=missing-manifest-dependency
 from jwt import PyJWKClient
@@ -74,7 +76,7 @@ class AuthJwtValidator(models.Model):
     @api.constrains("name")
     def _check_name(self):
         for rec in self:
-            if not rec.name.isidentifier():
+            if not re.match(tokenize.Name + '$', rec.name):
                 raise ValidationError(
                     _("Name %r is not a valid python identifier.") % (rec.name,)
                 )
