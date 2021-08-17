@@ -6,8 +6,8 @@ from functools import partial
 import re
 import tokenize
 
-import jwt  # pylint: disable=missing-manifest-dependency
-from jwt import PyJWKClient
+from jose import jwt  # pylint: disable=missing-manifest-dependency
+import requests
 from werkzeug.exceptions import InternalServerError
 
 from odoo import _, api, fields, models, tools
@@ -59,7 +59,7 @@ class AuthJwtValidator(models.Model):
         default="RS256",
     )
     audience = fields.Char(
-        required=True, help="Comma separated list of audiences, to validate aud."
+        required=True, help="A single audience, to validate aud."
     )
     issuer = fields.Char(required=True, help="To validate iss.")
     user_id_strategy = fields.Selection(
@@ -103,8 +103,13 @@ class AuthJwtValidator(models.Model):
 
     @tools.ormcache("self.public_key_jwk_uri", "kid")
     def _get_key(self, kid):
-        jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
-        return jwks_client.get_signing_key(kid).key
+        r = requests.get(self.public_key_jwk_uri)
+        r.raise_for_status()
+        response = r.json()
+        for key in response["keys"]:
+            if key["kid"] == kid:
+                return key
+        return {}
 
     def _decode(self, token):
         """Validate and decode a JWT token, return the payload."""
@@ -130,7 +135,7 @@ class AuthJwtValidator(models.Model):
                     verify_aud=True,
                     verify_iss=True,
                 ),
-                audience=self.audience.split(","),
+                audience=self.audience,
                 issuer=self.issuer,
             )
         except Exception as e:
