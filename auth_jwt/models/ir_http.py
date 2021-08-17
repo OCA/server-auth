@@ -47,7 +47,7 @@ class IrHttpJwt(models.AbstractModel):
                     'A route with auth="jwt" should not have a request.uid here.'
                 )
                 raise UnauthorizedSessionMismatch()
-        return super()._authenticate(endpoint)
+        return super(IrHttpJwt, cls)._authenticate(endpoint)
 
     @classmethod
     def _auth_method_jwt(cls, validator_name=None):

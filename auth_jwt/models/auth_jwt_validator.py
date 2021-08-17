@@ -168,7 +168,7 @@ class AuthJwtValidator(models.Model):
         return partner_id
 
     def _register_hook(self):
-        res = super()._register_hook()
+        res = super(AuthJwtValidator, self)._register_hook()
         self.search([])._register_auth_method()
         return res
 
@@ -189,19 +189,19 @@ class AuthJwtValidator(models.Model):
             except AttributeError:
                 pass
 
-    @api.model_create_multi
+    @api.model
     def create(self, vals):
-        rec = super().create(vals)
+        rec = super(AuthJwtValidator, self).create(vals)
         rec._register_auth_method()
         return rec
 
     def write(self, vals):
         if "name" in vals:
             self._unregister_auth_method()
-        res = super().write(vals)
+        res = super(AuthJwtValidator, self).write(vals)
         self._register_auth_method()
         return res
 
     def unlink(self):
         self._unregister_auth_method()
-        return super().unlink()
+        return super(AuthJwtValidator, self).unlink()
