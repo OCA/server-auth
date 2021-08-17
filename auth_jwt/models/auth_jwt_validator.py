@@ -177,7 +177,7 @@ class AuthJwtValidator(models.Model):
         for rec in self:
             setattr(
                 IrHttp.__class__,
-                f"_auth_method_jwt_{rec.name}",
+                "_auth_method_jwt_{}".format(rec.name),
                 partial(IrHttp.__class__._auth_method_jwt, validator_name=rec.name),
             )
 
@@ -185,7 +185,7 @@ class AuthJwtValidator(models.Model):
         IrHttp = self.env["ir.http"]
         for rec in self:
             try:
-                delattr(IrHttp.__class__, f"_auth_method_jwt_{rec.name}")
+                delattr(IrHttp.__class__, "_auth_method_jwt_{}".format(rec.name))
             except AttributeError:
                 pass
 
