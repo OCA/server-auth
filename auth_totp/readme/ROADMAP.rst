@@ -6,7 +6,7 @@
 * Make the lifetime of the trusted device cookie configurable rather than fixed
   at 30 days
 * Add device fingerprinting to the trusted device cookie
-* Add company-level settings for forcing all users to enable MFA and disabling 
+* Add company-level settings for forcing all users to enable MFA and disabling
   the trusted device option
 * Monkey patch 1 is not needed anymore in Werkzeug==0.13 or upper
 * Monkey patch 2 will work until werkzeug.contrib gets removed.
