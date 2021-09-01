@@ -36,7 +36,6 @@ class ResUsers(models.Model):
         compute="_compute_trusted_device_cookie_key", store=True,
     )
 
-    @api.multi
     @api.depends("mfa_enabled")
     def _compute_trusted_device_cookie_key(self):
         for record in self:
@@ -45,7 +44,6 @@ class ResUsers(models.Model):
             else:
                 record.trusted_device_cookie_key = False
 
-    @api.multi
     @api.constrains("mfa_enabled", "authenticator_ids")
     def _check_enabled_with_authenticator(self):
         for record in self:
@@ -110,7 +108,6 @@ class ResUsers(models.Model):
             request.session["mfa_login_needed"] = True
         raise MfaLoginNeeded
 
-    @api.multi
     def validate_mfa_confirmation_code(self, confirmation_code):
         self.ensure_one()
         return self.authenticator_ids.validate_conf_code(confirmation_code)

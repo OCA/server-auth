@@ -6,3 +6,4 @@ zxcvbn-python==4.4.24
 python-jose[cryptography]
 # auth_saml
 pysaml2
+pyotp

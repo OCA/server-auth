@@ -33,12 +33,10 @@ class ResUsersAuthenticator(models.Model):
     secret_key = fields.Char(required=True, readonly=True,)
     user_id = fields.Many2one(comodel_name="res.users", ondelete="cascade",)
 
-    @api.multi
     @api.constrains("user_id")
     def _check_has_user(self):
         self.filtered(lambda r: not r.user_id).unlink()
 
-    @api.multi
     def validate_conf_code(self, confirmation_code):
         for record in self:
             totp = pyotp.TOTP(record.secret_key)

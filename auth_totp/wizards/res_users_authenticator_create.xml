@@ -40,7 +40,6 @@
     <record id="res_users_authenticator_create_action" model="ir.actions.act_window">
         <field name="name">MFA App/Device Creation Wizard</field>
         <field name="res_model">res.users.authenticator.create</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
