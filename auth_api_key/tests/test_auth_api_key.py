@@ -65,3 +65,9 @@ class TestAuthApiKey(SavepointCase):
         )
         with self.assertRaises(ValidationError):
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
+
+    def test_default_key_value(self):
+        api_key = self.AuthApiKey.create(
+            {"name": "Default value", "user_id": self.demo_user.id}
+        )
+        self.assertTrue(bool(api_key.key))
