@@ -57,7 +57,7 @@ class AuthApiKey(models.Model):
         if not self.env.user.has_group("base.group_system"):
             raise AccessError(_("User is not allowed"))
         for api_key in self.search([]):
-            if consteq(key, api_key.key):
+            if api_key.key and consteq(key, api_key.key):
                 return api_key.id
         raise ValidationError(_("The key %s is not allowed") % key)
 
