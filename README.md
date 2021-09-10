@@ -20,7 +20,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [auth_admin_passkey](auth_admin_passkey/) | 14.0.1.0.0 |  | Allows system administrator to authenticate with any account
-[auth_api_key](auth_api_key/) | 14.0.1.0.0 |  | Authenticate http requests from an API key
+[auth_api_key](auth_api_key/) | 14.0.1.0.1 |  | Authenticate http requests from an API key
 [auth_jwt](auth_jwt/) | 14.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | JWT bearer token authentication.
 [auth_jwt_demo](auth_jwt_demo/) | 14.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
 [auth_ldaps](auth_ldaps/) | 14.0.1.0.0 |  | Allows to use LDAP over SSL authentication
