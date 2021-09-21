@@ -20,7 +20,7 @@ class AuthApiKey(models.Model):
     name = fields.Char(required=True)
     key = fields.Char(
         required=True,
-        default=_default_key,
+        default=lambda self: self._default_key(),
         help="""The API key. Keep the default value in this field if it is
         obtained from the server environment configuration.""",
     )
