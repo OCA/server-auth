@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_export_wizard" model="ir.ui.view">
+        <field name="model">vault.export.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="vault_id" invisible="1" />
+                    <field name="entry_id" invisible="1" />
+                    <field name="master_key" invisible="1" />
+                    <field name="name" invisible="1" />
+
+                    <group>
+                        <field
+                            name="content"
+                            widget="vault_export"
+                            filename="name"
+                            readonly="1"
+                        />
+                        <field name="include_childs" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button type="special" string="Close" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
