@@ -29,6 +29,8 @@ addon | version | maintainers | summary
 [password_security](password_security/) | 14.0.1.0.0 |  | Allow admin to set password security requirements.
 [user_log_view](user_log_view/) | 14.0.1.0.0 | [![trojikman](https://github.com/trojikman.png?size=30px)](https://github.com/trojikman) | Allow to see user's actions log
 [users_ldap_groups](users_ldap_groups/) | 14.0.1.0.0 |  | Adds user accounts to groups based on rules defined by the administrator.
+[vault](vault/) | 14.0.1.5.0 |  | Password vault integration in Odoo
+[vault_share](vault_share/) | 14.0.1.0.0 |  | Implementation of a mechanism to share secrets
 
 [//]: # (end addons)
 
