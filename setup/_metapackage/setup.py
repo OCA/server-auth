@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo14-addon-auth_jwt',
         'odoo14-addon-auth_jwt_demo',
         'odoo14-addon-auth_ldaps',
+        'odoo14-addon-auth_saml',
         'odoo14-addon-auth_session_timeout',
         'odoo14-addon-auth_user_case_insensitive',
         'odoo14-addon-password_security',
