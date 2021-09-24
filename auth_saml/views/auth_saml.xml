@@ -1,0 +1,157 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!-- login form button -->
+    <template id="auth_saml.providers" name="Auth SAML Providers">
+        <t t-if="len(providers) &gt; 0">
+            <em
+                t-attf-class="d-block text-center text-muted small my-#{len(providers) if len(providers) &lt; 3 else 3}"
+            >- or -</em>
+            <div class="o_login_saml2 mt-1 mb-1 text-left">
+                <t t-foreach="providers" t-as="p">
+                    <a
+                        t-att-href="'/auth_saml/get_auth_request?pid=%s'%p['id']"
+                        class="btn btn-outline-primary btn-block"
+                    >
+                        <i t-att-class="p['css_class']" />
+                        <t t-esc="p['body']" />
+                    </a>
+                </t>
+            </div>
+        </t>
+    </template>
+    <template id="auth_saml.login" inherit_id="web.login" name="Samlv2 Login buttons">
+        <xpath expr="//div[hasclass('o_login_auth')]" position="after">
+            <t t-call="auth_saml.providers" />
+        </xpath>
+    </template>
+    <!-- Views for the auth.saml.provider model. -->
+    <record model="ir.ui.view" id="view_saml_provider_list">
+        <field name="name">auth.saml.provider.list</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="arch" type="xml">
+            <tree string="arch">
+                <field name="name" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_saml_provider_form">
+        <field name="name">auth.saml.provider.form</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="arch" type="xml">
+            <form string="SAML Provider">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1>
+                            <field name="name" required="1" />
+                        </h1>
+                    </div>
+                    <group name="idp_settings">
+                        <group string="Identity Provider Settings">
+                            <label for="idp_metadata" />
+                            <div>
+                                <field
+                                    name="idp_metadata"
+                                    widget="ace"
+                                    options="{'mode': 'xml'}"
+                                />
+                                <p
+                                    class="help small"
+                                >Your provider will give you this XML once configured.</p>
+                            </div>
+                            <label for="matching_attribute" />
+                            <div>
+                                <field name="matching_attribute" />
+                                <p
+                                    class="help small"
+                                >Attribute to match the user in Odoo with against the IDP (Identity Provider). You may use the special case "subject.nameId" to match against the nameId in the IDP response.</p>
+                            </div>
+                            <field name="matching_attribute_to_lower" />
+                        </group>
+                        <group string="Odoo Settings" name="odoo_settings">
+                            <label for="sp_baseurl" />
+                            <div>
+                                <field name="sp_baseurl" widget="url" />
+                                <p
+                                    class="help small"
+                                >The URL configured for the ACS must exactly match what is sent. If you have odoo responding on multiple URLs you can use this to force it to send a specific address rather than rely on automatically detecting.</p>
+                                <p
+                                    class="help small"
+                                >Your ACS url will be base_url + /auth_saml/signin</p>
+                            </div>
+                            <label for="sp_metadata_url" />
+                            <div>
+                                <field name="sp_metadata_url" widget="url" />
+                                <p
+                                    class="help small"
+                                >Available after first save. The URL will change if the provider is deleted &amp; recreated or the database is renamed.</p>
+                            </div>
+                            <label for="entity_id" />
+                            <div>
+                                <field name="entity_id" />
+                                <p
+                                    class="help small"
+                                >Entity Identifier sent to the IDP. Often this would be the metadata URL, but it can be any string.</p>
+                            </div>
+                            <label for="sp_pem_public" />
+                            <div>
+                                <field name="sp_pem_public" />
+                                <p
+                                    class="help small"
+                                >Used to sign requests sent to the IDP. You can use openssl to generate a certificate and key.</p>
+                            </div>
+                            <label for="sp_pem_private" />
+                            <div>
+                                <field name="sp_pem_private" />
+                                <p
+                                    class="help small"
+                                >Used to sign requests sent to the IDP. You can use openssl to generate a certificate and key.</p>
+                            </div>
+                            <label for="sig_alg" />
+                            <div>
+                                <field name="sig_alg" />
+                                <p class="help small">
+                                Algorithm used to sign requests.
+                                </p>
+                            </div>
+                            <field name="sign" />
+                            <label for="attribute_mapping_ids" />
+                            <div>
+                                <field
+                                    name="attribute_mapping_ids"
+                                    context="{'default_provider_id': active_id}"
+                                >
+                                    <tree editable="bottom">
+                                        <field name="attribute_name" />
+                                        <field name="field_name" widget="selection" />
+                                    </tree>
+                                </field>
+                                <p class="help small">
+                                    Mapped attributes are copied from the SAML response at every logon, if available. If multiple values are returned (i.e. a list) then the first value is used.
+                                </p>
+                            </div>
+                        </group>
+                        <group string="Display Settings" name="display_settings">
+                            <field name="body" />
+                            <field name="css_class" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Menu command to open the SAML provider list. -->
+    <record model="ir.actions.act_window" id="action_saml_provider">
+        <field name="name">Providers</field>
+        <field name="res_model">auth.saml.provider</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem
+        id="menu_saml_providers"
+        name="SAML Providers"
+        parent="base.menu_users"
+        sequence="30"
+        action="action_saml_provider"
+    />
+</odoo>
