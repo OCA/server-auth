@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-22 00:55+0000\n"
-"PO-Revision-Date: 2021-09-24 11:34+0000\n"
+"PO-Revision-Date: 2021-09-27 10:34+0000\n"
 "Last-Translator: Valentín Castravete Georgian <valentincastravete@gmail.com>"
 "\n"
 "Language-Team: Spanish (https://www.transifex.com/oca/teams/23907/es/)\n"
@@ -213,7 +213,7 @@ msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
 "administrator for assistance."
 msgstr ""
-"Las contraseñas pueden ser reestablecidas sólo cada %d hora(s). Por favor "
+"Las contraseñas pueden ser restablecidas sólo cada %d hora(s). Por favor "
 "contacte un administrador para asistencia."
 
 #. module: password_security
@@ -294,35 +294,35 @@ msgstr "Usuarios"
 #: code:addons/password_security/static/src/js/password_gauge.js:40
 #, python-format
 msgid "at least %d characters"
-msgstr "al menos %d caracteres"
+msgstr "al menos %d caracter/es"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:49
 #, python-format
 msgid "at least %d lower case characters"
-msgstr "al menos %d caracteres en minúsculas"
+msgstr "al menos %d caracter/es en minúsculas"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:67
 #, python-format
 msgid "at least %d numeric characters"
-msgstr "al menos %d caracteres numéricos"
+msgstr "al menos %d caracter/es numéricos"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:76
 #, python-format
 msgid "at least %d special characters"
-msgstr "al menos %d caracteres especiales"
+msgstr "al menos %d caracter/es especiales"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:58
 #, python-format
 msgid "at least %d upper case characters"
-msgstr "al menos %d caracteres en mayúsculas"
+msgstr "al menos %d caracter/es en mayúsculas"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
