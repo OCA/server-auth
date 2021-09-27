@@ -65,16 +65,6 @@ msgid "Key"
 msgstr "Chiave"
 
 #. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_default
-msgid "Key Env Default"
-msgstr ""
-
-#. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_is_editable
-msgid "Key Env Is Editable"
-msgstr ""
-
-#. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
 #: model:ir.model.fields,field_description:auth_api_key.field_ir_http____last_update
 msgid "Last Modified on"
@@ -94,11 +84,6 @@ msgstr "Ultimo aggiornamento il"
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__name
 msgid "Name"
 msgstr "Nome"
-
-#. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__server_env_defaults
-msgid "Server Env Defaults"
-msgstr "Variabili ambiente predefinite del server"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
@@ -134,3 +119,6 @@ msgstr "Utente"
 #, python-format
 msgid "User is not allowed"
 msgstr "Utente non autorizzato"
+
+#~ msgid "Server Env Defaults"
+#~ msgstr "Variabili ambiente predefinite del server"
