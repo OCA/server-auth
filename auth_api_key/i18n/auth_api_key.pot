@@ -62,16 +62,6 @@ msgid "Key"
 msgstr ""
 
 #. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_default
-msgid "Key Env Default"
-msgstr ""
-
-#. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_is_editable
-msgid "Key Env Is Editable"
-msgstr ""
-
-#. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
 #: model:ir.model.fields,field_description:auth_api_key.field_ir_http____last_update
 msgid "Last Modified on"
@@ -90,11 +80,6 @@ msgstr ""
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__name
 msgid "Name"
-msgstr ""
-
-#. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__server_env_defaults
-msgid "Server Env Defaults"
 msgstr ""
 
 #. module: auth_api_key
