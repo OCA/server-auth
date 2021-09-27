@@ -92,21 +92,21 @@ class ResUsers(models.Model):
         company_id = self.company_id
         message = []
         if company_id.password_lower:
-            message.append('\n* ' + 'Lowercase letter (At least ' + str(
-                company_id.password_lower) + ' character)')
+            message.append('\n* ' + _('Lowercase letter (At least ') + str(
+                company_id.password_lower) + _(' character(s))'))
         if company_id.password_upper:
-            message.append('\n* ' + 'Uppercase letter (At least ' + str(
-                company_id.password_upper) + ' character)')
+            message.append('\n* ' + _('Uppercase letter (At least ') + str(
+                company_id.password_upper) + _(' character(s))'))
         if company_id.password_numeric:
-            message.append('\n* ' + 'Numeric digit (At least ' + str(
-                company_id.password_numeric) + ' character)')
+            message.append('\n* ' + _('Numeric digit (At least ') + str(
+                company_id.password_numeric) + _(' character(s))'))
         if company_id.password_special:
-            message.append('\n* ' + 'Special character (At least ' + str(
-                company_id.password_special) + ' character)')
+            message.append('\n* ' + _('Special character (At least ') + str(
+                company_id.password_special) + _(' character(s))'))
         if message:
             message = [_('Must contain the following:')] + message
         if company_id.password_length:
-            message = ['Password must be %d characters or more.' %
+            message = [_('Password must be %d character(s) or more.') %
                        company_id.password_length
                        ] + message
         return '\r'.join(message)
@@ -175,7 +175,7 @@ class ResUsers(models.Model):
             if write_date + delta > datetime.now():
                 raise PassError(
                     _('Passwords can only be reset every %d hour(s). '
-                      'Please contact an administrator for assistance.') %
+                      _('Please contact an administrator for assistance.')) %
                     pass_min,
                 )
         return True
