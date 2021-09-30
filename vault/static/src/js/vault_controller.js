@@ -284,7 +284,7 @@ odoo.define("vault.controller", function (require) {
                     ),
                     {
                         confirm_callback: async function () {
-                            await this._deleteVaultRight(
+                            await self._deleteVaultRight(
                                 record,
                                 changes.right_ids,
                                 options
