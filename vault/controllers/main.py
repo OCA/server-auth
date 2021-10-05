@@ -73,7 +73,7 @@ class Controller(http.Controller):
         if not user or not user.keys:
             return {}
 
-        return {"public_key": user.active_keys.public}
+        return {"public_key": user.active_key.public}
 
     @http.route("/vault/keys/store", auth="user", type="json")
     def vault_store_keys(self, **kwargs):
