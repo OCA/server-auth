@@ -76,11 +76,11 @@ async function refresh() {
     client.startSilentRenew();
 }
 
-async function whoami() {
+async function _whoami(endpoint) {
     let user = await client.getUser();
     try {
         let response = await fetch(
-            "http://localhost:8069/auth_jwt_demo/keycloak/whoami",
+            "http://localhost:8069/auth_jwt_demo/keycloak" + endpoint,
             {
                 headers: {
                     ...(user && {Authorization: `Bearer ${user.access_token}`}),
@@ -94,4 +94,12 @@ async function whoami() {
     }
 }
 
-export {onload, login, logout, whoami};
+async function whoami() {
+    await _whoami("/whoami");
+}
+
+async function whoami_public_or_jwt() {
+    await _whoami("/whoami-public-or-jwt");
+}
+
+export {onload, login, logout, whoami, whoami_public_or_jwt};
