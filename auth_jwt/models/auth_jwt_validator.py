@@ -180,12 +180,20 @@ class AuthJwtValidator(models.Model):
                 f"_auth_method_jwt_{rec.name}",
                 partial(IrHttp.__class__._auth_method_jwt, validator_name=rec.name),
             )
+            setattr(
+                IrHttp.__class__,
+                f"_auth_method_public_or_jwt_{rec.name}",
+                partial(
+                    IrHttp.__class__._auth_method_public_or_jwt, validator_name=rec.name
+                ),
+            )
 
     def _unregister_auth_method(self):
         IrHttp = self.env["ir.http"]
         for rec in self:
             try:
                 delattr(IrHttp.__class__, f"_auth_method_jwt_{rec.name}")
+                delattr(IrHttp.__class__, f"_auth_method_public_or_jwt_{rec.name}")
             except AttributeError:
                 pass
 
