@@ -5,9 +5,9 @@ To use it, you must:
 
 * Create an ``auth.jwt.validator`` record to configure how the JWT token will
   be validated.
-* Add an ``auth="jwt_{validator-name}"`` attribute to the routes
-  you want to protect where ``{validator-name}`` corresponds to the name
-  attribute of the JWT validator record.
+* Add an ``auth="jwt_{validator-name}"`` or ``auth="public_or_jwt_{validator-name}"``
+  attribute to the routes you want to protect where ``{validator-name}`` corresponds to
+  the name attribute of the JWT validator record.
 
 The ``auth_jwt_demo`` module provides examples.
 
@@ -45,3 +45,11 @@ strategies can be provided by overriding the ``_get_partner_id()`` method
 and extending the ``partner_id_strategy`` selection field.
 
 The decoded JWT payload is stored in ``request.jwt_payload``.
+
+The ``public_auth_jwt`` method delegates authentication to the standard Odoo ``public``
+method when the Authorization header is not set. If it is set, the regular JWT
+authentication is performed as described above. This method is useful for public
+endpoints that need to work for anonymous users, but can be enhanced when an
+authenticated user is know. A typical use case is a "add to cart" endpoint that can work
+for anonymous users, but can be enhanced by binding the cart to a known customer when
+the authenticated user is known.

@@ -26,13 +26,21 @@ from ..exceptions import (
 class TestAuthMethod(TransactionCase):
     @contextlib.contextmanager
     def _mock_request(self, authorization):
+        environ = {}
+        if authorization:
+            environ["HTTP_AUTHORIZATION"] = authorization
         request = Mock(
             context={},
             db=self.env.cr.dbname,
             uid=None,
-            httprequest=Mock(environ={"HTTP_AUTHORIZATION": authorization}),
+            httprequest=Mock(environ=environ),
             session=DotDict(),
+            env=self.env,
         )
+        # These attributes are added upon successful auth, so make sure
+        # calling hasattr on the mock when they are not yet set returns False.
+        del request.jwt_payload
+        del request.jwt_partner_id
 
         with contextlib.ExitStack() as s:
             odoo.http._request_stack.push(request)
@@ -238,24 +246,58 @@ class TestAuthMethod(TransactionCase):
     def test_auth_method_registration_on_create(self):
         IrHttp = self.env["ir.http"]
         self.assertFalse(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
+        self.assertFalse(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator1")
+        )
         self._create_validator("validator1")
         self.assertTrue(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
+        self.assertTrue(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator1")
+        )
 
     def test_auth_method_unregistration_on_unlink(self):
         IrHttp = self.env["ir.http"]
         validator = self._create_validator("validator1")
         self.assertTrue(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
+        self.assertTrue(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator1")
+        )
         validator.unlink()
         self.assertFalse(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
+        self.assertFalse(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator1")
+        )
 
     def test_auth_method_registration_on_rename(self):
         IrHttp = self.env["ir.http"]
         validator = self._create_validator("validator1")
         self.assertTrue(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
+        self.assertTrue(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator1")
+        )
         validator.name = "validator2"
         self.assertFalse(hasattr(IrHttp.__class__, "_auth_method_jwt_validator1"))
+        self.assertFalse(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator1")
+        )
         self.assertTrue(hasattr(IrHttp.__class__, "_auth_method_jwt_validator2"))
+        self.assertTrue(
+            hasattr(IrHttp.__class__, "_auth_method_public_or_jwt_validator2")
+        )
 
     def test_name_check(self):
         with self.assertRaises(ValidationError):
             self._create_validator(name="not an identifier")
+
+    def test_public_or_jwt_no_token(self):
+        with self._mock_request(authorization=None) as request:
+            self.env["ir.http"]._auth_method_public_or_jwt()
+            assert request.uid == self.env.ref("base.public_user").id
+            assert not hasattr(request, "jwt_payload")
+
+    def test_public_or_jwt_valid_token(self):
+        with self._commit_validator("validator"):
+            authorization = "Bearer " + self._create_token()
+            with self._mock_request(authorization=authorization) as request:
+                self.env["ir.http"]._auth_method_public_or_jwt_validator()
+                assert request.jwt_payload["aud"] == "me"
