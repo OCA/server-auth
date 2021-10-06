@@ -395,9 +395,9 @@ controller routes.</p>
 <ul class="simple">
 <li>Create an <tt class="docutils literal">auth.jwt.validator</tt> record to configure how the JWT token will
 be validated.</li>
-<li>Add an <tt class="docutils literal"><span class="pre">auth=&quot;jwt_{validator-name}&quot;</span></tt> attribute to the routes
-you want to protect where <tt class="docutils literal"><span class="pre">{validator-name}</span></tt> corresponds to the name
-attribute of the JWT validator record.</li>
+<li>Add an <tt class="docutils literal"><span class="pre">auth=&quot;jwt_{validator-name}&quot;</span></tt> or <tt class="docutils literal"><span class="pre">auth=&quot;public_or_jwt_{validator-name}&quot;</span></tt>
+attribute to the routes you want to protect where <tt class="docutils literal"><span class="pre">{validator-name}</span></tt> corresponds to
+the name attribute of the JWT validator record.</li>
 </ul>
 <p>The <tt class="docutils literal">auth_jwt_demo</tt> module provides examples.</p>
 <p>The JWT validator can be configured with the following properties:</p>
@@ -429,6 +429,13 @@ was found. Otherwise <tt class="docutils literal">request.jwt_partner_id</tt> is
 strategies can be provided by overriding the <tt class="docutils literal">_get_partner_id()</tt> method
 and extending the <tt class="docutils literal">partner_id_strategy</tt> selection field.</p>
 <p>The decoded JWT payload is stored in <tt class="docutils literal">request.jwt_payload</tt>.</p>
+<p>The <tt class="docutils literal">public_auth_jwt</tt> method delegates authentication to the standard Odoo <tt class="docutils literal">public</tt>
+method when the Authorization header is not set. If it is set, the regular JWT
+authentication is performed as described above. This method is useful for public
+endpoints that need to work for anonymous users, but can be enhanced when an
+authenticated user is know. A typical use case is a “add to cart” endpoint that can work
+for anonymous users, but can be enhanced by binding the cart to a known customer when
+the authenticated user is known.</p>
 </div>
 <div class="section" id="bug-tracker">
 <h1><a class="toc-backref" href="#id3">Bug Tracker</a></h1>
