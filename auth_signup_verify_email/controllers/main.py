@@ -29,7 +29,9 @@ class SignupVerifyEmail(AuthSignupHome):
             validate_email(values.get("login", ""))
         except EmailSyntaxError as error:
             qcontext["error"] = getattr(
-                error, "message", _("That does not seem to be an email address."),
+                error,
+                "message",
+                _("That does not seem to be an email address."),
             )
             return request.render("auth_signup.signup", qcontext)
         except EmailUndeliverableError as error:
