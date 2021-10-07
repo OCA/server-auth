@@ -32,7 +32,11 @@ class IrHttpJwt(models.AbstractModel):
         When migrating, review this method carefully by reading the original
         _authenticate method and make sure the conditions have not changed.
         """
-        if auth_method == "jwt" or auth_method.startswith("jwt_"):
+        if (
+            auth_method in ("jwt", "public_or_jwt")
+            or auth_method.startswith("jwt_")
+            or auth_method.startswith("public_or_jwt_")
+        ):
             if request.session.uid:
                 _logger.warning(
                     'A route with auth="jwt" must not be used within a user session.'
@@ -43,7 +47,7 @@ class IrHttpJwt(models.AbstractModel):
             # because _authenticate will not call _auth_method_jwt a second time.
             if request.uid and not hasattr(request, "jwt_payload"):
                 _logger.error(
-                    'A route with auth="jwt" should not have a request.uid here.'
+                    "A route with auth='jwt' should not have a request.uid here."
                 )
                 raise UnauthorizedSessionMismatch()
         return super()._authenticate(auth_method)
@@ -67,6 +71,12 @@ class IrHttpJwt(models.AbstractModel):
         request.uid = uid  # this resets request.env
         request.jwt_payload = payload
         request.jwt_partner_id = partner_id
+
+    @classmethod
+    def _auth_method_public_or_jwt(cls, validator_name=None):
+        if "HTTP_AUTHORIZATION" not in request.httprequest.environ:
+            return cls._auth_method_public()
+        return cls._auth_method_jwt(validator_name)
 
     @classmethod
     def _get_bearer_token(cls):
