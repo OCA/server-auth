@@ -189,7 +189,7 @@ class AuthJwtValidator(models.Model):
             )
             setattr(
                 IrHttp.__class__,
-                f"_auth_method_public_or_jwt_{rec.name}",
+                "_auth_method_public_or_jwt_{}".format(rec.name),
                 partial(
                     IrHttp.__class__._auth_method_public_or_jwt, validator_name=rec.name
                 ),
