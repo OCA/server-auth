@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo13-addon-auth_jwt',
         'odoo13-addon-auth_jwt_demo',
         'odoo13-addon-auth_ldaps',
+        'odoo13-addon-auth_oauth_autologin',
         'odoo13-addon-auth_oauth_multi_token',
         'odoo13-addon-auth_oidc',
         'odoo13-addon-auth_saml',
