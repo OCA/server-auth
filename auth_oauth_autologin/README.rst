@@ -38,7 +38,8 @@ Configuration
 =============
 
 Configure OAuth providers in Settings > Users and Companies, and make sure
-there is only one that has the enabled flag set.
+there is one and only one that has both the enabled and automatic login flags
+set.
 
 When this is done, users visiting the login page (/web/login), or being
 redirected to it because they are not authenticated yet, will be redirected to
@@ -55,6 +56,13 @@ item. When the user logs out of Odoo, a redirect to the login page happens. The
 login page in turn redirects to the identity provider, which, if the user is
 already authenticated there, automatically logs the user back in Odoo, in a
 fresh session.
+
+Usage
+=====
+
+When configured, the Odoo login page redirects to the OAuth identify provider
+for authentication and login in Odoo. To access the regular Odoo login page,
+visit ``/web/login?no_autologin``.
 
 Bug Tracker
 ===========
@@ -86,6 +94,14 @@ This module is maintained by the OCA.
 OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
+
+.. |maintainer-sbidoul| image:: https://github.com/sbidoul.png?size=40px
+    :target: https://github.com/sbidoul
+    :alt: sbidoul
+
+Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
+
+|maintainer-sbidoul| 
 
 This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/13.0/auth_oauth_autologin>`_ project on GitHub.
 
