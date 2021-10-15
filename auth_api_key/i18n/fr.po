@@ -6,59 +6,61 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2021-10-15 14:31+0000\n"
+"Last-Translator: Yann Papouin <y.papouin@dec-industrie.com>\n"
 "Language-Team: none\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_auth_api_key
 msgid "API Key"
-msgstr ""
+msgstr "Clé API"
 
 #. module: auth_api_key
 #: sql_constraint:auth.api.key:0
 msgid "Api Key name must be unique."
-msgstr ""
+msgstr "Le nom de la clé API doit être unique."
 
 #. module: auth_api_key
 #: model:ir.actions.act_window,name:auth_api_key.auth_api_key_act_window
 #: model:ir.ui.menu,name:auth_api_key.auth_api_key_menu
 msgid "Auth Api Key"
-msgstr ""
+msgstr "Clé API d’authentification"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Créé par"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Créé le"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nom affiché"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routage HTTP"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key
 msgid "Key"
-msgstr ""
+msgstr "Clé"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_default
@@ -73,22 +75,22 @@ msgstr ""
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Dernière modification le"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Dernière modification par"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Mis à jour le"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__name
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__server_env_defaults
@@ -100,26 +102,30 @@ msgstr ""
 msgid "The API key. Enter a dummy value in this field if it is\n"
 "        obtained from the server environment configuration."
 msgstr ""
+"Clé API. Entrez une valeur fictive dans ce champ si elle est\n"
+"        obtenue à partir de la configuration de l’environnement serveur."
 
 #. module: auth_api_key
 #: code:addons/auth_api_key/models/auth_api_key.py:67
 #, python-format
 msgid "The key %s is not allowed"
-msgstr ""
+msgstr "La clé %s n’est pas autorisée"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__user_id
 msgid "The user used to process the requests authenticated by\n"
 "        the api key"
 msgstr ""
+"L'utilisateur utilisé pour traiter les requêtes authentifiées par\n"
+"        la clé api"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__user_id
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #. module: auth_api_key
 #: code:addons/auth_api_key/models/auth_api_key.py:63
 #, python-format
 msgid "User is not allowed"
-msgstr ""
+msgstr "L’utilisateur n’est pas autorisé"
