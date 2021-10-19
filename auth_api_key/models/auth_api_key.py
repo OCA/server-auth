@@ -1,5 +1,6 @@
 # Copyright 2018 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+import uuid
 
 from odoo import api, fields, models, tools, _
 
@@ -13,10 +14,14 @@ class AuthApiKey(models.Model):
     _inherit = "server.env.mixin"
     _description = "API Key"
 
+    def _default_key(self):
+        return uuid.uuid4()
+
     name = fields.Char(required=True)
     key = fields.Char(
         required=True,
-        help="""The API key. Enter a dummy value in this field if it is
+        default=lambda self: self._default_key(),
+        help="""The API key. Keep the default value in this field if it is
         obtained from the server environment configuration.""",
     )
     user_id = fields.Many2one(
