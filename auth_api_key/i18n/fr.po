@@ -1,6 +1,6 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* auth_api_key
+# 	* auth_api_key
 #
 msgid ""
 msgstr ""
@@ -99,21 +99,21 @@ msgstr ""
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
-msgid "The API key. Enter a dummy value in this field if it is\n"
+msgid ""
+"The API key. Keep the default value in this field if it is\n"
 "        obtained from the server environment configuration."
 msgstr ""
-"Clé API. Entrez une valeur fictive dans ce champ si elle est\n"
-"        obtenue à partir de la configuration de l’environnement serveur."
 
 #. module: auth_api_key
-#: code:addons/auth_api_key/models/auth_api_key.py:67
+#: code:addons/auth_api_key/models/auth_api_key.py:72
 #, python-format
 msgid "The key %s is not allowed"
 msgstr "La clé %s n’est pas autorisée"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__user_id
-msgid "The user used to process the requests authenticated by\n"
+msgid ""
+"The user used to process the requests authenticated by\n"
 "        the api key"
 msgstr ""
 "L'utilisateur utilisé pour traiter les requêtes authentifiées par\n"
@@ -125,7 +125,14 @@ msgid "User"
 msgstr "Utilisateur"
 
 #. module: auth_api_key
-#: code:addons/auth_api_key/models/auth_api_key.py:63
+#: code:addons/auth_api_key/models/auth_api_key.py:68
 #, python-format
 msgid "User is not allowed"
 msgstr "L’utilisateur n’est pas autorisé"
+
+#~ msgid ""
+#~ "The API key. Enter a dummy value in this field if it is\n"
+#~ "        obtained from the server environment configuration."
+#~ msgstr ""
+#~ "Clé API. Entrez une valeur fictive dans ce champ si elle est\n"
+#~ "        obtenue à partir de la configuration de l’environnement serveur."
