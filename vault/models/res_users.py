@@ -39,9 +39,9 @@ class ResUsers(models.Model):
     def action_get_vault(self):
         return self.sudo().env.ref("vault.action_res_users_keys").read()[0]
 
-    def action_new_share_token(self):
+    def action_new_inbox_token(self):
         self.ensure_one()
-        self.inbox_token = uuid4()
+        self.sudo().inbox_token = uuid4()
         return {"type": "ir.actions.act_window_close"}
 
     @api.model
