@@ -13,7 +13,8 @@ class Controller(http.Controller):
     @http.route("/vault/share/<string:token>", type="http", auth="public")
     def vault_share(self, token):
         ctx = {"disable_footer": True, "token": token}
-        secret = request.env["vault.share"].sudo().get(token)
+        share = request.env["vault.share"].sudo()
+        secret = share.get(token, ip=request.httprequest.remote_addr)
         if secret is None:
             ctx["error"] = _("The secret expired")
             return request.render("vault_share.share", ctx)

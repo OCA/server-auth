@@ -19,6 +19,8 @@ odoo.define("vault.share", function (require) {
     }
 
     document.getElementById("pin").onchange = async function () {
+        if (!utils.supported()) return;
+
         find_elements();
 
         // Derive the key from the pin
@@ -30,7 +32,7 @@ odoo.define("vault.share", function (require) {
 
         const secret = document.getElementById("secret");
         const secret_file = document.getElementById("secret_file");
-        if (!secret || !secret_file) return;
+        if (!secret && !secret_file) return;
 
         // There is no secret to decrypt
         if (!this.value) {

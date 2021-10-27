@@ -11,6 +11,6 @@
         groups="base.group_user"
         parent="vault.menu_vault"
         action="action_vault_share"
-        sequence="60"
+        sequence="45"
     />
 </odoo>

@@ -75,6 +75,7 @@ odoo.define("vault.share.widget", function (require) {
          * @param {String} value
          */
         _renderValue: function (value) {
+            const self = this;
             this.$el.html(
                 QWeb.render(this.template, {
                     widget: self,
@@ -86,7 +87,7 @@ odoo.define("vault.share.widget", function (require) {
     });
 
     // Widget used to create shared outgoing secrets encrypted with a pin
-    var VaultShareField = vault_fields.VaultField.extend(vault_fields.VaultAbstract, {
+    var VaultShareField = vault_fields.VaultField.extend({
         events: _.extend({}, vault_fields.VaultField.prototype.events, {
             "click .o_vault_save": "_onSaveValue",
         }),
@@ -172,6 +173,10 @@ odoo.define("vault.share.widget", function (require) {
          * @param {String} crypted
          */
         _decrypt: async function (crypted) {
+            if (crypted === false) return false;
+
+            if (!utils.supported()) return null;
+
             const iv = this._getIV();
             const pin = await this._getPin();
             const salt = utils.fromBase64(this._getSalt());
@@ -187,6 +192,8 @@ odoo.define("vault.share.widget", function (require) {
          * @param {String} data
          */
         _encrypt: async function (data) {
+            if (!utils.supported()) return null;
+
             const iv = this._getIV();
             const pin = await this._getPin();
             const salt = utils.fromBase64(this._getSalt());
@@ -202,6 +209,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          */
         _renderReadonly: function () {
+            const self = this;
             this.$el.html(
                 QWeb.render(this.template, {
                     widget: self,
@@ -221,7 +229,7 @@ odoo.define("vault.share.widget", function (require) {
     });
 
     // Widget used to view shared incoming secrets encrypted with public keys
-    var VaultShareFile = vault_fields.VaultFile.extend(vault_fields.VaultAbstract, {
+    var VaultShareFile = vault_fields.VaultFile.extend({
         store_model: "vault.file",
         template: "FileVaultShare",
         events: _.extend({}, vault_fields.VaultFile.prototype.events, {
@@ -325,6 +333,8 @@ odoo.define("vault.share.widget", function (require) {
          * @param {String} crypted
          */
         _decrypt: async function (crypted) {
+            if (!utils.supported()) return null;
+
             const iv = this._getIV();
             const pin = await this._getPin();
             const salt = utils.fromBase64(this._getSalt());
@@ -340,6 +350,8 @@ odoo.define("vault.share.widget", function (require) {
          * @param {String} data
          */
         _encrypt: async function (data) {
+            if (!utils.supported()) return null;
+
             const iv = this._getIV();
             const pin = await this._getPin();
             const salt = utils.fromBase64(this._getSalt());

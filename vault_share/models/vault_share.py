@@ -38,6 +38,7 @@ class VaultShare(models.Model):
         default=lambda self: datetime.now() + timedelta(days=7),
         help="Specifies how long a share can be accessed until deletion.",
     )
+    log_ids = fields.One2many("vault.share.log", "share_id", "Log", readonly=True)
 
     _sql_constraints = [
         (
@@ -54,19 +55,28 @@ class VaultShare(models.Model):
             rec.share_link = f"{base_url}/vault/share/{rec.token}"
 
     @api.model
-    def get(self, token):
+    def get(self, token, ip=None):
         rec = self.search([("token", "=", token)], limit=1)
         if not rec:
             return rec
 
         if datetime.now() < rec.expiration and rec.accesses > 0:
             rec.accesses -= 1
+            log = _("The share was accessed by %s via %s")
+            rec.log_ids = [(0, 0, {"name": log % (self.env.user.name, ip)})]
             return rec
 
-        rec.unlink()
         return None
+
+    @api.model
+    def create(self, vals):
+        rec = super().create(vals)
+        log = _("The share was created by %s")
+        rec.log_ids = [(0, 0, {"name": log % self.env.user.name})]
+        return rec
 
     @api.model
     def clean(self):
         now = datetime.now()
-        self.search([("expiration", "<=", now), ("accesses", "<=", 0)]).unlink()
+        offset = timedelta(days=self.env.company.vault_share_delay)
+        self.search([("expiration", "<=", now + offset)]).unlink()
