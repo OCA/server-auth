@@ -1,8 +1,6 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-/* global ArrayBuffer, Uint8Array */
-
 odoo.define("vault.fields", function (require) {
     "use strict";
 
@@ -18,6 +16,9 @@ odoo.define("vault.fields", function (require) {
     var QWeb = core.qweb;
 
     var VaultAbstract = {
+        supported: function () {
+            return utils.supported();
+        },
         /**
          * Set the value by encrypting it
          *
@@ -28,9 +29,12 @@ odoo.define("vault.fields", function (require) {
         _setValue: function (value, options) {
             const self = this;
             const _super = this._super;
-            return this._encrypt(value).then(function (data) {
-                _super.call(self, data, options);
-            });
+
+            if (utils.supported()) {
+                return this._encrypt(value).then(function (data) {
+                    _super.call(self, data, options);
+                });
+            }
         },
 
         /**
@@ -55,6 +59,8 @@ odoo.define("vault.fields", function (require) {
          * @returns the IV to use
          */
         _getIV: function () {
+            if (!utils.supported()) return null;
+
             // IV already read. Reuse it
             if (this.iv) return this.iv;
 
@@ -74,6 +80,8 @@ odoo.define("vault.fields", function (require) {
          * @returns the master key to use
          */
         _getMasterKey: async function () {
+            if (!utils.supported()) return null;
+
             // Check if the master key is already extracted
             if (this.key) return await vault.unwrap(this.key);
 
@@ -180,6 +188,8 @@ odoo.define("vault.fields", function (require) {
          * @returns the decrypted data
          */
         _decrypt: async function (data) {
+            if (!utils.supported()) return null;
+
             const iv = this._getIV();
             const key = await this._getMasterKey();
             return await utils.sym_decrypt(key, data, iv);
@@ -192,6 +202,8 @@ odoo.define("vault.fields", function (require) {
          * @returns the encrypted data
          */
         _encrypt: async function (data) {
+            if (!utils.supported()) return null;
+
             const iv = this._getIV();
             const key = await this._getMasterKey();
             return await utils.sym_encrypt(key, data, iv);
@@ -266,6 +278,7 @@ odoo.define("vault.fields", function (require) {
          * @param {String} value to render
          */
         _renderValue: function (value) {
+            const self = this;
             this.$el.html(
                 QWeb.render(this.template, {
                     widget: self,
@@ -292,9 +305,11 @@ odoo.define("vault.fields", function (require) {
             this.$input.addClass("o_input");
             this.$input.attr(inputAttrs);
 
-            this._decrypt(this.value).then(function (data) {
-                self.$input.val(self._formatValue(data));
-            });
+            if (utils.supported()) {
+                this._decrypt(this.value).then(function (data) {
+                    self.$input.val(self._formatValue(data));
+                });
+            }
 
             return this.$input;
         },
@@ -337,7 +352,7 @@ odoo.define("vault.fields", function (require) {
                     _t("The field is empty, there's nothing to save!")
                 );
                 ev.stopPropagation();
-            } else if (this.res_id) {
+            } else if (this.res_id && utils.supported()) {
                 ev.stopPropagation();
 
                 const filename_fieldname = this.attrs.filename;
@@ -397,7 +412,7 @@ odoo.define("vault.fields", function (require) {
          * @param {OdooEvent} ev
          */
         on_save_as: async function (ev) {
-            if (this.value) {
+            if (this.value && utils.supported()) {
                 ev.stopPropagation();
 
                 const exporter = new Exporter();
@@ -424,7 +439,7 @@ odoo.define("vault.fields", function (require) {
         },
     });
 
-    var VaultInboxField = VaultField.extend(VaultAbstract, {
+    var VaultInboxField = VaultField.extend({
         store_model: "vault.field",
         events: _.extend({}, VaultField.prototype.events, {
             "click .o_vault_show": "_onShowValue",
@@ -454,6 +469,8 @@ odoo.define("vault.fields", function (require) {
          * @returns the decrypted data
          */
         _decrypt: async function (data) {
+            if (!utils.supported()) return null;
+
             const iv = this.recordData[this.field_iv];
             const wrapped_key = this.recordData[this.field_key];
 
@@ -474,7 +491,7 @@ odoo.define("vault.fields", function (require) {
     });
 
     // Widget used to view shared incoming secrets encrypted with public keys
-    var VaultInboxFile = VaultFile.extend(VaultAbstract, {
+    var VaultInboxFile = VaultFile.extend({
         store_model: "vault.file",
         template: "FileVaultInbox",
         events: _.extend({}, VaultFile.prototype.events, {
@@ -517,6 +534,8 @@ odoo.define("vault.fields", function (require) {
          * @returns the decrypted data
          */
         _decrypt: async function (data) {
+            if (!utils.supported()) return null;
+
             const iv = this.recordData[this.field_iv];
             const wrapped_key = this.recordData[this.field_key];
 

@@ -16,7 +16,6 @@ class Controller(http.Controller):
         # Find the right token
         inbox = request.env["vault.inbox"].sudo().find_inbox(token)
         user = request.env["res.users"].sudo().find_user_of_inbox(token)
-        _logger.info("%s: %s", inbox, user)
         if len(inbox) == 1 and inbox.accesses > 0:
             ctx.update({"name": inbox.name, "public": inbox.user_id.active_key.public})
         elif len(inbox) == 0 and len(user) == 1:
@@ -55,7 +54,16 @@ class Controller(http.Controller):
             return request.render("vault.inbox", ctx)
 
         try:
-            inbox.store_in_inbox(name, secret, secret_file, iv, key, user, filename)
+            inbox.store_in_inbox(
+                name,
+                secret,
+                secret_file,
+                iv,
+                key,
+                user,
+                filename,
+                ip=request.httprequest.remote_addr,
+            )
         except Exception as e:
             _logger.exception(e)
             ctx["error"] = _(

@@ -4,6 +4,7 @@
 from . import (
     abstract_vault,
     abstract_vault_field,
+    res_config_settings,
     res_users,
     res_users_key,
     vault,
@@ -11,6 +12,7 @@ from . import (
     vault_field,
     vault_file,
     vault_inbox,
+    vault_inbox_log,
     vault_log,
     vault_right,
     vault_tag,

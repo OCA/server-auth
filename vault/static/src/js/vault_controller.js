@@ -103,6 +103,8 @@ odoo.define("vault.controller", function (require) {
          */
         _onGenerateKeys: async function (ev) {
             ev.stopPropagation();
+            if (!utils.supported()) return;
+
             var self = this;
 
             Dialog.confirm(
@@ -333,6 +335,8 @@ odoo.define("vault.controller", function (require) {
          */
         _applyChanges: async function (dataPointID, changes, options) {
             const result = await this._super.apply(this, arguments);
+
+            if (!utils.supported()) return result;
 
             const record = this.model.get(dataPointID);
             if (record.model === "vault")

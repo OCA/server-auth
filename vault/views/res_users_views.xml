@@ -42,7 +42,7 @@
                         class="btn-primary"
                     />
                     <button
-                        name="action_new_share_token"
+                        name="action_new_inbox_token"
                         type="object"
                         string="New inbox link"
                         class="btn-primary"

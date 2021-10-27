@@ -31,6 +31,7 @@
     </template>
 
     <template id="inbox_frontend">
+        <t t-call-assets="web.assets_common" />
         <script type="text/javascript" src="/vault/static/src/js/vault_utils.js" />
         <script type="text/javascript" src="/vault/static/src/js/vault_inbox.js" />
     </template>

@@ -18,6 +18,7 @@ class AbstractVaultField(models.AbstractModel):
 
     perm_user = fields.Many2one(related="vault_id.perm_user", store=False)
     allowed_read = fields.Boolean(related="vault_id.allowed_read", store=False)
+    allowed_create = fields.Boolean(related="vault_id.allowed_create", store=False)
     allowed_write = fields.Boolean(related="vault_id.allowed_write", store=False)
     allowed_share = fields.Boolean(related="vault_id.allowed_share", store=False)
     allowed_delete = fields.Boolean(related="vault_id.allowed_delete", store=False)

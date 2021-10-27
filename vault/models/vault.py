@@ -36,6 +36,7 @@ class Vault(models.Model):
     # Access control
     perm_user = fields.Many2one("res.users", compute="_compute_access", store=False)
     allowed_read = fields.Boolean(compute="_compute_access", store=False)
+    allowed_create = fields.Boolean(compute="_compute_access", store=False)
     allowed_share = fields.Boolean(compute="_compute_access", store=False)
     allowed_write = fields.Boolean(compute="_compute_access", store=False)
     allowed_delete = fields.Boolean(compute="_compute_access", store=False)
@@ -63,6 +64,7 @@ class Vault(models.Model):
             if user == rec.user_id:
                 rec.write(
                     {
+                        "allowed_create": True,
                         "allowed_share": True,
                         "allowed_write": True,
                         "allowed_delete": True,
@@ -73,6 +75,9 @@ class Vault(models.Model):
 
             rights = rec.right_ids
             rec.allowed_read = user in rights.mapped("user_id")
+            rec.allowed_create = user in rights.filtered("perm_create").mapped(
+                "user_id"
+            )
             rec.allowed_share = user in rights.filtered("perm_share").mapped("user_id")
             rec.allowed_write = user in rights.filtered("perm_write").mapped("user_id")
             rec.allowed_delete = user in rights.filtered("perm_delete").mapped(
@@ -100,6 +105,7 @@ class Vault(models.Model):
                 0,
                 {
                     "user_id": self.env.uid,
+                    "perm_create": True,
                     "perm_write": True,
                     "perm_delete": True,
                     "perm_share": True,

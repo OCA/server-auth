@@ -19,9 +19,17 @@ class VaultRight(models.Model):
     )
     master_key = fields.Char(related="vault_id.master_key", readonly=True, store=False)
     user_id = fields.Many2one(
-        "res.users", "User", domain=[("keys", "!=", False)], required=True
+        "res.users",
+        "User",
+        domain=[("keys", "!=", False)],
+        required=True,
     )
     public_key = fields.Char(compute="_compute_public_key", readonly=True, store=False)
+    perm_create = fields.Boolean(
+        "Create",
+        default=lambda self: self._get_is_owner(),
+        help="Allow to create in the vault",
+    )
     perm_write = fields.Boolean(
         "Write",
         default=lambda self: self._get_is_owner(),
@@ -40,6 +48,7 @@ class VaultRight(models.Model):
 
     perm_user = fields.Many2one(related="vault_id.perm_user", store=False)
     allowed_read = fields.Boolean(related="vault_id.allowed_read", store=False)
+    allowed_create = fields.Boolean(related="vault_id.allowed_create", store=False)
     allowed_write = fields.Boolean(related="vault_id.allowed_write", store=False)
     allowed_share = fields.Boolean(related="vault_id.allowed_share", store=False)
     allowed_delete = fields.Boolean(related="vault_id.allowed_delete", store=False)
@@ -48,7 +57,7 @@ class VaultRight(models.Model):
     key = fields.Char()
 
     _sql_constraints = (
-        ("user_uniq", "UNIQUE(user_id, vault_id)", "The user must be unique"),
+        ("user_uniq", "UNIQUE(user_id, vault_id)", _("The user must be unique")),
     )
 
     def _get_is_owner(self):
@@ -66,7 +75,7 @@ class VaultRight(models.Model):
                 ["read"]
                 + [
                     right
-                    for right in ["write", "share", "delete"]
+                    for right in ["create", "write", "share", "delete"]
                     if getattr(self, f"perm_{right}", False)
                 ]
             )
@@ -87,7 +96,8 @@ class VaultRight(models.Model):
 
     def write(self, values):
         res = super().write(values)
-        if any(x in values for x in ["perm_write", "perm_delete", "perm_share"]):
+        perms = ["perm_write", "perm_delete", "perm_share", "perm_create"]
+        if any(x in values for x in perms):
             for rec in self:
                 rec.log_access()
 
