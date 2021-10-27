@@ -3,8 +3,9 @@
     <record id="view_vault_inbox_tree" model="ir.ui.view">
         <field name="model">vault.inbox</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree create="false">
                 <field name="name" />
+                <field name="inbox_link" widget="url" />
             </tree>
         </field>
     </record>
@@ -35,6 +36,14 @@
                             attrs="{'invisible': [('secret', '=', False)]}"
                         />
                     </group>
+
+                    <label for="log_ids" />
+                    <field name="log_ids" options="{'no_open': True}">
+                        <tree>
+                            <field name="name" />
+                            <field name="create_date" />
+                        </tree>
+                    </field>
                 </sheet>
             </form>
         </field>

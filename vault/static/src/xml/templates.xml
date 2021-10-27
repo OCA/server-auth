@@ -135,7 +135,10 @@
     </div>
 
     <t t-name="FieldVault">
-        <div class="o_vault" t-if="widget.mode == 'edit'">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-elif="widget.mode == 'edit'">
             <button
                 class="btn fa fa-lock o_vault_generate"
                 title="Generate"
@@ -150,7 +153,10 @@
     </t>
 
     <t t-name="FieldVaultInbox">
-        <div class="o_vault">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-else="">
             <t t-call="vault.buttons" />
             <button
                 class="btn fa fa-save o_vault_save"
@@ -163,16 +169,20 @@
     </t>
 
     <t t-name="FileVaultInbox">
-        <div class="o_vault">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-else="">
             <button
                 class="btn fa fa-save o_vault_save"
                 title="Save in a vault"
                 aria-label="Save in a vault"
             />
 
-            <span class="link"><span class="fa fa-download" /> <t
-                    t-esc="filename"
-                /></span>
+            <span class="link">
+                <span class="fa fa-download" />
+                <t t-esc="filename" />
+            </span>
         </div>
     </t>
 </templates>

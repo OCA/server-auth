@@ -100,6 +100,16 @@ msgid "Allowed Write"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_entry__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_field__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_file__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_right__allowed_create
+msgid "Allowed Create"
+msgstr ""
+
+#. module: vault
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "An error occured. Please contact the user or administrator"

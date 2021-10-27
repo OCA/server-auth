@@ -124,6 +124,8 @@ odoo.define("vault.export", function (require) {
          * @returns the data importable by the backend or false on error
          */
         export: async function (master_key, filename, content) {
+            if (!utils.supported()) return false;
+
             if (filename.endsWith(".json"))
                 return await this._export_json(master_key, content);
             return false;

@@ -81,8 +81,10 @@
                     t-attf-class="clearfix text-center mb-1 {{'pt-2' if form_small else 'pt-3'}}"
                 >
                     <button
+                        id="submit"
                         type="submit"
                         class="btn btn-primary btn-block"
+                        disabled="disabled"
                     >Submit secret</button>
                 </div>
             </form>

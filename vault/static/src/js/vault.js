@@ -57,6 +57,8 @@ odoo.define("vault", function (require) {
             var self = this;
 
             function waitAndCheck() {
+                if (!utils.supported()) return null;
+
                 if (odoo.isReady) self._initialize_keys();
                 else setTimeout(waitAndCheck, 500);
             }

@@ -247,6 +247,8 @@ odoo.define("vault.import", function (require) {
          * @returns the data importable by the backend or false on error
          */
         import: async function (master_key, filename, content) {
+            if (!utils.supported()) return false;
+
             if (filename.endsWith(".json"))
                 return await this._import_json(master_key, content);
             else if (filename.endsWith(".kdbx"))

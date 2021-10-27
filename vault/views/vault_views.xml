@@ -64,6 +64,7 @@
                     <group>
                         <field name="allowed_share" invisible="1" />
                         <field name="allowed_write" invisible="1" />
+                        <field name="allowed_create" invisible="1" />
                         <field name="allowed_delete" invisible="1" />
                         <field name="master_key" invisible="1" required="1" />
                         <field name="name" />

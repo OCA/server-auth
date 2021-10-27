@@ -14,7 +14,7 @@ class VaultInbox(models.Model):
     _name = "vault.inbox"
     _description = _("Vault share incoming secrets")
 
-    token = fields.Char(default=lambda self: uuid4(), readonly=True)
+    token = fields.Char(default=lambda self: uuid4(), readonly=True, copy=False)
     inbox_link = fields.Char(
         compute="_compute_inbox_link",
         readonly=True,
@@ -22,7 +22,11 @@ class VaultInbox(models.Model):
         "to create new inboxes you should give them your inbox link from your key "
         "management.",
     )
-    user_id = fields.Many2one("res.users", "Vault", required=True)
+    user_id = fields.Many2one(
+        "res.users",
+        "Vault",
+        required=True,
+    )
     name = fields.Char(required=True)
     secret = fields.Char(readonly=True)
     filename = fields.Char()
@@ -32,12 +36,13 @@ class VaultInbox(models.Model):
     accesses = fields.Integer(
         "Access counter",
         default=1,
-        help="If this is 0 the inbox will be read-only for the owner.",
+        help="If this is 0 the inbox can't be written using the link",
     )
     expiration = fields.Datetime(
         default=lambda self: datetime.now() + timedelta(days=7),
-        help="If expired the inbox will be read-only for the owner.",
+        help="If expired the inbox can't be written using the link",
     )
+    log_ids = fields.One2many("vault.inbox.log", "inbox_id", "Log", readonly=True)
 
     _sql_constraints = [
         (
@@ -63,8 +68,19 @@ class VaultInbox(models.Model):
     def find_inbox(self, token):
         return self.search([("token", "=", token)])
 
-    def store_in_inbox(self, name, secret, secret_file, iv, key, user, filename):
+    def store_in_inbox(
+        self,
+        name,
+        secret,
+        secret_file,
+        iv,
+        key,
+        user,
+        filename,
+        ip=None,
+    ):
         if len(self) == 0:
+            log = _("Created by %s via %s") % (user.name, ip or "n/a")
             return self.create(
                 {
                     "name": name,
@@ -75,10 +91,17 @@ class VaultInbox(models.Model):
                     "secret_file": secret_file or None,
                     "filename": filename,
                     "user_id": user.id,
+                    "log_ids": [(0, 0, {"name": log})],
                 }
             )
 
+        self.ensure_one()
         if self.accesses > 0 and datetime.now() < self.expiration:
+            log = _("Written by %s via %s") % (
+                self.env.user.name,
+                ip or "n/a",
+            )
+
             self.write(
                 {
                     "accesses": self.accesses - 1,
@@ -87,6 +110,7 @@ class VaultInbox(models.Model):
                     "secret": secret or None,
                     "secret_file": secret_file or None,
                     "filename": filename,
+                    "log_ids": [(0, 0, {"name": log})],
                 }
             )
             return self
