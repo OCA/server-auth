@@ -7,6 +7,7 @@ access_vault_file,access_vault_file,model_vault_file,base.group_user,1,1,1,1
 access_vault_import_wizard,access_vault_import_wizard,model_vault_import_wizard,base.group_user,1,1,1,1
 access_vault_import_wizard_path,access_vault_import_wizard_path,model_vault_import_wizard_path,base.group_user,1,1,1,1
 access_vault_inbox,access_vault_inbox,model_vault_inbox,base.group_user,1,1,1,1
+access_vault_inbox_log,access_vault_inbox_log,model_vault_inbox_log,base.group_user,1,1,1,1
 access_vault_log,access_vault_log,model_vault_log,base.group_user,1,0,0,0
 access_vault_right,access_vault_right,model_vault_right,base.group_user,1,1,1,1
 access_vault_send_wizard,access_vault_send_wizard,model_vault_send_wizard,base.group_user,1,1,1,1

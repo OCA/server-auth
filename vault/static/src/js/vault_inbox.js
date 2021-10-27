@@ -20,6 +20,7 @@ odoo.define("vault.inbox", function (require) {
         "encrypted_file",
         "filename",
         "secret_file",
+        "submit",
     ];
 
     function toggle_required(element, value) {
@@ -29,6 +30,8 @@ odoo.define("vault.inbox", function (require) {
 
     // Encrypt the value and store it in the right input field
     async function encrypt_and_store(value, target) {
+        if (!utils.supported()) return false;
+
         // Find all the possible elements which are needed
         for (const id of fields) if (!data[id]) data[id] = document.getElementById(id);
 
@@ -56,14 +59,19 @@ odoo.define("vault.inbox", function (require) {
     }
 
     document.getElementById("secret").onchange = async function () {
+        if (!utils.supported()) return false;
+
         if (!this.value) return;
 
         const required = await encrypt_and_store(this.value, "encrypted");
         toggle_required(data.secret, required);
         toggle_required(data.secret_file, !required);
+        data.submit.removeAttribute("disabled");
     };
 
     document.getElementById("secret_file").onchange = async function () {
+        if (!utils.supported()) return false;
+
         if (!this.files.length) return;
 
         const file = this.files[0];
@@ -74,5 +82,6 @@ odoo.define("vault.inbox", function (require) {
         toggle_required(data.secret, !required);
         toggle_required(data.secret_file, required);
         data.filename.value = file.name;
+        data.submit.removeAttribute("disabled");
     };
 });
