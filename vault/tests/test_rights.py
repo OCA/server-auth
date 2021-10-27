@@ -50,6 +50,19 @@ class TestAccessRights(TransactionCase):
             right.perm_delete = False
             obj.unlink()
 
+    def test_no_create(self):
+        self.env["vault.right"].create(
+            {
+                "vault_id": self.vault.id,
+                "user_id": self.user.id,
+                "perm_create": False,
+            }
+        )
+
+        for obj in [self.field, self.entry, self.vault]:
+            with self.assertRaises(AccessError):
+                obj.with_user(self.user).check_access_rule("create")
+
     def test_no_right(self):
         # No right defined for test user means access denied
         for obj in [self.field, self.entry, self.vault]:
@@ -68,6 +81,7 @@ class TestAccessRights(TransactionCase):
             {
                 "vault_id": self.vault.id,
                 "user_id": self.user.id,
+                "perm_create": False,
                 "perm_write": False,
                 "perm_delete": False,
             }
