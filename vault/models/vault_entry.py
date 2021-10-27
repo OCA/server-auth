@@ -6,6 +6,7 @@ from datetime import datetime
 from uuid import uuid4
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -17,7 +18,12 @@ class VaultEntry(models.Model):
     _order = "complete_name"
     _rec_name = "complete_name"
 
-    parent_id = fields.Many2one("vault.entry", "Parent", ondelete="cascade")
+    parent_id = fields.Many2one(
+        "vault.entry",
+        "Parent",
+        ondelete="cascade",
+        domain="[('vault_id', '=', vault_id)]",
+    )
     child_ids = fields.One2many("vault.entry", "parent_id", "Child")
 
     vault_id = fields.Many2one("vault", "Vault", ondelete="cascade", required=True)
@@ -28,6 +34,7 @@ class VaultEntry(models.Model):
 
     perm_user = fields.Many2one(related="vault_id.perm_user", store=False)
     allowed_read = fields.Boolean(related="vault_id.allowed_read", store=False)
+    allowed_create = fields.Boolean(related="vault_id.allowed_create", store=False)
     allowed_share = fields.Boolean(related="vault_id.allowed_share", store=False)
     allowed_write = fields.Boolean(related="vault_id.allowed_write", store=False)
     allowed_delete = fields.Boolean(related="vault_id.allowed_delete", store=False)
@@ -43,11 +50,20 @@ class VaultEntry(models.Model):
     note = fields.Text()
     tags = fields.Many2many("vault.tag")
     expire_date = fields.Datetime("Expires on", default=False)
-    expired = fields.Boolean(compute="_compute_expired", store=False)
+    expired = fields.Boolean(
+        compute="_compute_expired",
+        search="_search_expired",
+        store=False,
+    )
 
     _sql_constraints = [
         ("vault_uuid_uniq", "UNIQUE(vault_id, uuid)", _("The UUID must be unique.")),
     ]
+
+    @api.constrains("parent_id")
+    def _check_parent_id(self):
+        if not self._check_recursion():
+            raise ValidationError(_("You can not create recursive entries."))
 
     @api.depends("name", "parent_id.complete_name")
     def _compute_complete_name(self):
@@ -63,10 +79,20 @@ class VaultEntry(models.Model):
         for rec in self:
             rec.expired = rec.expire_date and now > rec.expire_date
 
+    def _search_expired(self, operator, value):
+        if (operator not in ["=", "!="]) or (value not in [True, False]):
+            return []
+
+        if (operator, value) in [("=", True), ("!=", False)]:
+            return [("expire_date", "<", datetime.now())]
+
+        return ["|", ("expire_date", ">=", datetime.now()), ("expire_date", "=", False)]
+
     def log_change(self, action):
         self.ensure_one()
         self.log_info(
-            f"{action} entry {self.complete_name} by {self.env.user.display_name}"
+            _("%s entry %s by %s")
+            % (action, self.complete_name, self.env.user.display_name)
         )
 
     @api.model_create_single

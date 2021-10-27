@@ -40,25 +40,24 @@
                     />
                 </header>
                 <sheet>
-                    <field name="vault_id" invisible="1" />
                     <field name="perm_user" invisible="1" />
+                    <field name="allowed_create" invisible="1" />
                     <field name="allowed_share" invisible="1" />
                     <field name="allowed_write" invisible="1" />
                     <field name="allowed_delete" invisible="1" />
 
                     <group>
                         <group>
-                            <field name="complete_name" />
+                            <field name="vault_id" invisible="1" />
+                            <field
+                                name="parent_id"
+                                options="{'no_open': true, 'no_create_edit': true, 'no_quick_create': true}"
+                            />
                             <field name="name" />
                             <field name="url" widget="url" />
                             <field name="tags" widget="many2many_tags" />
                         </group>
                         <group>
-                            <field
-                                name="parent_id"
-                                readonly="1"
-                                attrs="{'invisible':[('parent_id', '=', False)]}"
-                            />
                             <field name="create_date" />
                             <field name="write_date" />
                             <field name="expire_date" />
@@ -71,7 +70,7 @@
                             <field
                                 name="field_ids"
                                 context="{'default_entry_id': active_id}"
-                                options="{'create': [('allowed_write', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': true}"
+                                options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': true}"
                             >
                                 <tree editable="bottom">
                                     <field name="vault_id" invisible="1" />
@@ -92,7 +91,7 @@
                             <field
                                 name="file_ids"
                                 context="{'default_entry_id': active_id}"
-                                options="{'create': [('allowed_write', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': True}"
+                                options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': True}"
                             >
                                 <tree editable="bottom">
                                     <field name="vault_id" invisible="1" />
@@ -127,6 +126,18 @@
         </field>
     </record>
 
+    <record id="view_vault_entry_overview_form" model="ir.ui.view">
+        <field name="model">vault.entry</field>
+        <field name="mode">primary</field>
+        <field name="priority">100</field>
+        <field name="inherit_id" ref="view_vault_entry_form" />
+        <field name="arch" type="xml">
+            <field name="vault_id" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </field>
+        </field>
+    </record>
+
     <record id="view_vault_entry_search" model="ir.ui.view">
         <field name="name">vault.entry.search</field>
         <field name="model">vault.entry</field>
@@ -136,13 +147,24 @@
                 <field name="name" operator="ilike" />
                 <field name="tags" operator="ilike" />
                 <field name="note" operator="ilike" />
+                <filter
+                    string="Expired"
+                    name="expired"
+                    domain="[('expired', '=', True)]"
+                />
+                <filter
+                    string="Not Expired"
+                    name="not_expired"
+                    domain="[('expired', '!=', True)]"
+                />
+                <filter
+                    string="Vault"
+                    name="vault"
+                    domain="[]"
+                    context="{'group_by': 'vault_id'}"
+                />
                 <searchpanel>
-                    <field
-                        name="parent_id"
-                        select="category"
-                        string="Entries"
-                        enable_counters="1"
-                    />
+                    <field name="parent_id" string="Entries" enable_counters="1" />
                 </searchpanel>
             </search>
         </field>

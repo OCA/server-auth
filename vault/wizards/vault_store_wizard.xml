@@ -13,12 +13,12 @@
                         <field name="secret_temporary" invisible="1" />
                         <field
                             name="vault_id"
-                            options="{'no_create_edit': True, 'no_open': True}"
+                            options="{'no_create_edit': True, 'no_open': True, 'no_quick_create': true}"
                         />
                         <field
                             name="entry_id"
                             attrs="{'invisible': [('vault_id', '=', False)]}"
-                            options="{'no_create_edit': True, 'no_open': True}"
+                            options="{'no_create_edit': True, 'no_open': True, 'no_quick_create': true}"
                         />
                         <field name="name" />
                     </group>

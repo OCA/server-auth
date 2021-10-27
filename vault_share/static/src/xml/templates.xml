@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
     <t t-name="FieldVaultShare">
-        <input class="o_vault_share" t-if="widget.mode == 'edit'" t-esc="value" />
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <input class="o_vault_share" t-elif="widget.mode == 'edit'" t-esc="value" />
         <div class="o_vault" t-else="">
             <t t-call="vault.buttons" />
             <button
@@ -15,7 +18,10 @@
     </t>
 
     <t t-name="FileVaultShare">
-        <t t-if="widget.mode == 'edit'" t-call="FieldBinaryFile" />
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <t t-elif="widget.mode == 'edit'" t-call="FieldBinaryFile" />
         <div class="o_vault" t-else="">
             <button
                 class="btn fa fa-save o_vault_save"
@@ -30,7 +36,10 @@
     </t>
 
     <t t-name="FieldPinVault">
-        <div class="o_vault">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-else="">
             <t t-call="vault.buttons" />
             <span class="o_vault_value" t-esc="value" />
         </div>
