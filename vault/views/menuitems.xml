@@ -7,11 +7,16 @@
     </record>
 
     <record id="action_vault_entry" model="ir.actions.act_window">
-        <field name="name">Entries</field>
+        <field name="name">All Entries</field>
         <field name="res_model">vault.entry</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="view_vault_entry_full_tree" />
-        <field name="search_view_id" ref="view_vault_entry_search" />
+        <field name="context">{'search_default_vault': 1}</field>
+        <field
+            name="view_ids"
+            eval="[(5,0,0),
+            (0,0,{'view_mode':'tree', 'view_id': ref('view_vault_entry_full_tree')}),
+            (0,0,{'view_mode':'form', 'view_id': ref('view_vault_entry_overview_form')})]"
+        />
     </record>
 
     <record id="action_vault_inbox" model="ir.actions.act_window">
@@ -39,6 +44,7 @@
         groups="base.group_user"
         parent="menu_vault"
         action="action_vault_entry"
+        sequence="30"
     />
     <menuitem
         id="menu_vault_inbox"

@@ -16,7 +16,7 @@ class TestShare(TransactionCase):
             {"login": "test", "email": "test@test", "name": "test"}
         )
 
-        user.action_new_share_token()
+        user.action_new_inbox_token()
 
         model = self.env["res.users"]
         token = user.inbox_token
@@ -27,7 +27,7 @@ class TestShare(TransactionCase):
         user.inbox_enabled = False
         self.assertEqual(model, model.find_user_of_inbox(token))
 
-        user.action_new_share_token()
+        user.action_new_inbox_token()
         self.assertNotEqual(user.inbox_token, token)
 
     def test_inbox(self):

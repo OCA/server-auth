@@ -16,10 +16,7 @@ class VaultSendWizard(models.TransientModel):
         "res.users",
         "User",
         required=True,
-        domain=[
-            ("keys.public", "!=", False),
-            ("inbox_enabled", "=", True),
-        ],
+        domain=[("keys", "!=", False), ("inbox_enabled", "=", True)],
     )
     name = fields.Char(required=True)
     public = fields.Char(related="user_id.active_key.public")
@@ -40,12 +37,16 @@ class VaultSendWizard(models.TransientModel):
 
     def action_send(self):
         self.ensure_one()
-        self.env["vault.inbox"].sudo().store_in_inbox(
-            self.name,
-            self.secret,
-            self.secret_file,
-            self.iv,
-            self.key_user,
-            self.user_id,
-            self.filename,
+        self.env["vault.inbox"].sudo().create(
+            {
+                "name": self.name,
+                "accesses": 0,
+                "secret": self.secret,
+                "secret_file": self.secret_file,
+                "iv": self.iv,
+                "key": self.key_user,
+                "user_id": self.user_id.id,
+                "filename": self.filename,
+                "log_ids": [(0, 0, {"name": _("Created by %s") % self.user_id.name})],
+            }
         )

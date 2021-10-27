@@ -1,8 +1,6 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-/* global Uint8Array */
-
 odoo.define("vault.utils", function (require) {
     "use strict";
 
@@ -33,6 +31,15 @@ odoo.define("vault.utils", function (require) {
         name: SymmetricName,
         length: 256,
     };
+
+    /**
+     * Checks if the CryptoAPI is available and the vault feature supported
+     *
+     * @returns if vault is supported
+     */
+    function supported() {
+        return Boolean(CryptoAPI);
+    }
 
     /**
      * Converts an ArrayBuffer to an ASCII string
@@ -573,5 +580,7 @@ odoo.define("vault.utils", function (require) {
         fromBinary: fromBinary,
         toBase64: toBase64,
         toBinary: toBinary,
+
+        supported: supported,
     };
 });

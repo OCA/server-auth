@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <div id="user_default_rights" position="after">
+                <h2>Vault</h2>
+                <div class="row mt16 o_settings_container" id="vault">
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="vault_share">
+                        <div class="o_setting_left_pane">
+                            <field name="module_vault_share" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="module_vault_share" string="Vault Share" />
+                            <div class="text-muted">
+                                Allow the usage to share secrets with external users
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>

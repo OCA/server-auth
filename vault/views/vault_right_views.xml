@@ -3,12 +3,13 @@
     <record id="view_right_tree" model="ir.ui.view">
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <tree editable="bottom" decoration-danger="not key">
                 <field name="vault_id" invisible="1" />
                 <field name="master_key" invisible="1" />
                 <field name="key" invisible="1" />
                 <field name="public_key" invisible="1" />
                 <field name="user_id" />
+                <field name="perm_create" />
                 <field name="perm_write" />
                 <field name="perm_share" />
                 <field name="perm_delete" />
@@ -23,6 +24,7 @@
                 <sheet>
                     <group>
                         <field name="user_id" />
+                        <field name="perm_create" />
                         <field name="perm_write" />
                         <field name="perm_share" />
                         <field name="perm_delete" />
@@ -35,9 +37,10 @@
     <record id="view_vault_right_overview_tree" model="ir.ui.view">
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <tree create="false">
                 <field name="vault_id" />
                 <field name="user_id" />
+                <field name="perm_create" />
                 <field name="perm_write" />
                 <field name="perm_share" />
                 <field name="perm_delete" />

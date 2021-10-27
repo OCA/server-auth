@@ -12,7 +12,8 @@ _logger = logging.getLogger(__name__)
 class AbstractVault(models.AbstractModel):
     """Models must have the following fields:
     `perm_user`: The permissions are computed for this user
-    `allowed_write`: The current user can read from the vault
+    `allowed_read`: The current user can read from the vault
+    `allowed_create`: The current user can read from the vault
     `allowed_write`: The current user has write access to the vault
     `allowed_share`: The current user can share the vault with other users
     `allowed_delete`: The current user can delete the vault or entries of it
@@ -41,8 +42,17 @@ class AbstractVault(models.AbstractModel):
             vault = self if self._name == "vault" else self.mapped("vault_id")
             vault._compute_access()
 
+        # Shortcut for vault.right because only the share right is required
+        if self._name == "vault.right":
+            if not self.filtered("allowed_share"):
+                self.raise_access_error()
+            return
+
         # Check the operation and matching permissions
         if operation == "read" and not self.filtered("allowed_read"):
+            self.raise_access_error()
+
+        if operation == "create" and not self.filtered("allowed_create"):
             self.raise_access_error()
 
         if operation == "write" and not self.filtered("allowed_write"):

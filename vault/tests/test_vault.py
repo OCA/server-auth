@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from datetime import datetime
 
 from odoo.exceptions import ValidationError
 from odoo.tests import TransactionCase
@@ -129,3 +130,28 @@ class TestVault(TransactionCase):
         keys = self.env.user.get_vault_keys()
         for key in ["private", "public", "iv", "salt", "iterations"]:
             self.assertEqual(keys[key], data[key])
+
+    def test_vault_entry_recursion(self):
+        child = self.env["vault.entry"].create(
+            {"vault_id": self.vault.id, "name": "Entry", "parent_id": self.entry.id}
+        )
+
+        with self.assertRaises(ValidationError):
+            self.entry.parent_id = child.id
+
+    def test_search_expired(self):
+        entry = self.env["vault.entry"]
+        self.assertEqual(entry._search_expired("in", []), [])
+
+        domain = entry._search_expired("=", True)
+        self.assertEqual(domain[0][:2], ("expire_date", "<"))
+        self.assertIsInstance(domain[0][2], datetime)
+
+        domain = entry._search_expired("!=", False)
+        self.assertEqual(domain[0][:2], ("expire_date", "<"))
+        self.assertIsInstance(domain[0][2], datetime)
+
+        domain = entry._search_expired("=", False)
+        self.assertTrue(domain[0] == "|")
+        self.assertIn(("expire_date", "=", False), domain)
+        self.assertTrue(any(("expire_date", ">=") == d[:2] for d in domain))

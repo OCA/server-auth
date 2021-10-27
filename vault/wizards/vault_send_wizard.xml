@@ -15,7 +15,10 @@
                         <field name="key_user" invisible="1" />
                         <field name="secret" invisible="1" />
                         <field name="public" invisible="1" />
-                        <field name="user_id" />
+                        <field
+                            name="user_id"
+                            options="{'no_open': true, 'no_create_edit': true, 'no_quick_create': true}"
+                        />
                         <field name="name" />
                     </group>
                 </sheet>
