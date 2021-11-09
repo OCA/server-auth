@@ -35,7 +35,15 @@ class CompanyLDAP(models.Model):
             connection = ldap.initialize(uri)
             if conf["skip_cert_validation"]:
                 connection.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
-            connection.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
+                # this creates a new tls context, which is required to apply
+                # the options, but it also clears the default options defined
+                # in the openldap's configuration file, such as the TLS_CACERT
+                # option, which specifies the file containing the trusted
+                # certificates. this causes certificate verification to fail,
+                # even if it would succeed with the default options. this is
+                # why this is only called if we want to skip certificate
+                # verification.
+                connection.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
             if conf["ldap_tls"]:
                 connection.start_tls_s()
             return connection
