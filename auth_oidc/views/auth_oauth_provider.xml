@@ -19,6 +19,16 @@
                 <field name="token_endpoint" />
                 <field name="jwks_uri" />
             </field>
+            <xpath expr="//sheet/group[last()]" position="after">
+                <group name="mappings">
+                    <field name="group_line_ids">
+                        <tree editable="bottom">
+                            <field name="group_id" />
+                            <field name="expression" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>
