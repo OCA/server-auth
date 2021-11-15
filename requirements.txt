@@ -8,3 +8,6 @@ python-u2flib-server
 zxcvbn
 # auth_saml
 lasso
+# auth_oidc
+python-jose<3.3.0
+python2-secrets
