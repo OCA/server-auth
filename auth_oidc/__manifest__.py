@@ -4,7 +4,7 @@
 
 {
     "name": "Authentication OpenID Connect",
-    "version": "13.0.1.0.1",
+    "version": "12.0.1.0.0",
     "license": "AGPL-3",
     "author": (
         "ICTSTUDIO, André Schenkels, "
@@ -14,7 +14,7 @@
     "maintainers": ["sbidoul"],
     "website": "https://github.com/OCA/server-auth",
     "summary": "Allow users to login through OpenID Connect Provider",
-    "external_dependencies": {"python": ["python-jose"]},
+    "external_dependencies": {"python": ["jose"]},
     "depends": ["auth_oauth"],
     "data": ["views/auth_oauth_provider.xml"],
     "demo": ["demo/local_keycloak.xml"],
