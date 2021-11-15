@@ -64,6 +64,12 @@ class ResUsers(models.Model):
             _logger.error("No id_token in response.")
             raise AccessDenied()
         validation = oauth_provider._parse_id_token(id_token, access_token)
+        if oauth_provider.data_endpoint:
+            data = requests.get(
+                oauth_provider.data_endpoint,
+                headers={"Authorization": "Bearer %s" % access_token},
+            ).json()
+            validation.update(data)
         # required check
         if "sub" in validation and "user_id" not in validation:
             # set user_id for auth_oauth, user_id is not an OpenID Connect standard
@@ -80,3 +86,22 @@ class ResUsers(models.Model):
             raise AccessDenied()
         # return user credentials
         return (self.env.cr.dbname, login, access_token)
+
+    @api.model
+    def _auth_oauth_signin(self, provider, validation, params):
+        login = super()._auth_oauth_signin(provider, validation, params)
+        user = self.search([("login", "=", login)])
+        if user:
+            group_updates = []
+            for group_line in (
+                self.env["auth.oauth.provider"].browse(provider).group_line_ids
+            ):
+                if group_line._eval_expression(user, validation):
+                    if group_line.group_id not in user.groups_id:
+                        group_updates.append((4, group_line.group_id.id))
+                else:
+                    if group_line.group_id in user.groups_id:
+                        group_updates.append((3, group_line.group_id.id))
+            if group_updates:
+                user.write({"groups_id": group_updates})
+        return login
