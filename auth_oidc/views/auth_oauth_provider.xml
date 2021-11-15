@@ -23,6 +23,16 @@
             <field name="auth_endpoint" position="after">
                 <field name="auth_link_params" />
             </field>
+            <xpath expr="//sheet/group[last()]" position="after">
+                <group name="mappings">
+                    <field name="group_line_ids">
+                        <tree editable="bottom">
+                            <field name="group_id" />
+                            <field name="expression" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
         </field>
     </record>
 </odoo>

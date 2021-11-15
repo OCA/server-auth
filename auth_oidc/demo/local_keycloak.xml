@@ -37,4 +37,9 @@
         <field name="body">Log in with Microsoft</field>
         <field name="auth_link_params">{'prompt':'select_account'}</field>
     </record>
+    <record id="local_keycloak_group_line" model="auth.oauth.provider.group_line">
+        <field name="provider_id" ref="local_keycloak" />
+        <field name="group_id" ref="base.group_no_one" />
+        <field name="expression">token['name'] == 'test'</field>
+    </record>
 </odoo>
