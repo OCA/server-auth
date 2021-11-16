@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 Akretion
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo noupdate="1">
+
+    <record id="cron_clear_unverified_users" model="ir.cron">
+        <field name="name">Clear unverified users</field>
+        <field name="active" eval="False" />
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False" />
+        <field name="model_id" ref="model_res_users" />
+        <field name="state">code</field>
+        <field name="code">model.clear_unverified_users(30)</field>
+    </record>
+
+    <record id="template_verification_code" model="mail.template">
+        <field name="name">Verification code email</field>
+        <field name="model_id" ref="base.model_res_users" />
+        <field name="subject">${object.name}: verification code</field>
+        <field
+            name="email_from"
+        >"${object.company_id.name | safe}" &lt;${(object.company_id.email) | safe}&gt;</field>
+        <field name="email_to">${object.email | safe}</field>
+        <field name="body_html" type="html">
+            <p
+            >A code has been generated for connecting to your Odoo instance: ${object.auth_verification_code_ids[-1].code_number}</p>
+        </field>
+        <field name="lang">${object.lang}</field>
+        <field name="auto_delete" eval="False" />
+    </record>
+
+</odoo>

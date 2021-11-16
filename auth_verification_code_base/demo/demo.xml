@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 Akretion
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="param_verification_code_expiry" model="ir.config_parameter">
+        <field name="key">verification_code_expiry</field>
+        <field name="value">3600</field>
+    </record>
+
+    <record id="param_activate_verification_code" model="ir.config_parameter">
+        <field name="key">activate_verification_code</field>
+        <field name="value">1</field>
+    </record>
+
+    <record id="param_max_verif_code_generation_delay" model="ir.config_parameter">
+        <field name="key">max_verif_code_generation_delay</field>
+        <field name="value">15</field>
+    </record>
+
+    <record id="param_max_verif_code_generation" model="ir.config_parameter">
+        <field name="key">max_verif_code_generation</field>
+        <field name="value">5</field>
+    </record>
+
+    <record id="param_max_verif_code_attempts_delay" model="ir.config_parameter">
+        <field name="key">max_verif_code_attempts_delay</field>
+        <field name="value">5</field>
+    </record>
+
+    <record id="param_max_verif_code_attempts" model="ir.config_parameter">
+        <field name="key">max_verif_code_attempts</field>
+        <field name="value">5</field>
+    </record>
+
+</odoo>

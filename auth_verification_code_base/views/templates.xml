@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 Akretion
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <template id="auth_verification_code_base.verification_screen" name="Verification">
+        <t t-call="web.login_layout">
+            <form
+                class="oe_login_form"
+                role="form"
+                t-attf-action="/web/verification/login"
+                method="post"
+                onsubmit="this.action = this.action + location.hash"
+            >
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    t-att-value="request.csrf_token()"
+                />
+
+                <div class="form-group field-login">
+                    <label for="verification_code">Verification Code</label>
+                    <input
+                        type="text"
+                        placeholder=""
+                        name="verification_code"
+                        t-att-value="verification_code"
+                        id="verification_code"
+                        t-attf-class="form-control #{'form-control-sm' if form_small else ''}"
+                        required="required"
+                        autofocus="autofocus"
+                        autocapitalize="off"
+                    />
+                </div>
+
+                <p class="alert alert-danger" t-if="error" role="alert">
+                    <t t-esc="error" />
+                </p>
+                <p class="alert alert-success" t-if="message" role="status">
+                    <t t-esc="message" />
+                </p>
+
+                <div
+                    t-attf-class="clearfix oe_login_buttons text-center mb-1 {{'pt-2' if form_small else 'pt-3'}}"
+                >
+                    <button
+                        type="submit"
+                        class="btn btn-primary btn-block"
+                    >Submit Code</button>
+                    <div class="o_login_auth" />
+                </div>
+
+                <input type="hidden" name="redirect" t-att-value="redirect" />
+            </form>
+            <div class="justify-content-between mt-2 d-flex small">
+                <a href="/web/verification/resend">Resend code</a>
+            </div>
+        </t>
+    </template>
+</odoo>

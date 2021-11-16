@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 Akretion
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record model="ir.ui.view" id="auth_verification_code_form_view">
+        <field name="model">auth.verification.code</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="user_id" />
+                        <field name="code_number" />
+                        <field name="expiry_date" />
+                        <field name="state" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="auth_verification_code_search_view">
+        <field name="model">auth.verification.code</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id" />
+            </search>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="auth_verification_code_tree_view">
+        <field name="model">auth.verification.code</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="user_id" />
+                <field name="code_number" />
+                <field name="expiry_date" />
+                <field name="state" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="auth_verification_code_act_window">
+        <field name="name">Auth Verification Codes</field>
+        <field name="res_model">auth.verification.code</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record model="ir.ui.menu" id="auth_verification_code_menu">
+        <field name="name">Auth Verification Codes</field>
+        <field name="parent_id" ref="base.menu_security" />
+        <field name="action" ref="auth_verification_code_act_window" />
+        <field name="sequence" eval="16" />
+    </record>
+
+</odoo>
