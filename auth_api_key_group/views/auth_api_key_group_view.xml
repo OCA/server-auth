@@ -4,7 +4,7 @@
         <field name="name">auth.api.key.group.form (in auth_api_key_group)</field>
         <field name="model">auth.api.key.group</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false">
+            <form>
                 <sheet>
                     <label for="name" class="oe_edit_only" />
                     <h1>
