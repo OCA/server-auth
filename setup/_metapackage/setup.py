@@ -12,6 +12,7 @@ setuptools.setup(
         'odoo14-addon-auth_api_key',
         'odoo14-addon-auth_api_key_group',
         'odoo14-addon-auth_api_key_server_env',
+        'odoo14-addon-auth_dynamic_groups',
         'odoo14-addon-auth_jwt',
         'odoo14-addon-auth_jwt_demo',
         'odoo14-addon-auth_ldaps',
