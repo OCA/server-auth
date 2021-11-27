@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_groups_form" model="ir.ui.view">
+        <field name="inherit_id" ref="base.view_groups_form" />
+        <field name="model">res.groups</field>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="is_dynamic" />
+            </field>
+            <field name="users" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('is_dynamic', '=', True)]}</attribute>
+            </field>
+            <field name="users" position="before">
+                <group
+                    name="auth_dynamic_groups"
+                    attrs="{'invisible': [('is_dynamic', '=', False)]}"
+                >
+                    <field
+                        name="dynamic_group_condition"
+                        placeholder="Fill in your condition..."
+                        attrs="{'required': [('is_dynamic', '=', True)]}"
+                        colspan="4"
+                        nolabel="1"
+                    />
+                    <button type="object" name="action_evaluate" string="Evaluate" />
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>
