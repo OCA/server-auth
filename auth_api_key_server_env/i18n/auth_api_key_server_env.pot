@@ -19,21 +19,6 @@ msgid "API Key"
 msgstr ""
 
 #. module: auth_api_key_server_env
-#: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__display_name
-msgid "Display Name"
-msgstr ""
-
-#. module: auth_api_key_server_env
-#: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__id
-msgid "ID"
-msgstr ""
-
-#. module: auth_api_key_server_env
-#: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__server_env_defaults
 msgid "Server Env Defaults"
 msgstr ""
