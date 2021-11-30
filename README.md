@@ -20,6 +20,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [auth_api_key](auth_api_key/) | 15.0.1.0.0 |  | Authenticate http requests from an API key
+[auth_api_key_server_env](auth_api_key_server_env/) | 15.0.1.0.0 |  | Configure api keys via server env. This can be very useful to avoid mixing your keys between your various environments when restoring databases. All you have to do is to add a new section to your configuration file according to the following convention:
 
 [//]: # (end addons)
 
