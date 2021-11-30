@@ -9,6 +9,7 @@ setuptools.setup(
     version=version,
     install_requires=[
         'odoo-addon-auth_api_key>=15.0dev,<15.1dev',
+        'odoo-addon-auth_api_key_server_env>=15.0dev,<15.1dev',
     ],
     classifiers=[
         'Programming Language :: Python',
