@@ -55,19 +55,16 @@ msgid "Created on"
 msgstr ""
 
 #. module: auth_api_key_group
-#: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key__display_name
 #: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key_group__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: auth_api_key_group
-#: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key__id
 #: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key_group__id
 msgid "ID"
 msgstr ""
 
 #. module: auth_api_key_group
-#: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key____last_update
 #: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key_group____last_update
 msgid "Last Modified on"
 msgstr ""
