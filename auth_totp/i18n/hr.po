@@ -188,6 +188,7 @@ msgstr ""
 
 #. module: auth_totp
 #: model:ir.model.fields,field_description:auth_totp.field_res_users_authenticator_create__secret_key
+#: model:ir.model.fields,field_description:auth_totp.field_res_users_authenticator_create__secret_key_display
 msgid "Secret Code"
 msgstr ""
 
@@ -252,7 +253,7 @@ msgid "You must log in with a password before starting the MFA login process."
 msgstr ""
 
 #. module: auth_totp
-#: code:addons/auth_totp/wizards/res_users_authenticator_create.py:103
+#: code:addons/auth_totp/wizards/res_users_authenticator_create.py:113
 #, python-format
 msgid ""
 "Your confirmation code is not correct. Please try again, making sure that "

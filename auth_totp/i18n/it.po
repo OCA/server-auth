@@ -31,8 +31,8 @@ msgstr ""
 "<span>Prego inserire un nome per la tua app o dispositivo. </span>\n"
 "                        <span>Poi scansionare il codice QR o inserire il "
 "codice segreto sottostante per aggiungere questo account alla tua app "
-"autenticatrice e inserire il codice di 6 cifre prodotto "
-"dall'applicazione.</span>"
+"autenticatrice e inserire il codice di 6 cifre prodotto dall'applicazione.</"
+"span>"
 
 #. module: auth_totp
 #: model_terms:ir.ui.view,arch_db:auth_totp.mfa_login
@@ -198,6 +198,7 @@ msgstr ""
 
 #. module: auth_totp
 #: model:ir.model.fields,field_description:auth_totp.field_res_users_authenticator_create__secret_key
+#: model:ir.model.fields,field_description:auth_totp.field_res_users_authenticator_create__secret_key_display
 msgid "Secret Code"
 msgstr "Codice segreto"
 
@@ -265,7 +266,7 @@ msgid "You must log in with a password before starting the MFA login process."
 msgstr ""
 
 #. module: auth_totp
-#: code:addons/auth_totp/wizards/res_users_authenticator_create.py:103
+#: code:addons/auth_totp/wizards/res_users_authenticator_create.py:113
 #, python-format
 msgid ""
 "Your confirmation code is not correct. Please try again, making sure that "
