@@ -31,6 +31,11 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
         default=lambda s: pyotp.random_base32(),
         required=True,
     )
+    secret_key_display = fields.Char(
+        string='Secret Code',
+        compute='_compute_secret_key_display',
+        store=False, readonly=True,
+    )
     qr_code_tag = fields.Html(
         compute='_compute_qr_code_tag',
         string='QR Code',
@@ -58,6 +63,11 @@ class ResUsersAuthenticatorCreate(models.TransientModel):
     def _default_user_id(self):
         user_id = self.env.context.get('uid')
         return self.env['res.users'].browse(user_id)
+
+    @api.depends('secret_key')
+    def _compute_secret_key_display(self):
+        for record in self:
+            record.secret_key_display = record.secret_key
 
     @api.multi
     @api.depends(
