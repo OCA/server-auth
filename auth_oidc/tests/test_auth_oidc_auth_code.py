@@ -7,8 +7,9 @@ from urllib.parse import parse_qs, urlparse
 import odoo
 from odoo.tests import common
 
-from odoo.addons.auth_oidc.controllers.main import OpenIDLogin
 from odoo.addons.website.tools import MockRequest as _MockRequest
+
+from ..controllers.main import OpenIDLogin
 
 BASE_URL = "http://localhost:%s" % odoo.tools.config["http_port"]
 
