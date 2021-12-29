@@ -14,4 +14,5 @@
     "external_dependencies": {"python": ["pyjwt", "cryptography"]},
     "data": ["security/ir.model.access.csv", "views/auth_jwt_validator_views.xml"],
     "demo": [],
+    "installable": False,
 }
