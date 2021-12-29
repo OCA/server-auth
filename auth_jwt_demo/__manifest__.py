@@ -13,4 +13,5 @@
     "depends": ["auth_jwt"],
     "data": [],
     "demo": ["demo/auth_jwt_validator.xml"],
+    "installable": False,
 }
