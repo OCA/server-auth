@@ -6,6 +6,7 @@ setuptools.setup(
         "external_dependencies_override": {
             "python": {
                 "jose": "python-jose[cryptography]<3.3",
+                "rsa": "rsa==4.5",
             }
         }
     },
