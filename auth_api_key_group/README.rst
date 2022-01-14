@@ -56,7 +56,7 @@ Credits
 Authors
 ~~~~~~~
 
-* Camptcamp
+* Camptocamp
 
 Contributors
 ~~~~~~~~~~~~
