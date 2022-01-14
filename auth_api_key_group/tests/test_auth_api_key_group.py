@@ -1,4 +1,4 @@
-# Copyright 2021 Camptcamp SA
+# Copyright 2021 Camptocamp SA
 # @author: Simone Orsi <simone.orsi@camptocamp.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 

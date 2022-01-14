@@ -1,4 +1,4 @@
-# Copyright 2021 Camptcamp SA
+# Copyright 2021 Camptocamp SA
 # @author: Simone Orsi <simone.orsi@camptocamp.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
@@ -14,7 +14,7 @@ to limit access to services or records based on groups of keys.
     "development_status": "Beta",
     "license": "LGPL-3",
     "website": "https://github.com/OCA/server-auth",
-    "author": "Camptcamp,Odoo Community Association (OCA)",
+    "author": "Camptocamp,Odoo Community Association (OCA)",
     "maintainers": ["simahawk"],
     "depends": ["auth_api_key"],
     "data": [
