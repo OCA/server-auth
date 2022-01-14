@@ -12,7 +12,7 @@ environments when restoring databases. All you have to do is to add a new
 section to your configuration file according to the following convention:
     """,
     "version": "17.0.1.0.0",
-    "development_status": "Alpha",
+    "development_status": "Production/Stable",
     "license": "LGPL-3",
     "website": "https://github.com/OCA/server-auth",
     "author": "Camptocamp,Odoo Community Association (OCA)",
