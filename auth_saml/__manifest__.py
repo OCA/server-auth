@@ -10,7 +10,7 @@
     "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
     "depends": ["base_setup"],
-    "external_dependencies": {"python": ["pysaml2"]},
+    "external_dependencies": {"python": ["pysaml2"], "deb": ["xmlsec1"]},
     "demo": [],
     "data": [
         "security/ir.model.access.csv",
