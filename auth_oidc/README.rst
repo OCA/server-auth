@@ -23,7 +23,7 @@ Authentication OpenID Connect
     :target: https://runbot.odoo-community.org/runbot/251/14.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5|
+|badge1| |badge2| |badge3| |badge4| |badge5| 
 
 This module allows users to login through an OpenID Connect provider using the
 authorization code flow or implicit flow.
@@ -176,7 +176,7 @@ promote its widespread use.
 
 Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
-|maintainer-sbidoul|
+|maintainer-sbidoul| 
 
 This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/14.0/auth_oidc>`_ project on GitHub.
 
