@@ -27,7 +27,7 @@ addon | version | maintainers | summary
 [auth_jwt](auth_jwt/) | 14.0.1.2.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | JWT bearer token authentication.
 [auth_jwt_demo](auth_jwt_demo/) | 14.0.1.2.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
 [auth_ldaps](auth_ldaps/) | 14.0.1.0.0 |  | Allows to use LDAP over SSL authentication
-[auth_oidc](auth_oidc/) | 14.0.1.0.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
+[auth_oidc](auth_oidc/) | 14.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 14.0.1.0.1 |  | Saml2 Authentication
 [auth_session_timeout](auth_session_timeout/) | 14.0.1.0.1 |  | This module disable all inactive sessions since a given delay
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 14.0.1.0.0 |  | Makes the user login field case insensitive
