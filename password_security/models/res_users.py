@@ -90,43 +90,31 @@ class ResUsers(models.Model):
     def password_match_message(self):
         self.ensure_one()
         company_id = self.company_id
-        message = []
-        if company_id.password_lower:
-            message.append(
-                _(
-                    "\n* Lowercase letter (at least %s characters)"
-                    % str(company_id.password_lower)
-                )
-            )
-        if company_id.password_upper:
-            message.append(
-                _(
-                    "\n* Uppercase letter (at least %s characters)"
-                    % str(company_id.password_upper)
-                )
-            )
-        if company_id.password_numeric:
-            message.append(
-                _(
-                    "\n* Numeric digit (at least %s characters)"
-                    % str(company_id.password_numeric)
-                )
-            )
-        if company_id.password_special:
-            message.append(
-                _(
-                    "\n* Special character (at least %s characters)"
-                    % str(company_id.password_special)
-                )
-            )
-        if message:
-            message = [_("Must contain the following:")] + message
-        if company_id.password_length:
-            message = [
-                _("Password must be %d characters or more.")
-                % company_id.password_length
-            ] + message
-        return "\r".join(message)
+        messages = []
+
+        bracket_singular = _("(at least %d character)")
+        bracket_plural = _("(at least %d characters)")
+
+        def add_message(value, constraint_type):
+            value = int(value)
+            if value > 0:
+                at_least_msg = bracket_singular if value <= 1 else bracket_plural
+                message = f"* {constraint_type} {at_least_msg % value}"
+                messages.append(message)
+
+        add_message(company_id.password_lower, _("Lowercase letter"))
+        add_message(company_id.password_upper, _("Uppercase letter"))
+        add_message(company_id.password_numeric, _("Numeric digit"))
+        add_message(company_id.password_special, _("Special character"))
+
+        if messages:
+            messages = [_("Must contain the following:")] + messages
+        if company_id.password_length > 0:
+            singular = _("Password must be %d character or more.")
+            plural = _("Password must be %d characters or more.")
+            message = singular if company_id.password_length <= 1 else plural
+            messages = [message % company_id.password_length] + messages
+        return "\n".join(messages)
 
     @api.multi
     def _check_password(self, password):
