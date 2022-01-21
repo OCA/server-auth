@@ -110,6 +110,7 @@ Contributors
 * Petar Najman <petar.najman@modoolar.com>
 * Shepilov Vladislav <shepilov.v@protonmail.com>
 * Florian Kantelberg <florian.kantelberg@initos.com>
+* Carlos Jimeno <carlos.jimeno@bt-group.com>
 * Dhara Solanki <dhara.solanki@initos.com>
 
 * `Open Source Integrators <https://opensourceintegrators.com>`_
