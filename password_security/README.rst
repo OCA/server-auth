@@ -33,12 +33,12 @@ requirements and enforces them on the user.
 
 It contains features such as
 
-- Password expiration days
-- Password length requirement
-- Password minimum number of lowercase letters
-- Password minimum number of uppercase letters
-- Password minimum number of numbers
-- Password minimum number of special characters
+-  Password expiration days
+-  Password length requirement
+-  Password minimum number of lowercase letters
+-  Password minimum number of uppercase letters
+-  Password minimum number of numbers
+-  Password minimum number of special characters
 
 **Table of contents**
 
@@ -92,28 +92,30 @@ Authors
 Contributors
 ------------
 
-- James Foster <jfoster@laslabs.com>
+-  James Foster <jfoster@laslabs.com>
 
-- Dave Lasley <dave@laslabs.com>
+-  Dave Lasley <dave@laslabs.com>
 
-- Kaushal Prajapati <kbprajapati@live.com>
+-  Kaushal Prajapati <kbprajapati@live.com>
 
-- Petar Najman <petar.najman@modoolar.com>
+-  Petar Najman <petar.najman@modoolar.com>
 
-- Shepilov Vladislav <shepilov.v@protonmail.com>
+-  Shepilov Vladislav <shepilov.v@protonmail.com>
 
-- Florian Kantelberg <florian.kantelberg@initos.com>
+-  Florian Kantelberg <florian.kantelberg@initos.com>
 
-- Dhara Solanki <dhara.solanki@initos.com>
+-  Carlos Jimeno <carlos.jimeno@bt-group.com>
 
-- `Open Source Integrators <https://opensourceintegrators.com>`__
+-  Dhara Solanki <dhara.solanki@initos.com>
 
-     - Chandresh Thakkar <cthakkar@opensourceintegrators.com>
-     - Daniel Reis <dreis@opensourceintegrators.com>
+-  `Open Source Integrators <https://opensourceintegrators.com>`__
 
-- `Onestein <https://www.onestein.nl>`__:
+      -  Chandresh Thakkar <cthakkar@opensourceintegrators.com>
+      -  Daniel Reis <dreis@opensourceintegrators.com>
 
-  - Andrea Stirpe <a.stirpe@onestein.nl>
+-  `Onestein <https://www.onestein.nl>`__:
+
+   -  Andrea Stirpe <a.stirpe@onestein.nl>
 
 Maintainers
 -----------
