@@ -17,6 +17,7 @@
     "depends": [
         "auth_signup",
         "auth_password_policy_signup",
+        "auth_totp",
     ],
     "website": "https://github.com/OCA/server-auth",
     "license": "LGPL-3",

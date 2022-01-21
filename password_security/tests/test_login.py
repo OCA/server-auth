@@ -4,8 +4,9 @@
 from datetime import datetime, timedelta
 from unittest import mock
 
-from odoo import http, registry
+from odoo import http
 from odoo.exceptions import UserError, ValidationError
+from odoo.modules.registry import Registry
 from odoo.tests.common import HOST, HttpCase, Opener, get_db_name, new_test_user, tagged
 
 
@@ -81,7 +82,7 @@ class TestPasswordSecurityLogin(HttpCase):
         # Make password expired
         three_days_ago = datetime.now() - timedelta(days=3)
 
-        with registry(get_db_name()).cursor() as cr:
+        with Registry(get_db_name()).cursor() as cr:
             env = self.env(cr)
             user = env["res.users"].search([("login", "=", self.username)])
             user.password_write_date = three_days_ago
@@ -108,7 +109,7 @@ class TestPasswordSecurityLogin(HttpCase):
         # Make password expired while still logged in
         three_days_ago = datetime.now() - timedelta(days=3)
 
-        with registry(get_db_name()).cursor() as cr:
+        with Registry(get_db_name()).cursor() as cr:
             env = self.env(cr)
             user = env["res.users"].search([("login", "=", self.username)])
             user.password_write_date = three_days_ago
