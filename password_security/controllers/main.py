@@ -40,7 +40,8 @@ class PasswordSecurityHome(AuthSignupHome):
         if not request.params.get("login_success"):
             return response
         # Now, I'm an authenticated user
-        if not request.env.user._password_has_expired():
+        # With 2FA there is a second step and we would not be completely logged in
+        if not (request.session.uid and request.env.user._password_has_expired()):
             return response
         # My password is expired, kick me out
         request.env.user.action_expire_password()
