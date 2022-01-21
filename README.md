@@ -30,6 +30,7 @@ addon | version | maintainers | summary
 [auth_oidc](auth_oidc/) | 14.0.1.0.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 14.0.1.0.1 |  | Saml2 Authentication
 [auth_session_timeout](auth_session_timeout/) | 14.0.1.0.1 |  | This module disable all inactive sessions since a given delay
+[auth_signup_verify_email](auth_signup_verify_email/) | 14.0.1.0.0 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 14.0.1.0.0 |  | Makes the user login field case insensitive
 [password_security](password_security/) | 14.0.1.0.0 |  | Allow admin to set password security requirements.
 [user_log_view](user_log_view/) | 14.0.1.0.0 | [![trojikman](https://github.com/trojikman.png?size=30px)](https://github.com/trojikman) | Allow to see user's actions log
