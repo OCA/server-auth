@@ -11,6 +11,7 @@ Grouping per se does nothing. This feature is supposed to be used by other modul
 to limit access to services or records based on groups of keys.
     """,
     "version": "17.0.1.0.0",
+    "development_status": "Beta",
     "license": "LGPL-3",
     "website": "https://github.com/OCA/server-auth",
     "author": "Camptcamp,Odoo Community Association (OCA)",
