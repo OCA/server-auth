@@ -63,6 +63,10 @@ class ResUsers(models.Model):
             _logger.error("No id_token in response.")
             raise AccessDenied()
         validation = oauth_provider._parse_id_token(id_token, access_token)
+
+        if oauth_provider.validation_endpoint:
+            validation.update(self._auth_oauth_validate(oauth_provider, access_token))
+
         # required check
         if not validation.get("user_id"):
             _logger.error("user_id claim not found in id_token (after mapping).")
