@@ -99,7 +99,8 @@ class ResUsers(models.Model):
             value = int(value)
             if value > 0:
                 at_least_msg = bracket_singular if value <= 1 else bracket_plural
-                message = f"* {constraint_type} {at_least_msg % value}"
+                at_least_msg %= value
+                message = "* " + constraint_type + " " + at_least_msg
                 messages.append(message)
 
         add_message(company_id.password_lower, _("Lowercase letter"))
