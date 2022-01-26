@@ -9,6 +9,7 @@ import os
 import tempfile
 import urllib.parse
 
+# pylint: disable=W7936  dependancy name is pysaml2
 import saml2
 import saml2.xmldsig as ds
 from saml2.client import Saml2Client
