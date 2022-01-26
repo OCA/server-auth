@@ -229,7 +229,7 @@ class AuthSamlProvider(models.Model):
         return redirect_url
 
     def _validate_auth_response(self, token, base_url=None):
-        """ return the validation data corresponding to the access token """
+        """return the validation data corresponding to the access token"""
         self.ensure_one()
 
         client = self._get_client_for_provider(base_url)
