@@ -131,7 +131,7 @@ class ResUser(models.Model):
                 )
             )
             if not token:
-                raise AccessDenied()
+                raise AccessDenied() from None
 
     def _autoremove_password_if_saml(self):
         """Helper to remove password if it is forbidden for SAML users."""
