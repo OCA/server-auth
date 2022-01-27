@@ -1,14 +1,14 @@
 {
-  "authority": "http://localhost:8080/auth/realm/master",
-  "client_id": "auth_jwt_test_api",
+  "authority": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test",
+  "client_id": "shopinvader-test",
   "response_type": "code",
   "scope": "openid email",
   "metadata": {
-    "issuer": "http://localhost:8080/auth/realms/master",
-    "authorization_endpoint": "http://localhost:8080/auth/realms/master/protocol/openid-connect/auth",
-    "token_endpoint": "http://localhost:8080/auth/realms/master/protocol/openid-connect/token",
-    "userinfo_endpoint": "http://localhost:8080/auth/realms/master/protocol/openid-connect/userinfo",
-    "end_session_endpoint": "http://localhost:8080/auth/realms/master/protocol/openid-connect/logout",
-    "jwks_uri": "http://localhost:8080/auth/realms/master/protocol/openid-connect/certs"
+    "issuer": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test",
+    "authorization_endpoint": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test/protocol/openid-connect/auth",
+    "token_endpoint": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test/protocol/openid-connect/token",
+    "userinfo_endpoint": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test/protocol/openid-connect/userinfo",
+    "end_session_endpoint": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test/protocol/openid-connect/logout",
+    "jwks_uri": "https://keycloak-alcyon.acsone-k8s-test.acsone.eu/auth/realms/alcyon-test/protocol/openid-connect/certs"
   }
 }

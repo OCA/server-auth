@@ -80,7 +80,7 @@ async function _whoami(endpoint) {
     let user = await client.getUser();
     try {
         let response = await fetch(
-            "http://localhost:8069/auth_jwt_demo/keycloak" + endpoint,
+            "http://localhost:8069/shopinvader_jwt/addresses",
             {
                 headers: {
                     ...(user && {Authorization: `Bearer ${user.access_token}`}),

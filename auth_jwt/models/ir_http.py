@@ -6,7 +6,7 @@ import logging
 import re
 
 from odoo import SUPERUSER_ID, api, models, registry as registry_get
-from odoo.http import request
+from odoo.http import request, Response
 
 from ..exceptions import (
     UnauthorizedMalformedAuthorizationHeader,
@@ -23,6 +23,23 @@ AUTHORIZATION_RE = re.compile(r"^Bearer ([^ ]+)$")
 class IrHttpJwt(models.AbstractModel):
 
     _inherit = "ir.http"
+
+    @classmethod
+    def _dispatch(cls):
+        # handle cors preflight with custom auth
+        if request.httprequest.method == "OPTIONS":
+            rule, arguments = cls._find_handler(return_rule=True)
+            routing = rule.endpoint.routing
+            if routing.get("cors"):
+                headers = {
+                    "Access-Control-Max-Age": 60 * 60 * 24,
+                    "Access-Control-Allow-Headers":
+                        "Origin, X-Requested-With, Content-Type, Accept, "
+                        "Authorization",
+                    "Access-Control-Allow-Origin": routing["cors"],
+                }
+                return Response(status=200, headers=headers)
+        return super(IrHttpJwt, cls)._dispatch()
 
     @classmethod
     def _authenticate(cls, auth_method="user"):
@@ -63,7 +80,9 @@ class IrHttpJwt(models.AbstractModel):
         registry = registry_get(request.db)
         with registry.cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
-            validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
+            validator = env["auth.jwt.validator"]._get_validator_by_name(
+                validator_name
+            )
             assert len(validator) == 1
             payload = validator._decode(token)
             uid = validator._get_and_check_uid(payload)
