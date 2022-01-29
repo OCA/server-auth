@@ -34,7 +34,7 @@
         'security/auth_u2f_security.xml',
     ],
     'external_dependencies': {
-        'python': ['u2flib_server'],
+        'python': ['python-u2flib-server'],
     },
     'installable': True,
 }
