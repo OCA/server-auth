@@ -33,9 +33,9 @@ class IrHttpJwt(models.AbstractModel):
             if routing.get("cors"):
                 headers = {
                     "Access-Control-Max-Age": 60 * 60 * 24,
-                    "Access-Control-Allow-Headers":
-                        "Origin, X-Requested-With, Content-Type, Accept, "
-                        "Authorization",
+                    "Access-Control-Allow-Headers": request.httprequest.environ.get(
+                        "HTTP_ACCESS_CONTROL_REQUEST_HEADERS"
+                    ),
                     "Access-Control-Allow-Origin": routing["cors"],
                 }
                 return Response(status=200, headers=headers)
