@@ -66,9 +66,12 @@ class VerifCodeLogin(Home):
             try:
                 with registry(request.session.db).cursor() as cr:
                     env = api.Environment(cr, SUPERUSER_ID, {})
-                    env["auth.verification.code"].search(
-                        [("token", "=", token)]
-                    ).user_id.generate_verification_code()
+                    token = (
+                        env["auth.verification.code"]
+                        .search([("token", "=", token)])
+                        .user_id.generate_verification_code()
+                    )
+                    request.session.auth_verification_token = token
                     return redirect_to_code_page({"resend": True})
             except TooManyVerifResendExc:
                 return redirect_to_code_page({"codesexc": True})
@@ -118,7 +121,7 @@ class VerifCodeLogin(Home):
             if verification_state == "confirmed":
                 token = False
             elif verification_state == "pending_confirmation":
-                token = user.auth_verification_code_ids.token
+                token = user.auth_verification_code_ids[-1].token
             else:  # expired or none
                 token = user.generate_verification_code()
         return user, token
