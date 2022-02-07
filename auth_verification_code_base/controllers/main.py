@@ -77,7 +77,7 @@ class VerifCodeLogin(Home):
             push_session()
             raise AccessDenied
 
-    @http.route("/web/verification/login", auth="public")
+    @http.route("/web/verification/login", auth="public", website=True)
     def web_verification_code_login(self, *args, **kw):
         token = request.session.auth_verification_token
         if not token:
@@ -126,6 +126,8 @@ class VerifCodeLogin(Home):
     @http.route()
     def web_login(self, *args, **kw):
         ensure_db()
+        # compatibility with website module
+        request.params["login_success"] = False
         if not self._check_use_verification_code():
             return super().web_login(*args, **kw)
 

@@ -48,13 +48,12 @@
                         class="btn btn-primary btn-block"
                     >Submit Code</button>
                     <div class="o_login_auth" />
+                    <div class="justify-content-between mt-2 d-flex small">
+                        <a href="/web/verification/resend">Resend code</a>
+                    </div>
                 </div>
-
                 <input type="hidden" name="redirect" t-att-value="redirect" />
             </form>
-            <div class="justify-content-between mt-2 d-flex small">
-                <a href="/web/verification/resend">Resend code</a>
-            </div>
         </t>
     </template>
 </odoo>
