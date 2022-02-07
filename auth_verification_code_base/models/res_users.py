@@ -38,7 +38,7 @@ class ResUsers(models.Model):
         for rec in self:
             rec.verification_state = (
                 rec.auth_verification_code_ids
-                and rec.auth_verification_code_ids[0].state
+                and rec.auth_verification_code_ids[-1].state
             ) or "none"
 
     def check_verification_state(self):
