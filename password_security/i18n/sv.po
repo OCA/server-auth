@@ -9,14 +9,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-22 00:55+0000\n"
-"PO-Revision-Date: 2017-02-22 00:55+0000\n"
-"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2016\n"
+"PO-Revision-Date: 2022-02-09 18:22+0000\n"
+"Last-Translator: beremavertel <emanuel.bergsten@vertel.se>\n"
 "Language-Team: Swedish (https://www.transifex.com/oca/teams/23907/sv/)\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
@@ -290,40 +291,40 @@ msgstr ""
 #: code:addons/password_security/static/src/js/password_gauge.js:40
 #, python-format
 msgid "at least %d characters"
-msgstr ""
+msgstr "minst %d tecken"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:49
 #, python-format
 msgid "at least %d lower case characters"
-msgstr ""
+msgstr "minst %d små bokstäver"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:67
 #, python-format
 msgid "at least %d numeric characters"
-msgstr ""
+msgstr "minst %d siffror"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:76
 #, python-format
 msgid "at least %d special characters"
-msgstr ""
+msgstr "minst %d specialtecken"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:58
 #, python-format
 msgid "at least %d upper case characters"
-msgstr ""
+msgstr "minst %d stora bokstäver"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "days."
-msgstr ""
+msgstr "dagar."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
