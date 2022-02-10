@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-22 00:55+0000\n"
-"PO-Revision-Date: 2022-02-09 18:22+0000\n"
+"PO-Revision-Date: 2022-02-10 12:16+0000\n"
 "Last-Translator: beremavertel <emanuel.bergsten@vertel.se>\n"
 "Language-Team: Swedish (https://www.transifex.com/oca/teams/23907/sv/)\n"
 "Language: sv\n"
@@ -151,22 +151,22 @@ msgstr ""
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_length
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of characters"
-msgstr ""
+msgstr "Minsta antal tecken"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of lowercase characters"
-msgstr ""
+msgstr "Minsta antal små bokstäver"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of numeric characters"
-msgstr ""
+msgstr "Minsta antal siffror"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of special characters"
-msgstr ""
+msgstr "Minsta antal specialtecken"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -176,13 +176,13 @@ msgstr ""
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of uppercase characters"
-msgstr ""
+msgstr "Minsta antal stora bokstäver"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:107
 #, python-format
 msgid "Must contain the following:"
-msgstr ""
+msgstr "Måste innehålla följande:"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_numeric
@@ -212,6 +212,8 @@ msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
 "administrator for assistance."
 msgstr ""
+"Lösenord kan endast återställas var %d timma. Vänligen kontakta en "
+"administratör för hjälp."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_lower
