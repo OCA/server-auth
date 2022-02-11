@@ -36,6 +36,7 @@ class IrHttpJwt(models.AbstractModel):
                     "Access-Control-Allow-Headers": request.httprequest.environ.get(
                         "HTTP_ACCESS_CONTROL_REQUEST_HEADERS"
                     ),
+                    "Access-Control-Allow-Methods": "POST, GET, OPTIONS, PUT, DELETE",
                     "Access-Control-Allow-Origin": routing["cors"],
                 }
                 return Response(status=200, headers=headers)
