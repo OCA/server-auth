@@ -5,7 +5,7 @@ setuptools.setup(
     odoo_addon={
         'external_dependencies_override': {
             'python': {
-                'u2flib_server': 'u2flib_server',
+                'u2flib_server': 'python-u2flib-server',
             }
         }
     },
