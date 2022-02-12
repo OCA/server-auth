@@ -10,6 +10,6 @@ setuptools.setup(
         }
     },
     install_requires=[
-        "python2-secrest ; python_version<'3.6'",
+        "python2-secrets ; python_version<'3.6'",
     ],
 )
