@@ -18,7 +18,7 @@
 
 {
     'name': '2nd factor authentication via U2F',
-    'version': '12.0.1.0.0',
+    'version': '12.0.1.0.1',
     'author': "Joren Van Onder, "
               "initOS GmbH, "
               "Odoo Community Association (OCA)",
