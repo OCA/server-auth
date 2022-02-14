@@ -3,11 +3,14 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from typing import Set
 
 import passlib
 
-from odoo import SUPERUSER_ID, _, api, fields, models, tools
+from odoo import SUPERUSER_ID, _, api, fields, models, registry, tools
 from odoo.exceptions import AccessDenied, ValidationError
+
+from .ir_config_parameter import ALLOW_SAML_UID_AND_PASSWORD
 
 _logger = logging.getLogger(__name__)
 
@@ -21,68 +24,35 @@ class ResUser(models.Model):
 
     saml_ids = fields.One2many("res.users.saml", "user_id")
 
-    @api.constrains("password", "saml_ids")
-    def check_no_password_with_saml(self):
-        """Ensure no Odoo user posesses both an SAML user ID and an Odoo
-        password. Except admin which is not constrained by this rule.
-        """
-        if not self._allow_saml_and_password():
-            # Super admin is the only user we allow to have a local password
-            # in the database
-            if self.password and self.id is not SUPERUSER_ID and self.sudo().saml_ids:
-                raise ValidationError(
-                    _(
-                        "This database disallows users to "
-                        "have both passwords and SAML IDs. "
-                        "Errors for login %s"
-                    )
-                    % (self.login)
-                )
-
-    def _auth_saml_validate(self, provider_id, token, base_url=None):
+    def _auth_saml_validate(self, provider_id: int, token: str, base_url: str = None):
         provider = self.env["auth.saml.provider"].sudo().browse(provider_id)
         return provider._validate_auth_response(token, base_url)
 
-    def _auth_saml_signin(self, provider, validation, saml_response):
-        """retrieve and sign into openerp the user corresponding to provider
-        and validated access token
+    def _auth_saml_signin(self, provider: int, validation: dict, saml_response) -> str:
+        """Sign in Odoo user corresponding to provider and validated access token.
 
-        :param provider: saml provider id (int)
-            :param validation: result of validation of access token (dict)
-            :param saml_response: saml parameters response from the IDP
-            :return: user login (str)
-            :raise: openerp.exceptions.AccessDenied if signin failed
+        :param provider: SAML provider id
+        :param validation: result of validation of access token
+        :param saml_response: saml parameters response from the IDP
+        :return: user login
+        :raise: odoo.exceptions.AccessDenied if signin failed
 
-            This method can be overridden to add alternative signin methods.
+        This method can be overridden to add alternative signin methods.
         """
-        token_osv = self.env["auth_saml.token"]
         saml_uid = validation["user_id"]
-        user = (
-            self.env["res.users.saml"]
-            .search(
-                [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)],
-                limit=1,
-            )
-            .user_id
+        user_saml = self.env["res.users.saml"].search(
+            [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)],
+            limit=1,
         )
+        user = user_saml.user_id
         if len(user) != 1:
             raise AccessDenied()
-        # now find if a token for this user/provider already exists
-        token_ids = token_osv.search(
-            [("saml_provider_id", "=", provider), ("user_id", "=", user.id)]
-        )
 
-        if token_ids:
-            token_ids.write({"saml_access_token": saml_response})
-        else:
-            _logger.info("Creating auth_saml.token")
-            token_ids = token_osv.create(
-                {
-                    "saml_access_token": saml_response,
-                    "saml_provider_id": provider,
-                    "user_id": user.id,
-                }
-            )
+        with registry(self.env.cr.dbname).cursor() as new_cr:
+            new_env = api.Environment(new_cr, self.env.uid, self.env.context)
+            # Update the token. Need to be committed, otherwise the token is not visible
+            # to other envs, like the one used in login_and_redirect
+            user_saml.with_env(new_env).write({"saml_access_token": saml_response})
 
         if validation.get("mapped_attrs", {}):
             user.write(validation.get("mapped_attrs", {}))
@@ -90,7 +60,7 @@ class ResUser(models.Model):
         return user.login
 
     @api.model
-    def auth_saml(self, provider, saml_response, base_url=None):
+    def auth_saml(self, provider: int, saml_response: str, base_url: str = None):
         validation = self._auth_saml_validate(provider, saml_response, base_url)
 
         # required check
@@ -121,7 +91,7 @@ class ResUser(models.Model):
             # since normal auth did not succeed we now try to find if the user
             # has an active token attached to his uid
             token = (
-                self.env["auth_saml.token"]
+                self.env["res.users.saml"]
                 .sudo()
                 .search(
                     [
@@ -130,74 +100,82 @@ class ResUser(models.Model):
                     ]
                 )
             )
-            if not token:
-                raise AccessDenied()
 
-    def _autoremove_password_if_saml(self):
-        """Helper to remove password if it is forbidden for SAML users."""
-        if self.env.context.get("auth_saml_no_autoremove_password"):
-            return
-        if self._allow_saml_and_password():
-            return
-        to_remove_password = self.filtered(
-            lambda rec: rec.id != SUPERUSER_ID and rec.saml_ids and rec.password
-        )
-        if to_remove_password:
-
-            to_remove_password.with_context(
-                auth_saml_no_autoremove_password=True
-            ).write({"password": self._autoremove_password_if_saml_gen_password()})
+            if token:
+                return
+            raise AccessDenied() from None
 
     @api.model
-    def _autoremove_password_if_saml_gen_password(self):
-        """
-        If password_security is installed, we cannot have a False-y password.
-        This is to avoid a very small bridging/compatbility module.
-        """
-        new_password = False
-        modules = self.env["ir.module.module"].sudo()._installed().keys()
-        if "password_security" in modules:
-            new_password = passlib.utils.generate_password(size=24, charset="ascii_72")
-        return new_password
+    def _saml_allowed_user_ids(self) -> Set[int]:
+        """Users that can have a password even if the option to disallow it is set.
 
-    def write(self, vals):
-        result = super().write(vals)
-        self._autoremove_password_if_saml()
-        self._ensure_saml_token_exists()
-        return result
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        result = super().create(vals_list)
-        result._autoremove_password_if_saml()
-        result._ensure_saml_token_exists()
-        return result
+        It includes superuser and the admin if it exists.
+        """
+        allowed_users = {SUPERUSER_ID}
+        user_admin = self.env.ref("base.user_admin", False)
+        if user_admin:
+            allowed_users.add(user_admin.id)
+        return allowed_users
 
     @api.model
-    def _allow_saml_and_password(self):
-        """Can both SAML and local password auth methods can coexist."""
+    def allow_saml_and_password(self) -> bool:
+        """Can both SAML and local password auth methods coexist."""
         return tools.str2bool(
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("auth_saml.allow_saml_uid_and_internal_password", "True")
+            .get_param(ALLOW_SAML_UID_AND_PASSWORD)
         )
 
-    def _ensure_saml_token_exists(self):
-        # workaround for Odoo not seeing the newly created auth_saml.token on
-        # the very first login
-        model_token = self.env["auth_saml.token"].sudo()
-        for record in self.sudo().filtered(lambda r: r.saml_ids):
-            for provider in record.saml_ids:
-                token = model_token.search(
-                    [
-                        ("user_id", "=", record.id),
-                        ("saml_provider_id", "=", provider.saml_provider_id.id),
-                    ]
-                )
-                if not token:
-                    model_token.create(
-                        {
-                            "user_id": record.id,
-                            "saml_provider_id": provider.saml_provider_id.id,
-                        }
+    def _set_password(self):
+        """Inverse method of the password field."""
+        # Redefine base method to block setting password on users with SAML ids
+        # And also to be able to set password to a blank value
+        if not self.allow_saml_and_password():
+            saml_users = self.filtered(
+                lambda user: user.sudo().saml_ids
+                and self.id not in self._saml_allowed_user_ids()
+                and user.password
+            )
+            if saml_users:
+                # same error as an api.constrains because it is a constraint.
+                # a standard constrains would require the use of SQL as the password
+                # field is obfuscated by the base module.
+                raise ValidationError(
+                    _(
+                        "This database disallows users to "
+                        "have both passwords and SAML IDs. "
+                        "Error for logins %s"
                     )
+                    % saml_users.mapped("login")
+                )
+        # handle setting password to NULL
+        blank_password_users = self.filtered(lambda user: user.password is False)
+        non_blank_password_users = self - blank_password_users
+        if non_blank_password_users:
+            # pylint: disable=protected-access
+            super(ResUser, non_blank_password_users)._set_password()
+        if blank_password_users:
+            # similar to what Odoo does in Users._set_encrypted_password
+            self.env.cr.execute(
+                "UPDATE res_users SET password = NULL WHERE id IN %s",
+                (tuple(blank_password_users.ids),),
+            )
+            self.invalidate_cache(["password"], blank_password_users.ids)
+        return
+
+    def allow_saml_and_password_changed(self):
+        """Called after the parameter is changed."""
+        if not self.allow_saml_and_password():
+            # sudo because the user doing the parameter change might not have the right
+            # to search or write users
+            users_to_blank_password = self.sudo().search(
+                [
+                    "&",
+                    ("saml_ids", "!=", False),
+                    ("id", "not in", list(self._saml_allowed_user_ids())),
+                ]
+            )
+            _logger.debug(
+                "Removing password from %s user(s)", len(users_to_blank_password)
+            )
+            users_to_blank_password.write({"password": False})

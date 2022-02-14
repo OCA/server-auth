@@ -1,7 +1,7 @@
 import base64
 import os
 
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
 
 from .fake_idp import FakeIDP
@@ -15,11 +15,19 @@ class TestPySaml(HttpCase):
         sp_pem_public = None
         sp_pem_private = None
 
-        with open(os.path.join(os.path.dirname(__file__), "data", "sp.pem"), "r") as f:
-            sp_pem_public = f.read()
+        with open(
+            os.path.join(os.path.dirname(__file__), "data", "sp.pem"),
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            sp_pem_public = file.read()
 
-        with open(os.path.join(os.path.dirname(__file__), "data", "sp.key"), "r") as f:
-            sp_pem_private = f.read()
+        with open(
+            os.path.join(os.path.dirname(__file__), "data", "sp.key"),
+            "r",
+            encoding="UTF-8",
+        ) as file:
+            sp_pem_private = file.read()
 
         self.saml_provider = self.env["auth.saml.provider"].create(
             {
@@ -38,6 +46,38 @@ class TestPySaml(HttpCase):
         )
 
         self.idp = FakeIDP([self.saml_provider._metadata_string()])
+
+        # Create a user with only password, and another with both password and saml id
+        self.user, self.user2 = (
+            self.env["res.users"]
+            .with_context(no_reset_password=True, tracking_disable=True)
+            .create(
+                [
+                    {
+                        "name": "User",
+                        "email": "test@example.com",
+                        "login": "test@example.com",
+                        "password": "Lu,ums-7vRU>0i]=YDLa",
+                    },
+                    {
+                        "name": "User with SAML",
+                        "email": "user@example.com",
+                        "login": "user@example.com",
+                        "password": "NesTNSte9340D720te>/-A",
+                        "saml_ids": [
+                            (
+                                0,
+                                0,
+                                {
+                                    "saml_provider_id": self.saml_provider.id,
+                                    "saml_uid": "user@example.com",
+                                },
+                            )
+                        ],
+                    },
+                ]
+            )
+        )
 
     def test_ensure_provider_appears_on_login(self):
         # SAML provider should be listed in the login page
@@ -71,27 +111,13 @@ class TestPySaml(HttpCase):
         Login with a user account, but without any SAML provider setup
         against the user
         """
-        # Create an user with only password
-        user = (
-            self.env["res.users"]
-            .with_context(no_reset_password=True)
-            .create(
-                {
-                    "name": "User with Token",
-                    "email": "test@example.com",
-                    "login": "test@example.com",
-                    "password": "Lu,ums-7vRU>0i]=YDLa",
-                }
-            )
-        )
-
         # Standard login using password
         self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
-        self.assertEqual(self.session.uid, user.id)
+        self.assertEqual(self.session.uid, self.user.id)
 
         self.logout()
 
-        # Try to log-in with an unexisting SAML token
+        # Try to log in with a non-existing SAML token
         with self.assertRaises(AccessDenied):
             self.authenticate(user="test@example.com", password="test_saml_token")
 
@@ -107,21 +133,9 @@ class TestPySaml(HttpCase):
                 self.saml_provider.id, unpacked_response.get("SAMLResponse"), None
             )
 
-    def test_login_with_saml(self):
-        user = (
-            self.env["res.users"]
-            .with_context(no_reset_password=True)
-            .create(
-                {
-                    "name": "User with Token",
-                    "email": "test@example.com",
-                    "login": "test@example.com",
-                    "password": "Lu,ums-7vRU>0i]=YDLa",
-                }
-            )
-        )
-
-        user.write(
+    def add_provider_to_user(self):
+        """Add a provider to self.user"""
+        self.user.write(
             {
                 "saml_ids": [
                     (
@@ -135,6 +149,9 @@ class TestPySaml(HttpCase):
                 ]
             }
         )
+
+    def test_login_with_saml(self):
+        self.add_provider_to_user()
 
         redirect_url = self.saml_provider._get_auth_request()
         self.assertIn("http://localhost:8000/sso/redirect?SAMLRequest=", redirect_url)
@@ -151,13 +168,108 @@ class TestPySaml(HttpCase):
             )
         )
 
-        self.assertEqual(login, user.login)
+        self.assertEqual(login, self.user.login)
 
-        # We should not be able to login in the wrong token
+        # We should not be able to log in with the wrong token
         with self.assertRaises(AccessDenied):
             self.authenticate(
                 user="test@example.com", password="{}-WRONG".format(token)
             )
 
-        # User should now beable to login with the token
+        # User should now be able to log in with the token
         self.authenticate(user="test@example.com", password=token)
+
+    def test_disallow_user_password_when_changing_setting(self):
+        """Test that disabling users from having both a password and SAML ids remove
+        users password."""
+        # change the option
+        self.browse_ref(
+            "auth_saml.allow_saml_uid_and_internal_password"
+        ).value = "False"
+        # The password should be blank and the user should not be able to connect
+        with self.assertRaises(AccessDenied):
+            self.authenticate(
+                user="user@example.com", password="NesTNSte9340D720te>/-A"
+            )
+
+    def test_disallow_user_password_new_user(self):
+        """Test that a new user can not be set up with both password and SAML ids when
+        the disallow option is set."""
+        # change the option
+        self.browse_ref(
+            "auth_saml.allow_saml_uid_and_internal_password"
+        ).value = "False"
+        with self.assertRaises(UserError):
+            self.env["res.users"].with_context(no_reset_password=True).create(
+                {
+                    "name": "New user with SAML",
+                    "email": "user2@example.com",
+                    "login": "user2@example.com",
+                    "password": "NesTNSte9340D720te>/-A",
+                    "saml_ids": [
+                        (
+                            0,
+                            0,
+                            {
+                                "saml_provider_id": self.saml_provider.id,
+                                "saml_uid": "user2",
+                            },
+                        )
+                    ],
+                }
+            )
+
+    def test_disallow_user_password_no_password_set(self):
+        """Test that a new user with SAML ids can not have its password set up when the
+        disallow option is set."""
+        # change the option
+        self.browse_ref(
+            "auth_saml.allow_saml_uid_and_internal_password"
+        ).value = "False"
+        # Create a new user with only SAML ids
+        user = (
+            self.env["res.users"]
+            .with_context(no_reset_password=True, tracking_disable=True)
+            .create(
+                {
+                    "name": "New user with SAML",
+                    "email": "user2@example.com",
+                    "login": "user2@example.com",
+                    "saml_ids": [
+                        (
+                            0,
+                            0,
+                            {
+                                "saml_provider_id": self.saml_provider.id,
+                                "saml_uid": "unused",
+                            },
+                        )
+                    ],
+                }
+            )
+        )
+        # Assert that the user password can not be set
+        with self.assertRaises(ValidationError):
+            user.password = "New+Passw000rd"
+
+    def test_disallow_user_password(self):
+        """Test that existing user password is deleted when adding an SAML provider when
+        the disallow option is set."""
+        # change the option
+        self.browse_ref(
+            "auth_saml.allow_saml_uid_and_internal_password"
+        ).value = "False"
+        # Test that existing user password is deleted when adding an SAML provider
+        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+        self.add_provider_to_user()
+        with self.assertRaises(AccessDenied):
+            self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+
+    def test_disallow_user_admin_can_have_password(self):
+        """Test that admin can have its password set even if the disallow option is set."""
+        # change the option
+        self.browse_ref(
+            "auth_saml.allow_saml_uid_and_internal_password"
+        ).value = "False"
+        # Test base.user_admin exception
+        self.env.ref("base.user_admin").password = "nNRST4j*->sEatNGg._!"
