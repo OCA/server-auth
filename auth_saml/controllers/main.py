@@ -1,5 +1,5 @@
 # Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016, 2022 XCG Consulting <https://xcg-consulting.fr/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
@@ -10,7 +10,7 @@ import werkzeug.utils
 from werkzeug.urls import url_quote_plus
 
 import odoo
-from odoo import SUPERUSER_ID, _, api, http, registry as registry_get
+from odoo import SUPERUSER_ID, _, api, http, models, registry as registry_get
 from odoo.http import request
 
 from odoo.addons.web.controllers.main import (
@@ -56,18 +56,45 @@ class SAMLLogin(Home):
     def _list_saml_providers_domain(self):
         return []
 
-    def list_providers(self):
-        providers = (
-            request.env["auth.saml.provider"]
-            .sudo()
-            .search_read(self._list_saml_providers_domain())
-        )
+    def list_saml_providers(self, with_autoredirect: bool = False) -> models.Model:
+        """Return available providers
+
+        :param with_autoredirect: True to only list providers with automatic redirection
+        :return: a recordset of providers
+        """
+        domain = self._list_saml_providers_domain()
+        if with_autoredirect:
+            domain.append(("autoredirect", "=", True))
+        providers = request.env["auth.saml.provider"].sudo().search_read(domain)
 
         for provider in providers:
             # Compatibility with auth_oauth/controllers/main.py in order to
             # avoid KeyError rendering template_auth_oauth_providers
             provider.setdefault("auth_link", "")
         return providers
+
+    def _saml_autoredirect(self):
+        # automatically redirect if any provider is set up to do that
+        autoredirect_providers = self.list_saml_providers(True)
+        # do not redirect if asked too or if a SAML error has been found
+        disable_autoredirect = (
+            "disable_autoredirect" in request.params or "error" in request.params
+        )
+        if autoredirect_providers and not disable_autoredirect:
+            return werkzeug.utils.redirect(
+                "/auth_saml/get_auth_request?pid=%d" % autoredirect_providers[0]["id"],
+                303,
+            )
+        return None
+
+    @http.route()
+    def web_client(self, s_action=None, **kw):
+        ensure_db()
+        if not request.session.uid:
+            result = self._saml_autoredirect()
+            if result:
+                return result
+        return super().web_client(s_action, **kw)
 
     @http.route()
     def web_login(self, *args, **kw):
@@ -79,9 +106,14 @@ class SAMLLogin(Home):
         ):
 
             # Redirect if already logged in and redirect param is present
-            return http.redirect_with_hash(request.params.get("redirect"))
+            return request.redirect(request.params.get("redirect"))
 
-        providers = self.list_providers()
+        if request.httprequest.method == "GET":
+            result = self._saml_autoredirect()
+            if result:
+                return result
+
+        providers = self.list_saml_providers()
 
         response = super().web_login(*args, **kw)
         if response.is_qweb:
@@ -148,6 +180,7 @@ class AuthSAMLController(http.Controller):
 
     @http.route("/auth_saml/signin", type="http", auth="none", csrf=False)
     @fragment_to_query_string
+    # pylint: disable=unused-argument
     def signin(self, req, **kw):
         """
         Client obtained a saml token and passed it back
@@ -211,13 +244,15 @@ class AuthSAMLController(http.Controller):
         return set_cookie_and_redirect(url)
 
     @http.route("/auth_saml/metadata", type="http", auth="none", csrf=False)
+    # pylint: disable=unused-argument
     def saml_metadata(self, req, **kw):
         provider = kw.get("p")
         dbname = kw.get("d")
         valid = kw.get("valid", None)
 
         if not dbname or not provider:
-            raise Exception("Missing parameters")
+            _logger.debug("Metadata page asked without database name or provider id")
+            return request.not_found(_("Missing parameters"))
 
         provider = int(provider)
 
@@ -226,6 +261,8 @@ class AuthSAMLController(http.Controller):
         with registry.cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
             client = env["auth.saml.provider"].sudo().browse(provider)
+            if not client.exists():
+                return request.not_found(_("Unknown provider"))
 
             return request.make_response(
                 client._metadata_string(
