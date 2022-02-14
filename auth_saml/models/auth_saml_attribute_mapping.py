@@ -26,12 +26,12 @@ class AuthSamlAttributeMapping(models.Model):
 
     @api.model
     def _field_name_selection(self):
-        fields = self.env["res.users"].fields_get().items()
+        user_fields = self.env["res.users"].fields_get().items()
 
         def valid_field(f, d):
             return d.get("type") == "char" and not d.get("readonly")
 
-        result = [(f, d.get("string")) for f, d in fields if valid_field(f, d)]
+        result = [(f, d.get("string")) for f, d in user_fields if valid_field(f, d)]
         result.sort(key=lambda r: r[1])
 
         return result
