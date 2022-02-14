@@ -1,5 +1,5 @@
 ====================
-Saml2 Authentication
+SAML2 Authentication
 ====================
 
 .. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -14,18 +14,18 @@ Saml2 Authentication
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/12.0/auth_saml
+    :target: https://github.com/OCA/server-auth/tree/15.0/auth_saml
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-12-0/server-auth-12-0-auth_saml
+    :target: https://translation.odoo-community.org/projects/server-auth-15-0/server-auth-15-0-auth_saml
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/12.0
+    :target: https://runbot.odoo-community.org/runbot/251/15.0
     :alt: Try me on Runbot
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-Let users log into Odoo via an SAML2 provider.
+Let users log into Odoo via an SAML2 identity provider.
 
 This module allows to deport the management of users and passwords in an
 external authentication system to provide SSO functionality (Single Sign On)
@@ -53,41 +53,75 @@ between Odoo and other applications of your ecosystem.
 Installation
 ============
 
-This addon requires `pysaml2`.
+This addon requires the python module ``pysaml2``.
+
+``pysaml2`` requires the binary ``xmlsec1`` (on Debian or Ubuntu you can install it with ``apt-get install xmlsec1``)
+
+Configuration
+=============
+
+To use this module, you need an IDP server, properly set up.
+
+#. Configure the module according to your IdP’s instructions
+   (Settings > Users & Companies > SAML Providers).
+#. Pre-create your users and set the SAML information against the user.
+
+By default, the module let users have both a password and SAML ids.
+To increase security, disable passwords by using the option in Settings.
+Note that the admin account can still have a password, even if the option is activated.
+Setting the option immediately remove all password from users with a configured SAML ids.
+
+If all the users have a SAML id in a single provider, you can set automatic redirection
+in the provider settings. The autoredirection will only be done on the active provider
+with the highest priority. It is still possible to access the login without redirection
+by using the query parameter ``disable_autoredirect``, as in
+``https://example.com/web/login?disable_autoredirect=`` The login is also displayed if
+there is an error with SAML login, in order to display any error message.
 
 Usage
 =====
 
-#. Configure it according to your IDP's instructions
-   (Settings > Users & Companies > SAML Providers).
-#. Pre-create your users and set the SAML information against the user.
-#. Just login with your SAML-provided password.
-
-Known issues / Roadmap
-======================
-
-* Checks to ensure no Odoo user with SAML also has an Odoo password.
-* Setting to disable that rule.
+Users can login with the configured SAML IdP with buttons added in the login screen.
 
 Changelog
 =========
 
-3.0
-~~~
+15.0.1.1.0
+~~~~~~~~~~
 
-* Migrate from lasso to pysaml2
+Fix the module by adding a transaction to commit the token.
 
-2.0
-~~~
+Fix the disallow password for users with SAML ids.
+Added tests to ensure the feature works correctly.
+Admin user is also an exception from not having a password. In Odoo 15.0, this is the standard user to connect for administrative task, not the super user.
 
-* SAML tokens are not stored in res_users anymore to avoid locks on that table
+Improve provider form and list views.
+
+Add auto redirect on providers. Use disable_autoredirect as a parameter query to disable automatic redirection (for example ``https://example.com/web/login?disable_autoredirect=``)
+
+Add certificate file name fields to improve the UI.
+
+Add required on several fields of the SAML provider; without them the server will crash and there is not enough information to make SAML work.
+
+Split signing to have finer control and be compatible with more IDP.
+
+Integrate token into res.users.saml, removing auth_saml.token. No need for a separate table, and no more need to create lines in the table.
+
+Avoid server errors when user try metadata page without necessary parameters.
+
+Replace method call from ``odoo.http.redirect_with_hash`` to ``request.redirect`` as the former does not exists in Odoo 15.0 anymore.
+
+Improved the module documentation.
+
+15.0.1.0.0
+~~~~~~~~~~
 
 Bug Tracker
 ===========
 
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
-If you spotted it first, help us smashing it by providing a detailed and welcomed
+If you spotted it first, help us smash it by providing a detailed and welcomed
 `feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_saml%0Aversion:%2012.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
@@ -98,7 +132,7 @@ Credits
 Authors
 ~~~~~~~
 
-* XCG Consulting
+* `XCG Consulting <https://xcg-consulting.fr/>`_
 
 Contributors
 ~~~~~~~~~~~~
@@ -111,9 +145,14 @@ Contributors
 * Jeffery Chen Fan <jeffery9@gmail.com>
 * Bhavesh Odedra <bodedra@opensourceintegrators.com>
 * `Tecnativa <https://www.tecnativa.com/>`__:
+
   * Jairo Llopis
 * `GlodoUK <https://www.glodo.uk/>`__:
+
   * Karl Southern
+* `TAKOBI <https://takobi.online/>`__:
+
+  * Lorenzo Battistini
 
 Maintainers
 ~~~~~~~~~~~
