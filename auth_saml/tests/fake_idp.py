@@ -73,7 +73,7 @@ CONFIG = {
 }
 
 
-class DummyResponse(object):
+class DummyResponse:
     def __init__(self, status, data, headers=None):
         self.status_code = status
         self.text = data
@@ -86,17 +86,17 @@ class DummyResponse(object):
         """
         _str = self.text
 
-        SR_STR = 'name="%s" value="' % ver
-        RS_STR = 'name="RelayState" value="'
+        sr_str = 'name="%s" value="' % ver
+        rs_str = 'name="RelayState" value="'
 
-        i = _str.find(SR_STR)
-        i += len(SR_STR)
+        i = _str.find(sr_str)
+        i += len(sr_str)
         j = _str.find('"', i)
 
         sr = _str[i:j]
 
-        start = _str.find(RS_STR, j)
-        start += len(RS_STR)
+        start = _str.find(rs_str, j)
+        start += len(rs_str)
         end = _str.find('"', start)
 
         rs = _str[start:end]
@@ -144,10 +144,7 @@ class FakeIDP(Server):
         else:
             _binding = req.message.protocol_binding
 
-        try:
-            resp_args = self.response_args(req.message, [_binding])
-        except Exception:
-            raise
+        resp_args = self.response_args(req.message, [_binding])
 
         identity = {
             "surName": "Example",
