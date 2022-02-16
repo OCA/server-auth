@@ -5,7 +5,7 @@
 {
     "name": "Password Security",
     "summary": "Allow admin to set password security requirements.",
-    "version": "14.0.1.0.0",
+    "version": "15.0.1.0.0",
     "author": "LasLabs, "
     "Kaushal Prajapati, "
     "Tecnativa, "
@@ -23,7 +23,6 @@
     },
     "license": "LGPL-3",
     "data": [
-        "views/password_security.xml",
         "views/res_config_settings_views.xml",
         "security/ir.model.access.csv",
         "security/res_users_pass_history.xml",
@@ -31,5 +30,11 @@
     "demo": [
         "demo/res_users.xml",
     ],
+    "assets": {
+        "web.assets_common": [
+            "password_security/static/src/js/password_gauge.js",
+            "password_security/static/lib/zxcvbn/zxcvbn.min.js",
+        ],
+    },
     "installable": True,
 }
