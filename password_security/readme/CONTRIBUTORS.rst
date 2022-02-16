@@ -9,3 +9,5 @@
 
     * Chandresh Thakkar <cthakkar@opensourceintegrators.com>
     * Daniel Reis <dreis@opensourceintegrators.com>
+
+* brain-tec AG <info@bt-group.com>
