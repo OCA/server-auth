@@ -35,7 +35,7 @@ Settings & Defaults
 These are defined at the company level:
 
 =====================  =======   ===================================================
- Name                  Default   Description                             
+ Name                  Default   Description
 =====================  =======   ===================================================
  password_expiration   60        Days until passwords expire
  password_length       12        Minimum number of characters in password
@@ -84,6 +84,16 @@ Contributors
 * James Foster <jfoster@laslabs.com>
 * Dave Lasley <dave@laslabs.com>
 * Kaushal Prajapati <kbprajapati@live.com>
+* Petar Najman <petar.najman@modoolar.com>
+* Shepilov Vladislav <shepilov.v@protonmail.com>
+* Florian Kantelberg <florian.kantelberg@initos.com>
+
+* `Open Source Integrators <https://opensourceintegrators.com>`_
+
+    * Chandresh Thakkar <cthakkar@opensourceintegrators.com>
+    * Daniel Reis <dreis@opensourceintegrators.com>
+
+* brain-tec AG <info@bt-group.com>
 
 Maintainer
 ----------
