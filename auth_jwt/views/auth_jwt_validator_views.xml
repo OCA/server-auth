@@ -10,6 +10,7 @@
                         <group colspan="2">
                             <field name="name" />
                             <field name="audience" />
+                            <field name="next_validator_id" />
                         </group>
                         <group colspan="2">
                             <field name="issuer" />
@@ -69,6 +70,7 @@
                 <field name="user_id_strategy" />
                 <field name="partner_id_strategy" />
                 <field name="partner_id_required" />
+                <field name="next_validator_id" />
             </tree>
         </field>
     </record>

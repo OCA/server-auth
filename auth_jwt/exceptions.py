@@ -30,3 +30,17 @@ class UnauthorizedInvalidToken(Unauthorized):
 
 class UnauthorizedPartnerNotFound(Unauthorized):
     pass
+
+
+class CompositeJwtError(Unauthorized):
+    """Indicate that multiple errors occurred during JWT chain validation."""
+
+    def __init__(self, errors):
+        self.errors = errors
+        super().__init__(
+            "Multiple errors occurred during JWT chain validation:\n"
+            + "\n".join(
+                "{}: {}".format(validator_name, error)
+                for validator_name, error in self.errors.items()
+            )
+        )
