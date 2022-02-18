@@ -1,0 +1,1 @@
+JWT bearer token authentication.

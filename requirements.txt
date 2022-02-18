@@ -6,4 +6,5 @@ pyotp
 # auth_u2f
 python-u2flib-server
 responses
-
+# auth_jwt
+pyjwt
