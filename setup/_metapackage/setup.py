@@ -12,6 +12,7 @@ setuptools.setup(
         'odoo11-addon-auth_dynamic_groups',
         'odoo11-addon-auth_from_http_remote_user',
         'odoo11-addon-auth_from_http_remote_user_role',
+        'odoo11-addon-auth_jwt',
         'odoo11-addon-auth_keycloak',
         'odoo11-addon-auth_ldaps',
         'odoo11-addon-auth_oauth_multi_token',
