@@ -5,4 +5,5 @@ from . import (
     test_password_security_home,
     test_password_security_session,
     test_res_users,
+    test_totp,
 )
