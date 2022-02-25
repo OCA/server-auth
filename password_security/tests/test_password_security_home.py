@@ -57,7 +57,7 @@ class TestPasswordSecurityHome(TransactionCase):
             with mock.patch("%s.request" % IMPORT) as request:
                 with mock.patch("%s.ensure_db" % IMPORT) as ensure:
                     with mock.patch("%s.http" % IMPORT) as http:
-                        http.redirect_with_hash.return_value = MockResponse()
+                        http.WebRequest.redirect.return_value = MockResponse()
                         mocks.update(
                             {
                                 "request": request,
@@ -122,7 +122,7 @@ class TestPasswordSecurityHome(TransactionCase):
             user._password_has_expired.return_value = True
             res = self.password_security_home.web_login()
             self.assertEqual(
-                assets["http"].redirect_with_hash(),
+                assets["http"].WebRequest.redirect(),
                 res,
             )
 
@@ -210,7 +210,7 @@ class TestPasswordSecurityHome(TransactionCase):
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
-@mock.patch("odoo.http.redirect_with_hash", return_value="redirected")
+@mock.patch("odoo.http.WebRequest.redirect", return_value="redirected")
 class LoginCase(HttpCase):
     def test_web_login_authenticate(self, redirect_mock, *args):
         """It should allow authenticating by login"""
