@@ -12,7 +12,7 @@ from odoo.tools.misc import mute_logger
 
 
 class EndTestException(Exception):
-    """ It stops tests from continuing """
+    """It stops tests from continuing"""
 
 
 class TestResUsers(TransactionCase):
@@ -35,7 +35,7 @@ class TestResUsers(TransactionCase):
             yield mocks
 
     def _auth_timeout_check(self, http_mock):
-        """ It wraps ``_auth_timeout_check`` for easier calling """
+        """It wraps ``_auth_timeout_check`` for easier calling"""
         self.db = mock.MagicMock()
         self.uid = mock.MagicMock()
         self.passwd = mock.MagicMock()
@@ -45,14 +45,14 @@ class TestResUsers(TransactionCase):
         return self.ResUsers._auth_timeout_check()
 
     def test_session_validity_no_request(self):
-        """ It should return immediately if no request """
+        """It should return immediately if no request"""
         with self._mock_assets() as assets:
             assets["http"].request = False
             res = self._auth_timeout_check(assets["http"])
             self.assertFalse(res)
 
     def test_session_validity_gets_session_file(self):
-        """ It should call get the session file for the session id """
+        """It should call get the session file for the session id"""
         with self._mock_assets() as assets:
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 0, []
@@ -65,7 +65,7 @@ class TestResUsers(TransactionCase):
             )
 
     def test_session_validity_logout(self):
-        """ It should log out of session if past deadline """
+        """It should log out of session if past deadline"""
         with self._mock_assets(["http", "getmtime", "utime"]) as assets:
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = -9999, []
@@ -77,7 +77,7 @@ class TestResUsers(TransactionCase):
             )
 
     def test_session_validity_updates_utime(self):
-        """ It should update utime of session file if not expired """
+        """It should update utime of session file if not expired"""
         with self._mock_assets(["http", "getmtime", "utime"]) as assets:
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 9999, []
@@ -90,7 +90,7 @@ class TestResUsers(TransactionCase):
 
     @mute_logger("odoo.addons.auth_session_timeout.models.res_users")
     def test_session_validity_os_error_guard(self):
-        """ It should properly guard from OSError & return """
+        """It should properly guard from OSError & return"""
         with self._mock_assets(["http", "utime", "getmtime"]) as assets:
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 0, []
