@@ -21,23 +21,53 @@ class ResUser(models.Model):
 
     saml_ids = fields.One2many("res.users.saml", "user_id")
 
-    @api.constrains("password", "saml_ids")
-    def check_no_password_with_saml(self):
-        """Ensure no Odoo user posesses both an SAML user ID and an Odoo
-        password. Except admin which is not constrained by this rule.
+    @api.model
+    def _saml_allowed_user_ids(self):
+        """Users that can have a password even if the option to disallow it is set.
+        It includes superuser and the admin if it exists.
         """
+        allowed_users = {SUPERUSER_ID}
+        user_admin = self.env.ref("base.user_admin", False)
+        if user_admin:
+            allowed_users.add(user_admin.id)
+        return allowed_users
+
+    def _set_password(self):
+        """Inverse method of the password field."""
+        # Redefine base method to block setting password on users with SAML ids
+        # And also to be able to set password to a blank value
         if not self._allow_saml_and_password():
-            # Super admin is the only user we allow to have a local password
-            # in the database
-            if self.password and self.id is not SUPERUSER_ID and self.sudo().saml_ids:
+            saml_users = self.filtered(
+                lambda user: user.sudo().saml_ids
+                and self.id not in self._saml_allowed_user_ids()
+                and user.password
+            )
+            if saml_users:
+                # same error as an api.constrains because it is a constraint.
+                # a standard constrains would require the use of SQL as the password
+                # field is obfuscated by the base module.
                 raise ValidationError(
                     _(
                         "This database disallows users to "
                         "have both passwords and SAML IDs. "
-                        "Errors for login %s"
+                        "Error for logins %s"
                     )
-                    % (self.login)
+                    % saml_users.mapped("login")
                 )
+        # handle setting password to NULL
+        blank_password_users = self.filtered(lambda user: user.password is False)
+        non_blank_password_users = self - blank_password_users
+        if non_blank_password_users:
+            # pylint: disable=protected-access
+            super(ResUser, non_blank_password_users)._set_password()
+        if blank_password_users:
+            # similar to what Odoo does in Users._set_encrypted_password
+            self.env.cr.execute(
+                "UPDATE res_users SET password = NULL WHERE id IN %s",
+                (tuple(blank_password_users.ids),),
+            )
+            self.invalidate_cache(["password"], blank_password_users.ids)
+        return
 
     def _auth_saml_validate(self, provider_id, token, base_url=None):
         provider = self.env["auth.saml.provider"].sudo().browse(provider_id)
@@ -179,7 +209,7 @@ class ResUser(models.Model):
         return tools.str2bool(
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("auth_saml.allow_saml_uid_and_internal_password", "True")
+            .get_param("auth_saml.allow_saml_uid_and_internal_password", "False")
         )
 
     def _ensure_saml_token_exists(self):
