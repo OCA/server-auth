@@ -1,7 +1,7 @@
 import base64
 import os
 
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, ValidationError
 from odoo.tests import HttpCase, tagged
 
 from .fake_idp import FakeIDP
@@ -11,7 +11,9 @@ from .fake_idp import FakeIDP
 class TestPySaml(HttpCase):
     def setUp(self):
         super().setUp()
-
+        self.env["ir.config_parameter"].set_param(
+            "auth_saml.allow_saml_uid_and_internal_password", False
+        )
         sp_pem_public = None
         sp_pem_private = None
 
@@ -135,6 +137,9 @@ class TestPySaml(HttpCase):
                 ]
             }
         )
+
+        with self.assertRaises(ValidationError):
+            user.password = "Lu,ums-7vRU>0"
 
         redirect_url = self.saml_provider._get_auth_request()
         self.assertIn("http://localhost:8000/sso/redirect?SAMLRequest=", redirect_url)
