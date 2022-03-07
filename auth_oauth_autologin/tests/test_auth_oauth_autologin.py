@@ -9,14 +9,20 @@ from odoo.tests.common import HOST, PORT, HttpCase
 class TestAuthMethod(HttpCase):
     def _assert_no_autologin(self, query=""):
         r = requests.get(
-            f"http://{HOST}:{PORT}/web/login{query}", allow_redirects=False
+            "http://{host}:{port}/web/login{query}".format(
+                host=HOST, port=PORT, query=query
+            ),
+            allow_redirects=False,
         )
         self.assertNotEqual(r.status_code, 303)
         self.assertTrue(r.ok)
 
     def _assert_autologin(self, query=""):
         r = requests.get(
-            f"http://{HOST}:{PORT}/web/login{query}", allow_redirects=False
+            "http://{host}:{port}/web/login{query}".format(
+                host=HOST, port=PORT, query=query
+            ),
+            allow_redirects=False,
         )
         self.assertEqual(r.status_code, 303)
 
@@ -34,7 +40,7 @@ class TestAuthMethod(HttpCase):
         )
         self.assertEqual(len(providers), 1)
         providers.autologin = True
-        providers.flush()
+        providers.clear_caches()
         self._assert_autologin()
         self._assert_no_autologin(query="?no_autologin=1")
         self._assert_no_autologin(query="?error=...")
