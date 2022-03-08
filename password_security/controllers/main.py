@@ -67,10 +67,10 @@ class PasswordSecurityHome(AuthSignupHome):
         """
         qcontext = self.get_auth_signup_qcontext()
         if (
-            request.httprequest.method == "POST"
-            and qcontext.get("login")
-            and "error" not in qcontext
-            and "token" not in qcontext
+            request.httprequest.method == "POST" and
+            qcontext.get("login") and
+            "error" not in qcontext and
+            "token" not in qcontext
         ):
             login = qcontext.get("login")
             user_ids = request.env.sudo().search(

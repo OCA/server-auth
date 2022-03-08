@@ -198,7 +198,7 @@ class ResUsers(models.Model):
             if recent_passes < 0:
                 recent_passes = rec_id.password_history_ids
             else:
-                recent_passes = rec_id.password_history_ids[0 : recent_passes - 1]
+                recent_passes = rec_id.password_history_ids[0: recent_passes - 1]
             if recent_passes.filtered(
                 lambda r: crypt.verify(password, r.password_crypt)
             ):
@@ -208,7 +208,7 @@ class ResUsers(models.Model):
                 )
 
     def _set_encrypted_password(self, uid, pw):
-        """It saves password crypt history for history rules"""
+        """ It saves password crypt history for history rules """
         super(ResUsers, self)._set_encrypted_password(uid, pw)
 
         self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
