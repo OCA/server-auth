@@ -65,7 +65,7 @@ class ResUsers(models.Model):
         validation = oauth_provider._parse_id_token(id_token, access_token)
 
         if oauth_provider.validation_endpoint:
-            validation.update(self._auth_oauth_validate(oauth_provider, access_token))
+            validation.update(self._auth_oauth_validate(provider, access_token))
 
         # required check
         if not validation.get("user_id"):
