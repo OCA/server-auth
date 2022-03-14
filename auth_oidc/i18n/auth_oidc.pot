@@ -111,13 +111,13 @@ msgid ""
 msgstr ""
 
 #. module: auth_oidc
-#: model:ir.model,name:auth_oidc.model_res_users
-msgid "Users"
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__validation_endpoint
+msgid "UserInfo URL"
 msgstr ""
 
 #. module: auth_oidc
-#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__validation_endpoint
-msgid "Validation URL"
+#: model:ir.model,name:auth_oidc.model_res_users
+msgid "Users"
 msgstr ""
 
 #. module: auth_oidc
