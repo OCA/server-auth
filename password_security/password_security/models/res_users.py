@@ -43,7 +43,7 @@ class ResUsers(models.Model):
     @api.model
     def create(self, vals):
         vals["password_write_date"] = fields.Datetime.now()
-        return super(ResUsers, self.with_context(no_password_policy_check=True)).create(vals)
+        return super(ResUsers, self).create(vals)
 
     def write(self, vals):
         if vals.get("password"):
@@ -68,21 +68,14 @@ class ResUsers(models.Model):
         return data
 
     def _check_password_policy(self, passwords):
-        """ Disable checking password policy on new user creation
-        As many tests in standard apps are creating user with password
-        that do not comprise password policy which results in failed tests
-        """
-        if self.env.context.get('no_password_policy_check', False):
-            return True
-        else:
-            result = super(ResUsers, self)._check_password_policy(passwords)
+        result = super(ResUsers, self)._check_password_policy(passwords)
 
-            for password in passwords:
-                if not password:
-                    continue
-                self._check_password(password)
+        for password in passwords:
+            if not password:
+                continue
+            self._check_password(password)
 
-            return result
+        return result
 
     @api.model
     def get_estimation(self, password):
