@@ -14,6 +14,12 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: vault
+#: code:addons/vault/models/vault_entry.py:0
+#, python-format
+msgid "%s entry %s by %s"
+msgstr ""
+
+#. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
@@ -45,6 +51,22 @@ msgid "Active Key"
 msgstr ""
 
 #. module: vault
+#: model:ir.actions.act_window,name:vault.action_vault_entry
+#: model:ir.ui.menu,name:vault.menu_vault_entry
+msgid "All Entries"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
+msgid "Allow the usage to share secrets with external users"
+msgstr ""
+
+#. module: vault
+#: model:ir.model.fields,help:vault.field_vault_right__perm_create
+msgid "Allow to create in the vault"
+msgstr ""
+
+#. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_delete
 msgid "Allow to delete a vault"
 msgstr ""
@@ -57,6 +79,16 @@ msgstr ""
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_write
 msgid "Allow to write to the vault"
+msgstr ""
+
+#. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_entry__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_field__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_file__allowed_create
+#: model:ir.model.fields,field_description:vault.field_vault_right__allowed_create
+msgid "Allowed Create"
 msgstr ""
 
 #. module: vault
@@ -97,16 +129,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_file__allowed_write
 #: model:ir.model.fields,field_description:vault.field_vault_right__allowed_write
 msgid "Allowed Write"
-msgstr ""
-
-#. module: vault
-#: model:ir.model.fields,field_description:vault.field_vault__allowed_create
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__allowed_create
-#: model:ir.model.fields,field_description:vault.field_vault_entry__allowed_create
-#: model:ir.model.fields,field_description:vault.field_vault_field__allowed_create
-#: model:ir.model.fields,field_description:vault.field_vault_file__allowed_create
-#: model:ir.model.fields,field_description:vault.field_vault_right__allowed_create
-msgid "Allowed Create"
 msgstr ""
 
 #. module: vault
@@ -173,6 +195,11 @@ msgid "Complete Name"
 msgstr ""
 
 #. module: vault
+#: model:ir.model,name:vault.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
@@ -193,6 +220,11 @@ msgid "Copy to clipboard"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault_right__perm_create
+msgid "Create"
+msgstr ""
+
+#. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_entry__create_uid
@@ -202,12 +234,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__create_uid
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_log__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_right__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_tag__create_uid
 msgid "Created by"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/wizards/vault_send_wizard.py:0
+#, python-format
+msgid "Created by %s"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/models/vault_inbox.py:0
+#, python-format
+msgid "Created by %s via %s"
 msgstr ""
 
 #. module: vault
@@ -220,6 +265,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__create_date
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__create_date
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__create_date
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__create_date
 #: model:ir.model.fields,field_description:vault.field_vault_log__create_date
 #: model:ir.model.fields,field_description:vault.field_vault_right__create_date
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__create_date
@@ -254,6 +300,7 @@ msgid "Delete"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:vault.field_res_users__display_name
 #: model:ir.model.fields,field_description:vault.field_res_users_key__display_name
 #: model:ir.model.fields,field_description:vault.field_vault__display_name
@@ -266,6 +313,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__display_name
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_log__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_right__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__display_name
@@ -303,10 +351,8 @@ msgstr ""
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_open_entries
-#: model:ir.actions.act_window,name:vault.action_vault_entry
 #: model:ir.model.fields,field_description:vault.field_vault__entry_ids
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__entry_id
-#: model:ir.ui.menu,name:vault.menu_vault_entry
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Entries"
@@ -341,6 +387,7 @@ msgstr ""
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__expired
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Expired"
 msgstr ""
 
@@ -457,6 +504,7 @@ msgid "Hide"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__id
 #: model:ir.model.fields,field_description:vault.field_res_users__id
 #: model:ir.model.fields,field_description:vault.field_res_users_key__id
 #: model:ir.model.fields,field_description:vault.field_vault__id
@@ -469,6 +517,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__id
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__id
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__id
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__id
 #: model:ir.model.fields,field_description:vault.field_vault_log__id
 #: model:ir.model.fields,field_description:vault.field_vault_right__id
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__id
@@ -479,12 +528,12 @@ msgstr ""
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__expiration
-msgid "If expired the inbox will be read-only for the owner."
+msgid "If expired the inbox can't be written using the link"
 msgstr ""
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__accesses
-msgid "If this is 0 the inbox will be read-only for the owner."
+msgid "If this is 0 the inbox can't be written using the link"
 msgstr ""
 
 #. module: vault
@@ -517,6 +566,7 @@ msgstr ""
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__inbox_id
 #: model:ir.ui.menu,name:vault.menu_vault_inbox
 msgid "Inbox"
 msgstr ""
@@ -621,6 +671,7 @@ msgid "Keys"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:vault.field_res_users____last_update
 #: model:ir.model.fields,field_description:vault.field_res_users_key____last_update
 #: model:ir.model.fields,field_description:vault.field_vault____last_update
@@ -633,6 +684,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_inbox____last_update
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_log____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_right____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard____last_update
@@ -651,6 +703,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__write_uid
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__write_uid
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__write_uid
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__write_uid
 #: model:ir.model.fields,field_description:vault.field_vault_log__write_uid
 #: model:ir.model.fields,field_description:vault.field_vault_right__write_uid
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__write_uid
@@ -669,6 +722,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__write_date
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__write_date
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__write_date
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__write_date
 #: model:ir.model.fields,field_description:vault.field_vault_log__write_date
 #: model:ir.model.fields,field_description:vault.field_vault_right__write_date
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__write_date
@@ -687,6 +741,7 @@ msgstr ""
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__log_ids
 #: model:ir.model.fields,field_description:vault.field_vault_entry__log_ids
+#: model:ir.model.fields,field_description:vault.field_vault_inbox__log_ids
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Log"
@@ -741,6 +796,11 @@ msgid "Model"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__module_vault_share
+msgid "Module Vault Share"
+msgstr ""
+
+#. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__name
 #: model:ir.model.fields,field_description:vault.field_vault_abstract_field__name
 #: model:ir.model.fields,field_description:vault.field_vault_entry__name
@@ -750,6 +810,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__name
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__name
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__name
+#: model:ir.model.fields,field_description:vault.field_vault_inbox_log__name
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__name
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__name
 #: model:ir.model.fields,field_description:vault.field_vault_tag__name
@@ -784,6 +845,11 @@ msgstr ""
 #: model:ir.model.constraint,message:vault.constraint_vault_send_wizard_value_check
 #, python-format
 msgid "No value found"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "Not Expired"
 msgstr ""
 
 #. module: vault
@@ -1053,12 +1119,16 @@ msgid ""
 msgstr ""
 
 #. module: vault
+#: code:addons/vault/models/vault_tag.py:0
 #: model:ir.model.constraint,message:vault.constraint_vault_tag_name_uniq
+#, python-format
 msgid "The tag must be unique!"
 msgstr ""
 
 #. module: vault
+#: code:addons/vault/models/vault_right.py:0
 #: model:ir.model.constraint,message:vault.constraint_vault_right_user_uniq
+#, python-format
 msgid "The user must be unique"
 msgstr ""
 
@@ -1144,6 +1214,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_right__vault_id
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__vault_id
 #: model:ir.ui.menu,name:vault.menu_vault
+#: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 #, python-format
 msgid "Vault"
 msgstr ""
@@ -1151,6 +1223,18 @@ msgstr ""
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__vault_right_ids
 msgid "Vault Right"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
+msgid "Vault Share"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/models/vault_inbox_log.py:0
+#: model:ir.model,name:vault.model_vault_inbox_log
+#, python-format
+msgid "Vault inbox log"
 msgstr ""
 
 #. module: vault
@@ -1197,6 +1281,18 @@ msgstr ""
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_write
 msgid "Write"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/models/vault_inbox.py:0
+#, python-format
+msgid "Written by %s via %s"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/models/vault_entry.py:0
+#, python-format
+msgid "You can not create recursive entries."
 msgstr ""
 
 #. module: vault
