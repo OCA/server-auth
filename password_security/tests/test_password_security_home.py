@@ -54,9 +54,9 @@ class TestPasswordSecurityHome(TransactionCase):
             for method in methods:
                 mocks[method] = _super[method]
                 mocks[method].return_value = MockResponse()
-            with mock.patch("odoo.addons.password_security.controllers.main.request") as request:
-                with mock.patch("odoo.addons.password_security.controllers.main.ensure_db") as ensure:
-                    with mock.patch("odoo.addons.password_security.controllers.main.http") as http:
+            with mock.patch("%s.request" % IMPORT) as request:
+                with mock.patch("%s.ensure_db" % IMPORT) as ensure:
+                    with mock.patch("%s.http" % IMPORT) as http:
                         http.WebRequest.redirect.return_value = MockResponse()
                         mocks.update(
                             {
