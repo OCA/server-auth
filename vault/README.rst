@@ -29,6 +29,8 @@ This module implements a vault for secrets and files using end-to-end-encryption
 
 The server can never access the secrets with the information available. Only people registered in the vault can decrypt or encrypt values in a vault. The meta data isn't encrypted to be able to search/filter for entries more easily.
 
+This modules requires a secure context for the browser to work properly.
+
 **Table of contents**
 
 .. contents::
@@ -39,12 +41,12 @@ Known issues / Roadmap
 
 * Field and file history for restoration
 
+* Send secrets directly to an inbox within Odoo
+
 * Import improvement
 
  * Support challenge-response/FIDO2
  * Support for argon2 and kdbx v4
-
-* Properly handle missing Crypto API because no https
 
 Bug Tracker
 ===========
