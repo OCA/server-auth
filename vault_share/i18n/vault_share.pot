@@ -26,17 +26,54 @@ msgid "Clean outgoing share"
 msgstr ""
 
 #. module: vault_share
+#: model:ir.model,name:vault_share.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model,name:vault_share.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__create_uid
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__create_uid
 msgid "Created by"
 msgstr ""
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__create_date
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__create_date
 msgid "Created on"
 msgstr ""
 
 #. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
+msgid "Days"
+msgstr ""
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
+msgid "Delay the deletion of shares"
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_config_settings__vault_share_delay
+msgid "Delayed Deletion"
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_res_config_settings__vault_share_delay
+msgid ""
+"Delays the deletion of a share. After the expiration date it continues to "
+"stay inaccessible"
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_company__display_name
+#: model:ir.model.fields,field_description:vault_share.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__display_name
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__display_name
 msgid "Display Name"
 msgstr ""
 
@@ -56,7 +93,10 @@ msgid "Filename"
 msgstr ""
 
 #. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_company__id
+#: model:ir.model.fields,field_description:vault_share.field_res_config_settings__id
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__id
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__id
 msgid "ID"
 msgstr ""
 
@@ -72,22 +112,33 @@ msgid "Iv"
 msgstr ""
 
 #. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_company____last_update
+#: model:ir.model.fields,field_description:vault_share.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:vault_share.field_vault_share____last_update
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log____last_update
 msgid "Last Modified on"
 msgstr ""
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__write_uid
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__write_uid
 msgid "Last Updated by"
 msgstr ""
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__write_date
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__write_date
 msgid "Last Updated on"
 msgstr ""
 
 #. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__log_ids
+msgid "Log"
+msgstr ""
+
+#. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__name
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__name
 msgid "Name"
 msgstr ""
 
@@ -126,6 +177,11 @@ msgstr ""
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__secret_file
 msgid "Secret File"
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__share_id
+msgid "Share"
 msgstr ""
 
 #. module: vault_share
@@ -186,6 +242,18 @@ msgid "The secret expired"
 msgstr ""
 
 #. module: vault_share
+#: code:addons/vault_share/models/vault_share.py:0
+#, python-format
+msgid "The share was accessed by %s via %s"
+msgstr ""
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share.py:0
+#, python-format
+msgid "The share was created by %s"
+msgstr ""
+
+#. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__token
 msgid "Token"
 msgstr ""
@@ -198,6 +266,18 @@ msgstr ""
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__share_link
 msgid "Using this link and pin people can access the secret."
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_company__vault_share_delay
+msgid "Vault Share Delay"
+msgstr ""
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share_log.py:0
+#: model:ir.model,name:vault_share.model_vault_share_log
+#, python-format
+msgid "Vault share log"
 msgstr ""
 
 #. module: vault_share
