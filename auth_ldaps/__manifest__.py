@@ -5,7 +5,7 @@
 
 {
     "name": "LDAPS authentication",
-    "version": "13.0.1.0.1",
+    "version": "13.0.1.0.2",
     "category": "Tools",
     "website": "https://github.com/OCA/server-auth",
     "author": "CorporateHub, " "Creu Blanca, " "Odoo Community Association (OCA)",
