@@ -60,16 +60,6 @@ msgid "Key"
 msgstr ""
 
 #. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_default
-msgid "Key Env Default"
-msgstr ""
-
-#. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key_env_is_editable
-msgid "Key Env Is Editable"
-msgstr ""
-
-#. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
 msgid "Last Modified on"
 msgstr ""
@@ -90,18 +80,13 @@ msgid "Name"
 msgstr ""
 
 #. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__server_env_defaults
-msgid "Server Env Defaults"
-msgstr ""
-
-#. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
 msgid "The API key. Keep the default value in this field if it is\n"
 "        obtained from the server environment configuration."
 msgstr ""
 
 #. module: auth_api_key
-#: code:addons/auth_api_key/models/auth_api_key.py:72
+#: code:addons/auth_api_key/models/auth_api_key.py:48
 #, python-format
 msgid "The key %s is not allowed"
 msgstr ""
@@ -118,7 +103,7 @@ msgid "User"
 msgstr ""
 
 #. module: auth_api_key
-#: code:addons/auth_api_key/models/auth_api_key.py:68
+#: code:addons/auth_api_key/models/auth_api_key.py:44
 #, python-format
 msgid "User is not allowed"
 msgstr ""
