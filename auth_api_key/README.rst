@@ -31,6 +31,7 @@ API keys are codes passed in (in the http header API-KEY) by programs calling an
 
 Take care while using this kind of mechanism since information into http headers are visible in clear. Thus, use it only to authenticate requests from known sources. For unknown sources, it is a good practice to filter out this header at proxy level.
 
+
 **Table of contents**
 
 .. contents::
@@ -39,11 +40,15 @@ Take care while using this kind of mechanism since information into http headers
 Configuration
 =============
 
-The api key menu is available into Settings > Technical in debug mode.
+The API key menu is available into Settings > Technical in debug mode.
 By default, when you create an API key, the key is saved into the database.
-It is also possible to provide the value of this key via the configuration
+
+If the ``server_environment`` module is also installed,
+it is also possible to provide the value of this key via the configuration
 file. This can be very useful to avoid mixing your keys between your various
-environments when restoring databases. All you have to do is to add a new
+environments when restoring databases.
+
+All you have to do is to add a new
 section to your configuration file according to the following convention:
 
 .. code-block:: ini
@@ -90,6 +95,7 @@ Contributors
 * Laurent Mignon <laurent.mignon@acsone.eu>
 * Quentin Groulard <quentin.groulard@acsone.eu>
 * Sébastien Beau <sebastien.beau@akretion.com>
+
 
 Maintainers
 ~~~~~~~~~~~
