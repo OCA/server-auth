@@ -24,8 +24,8 @@ class PatchLDAPConnection(object):
 
 @contextmanager
 def patch_ldap(self, results):
-    """ defuse ldap functions to return fake entries instead of talking to a
-    server. Use this in your own ldap related tests """
+    """defuse ldap functions to return fake entries instead of talking to a
+    server. Use this in your own ldap related tests"""
     import ldap
 
     original_initialize = ldap.initialize

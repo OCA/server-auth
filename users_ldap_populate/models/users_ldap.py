@@ -30,7 +30,8 @@ class CompanyLDAP(models.Model):
         default=lambda self: [(6, 0, [SUPERUSER_ID])],
     )
     deactivate_unknown_users = fields.Boolean(
-        string="Deactivate unknown users", default=False,
+        string="Deactivate unknown users",
+        default=False,
     )
 
     def action_populate(self):
@@ -142,7 +143,12 @@ class CompanyLDAP(models.Model):
         for unknown_user in users:
             _logger.debug("checking user %s", unknown_user.login)
             present_in_ldap = any(
-                bool(self._get_ldap_entry_dicts(conf, user_name=unknown_user.login,))
+                bool(
+                    self._get_ldap_entry_dicts(
+                        conf,
+                        user_name=unknown_user.login,
+                    )
+                )
                 for conf in ldap_confs
             )
             if not present_in_ldap:
