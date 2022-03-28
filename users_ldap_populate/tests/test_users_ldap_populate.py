@@ -80,8 +80,8 @@ class TestUsersLdapPopulate(TransactionCase):
             ldap_populate_wizard = self.env["res.company.ldap.populate_wizard"].browse(
                 res["res_id"]
             )
-            self.assertEquals(ldap_populate_wizard.users_created, 1)
-            self.assertEquals(
+            self.assertEqual(ldap_populate_wizard.users_created, 1)
+            self.assertEqual(
                 ldap_populate_wizard.users_deactivated, previous_users_count - 1
             )  # Admin is not deactivated
             self.assertFalse(self.env.ref("base.user_demo").active)
@@ -111,7 +111,7 @@ class TestUsersLdapPopulate(TransactionCase):
             ldap_populate_wizard = self.env["res.company.ldap.populate_wizard"].browse(
                 res["res_id"]
             )
-            self.assertEquals(ldap_populate_wizard.users_created, 1)
+            self.assertEqual(ldap_populate_wizard.users_created, 1)
             self.assertTrue(inactive_user.active)
             self.assertTrue(
                 self.env["res.users"].search([("login", "=", "test_inactive")])
