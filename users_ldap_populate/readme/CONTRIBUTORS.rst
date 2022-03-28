@@ -1,5 +1,6 @@
 * Therp BV <https://therp.nl>
-* Tecnativa <www.tecnativa.com>
+* `Tecnativa <https://www.tecnativa.com>`_:
 
   * Alexandre Díaz
   * João Marques
+  * Carlos Roca
