@@ -55,8 +55,7 @@ class ResUsers(models.Model):
 
     def _check_credentials(self, password, env):
         try:
-            super(ResUsers, self)._check_credentials(password, env)
-
+            return super(ResUsers, self)._check_credentials(password, env)
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
             users = self.with_user(SUPERUSER_ID).search([("id", "=", self._uid)])
