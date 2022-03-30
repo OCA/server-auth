@@ -80,47 +80,180 @@ class ResUsers(models.Model):
 
     @api.model
     def get_estimation(self, password):
-        return zxcvbn.zxcvbn(password)
+        msg_translate = {
+            "Use a few words, avoid common phrases.": _(
+                "Use a few words, avoid common phrases."
+            ),
+            "No need for symbols, digits, or uppercase letters.": _(
+                "No need for symbols, digits, or uppercase letters."
+            ),
+            "Add another word or two. Uncommon words are better.": _(
+                "Add another word or two. Uncommon words are better."
+            ),
+            "Straight rows of keys are easy to guess.": _(
+                "Straight rows of keys are easy to guess."
+            ),
+            "Short keyboard patterns are easy to guess.": _(
+                "Short keyboard patterns are easy to guess."
+            ),
+            "Use a longer keyboard pattern with more turns.": _(
+                "Use a longer keyboard pattern with more turns."
+            ),
+            'Repeats like "aaa" are easy to guess.': _(
+                'Repeats like "aaa" are easy to guess.'
+            ),
+            'Repeats like "abcabcabc" are only slightly harder to guess than "abc".': _(
+                'Repeats like "abcabcabc" are only slightly harder  to guess than '
+                '"abc".'
+            ),
+            "Avoid repeated words and characters.": _(
+                "Avoid repeated words and characters."
+            ),
+            'Sequences like "abc" or "6543" are easy to guess.': _(
+                'Sequences like "abc" or "6543" are easy to guess.'
+            ),
+            "Avoid sequences.": _("Avoid sequences."),
+            "Recent years are easy to guess.": _("Recent years are easy to guess."),
+            "Avoid recent years.": _("Avoid recent years."),
+            "Avoid years that are associated with you.": _(
+                "Avoid years that are associated with you."
+            ),
+            "Dates are often easy to guess.": _("Dates are often easy to guess."),
+            "Avoid dates and years that are associated with you.": _(
+                "Avoid dates and years that are associated with you."
+            ),
+            "This is a top-10 common password.": _("This is a top-10 common password."),
+            "This is a top-100 common password.": _(
+                "This is a top-100 common password."
+            ),
+            "This is a very common password.": _("This is a very common password."),
+            "This is similar to a commonly used password.": _(
+                "This is similar to a commonly used password."
+            ),
+            "A word by itself is easy to guess.": _(
+                "A word by itself is easy to guess."
+            ),
+            "Names and surnames by themselves are easy to guess.": _(
+                "Names and surnames by themselves are easy to guess."
+            ),
+            "Common names and surnames are easy to guess.": _(
+                "Common names and surnames are easy to guess."
+            ),
+            "Capitalization doesn't help very much.": _(
+                "Capitalization doesn't help very much."
+            ),
+            "All-uppercase is almost as easy to guess as all-lowercase.": _(
+                "All-uppercase is almost as easy to guess as all-lowercase."
+            ),
+            "Reversed words aren't much harder to guess.": _(
+                "Reversed words aren't much harder to guess."
+            ),
+            "Predictable substitutions like '@' instead of 'a' don't help very much.": _(
+                "Predictable substitutions like '@' instead of 'a' don't help very "
+                "much."
+            ),
+        }
+        estimation = zxcvbn.zxcvbn(password)
+        warning = estimation["feedback"]["warning"]
+        suggestions = estimation["feedback"]["suggestions"]
+        if warning in msg_translate:
+            estimation["feedback"]["warning"] = msg_translate[warning]
+        translated_suggestions = []
+        for suggestion in suggestions:
+            translated_suggestions.append(
+                msg_translate[suggestion] if suggestion in msg_translate else suggestion
+            )
+        estimation["feedback"]["suggestions"] = translated_suggestions
+        return estimation
 
     def password_match_message(self):
         self.ensure_one()
         company_id = self.company_id
         message = []
         if company_id.password_lower:
-            message.append(
-                "\n* "
-                + "Lowercase letter (At least "
-                + str(company_id.password_lower)
-                + " character)"
-            )
+            if company_id.password_lower > 1:
+                message.append(
+                    "\n* "
+                    + _(
+                        "Lowercase letter (At least %(password_lower_config)d "
+                        "characters)"
+                    )
+                    % dict(password_lower_config=company_id.password_lower)
+                )
+            else:
+                message.append(
+                    "\n* "
+                    + _(
+                        "Lowercase letter (At least %(password_lower_config)d "
+                        "character)"
+                    )
+                    % dict(password_lower_config=company_id.password_lower)
+                )
         if company_id.password_upper:
-            message.append(
-                "\n* "
-                + "Uppercase letter (At least "
-                + str(company_id.password_upper)
-                + " character)"
-            )
+            if company_id.password_upper > 1:
+                message.append(
+                    "\n* "
+                    + _(
+                        "Uppercase letter (At least %(password_upper_config)d "
+                        "characters)"
+                    )
+                    % dict(password_upper_config=company_id.password_upper)
+                )
+            else:
+                message.append(
+                    "\n* "
+                    + _(
+                        "Uppercase letter (At least %(password_upper_config)d "
+                        "character)"
+                    )
+                    % dict(password_upper_config=company_id.password_upper)
+                )
         if company_id.password_numeric:
-            message.append(
-                "\n* "
-                + "Numeric digit (At least "
-                + str(company_id.password_numeric)
-                + " character)"
-            )
-        if company_id.password_special:
-            message.append(
-                "\n* "
-                + "Special character (At least "
-                + str(company_id.password_special)
-                + " character)"
-            )
-        if message:
-            message = [_("Must contain the following:")] + message
-        if company_id.password_length:
-            message = [
-                "Password must be %d characters or more." % company_id.password_length
-            ] + message
-        return "\r".join(message)
+            if company_id.password_numeric > 1:
+                message.append(
+                    "\n* "
+                    + _(
+                        "Numeric digit (At least %(password_numeric_config)d "
+                        "characters)"
+                    )
+                    % dict(password_numeric_config=company_id.password_numeric)
+                )
+            else:
+                message.append(
+                    "\n* "
+                    + _(
+                        "Numeric digit (At least %(password_numeric_config)d "
+                        "character)"
+                    )
+                    % dict(password_numeric_config=company_id.password_numeric)
+                )
+            if company_id.password_special:
+                if company_id.password_special > 1:
+                    message.append(
+                        "\n* "
+                        + _(
+                            "Special character (At least %(password_special_config)d "
+                            "characters)"
+                        )
+                        % dict(password_special_config=company_id.password_special)
+                    )
+                else:
+                    message.append(
+                        "\n* "
+                        + _(
+                            "Special character (At least %(password_special_config)d "
+                            "character)"
+                        )
+                        % dict(password_special_config=company_id.password_special)
+                    )
+            if message:
+                message = [_("Must contain the following:")] + message
+            if company_id.password_length:
+                message = [
+                    _("Password must be %d characters or more.")
+                    % company_id.password_length
+                ] + message
+            return "\r".join(message)
 
     def _check_password(self, password):
         self._check_password_rules(password)
@@ -145,7 +278,13 @@ class ResUsers(models.Model):
 
         estimation = self.get_estimation(password)
         if estimation["score"] < company_id.password_estimate:
-            raise PassError(estimation["feedback"]["warning"])
+            suggestions = estimation["feedback"]["suggestions"]
+            full_msg = estimation["feedback"]["warning"] + "\n"
+            if suggestions:
+                full_msg += _("Suggestion(s) :\n")
+                for suggestion in suggestions:
+                    full_msg += suggestion
+            raise PassError(full_msg)
 
         return True
 
