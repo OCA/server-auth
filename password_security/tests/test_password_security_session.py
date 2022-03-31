@@ -12,7 +12,7 @@ IMPORT = "odoo.addons.password_security.controllers.main"
 
 
 class EndTestException(Exception):
-    """ It allows for isolation of resources by raise """
+    """It allows for isolation of resources by raise"""
 
 
 class TestPasswordSecuritySession(TransactionCase):
@@ -27,14 +27,14 @@ class TestPasswordSecuritySession(TransactionCase):
 
     @contextmanager
     def mock_assets(self):
-        """ It mocks and returns assets used by this controller """
+        """It mocks and returns assets used by this controller"""
         with mock.patch("%s.request" % IMPORT) as request:
             yield {
                 "request": request,
             }
 
     def test_change_password_check(self):
-        """ It should check password on request user """
+        """It should check password on request user"""
         with self.mock_assets() as assets:
             check_password = assets["request"].env.user._check_password
             check_password.side_effect = EndTestException
@@ -45,7 +45,7 @@ class TestPasswordSecuritySession(TransactionCase):
             )
 
     def test_change_password_return(self):
-        """ It should return result of super """
+        """It should return result of super"""
         with self.mock_assets():
             with mock.patch.object(main.Session, "change_password") as chg:
                 res = self.password_security_session.change_password(self.fields)

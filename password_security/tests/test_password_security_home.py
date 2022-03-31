@@ -15,7 +15,7 @@ IMPORT = "odoo.addons.password_security.controllers.main"
 
 
 class EndTestException(Exception):
-    """ It allows for isolation of resources by raise """
+    """It allows for isolation of resources by raise"""
 
 
 class MockResponse(object):
@@ -40,7 +40,7 @@ class TestPasswordSecurityHome(TransactionCase):
 
     @contextmanager
     def mock_assets(self):
-        """ It mocks and returns assets used by this controller """
+        """It mocks and returns assets used by this controller"""
         methods = [
             "do_signup",
             "web_login",
@@ -68,7 +68,7 @@ class TestPasswordSecurityHome(TransactionCase):
                         yield mocks
 
     def test_do_signup_check(self):
-        """ It should check password on user """
+        """It should check password on user"""
         with self.mock_assets() as assets:
             check_password = assets["request"].env.user._check_password
             check_password.side_effect = EndTestException
@@ -79,20 +79,20 @@ class TestPasswordSecurityHome(TransactionCase):
             )
 
     def test_do_signup_return(self):
-        """ It should return result of super """
+        """It should return result of super"""
         with self.mock_assets() as assets:
             res = self.password_security_home.do_signup(self.qcontext)
             self.assertEqual(assets["do_signup"](), res)
 
     def test_web_login_ensure_db(self):
-        """ It should verify available db """
+        """It should verify available db"""
         with self.mock_assets() as assets:
             assets["ensure_db"].side_effect = EndTestException
             with self.assertRaises(EndTestException):
                 self.password_security_home.web_login()
 
     def test_web_login_super(self):
-        """ It should call superclass w/ proper args """
+        """It should call superclass w/ proper args"""
         expect_list = [1, 2, 3]
         expect_dict = {"test1": "good1", "test2": "good2"}
         with self.mock_assets() as assets:
@@ -114,7 +114,7 @@ class TestPasswordSecurityHome(TransactionCase):
             logout_mock.assert_called_once_with(keep_db=True)
 
     def test_web_login_redirect(self):
-        """ It should redirect w/ hash to reset after expiration """
+        """It should redirect w/ hash to reset after expiration"""
         with self.mock_assets() as assets:
             request = assets["request"]
             request.httprequest.method = "POST"
@@ -127,7 +127,7 @@ class TestPasswordSecurityHome(TransactionCase):
             )
 
     def test_web_auth_signup_valid(self):
-        """ It should return super if no errors """
+        """It should return super if no errors"""
         with self.mock_assets() as assets:
             res = self.password_security_home.web_auth_signup()
             self.assertEqual(
@@ -136,7 +136,7 @@ class TestPasswordSecurityHome(TransactionCase):
             )
 
     def test_web_auth_signup_invalid_qcontext(self):
-        """ It should catch PassError and get signup qcontext """
+        """It should catch PassError and get signup qcontext"""
         with self.mock_assets() as assets:
             with mock.patch.object(
                 main.AuthSignupHome,
@@ -148,7 +148,7 @@ class TestPasswordSecurityHome(TransactionCase):
                     self.password_security_home.web_auth_signup()
 
     def test_web_auth_signup_invalid_render(self):
-        """ It should render & return signup form on invalid """
+        """It should render & return signup form on invalid"""
         with self.mock_assets() as assets:
             with mock.patch.object(
                 main.AuthSignupHome, "get_auth_signup_qcontext", spec=dict
@@ -165,7 +165,7 @@ class TestPasswordSecurityHome(TransactionCase):
                 )
 
     def test_web_auth_reset_password_fail_login(self):
-        """ It should raise from failed _validate_pass_reset by login """
+        """It should raise from failed _validate_pass_reset by login"""
         with self.mock_assets() as assets:
             with mock.patch.object(
                 main.AuthSignupHome, "get_auth_signup_qcontext", spec=dict
@@ -180,7 +180,7 @@ class TestPasswordSecurityHome(TransactionCase):
                     self.password_security_home.web_auth_reset_password()
 
     def test_web_auth_reset_password_fail_email(self):
-        """ It should raise from failed _validate_pass_reset by email """
+        """It should raise from failed _validate_pass_reset by email"""
         with self.mock_assets() as assets:
             with mock.patch.object(
                 main.AuthSignupHome, "get_auth_signup_qcontext", spec=dict
@@ -195,7 +195,7 @@ class TestPasswordSecurityHome(TransactionCase):
                     self.password_security_home.web_auth_reset_password()
 
     def test_web_auth_reset_password_success(self):
-        """ It should return parent response on no validate errors """
+        """It should return parent response on no validate errors"""
         with self.mock_assets() as assets:
             with mock.patch.object(
                 main.AuthSignupHome, "get_auth_signup_qcontext", spec=dict
