@@ -1,2 +1,1 @@
-from . import fake_idp
-from . import test_pysaml
+from . import fake_idp, test_pysaml
