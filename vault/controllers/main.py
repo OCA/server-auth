@@ -76,7 +76,7 @@ class Controller(http.Controller):
 
     @http.route("/vault/public", type="json")
     def vault_public(self, user_id):
-        """ Get the public key of a specific user """
+        """Get the public key of a specific user"""
         user = request.env["res.users"].sudo().browse(user_id).exists()
         if not user or not user.keys:
             return {}
@@ -85,23 +85,23 @@ class Controller(http.Controller):
 
     @http.route("/vault/keys/store", auth="user", type="json")
     def vault_store_keys(self, **kwargs):
-        """ Store the key pair for the current user """
+        """Store the key pair for the current user"""
         return request.env["res.users.key"].store(**kwargs)
 
     @http.route("/vault/keys/get", auth="user", type="json")
     def vault_get_keys(self):
-        """ Get the currently active key pair """
+        """Get the currently active key pair"""
         return request.env.user.get_vault_keys()
 
     @http.route("/vault/rights/get", auth="user", type="json")
     def vault_get_right_keys(self):
-        """ Get the master keys from the vault.right records """
+        """Get the master keys from the vault.right records"""
         rights = request.env.user.vault_right_ids
         return {right.vault_id.uuid: right.key for right in rights}
 
     @http.route("/vault/rights/store", auth="user", type="json")
     def vault_store_right_keys(self, keys):
-        """ Store the master keys to the specific vault.right records """
+        """Store the master keys to the specific vault.right records"""
         if not isinstance(keys, dict):
             return
 
