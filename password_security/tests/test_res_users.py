@@ -84,7 +84,7 @@ class TestResUsers(TransactionCase):
         )
 
     def test_check_password_crypt(self):
-        """ It should raise UserError if previously used """
+        """It should raise UserError if previously used"""
         rec_id = self._new_record()
         with self.assertRaises(UserError):
             rec_id.write({"password": self.password})
@@ -126,13 +126,13 @@ class TestResUsers(TransactionCase):
         )
 
     def test_validate_pass_reset_error(self):
-        """ It should throw UserError on reset inside min threshold """
+        """It should throw UserError on reset inside min threshold"""
         rec_id = self._new_record()
         with self.assertRaises(UserError):
             rec_id._validate_pass_reset()
 
     def test_validate_pass_reset_allow(self):
-        """ It should allow reset pass when outside threshold """
+        """It should allow reset pass when outside threshold"""
         rec_id = self._new_record()
         rec_id.password_write_date = "2016-01-01"
         self.assertEqual(
@@ -141,7 +141,7 @@ class TestResUsers(TransactionCase):
         )
 
     def test_validate_pass_reset_zero(self):
-        """ It should allow reset pass when <= 0 """
+        """It should allow reset pass when <= 0"""
         rec_id = self._new_record()
         rec_id.company_id.password_minimum = 0
         self.assertEqual(

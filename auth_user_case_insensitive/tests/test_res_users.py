@@ -20,13 +20,13 @@ class TestResUsers(TransactionCase):
         self.model_obj = self.env["res.users"]
 
     def _new_record(self):
-        """ It should enerate a new record to test with """
+        """It should enerate a new record to test with"""
         partner_id = self.env["res.partner"].create(self.partner_vals)
         self.vals["partner_id"] = partner_id.id
         return self.model_obj.create(self.vals)
 
     def test_login_is_lowercased_on_create(self):
-        """ It should verify the login is set to lowercase on create """
+        """It should verify the login is set to lowercase on create"""
         rec_id = self._new_record()
         self.assertEqual(
             self.login.lower(),
@@ -35,7 +35,7 @@ class TestResUsers(TransactionCase):
         )
 
     def test_login_is_lowercased_on_write(self):
-        """ It should verify the login is set to lowercase on write """
+        """It should verify the login is set to lowercase on write"""
         rec_id = self._new_record()
         rec_id.write({"login": self.login})
         self.assertEqual(
@@ -45,7 +45,7 @@ class TestResUsers(TransactionCase):
         )
 
     def test_login_login_is_lowercased(self):
-        """ It should verify the login is set to lowercase on login """
+        """It should verify the login is set to lowercase on login"""
         rec_id = self._new_record()
         # We have to commit this cursor, because `_login` uses a fresh cursor
         self.env.cr.commit()
