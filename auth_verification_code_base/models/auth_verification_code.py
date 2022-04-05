@@ -8,6 +8,12 @@ import random
 
 from odoo import _, api, fields, models
 
+from ..common import (
+    DEFAULT_MAX_VERIF_CODE_ATTEMPTS,
+    DEFAULT_MAX_VERIF_CODE_DELAY,
+    DEFAULT_VERIF_CODE_EXPIRY,
+)
+
 _logger = logging.getLogger(__name__)
 
 
@@ -38,7 +44,7 @@ class AuthVerificationCode(models.Model):
     def create(self, vals):
         result = super().create(vals)
         expiry_delay = self.env["ir.config_parameter"].get_param(
-            "verification_code_expiry"
+            "verification_code_expiry", default=DEFAULT_VERIF_CODE_EXPIRY
         )
         result.code_number = self._generate_random_code()
         result.expiry_date = datetime.datetime.now() + datetime.timedelta(
@@ -55,10 +61,14 @@ class AuthVerificationCode(models.Model):
             {"auth_verification_code_ids": self.id}
         )
         max_code_attempts = int(
-            self.env["ir.config_parameter"].get_param("max_verif_code_attempts")
+            self.env["ir.config_parameter"].get_param(
+                "max_verif_code_attempts", default=DEFAULT_MAX_VERIF_CODE_ATTEMPTS
+            )
         )
         max_code_attempts_delay = int(
-            self.env["ir.config_parameter"].get_param("max_verif_code_attempts_delay")
+            self.env["ir.config_parameter"].get_param(
+                "max_verif_code_attempts_delay", default=DEFAULT_MAX_VERIF_CODE_DELAY
+            )
         )
         date_floor = datetime.datetime.now() - datetime.timedelta(
             minutes=max_code_attempts_delay

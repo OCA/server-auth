@@ -10,9 +10,11 @@ from odoo.exceptions import UserError
 
 from odoo.addons.auth_signup.models.res_partner import random_token
 
-from ..common import TooManyVerifResendExc
-
-ROLLING_DELAY_CODE_GENERATION_MINUTES = 15
+from ..common import (
+    DEFAULT_MAX_VERIF_CODE_GEN_DELAY,
+    DEFAULT_MAX_VERIF_CODE_GENERATION,
+    TooManyVerifResendExc,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -55,10 +57,15 @@ class ResUsers(models.Model):
 
     def _check_verif_code_limit(self):
         delay = int(
-            self.env["ir.config_parameter"].get_param("max_verif_code_generation_delay")
+            self.env["ir.config_parameter"].get_param(
+                "max_verif_code_generation_delay",
+                default=DEFAULT_MAX_VERIF_CODE_GEN_DELAY,
+            )
         )
         max_codes = int(
-            self.env["ir.config_parameter"].get_param("max_verif_code_generation")
+            self.env["ir.config_parameter"].get_param(
+                "max_verif_code_generation", default=DEFAULT_MAX_VERIF_CODE_GENERATION
+            )
         )
         date_floor = datetime.datetime.now() - datetime.timedelta(minutes=delay)
         verif_codes = self.auth_verification_code_ids.filtered(
