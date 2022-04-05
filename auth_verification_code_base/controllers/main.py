@@ -10,7 +10,7 @@ from odoo.service.security import compute_session_token
 
 from odoo.addons.web.controllers.main import Home, ensure_db
 
-from ..common import TooManyVerifResendExc
+from ..common import DEFAULT_MAX_VERIF_CODE_GEN_DELAY, TooManyVerifResendExc
 
 _logger = logging.getLogger(__name__)
 REF_VERIFICATION_SCREEN = "auth_verification_code_base.verification_screen"
@@ -105,7 +105,7 @@ class VerifCodeLogin(Home):
                 pop_session()
                 return http.redirect_with_hash(self._login_redirect(user))
 
-    def _check_verification_state(self):
+    def _get_auth_verif_token(self):
         with registry(request.session.db).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
             uid = env["res.users"].authenticate(
@@ -117,14 +117,17 @@ class VerifCodeLogin(Home):
             if not uid:
                 raise AccessDenied
             user = env["res.users"].browse(uid)
-            verification_state = user.check_verification_state()
-            if verification_state == "confirmed":
-                token = False
-            elif verification_state == "pending_confirmation":
-                token = user.auth_verification_code_ids[-1].token
-            else:  # expired or none
-                token = user.generate_verification_code()
-        return user, token
+            return user.get_verification_code_token()
+
+    def _get_param_max_verif_code_generation(self):
+        with registry(request.session.db).cursor() as cr:
+            env = api.Environment(cr, SUPERUSER_ID, {})
+            return int(
+                env["ir.config_parameter"].get_param(
+                    "max_verif_code_generation",
+                    default=DEFAULT_MAX_VERIF_CODE_GEN_DELAY,
+                )
+            )
 
     @http.route()
     def web_login(self, *args, **kw):
@@ -142,7 +145,7 @@ class VerifCodeLogin(Home):
                 response = super().web_login(*args, **kw)
         elif request.httprequest.method == "POST":
             try:
-                user, token = self._check_verification_state()
+                token = self._get_auth_verif_token()
                 if token:
                     super().web_login(*args, **kw)
                     push_session()
@@ -155,6 +158,15 @@ class VerifCodeLogin(Home):
                     values["error"] = _("Wrong login/password")
                 else:
                     values["error"] = e.args[0]
+                response = request.render("web.login", values)
+            except TooManyVerifResendExc:
+                values["error"] = _(
+                    "A verification code is required, "
+                    "but you have already generated too many. "
+                    "Please try again later ({} minutes).".format(
+                        self._get_param_max_verif_code_generation()
+                    )
+                )
                 response = request.render("web.login", values)
         else:
             if "error" in request.params and request.params.get("error") == "access":

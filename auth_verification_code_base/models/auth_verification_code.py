@@ -12,6 +12,7 @@ from ..common import (
     DEFAULT_MAX_VERIF_CODE_ATTEMPTS,
     DEFAULT_MAX_VERIF_CODE_DELAY,
     DEFAULT_VERIF_CODE_EXPIRY,
+    DEFAULT_VERIF_CODE_VALIDITY,
 )
 
 _logger = logging.getLogger(__name__)
@@ -25,7 +26,12 @@ class AuthVerificationCode(models.Model):
     user_id = fields.Many2one("res.users")
     code_number = fields.Char()
     token = fields.Char()
-    expiry_date = fields.Datetime()
+    expiry_date = fields.Datetime(
+        help="Date before which the code must be used, or become invalid"
+    )
+    validity_date = fields.Datetime(
+        help="Date after which a new confirmation code must be generated and confirmed"
+    )
     state = fields.Selection(
         [("confirmed", "confirmed"), ("pending_confirmation", "Pending confirmation")],
         default="pending_confirmation",
@@ -37,18 +43,31 @@ class AuthVerificationCode(models.Model):
     def _check_expired(self):
         return self.expiry_date < datetime.datetime.now()
 
+    def _check_validity(self):
+        return self.validity_date > datetime.datetime.now()
+
     def _generate_random_code(self):
         return random.randrange(100000, 999999)
 
     @api.model
     def create(self, vals):
         result = super().create(vals)
-        expiry_delay = self.env["ir.config_parameter"].get_param(
-            "verification_code_expiry", default=DEFAULT_VERIF_CODE_EXPIRY
+        expiry_delay = int(
+            self.env["ir.config_parameter"].get_param(
+                "verification_code_expiry", default=DEFAULT_VERIF_CODE_EXPIRY
+            )
+        )
+        validity_duration = int(
+            self.env["ir.config_parameter"].get_param(
+                "verification_code_validity", default=DEFAULT_VERIF_CODE_VALIDITY
+            )
         )
         result.code_number = self._generate_random_code()
         result.expiry_date = datetime.datetime.now() + datetime.timedelta(
             minutes=int(expiry_delay)
+        )
+        result.validity_date = datetime.datetime.now() + datetime.timedelta(
+            minutes=int(validity_duration)
         )
         return result
 

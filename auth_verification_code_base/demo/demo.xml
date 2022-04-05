@@ -5,6 +5,11 @@
 
     <record id="param_verification_code_expiry" model="ir.config_parameter">
         <field name="key">verification_code_expiry</field>
+        <field name="value">5</field>
+    </record>
+
+    <record id="param_verification_code_validity" model="ir.config_parameter">
+        <field name="key">verification_code_validity</field>
         <field name="value">3600</field>
     </record>
 

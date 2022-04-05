@@ -32,7 +32,8 @@ class TestVerifCode(TestVerifCodeCase):
         self.assertTrue(self.auth_code.code_number)
         self.assertTrue(self.auth_code.token)
         # demo data: 3600 minute expiration delay
-        self.assertEqual(str(self.auth_code.expiry_date), "2021-11-03 21:00:00")
+        self.assertEqual(str(self.auth_code.expiry_date), "2021-11-01 09:05:00")
+        self.assertEqual(str(self.auth_code.validity_date), "2021-11-03 21:00:00")
 
     def test_user_code_states(self):
         self.assertEqual(self.user.verification_state, "pending_confirmation")

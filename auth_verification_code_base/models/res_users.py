@@ -34,6 +34,10 @@ class ResUsers(models.Model):
         store=True,
     )
 
+    @property
+    def last_verif_code(self):
+        return self.auth_verification_code_ids[-1]
+
     @api.depends("auth_verification_code_ids.state")
     def _compute_verification_state(self):
         # use check_verification_state for expiry check
@@ -43,14 +47,17 @@ class ResUsers(models.Model):
                 and rec.auth_verification_code_ids[-1].state
             ) or "none"
 
-    def check_verification_state(self):
+    def get_verification_code_token(self):
         if (
-            self.auth_verification_code_ids
-            and self.auth_verification_code_ids[-1]._check_expired()
+            not self.auth_verification_code_ids
+            or not self.auth_verification_code_ids[-1]._check_validity()
+            or self.auth_verification_code_ids[-1]._check_expired()
         ):
-            return "none"
+            return self.generate_verification_code()
         else:
-            return self.verification_state
+            if self.last_verif_code.state == "confirmed":
+                return False
+            return self.auth_verification_code_ids[-1].token
 
     def _generate_token(self):
         return random_token()
