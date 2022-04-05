@@ -60,7 +60,7 @@ class ResUsers(models.Model):
         if not http.request:
             return
 
-        if http.request.httprequest.path in ['/web/login','/web/reset_password']:
+        if http.request.httprequest.path in ['/web/login', '/web/reset_password']:
             return
 
         session = http.request.session
