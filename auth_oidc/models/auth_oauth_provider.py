@@ -47,7 +47,9 @@ class AuthOauthProvider(models.Model):
     )
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
     group_line_ids = fields.One2many(
-        "auth.oauth.provider.group_line", "provider_id", string="Group mappings",
+        "auth.oauth.provider.group_line",
+        "provider_id",
+        string="Group mappings",
     )
 
     @tools.ormcache("self.jwks_uri", "kid")
@@ -87,19 +89,19 @@ class AuthOauthProvider(models.Model):
 
 
 class AuthOauthProviderGroupLine(models.Model):
-    _name = 'auth.oauth.provider.group_line'
+    _name = "auth.oauth.provider.group_line"
 
-    provider_id = fields.Many2one('auth.oauth.provider', required=True)
-    group_id = fields.Many2one('res.groups', required=True)
+    provider_id = fields.Many2one("auth.oauth.provider", required=True)
+    group_id = fields.Many2one("res.groups", required=True)
     expression = fields.Char(required=True, help="Variables: user, token")
 
-    @api.constrains('expression')
+    @api.constrains("expression")
     def _check_expression(self):
         for this in self:
             try:
                 this._eval_expression(self.env.user, {})
             except (AttributeError, KeyError, NameError) as e:
-                raise exceptions.ValidationError('\n'.join(e.args))
+                raise exceptions.ValidationError("\n".join(e.args))
 
     def _eval_expression(self, user, token):
         self.ensure_one()
@@ -110,7 +112,7 @@ class AuthOauthProviderGroupLine(models.Model):
 
         return tools.safe_eval.safe_eval(
             self.expression, {
-                'user': user,
-                'token': Defaultdict2(token),
+                "user": user,
+                "token": Defaultdict2(token),
             }
         )

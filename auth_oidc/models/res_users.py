@@ -66,7 +66,7 @@ class ResUsers(models.Model):
         if oauth_provider.data_endpoint:
             data = requests.get(
                 oauth_provider.data_endpoint,
-                headers={'Authorization': 'Bearer %s' % access_token}
+                headers={"Authorization": "Bearer %s" % access_token}
             ).json()
             validation.update(data)
         # required check
@@ -84,12 +84,10 @@ class ResUsers(models.Model):
     @api.model
     def _auth_oauth_signin(self, provider, validation, params):
         login = super()._auth_oauth_signin(provider, validation, params)
-        user = self.search([('login', '=', login)])
+        user = self.search([("login", "=", login)])
         if user:
             group_updates = []
-            for group_line in self.env['auth.oauth.provider'].browse(
-                    provider
-            ).group_line_ids:
+            for group_line in self.env["auth.oauth.provider"].browse(provider).group_line_ids:
                 if group_line._eval_expression(user, validation):
                     if group_line.group_id not in user.groups_id:
                         group_updates.append((4, group_line.group_id.id))
@@ -97,5 +95,5 @@ class ResUsers(models.Model):
                     if group_line.group_id in user.groups_id:
                         group_updates.append((3, group_line.group_id.id))
             if group_updates:
-                user.write({'groups_id': group_updates})
+                user.write({"groups_id": group_updates})
         return login
