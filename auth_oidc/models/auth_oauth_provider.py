@@ -111,8 +111,9 @@ class AuthOauthProviderGroupLine(models.Model):
                 super().__init__(Defaultdict2, *args, **kwargs)
 
         return tools.safe_eval.safe_eval(
-            self.expression, {
+            self.expression,
+            {
                 "user": user,
                 "token": Defaultdict2(token),
-            }
+            },
         )

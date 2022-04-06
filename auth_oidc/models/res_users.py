@@ -66,7 +66,7 @@ class ResUsers(models.Model):
         if oauth_provider.data_endpoint:
             data = requests.get(
                 oauth_provider.data_endpoint,
-                headers={"Authorization": "Bearer %s" % access_token}
+                headers={"Authorization": "Bearer %s" % access_token},
             ).json()
             validation.update(data)
         # required check
