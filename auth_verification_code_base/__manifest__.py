@@ -15,6 +15,7 @@
         "data/data.xml",
         "security/ir.model.access.csv",
         "views/auth_verification_code.xml",
+        "views/auth_verification_code_log.xml",
         "views/res_users.xml",
         "views/templates.xml",
     ],

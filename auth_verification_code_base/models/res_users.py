@@ -33,6 +33,23 @@ class ResUsers(models.Model):
         compute="_compute_verification_state",
         store=True,
     )
+    count_authentication_codes = fields.Integer(
+        compute="_compute_count_authentication_codes"
+    )
+
+    def _compute_count_authentication_codes(self):
+        for rec in self:
+            rec.count_authentication_codes = len(rec.auth_verification_code_ids.ids)
+
+    def action_show_codes(self):
+        return {
+            "domain": [("id", "in", self.auth_verification_code_ids.ids)],
+            "name": _("Verification codes"),
+            "view_mode": "tree,form",
+            "res_model": "auth.verification.code",
+            "view_id": False,
+            "type": "ir.actions.act_window",
+        }
 
     @property
     def last_verif_code(self):

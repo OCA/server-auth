@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2021 Akretion
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record model="ir.ui.view" id="auth_verification_code_log_tree_view">
+        <field name="model">auth.verification.code.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="create_date" />
+            </tree>
+        </field>
+    </record>
+
+</odoo>

@@ -7,14 +7,21 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
-            <page name="access_rights" position="after">
-                <page name="verification">
-                    <group>
-                        <field name="auth_verification_code_ids" />
-                        <field name="verification_state" />
-                    </group>
-                </page>
-            </page>
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button
+                    name="action_show_codes"
+                    type="object"
+                    groups="base.group_system"
+                    class="oe_stat_button"
+                    icon="fa-lock"
+                >
+                    <field
+                        string="Authentication codes"
+                        name="count_authentication_codes"
+                        widget="statinfo"
+                    />
+                </button>
+            </xpath>
         </field>
     </record>
 

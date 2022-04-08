@@ -13,6 +13,7 @@
                         <field name="code_number" />
                         <field name="expiry_date" />
                         <field name="state" />
+                        <field name="log_ids" />
                     </group>
                 </sheet>
             </form>
