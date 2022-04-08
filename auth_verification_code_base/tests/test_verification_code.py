@@ -25,8 +25,14 @@ class TestVerifCodeCase(SavepointCase):
         cls.user.generate_verification_code()
         cls.auth_code = cls.user.auth_verification_code_ids
 
+    @classmethod
+    @property
+    def new_auth_code(cls):
+        return cls.user.auth_verification_code_ids - cls.auth_code
+
 
 class TestVerifCode(TestVerifCodeCase):
+    @freeze_time("2021-11-01 09:00:00")
     def test_user_code_generation(self):
         self.assertTrue(self.user.auth_verification_code_ids)
         self.assertTrue(self.auth_code.code_number)
@@ -34,6 +40,8 @@ class TestVerifCode(TestVerifCodeCase):
         # demo data: 3600 minute expiration delay
         self.assertEqual(str(self.auth_code.expiry_date), "2021-11-01 09:05:00")
         self.assertEqual(str(self.auth_code.validity_date), "2021-11-03 21:00:00")
+        self.assertFalse(self.auth_code.check_expired())
+        self.assertTrue(self.auth_code.check_validity())
 
     def test_user_code_states(self):
         self.assertEqual(self.user.verification_state, "pending_confirmation")
@@ -70,6 +78,27 @@ class TestVerifCode(TestVerifCodeCase):
         self.assertTrue(new_mail)
         self.assertEqual(new_mail.email_to, "verifuser@test.com")
         self.assertIn(
-            str(self.user.auth_verification_code_ids[-1].code_number),
-            new_mail.body_html,
+            str(self.user.last_verif_code.code_number), new_mail.body_html,
         )
+
+    def test_token_code_valid(self):
+        token = self.user.get_verification_code_token()
+        self.assertEqual(token, self.user.last_verif_code.token)
+
+    @freeze_time("2021-11-01 09:00:00")
+    def test_token_code_confirmed(self):
+        self.user.last_verif_code.state = "confirmed"
+        token = self.user.get_verification_code_token()
+        self.assertEqual(token, False)
+
+    @freeze_time("2021-11-01 09:00:00")
+    def test_token_code_expired(self):
+        self.user.last_verif_code.expiry_date = "2021-11-01 08:00:00"
+        self.user.get_verification_code_token()
+        self.assertTrue(self.new_auth_code)
+
+    @freeze_time("2021-11-01 09:00:00")
+    def test_token_code_invalid(self):
+        self.user.last_verif_code.validity_date = "2021-11-01 08:00:00"
+        self.user.get_verification_code_token()
+        self.assertTrue(self.new_auth_code)

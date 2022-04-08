@@ -26,7 +26,7 @@
         <field name="email_to">${object.email | safe}</field>
         <field name="body_html" type="html">
             <p
-            >A code has been generated for connecting to your Odoo instance: ${object.auth_verification_code_ids[-1].code_number}</p>
+            >A code has been generated for connecting to your Odoo instance: ${object.last_verif_code.code_number}</p>
         </field>
         <field name="lang">${object.lang}</field>
         <field name="auto_delete" eval="False" />

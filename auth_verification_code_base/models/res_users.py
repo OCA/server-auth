@@ -43,21 +43,20 @@ class ResUsers(models.Model):
         # use check_verification_state for expiry check
         for rec in self:
             rec.verification_state = (
-                rec.auth_verification_code_ids
-                and rec.auth_verification_code_ids[-1].state
+                rec.auth_verification_code_ids and rec.last_verif_code.state
             ) or "none"
 
     def get_verification_code_token(self):
         if (
             not self.auth_verification_code_ids
-            or not self.auth_verification_code_ids[-1]._check_validity()
-            or self.auth_verification_code_ids[-1]._check_expired()
+            or not self.last_verif_code.check_validity()
+            or self.last_verif_code.check_expired()
         ):
             return self.generate_verification_code()
         else:
             if self.last_verif_code.state == "confirmed":
                 return False
-            return self.auth_verification_code_ids[-1].token
+            return self.last_verif_code.token
 
     def _generate_token(self):
         return random_token()

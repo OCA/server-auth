@@ -33,17 +33,17 @@ class AuthVerificationCode(models.Model):
         help="Date after which a new confirmation code must be generated and confirmed"
     )
     state = fields.Selection(
-        [("confirmed", "confirmed"), ("pending_confirmation", "Pending confirmation")],
+        [("confirmed", "Confirmed"), ("pending_confirmation", "Pending confirmation")],
         default="pending_confirmation",
     )
     log_ids = fields.One2many(
         "auth.verification.code.log", "auth_verification_code_ids"
     )
 
-    def _check_expired(self):
+    def check_expired(self):
         return self.expiry_date < datetime.datetime.now()
 
-    def _check_validity(self):
+    def check_validity(self):
         return self.validity_date > datetime.datetime.now()
 
     def _generate_random_code(self):
@@ -51,7 +51,6 @@ class AuthVerificationCode(models.Model):
 
     @api.model
     def create(self, vals):
-        result = super().create(vals)
         expiry_delay = int(
             self.env["ir.config_parameter"].get_param(
                 "verification_code_expiry", default=DEFAULT_VERIF_CODE_EXPIRY
@@ -62,14 +61,14 @@ class AuthVerificationCode(models.Model):
                 "verification_code_validity", default=DEFAULT_VERIF_CODE_VALIDITY
             )
         )
-        result.code_number = self._generate_random_code()
-        result.expiry_date = datetime.datetime.now() + datetime.timedelta(
+        vals["expiry_date"] = datetime.datetime.now() + datetime.timedelta(
             minutes=int(expiry_delay)
         )
-        result.validity_date = datetime.datetime.now() + datetime.timedelta(
+        vals["validity_date"] = datetime.datetime.now() + datetime.timedelta(
             minutes=int(validity_duration)
         )
-        return result
+        vals["code_number"] = self._generate_random_code()
+        return super().create(vals)
 
     def action_confirm(self):
         for rec in self:
