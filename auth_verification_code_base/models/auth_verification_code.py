@@ -94,8 +94,11 @@ class AuthVerificationCode(models.Model):
         verif_codes = self.log_ids.filtered(lambda r: r.create_date > date_floor)
         if len(verif_codes.ids) > max_code_attempts:
             return (_("Too many verification attempts, try again later"), False)
-        if code_number != self.code_number:
+        elif code_number != self.code_number:
             return (_("Wrong verification code"), False)
+        elif self.check_expired():
+            # TODO eventually manage this case in a cleaner way
+            return ("code expired", False)
         else:
             self.action_confirm()
             return ("", self.user_id)

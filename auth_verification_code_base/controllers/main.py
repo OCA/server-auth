@@ -21,6 +21,10 @@ def redirect_to_code_page(info=None):
     return local_redirect("/web/verification/login", info or {})
 
 
+def redirect_to_resend_page(info=None):
+    return local_redirect("/web/verification/resend", info or {})
+
+
 def push_session():
     stored_session_info = {}
     for el in SESSION_PARAMS:
@@ -88,15 +92,35 @@ class VerifCodeLogin(Home):
         if request.httprequest.method == "GET":
             vals = {}
             if kw.get("resend"):
-                vals["message"] = _("A new verification code has been sent")
+                if request.session.context.get("try_resend_from_expired"):
+                    vals["message"] = _(
+                        "Your code is expired, a new code has been sent"
+                    )
+                else:
+                    vals["message"] = _("A new verification code has been sent")
             if kw.get("codesexc"):
-                vals["error"] = _(
-                    "Too many verification codes requested, try again later"
-                )
+                if request.session.context.get("try_resend_from_expired"):
+                    vals["error"] = _(
+                        "Your code is expired and"
+                        " too many verification codes have been requested,"
+                        " try again later ({} minutes)".format(
+                            self._get_param_max_verif_code_generation()
+                        )
+                    )
+                else:
+                    vals["error"] = _(
+                        "Too many verification codes requested, "
+                        "try again later ({} minutes)".format(
+                            self._get_param_max_verif_code_generation()
+                        )
+                    )
             return request.render(REF_VERIFICATION_SCREEN, vals)
         if request.httprequest.method == "POST":
             error, user = self._verify_auth_code(args, kw)
             if error:
+                if error[0] == "code expired":
+                    request.session.context["try_resend_from_expired"] = True
+                    return redirect_to_resend_page()
                 response = request.render(REF_VERIFICATION_SCREEN, {"error": error},)
                 response.headers["X-Frame-Options"] = "DENY"
                 return response
@@ -161,7 +185,7 @@ class VerifCodeLogin(Home):
                 response = request.render("web.login", values)
             except TooManyVerifResendExc:
                 values["error"] = _(
-                    "A verification code is required, "
+                    "A new verification code is required, "
                     "but you have already generated too many. "
                     "Please try again later ({} minutes).".format(
                         self._get_param_max_verif_code_generation()
