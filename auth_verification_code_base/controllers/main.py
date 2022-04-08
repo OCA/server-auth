@@ -91,15 +91,14 @@ class VerifCodeLogin(Home):
             raise
         if request.httprequest.method == "GET":
             vals = {}
+            resend_mode = getattr(request.session, "try_resend_from_expired", False)
             if kw.get("resend"):
-                if request.session.context.get("try_resend_from_expired"):
-                    vals["message"] = _(
-                        "Your code is expired, a new code has been sent"
-                    )
+                if resend_mode:
+                    vals["error"] = _("Your code is expired, a new code has been sent")
                 else:
                     vals["message"] = _("A new verification code has been sent")
             if kw.get("codesexc"):
-                if request.session.context.get("try_resend_from_expired"):
+                if resend_mode:
                     vals["error"] = _(
                         "Your code is expired and"
                         " too many verification codes have been requested,"
@@ -118,8 +117,8 @@ class VerifCodeLogin(Home):
         if request.httprequest.method == "POST":
             error, user = self._verify_auth_code(args, kw)
             if error:
-                if error[0] == "code expired":
-                    request.session.context["try_resend_from_expired"] = True
+                if error == "code expired":
+                    request.session.try_resend_from_expired = True
                     return redirect_to_resend_page()
                 response = request.render(REF_VERIFICATION_SCREEN, {"error": error},)
                 response.headers["X-Frame-Options"] = "DENY"

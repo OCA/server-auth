@@ -41,7 +41,7 @@ class AuthVerificationCode(models.Model):
     )
 
     def check_expired(self):
-        return self.expiry_date < datetime.datetime.now()
+        return self.user_id.last_verif_code.expiry_date < datetime.datetime.now()
 
     def check_validity(self):
         return self.validity_date > datetime.datetime.now()
