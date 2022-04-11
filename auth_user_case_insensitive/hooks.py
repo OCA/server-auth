@@ -21,7 +21,7 @@ def pre_init_hook_login_check(cr):
                 users.append(login)
             else:
                 raise ValidationError(
-                    _("Conflicting user logins exist for `%s`" % login)
+                    _("Conflicting user logins exist for `%s`", login)
                 )
 
 
