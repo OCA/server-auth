@@ -44,8 +44,7 @@ def pop_session():
 
 
 class VerifCodeLogin(Home):
-    def _verify_auth_code(self, *args, **kw):
-        code_number = args[1].get("verification_code")
+    def _find_code_from_session_token(self):
         token = request.session.auth_verification_token
         env = api.Environment(request.cr, SUPERUSER_ID, {})
         verification_code = env["auth.verification.code"].search(
@@ -53,8 +52,12 @@ class VerifCodeLogin(Home):
         )
         if not verification_code:
             raise  # This should never happen
-        result = verification_code.verify(code_number)
-        return result
+        return verification_code
+
+    def _verify_auth_code(self, *args, **kw):
+        code_number = args[1].get("verification_code")
+        verification_code = self._find_code_from_session_token()
+        return verification_code.verify(code_number)
 
     def _check_use_verification_code(self):
         env = api.Environment(request.cr, SUPERUSER_ID, {})
@@ -89,6 +92,10 @@ class VerifCodeLogin(Home):
         token = request.session.auth_verification_token
         if not token:
             raise
+        code = self._find_code_from_session_token()
+        if code.check_expired():
+            request.session.try_resend_from_expired = True
+            return redirect_to_resend_page()
         if request.httprequest.method == "GET":
             vals = {}
             resend_mode = getattr(request.session, "try_resend_from_expired", False)
@@ -117,9 +124,6 @@ class VerifCodeLogin(Home):
         if request.httprequest.method == "POST":
             error, user = self._verify_auth_code(args, kw)
             if error:
-                if error == "code expired":
-                    request.session.try_resend_from_expired = True
-                    return redirect_to_resend_page()
                 response = request.render(REF_VERIFICATION_SCREEN, {"error": error},)
                 response.headers["X-Frame-Options"] = "DENY"
                 return response
