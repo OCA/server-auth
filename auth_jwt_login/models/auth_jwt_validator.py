@@ -1,3 +1,4 @@
+import time
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
 
@@ -12,6 +13,11 @@ class AuthJwtValidator(models.Model):
 
     def _get_uid(self, payload):
         if self.user_id_strategy == 'login':
+            timestamp_expiration_date = payload['exp']
+            if timestamp_expiration_date:
+                timestamp_now = int(time.time() * 1000.0)
+                if (timestamp_expiration_date - timestamp_now) < 0:
+                    raise ValidationError
             if 'username' in payload and 'password' in payload:
                 user = self.env['res.users'].search(
                     [
