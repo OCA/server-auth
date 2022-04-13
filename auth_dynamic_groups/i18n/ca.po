@@ -8,46 +8,47 @@ msgstr ""
 "Project-Id-Version: server-tools (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-01-17 07:51+0000\n"
-"PO-Revision-Date: 2015-09-18 13:53+0000\n"
-"Last-Translator: <>\n"
+"PO-Revision-Date: 2022-04-13 14:05+0000\n"
+"Last-Translator: Noel estudillo <noelestudilloviera@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/oca/OCA-server-tools-8-0/"
 "language/ca/)\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: auth_dynamic_groups
 #: model:ir.model,name:auth_dynamic_groups.model_res_groups
 msgid "Access Groups"
-msgstr ""
+msgstr "Grups d'accés"
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups_dynamic_group_condition
 msgid "Condition"
-msgstr ""
+msgstr "Condició"
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups_is_dynamic
 msgid "Dynamic"
-msgstr ""
+msgstr "Dinàmic"
 
 #. module: auth_dynamic_groups
 #: model:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
 msgid "Evaluate"
-msgstr ""
+msgstr "Avaluar"
 
 #. module: auth_dynamic_groups
 #: model:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
 msgid "Fill in your condition..."
-msgstr ""
+msgstr "Omple la teva condició..."
 
 #. module: auth_dynamic_groups
 #: code:addons/auth_dynamic_groups/models/res_groups.py:39
 #, python-format
 msgid "The condition doesn't evaluate correctly!"
-msgstr ""
+msgstr "La condició no s'avalua correctament!"
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,help:auth_dynamic_groups.field_res_groups_dynamic_group_condition
@@ -56,6 +57,9 @@ msgid ""
 "evaluated as python code at login time, you get `user` passed as a browse "
 "record"
 msgstr ""
+"Condició que cal complir perquè un usuari sigui membre d'aquest grup. "
+"S'avalua com a codi Python en el moment d'iniciar sessió, se't passa \"usuari"
+"\" com a registre de navegació"
 
 #. module: auth_dynamic_groups
 #: model:ir.model,name:auth_dynamic_groups.model_res_users
