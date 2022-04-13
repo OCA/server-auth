@@ -3,8 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import logging
-from os import utime
-from os.path import getmtime
 from time import time
 
 from odoo import api, http, models
@@ -67,16 +65,7 @@ class ResUsers(models.Model):
         # Check if past deadline
         expired = False
         if deadline is not False:
-            path = http.root.session_store.get_session_filename(session.sid)
-            try:
-
-                expired = getmtime(path) < deadline
-            except OSError:
-                _logger.exception(
-                    "Exception reading session file modified time.",
-                )
-                # Force expire the session. Will be resolved with new session.
-                expired = True
+            expired = session.get("last_active_time", time()) < deadline
 
         # Try to terminate the session
         terminated = False
@@ -91,13 +80,4 @@ class ResUsers(models.Model):
         ignored_urls = self._auth_timeout_get_ignored_urls()
 
         if http.request.httprequest.path not in ignored_urls:
-            if "path" not in locals():
-                path = http.root.session_store.get_session_filename(
-                    session.sid,
-                )
-            try:
-                utime(path, None)
-            except OSError:
-                _logger.exception(
-                    "Exception updating session file access/modified times.",
-                )
+            session["last_active_time"] = time()
