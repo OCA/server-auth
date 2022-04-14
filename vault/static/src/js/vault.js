@@ -42,7 +42,7 @@ odoo.define("vault", function (require) {
         if (askpass.keyfile)
             password += await utils.digest(utils.toBinary(askpass.keyfile));
 
-        return session.username + "|" + password;
+        return password;
     }
 
     // Vault implementation
@@ -89,6 +89,15 @@ odoo.define("vault", function (require) {
                 throw Error(_t("Failed to export the keys to the database"));
 
             await this._export_to_store();
+        },
+
+        /**
+         * Check if export to database is required due to key migration
+         *
+         * @private
+         */
+        _check_key_migration: async function (password = null) {
+            if (!this.version) await this._export_to_database(password);
         },
 
         /**
@@ -282,17 +291,18 @@ odoo.define("vault", function (require) {
          * @private
          * @returns if the export to the database succeeded
          */
-        _export_to_database: async function () {
+        _export_to_database: async function (password = null) {
             // Generate salt for the user key
             this.salt = utils.generate_bytes(utils.SaltLength).buffer;
             this.iterations = 4000;
+            this.version = 1;
 
             // Wrap the private key with the master key of the user
             this.iv = utils.generate_bytes(utils.IVLength);
 
             // Request the password from the user and derive the user key
             const pass = await utils.derive_key(
-                await askpassword(true),
+                password || (await askpassword(true)),
                 this.salt,
                 this.iterations
             );
@@ -315,6 +325,7 @@ odoo.define("vault", function (require) {
                 iv: utils.toBase64(this.iv),
                 iterations: this.iterations,
                 salt: utils.toBase64(this.salt),
+                version: this.version,
             };
 
             // Export to the server
@@ -339,10 +350,17 @@ odoo.define("vault", function (require) {
             if (Object.keys(params).length) {
                 this.salt = utils.fromBase64(params.salt);
                 this.iterations = params.iterations;
+                this.version = params.version || 0;
 
                 // Request the password from the user and derive the user key
+                const raw_password = await askpassword(false);
+                let password = raw_password;
+
+                // Compatibility
+                if (!this.version) password = session.username + "|" + password;
+
                 const pass = await utils.derive_key(
-                    await askpassword(),
+                    password,
                     this.salt,
                     this.iterations
                 );
@@ -358,6 +376,8 @@ odoo.define("vault", function (require) {
 
                 this.time = new Date();
                 this.uuid = params.uuid;
+
+                this._check_key_migration(raw_password);
                 return true;
             }
             return false;

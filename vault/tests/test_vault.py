@@ -83,23 +83,26 @@ class TestVault(TransactionCase):
 
         # Raise some errors because of wrong parameters
         with self.assertRaises(ValidationError):
-            model.store(1, "iv", "private", "public", 42)
+            model.store(1, "iv", "private", "public", 42, 42)
 
         with self.assertRaises(ValidationError):
-            model.store(3000, "iv", "private", "public", "salt")
+            model.store(3000, "iv", "private", "public", "salt", 42)
+
+        with self.assertRaises(ValidationError):
+            model.store(4000, "iv", "private", "public", "salt", "abc")
 
         # Actually store a new key
-        uuid = model.store(4000, "iv", "private", "public", "salt")
+        uuid = model.store(4000, "iv", "private", "public", "salt", 42)
         rec = model.search([("uuid", "=", uuid)])
         self.assertEqual(rec.private, "private")
         self.assertTrue(rec.current)
 
         # Don't store the same again
-        uuid = model.store(4000, "iv", "private", "public", "salt")
+        uuid = model.store(4000, "iv", "private", "public", "salt", 42)
         self.assertFalse(uuid)
 
         # Store a new one and disable the old one
-        uuid = model.store(4000, "iv", "more private", "public", "salt")
+        uuid = model.store(4000, "iv", "more private", "public", "salt", 42)
         self.assertFalse(rec.current)
 
         rec = model.search([("uuid", "=", uuid)])

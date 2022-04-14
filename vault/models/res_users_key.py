@@ -26,6 +26,7 @@ class ResUsersKey(models.Model):
     salt = fields.Char(required=True, readonly=True)
     iv = fields.Char(required=True, readonly=True)
     iterations = fields.Integer(required=True, readonly=True)
+    version = fields.Integer(readonly=True)
     # Encrypted with master password of user
     private = fields.Char(required=True, readonly=True)
 
@@ -38,7 +39,7 @@ class ResUsersKey(models.Model):
             else:
                 rec.fingerprint = False
 
-    def _prepare_values(self, iterations, iv, private, public, salt):
+    def _prepare_values(self, iterations, iv, private, public, salt, version):
         return {
             "iterations": iterations,
             "iv": iv,
@@ -47,27 +48,33 @@ class ResUsersKey(models.Model):
             "salt": salt,
             "user_id": self.env.uid,
             "current": True,
+            "version": version,
         }
 
-    def store(self, iterations, iv, private, public, salt):
+    def store(self, iterations, iv, private, public, salt, version):
         if not all(isinstance(x, str) and x for x in [public, private, iv, salt]):
             raise ValidationError(_("Invalid parameter"))
 
         if not isinstance(iterations, int) or iterations < 4000:
             raise ValidationError(_("Invalid parameter"))
 
+        if not isinstance(version, int):
+            raise ValidationError(_("Invalid parameter"))
+
         domain = [
             ("user_id", "=", self.env.uid),
             ("private", "=", private),
         ]
-        if not self.search(domain):
+        key = self.search(domain)
+        if not key:
             # Disable all current keys
             self.env.user.keys.write({"current": False})
 
             rec = self.create(
-                self._prepare_values(iterations, iv, private, public, salt)
+                self._prepare_values(iterations, iv, private, public, salt, version)
             )
             return rec.uuid
+
         return False
 
     def extract_public_key(self, user):
