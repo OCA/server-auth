@@ -31,6 +31,8 @@ The server can never access the secrets with the information available. Only peo
 
 This modules requires a secure context for the browser to work properly.
 
+The `vault-recovery <https://github.com/fkantelberg/vault-recovery>`_ project focuses on disaster recovery in case of an incident to recover secrets from old database backups or old exports.
+
 **Table of contents**
 
 .. contents::

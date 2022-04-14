@@ -61,4 +61,5 @@ class ResUsers(models.Model):
             "public": self.active_key.public,
             "salt": self.active_key.salt,
             "uuid": self.active_key.uuid,
+            "version": self.active_key.version,
         }
