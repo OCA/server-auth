@@ -10,7 +10,7 @@
     "application": True,
     "author": "initOS GmbH, Odoo Community Association (OCA)",
     "category": "Vault",
-    "depends": ["web"],
+    "depends": ["base_setup", "web"],
     "data": [
         "security/ir.model.access.csv",
         "security/ir_rule.xml",
