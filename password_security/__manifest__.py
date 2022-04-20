@@ -31,9 +31,9 @@
         "demo/res_users.xml",
     ],
     "assets": {
-        'web.assets_frontend': [
-            'password_security/static/src/js/password_gauge.js',
-            'password_security/static/lib/zxcvbn/zxcvbn.min.js',
+        "web.assets_common": [
+            "password_security/static/src/js/password_gauge.js",
+            "password_security/static/lib/zxcvbn/zxcvbn.min.js",
         ],
     },
     "installable": True,
