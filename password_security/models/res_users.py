@@ -43,7 +43,9 @@ class ResUsers(models.Model):
     @api.model
     def create(self, vals):
         vals["password_write_date"] = fields.Datetime.now()
-        return super(ResUsers, self.with_context(no_password_policy_check=True)).create(vals)
+        return super(ResUsers, self.with_context(no_password_policy_check=True)).create(
+            vals
+        )
 
     def write(self, vals):
         if vals.get("password"):
@@ -68,11 +70,11 @@ class ResUsers(models.Model):
         return data
 
     def _check_password_policy(self, passwords):
-        """ Disable checking password policy on new user creation
+        """Disable checking password policy on new user creation
         As many tests in standard apps are creating user with password
         that do not comprise password policy which results in failed tests
         """
-        if self.env.context.get('no_password_policy_check', False):
+        if self.env.context.get("no_password_policy_check", False):
             return True
         else:
             result = super(ResUsers, self)._check_password_policy(passwords)
@@ -94,34 +96,28 @@ class ResUsers(models.Model):
         message = []
         if company_id.password_lower:
             message.append(
-                _(
-                    "\n* Lowercase letter (at least %s characters)"
-                    % str(company_id.password_lower)
-                )
+                _("\n* Lowercase letter (at least %(lower_letter)s characters)")
+                % ({"lower_letter": str(company_id.password_lower)})
             )
         if company_id.password_upper:
             message.append(
-                _(
-                    "\n* Uppercase letter (at least %s characters)"
-                    % str(company_id.password_upper)
-                )
+                _("\n* Uppercase letter (at least %(upper_letter)s characters)")
+                % ({"upper_letter": str(company_id.password_upper)})
             )
         if company_id.password_numeric:
             message.append(
-                _(
-                    "\n* Numeric digit (at least %s characters)"
-                    % str(company_id.password_numeric)
-                )
+                _("\n* Numeric digit (at least %(numeric)s characters)")
+                % ({"numeric": str(company_id.password_numeric)})
             )
         if company_id.password_special:
             message.append(
-                _(
-                    "\n* Special character (at least %s characters)"
-                    % str(company_id.password_special)
-                )
+                _("\n* Special character (at least %(special)s characters)")
+                % ({"special": str(company_id.password_special)})
             )
         if message:
-            message = [_("Must contain the following:")] + message
+            message = [
+                _("Must contain the following:%(message)s") % ({"message": message})
+            ]
         if company_id.password_length:
             message = [
                 _("Password must be %d characters or more.")
@@ -205,7 +201,7 @@ class ResUsers(models.Model):
             if recent_passes < 0:
                 recent_passes = rec_id.password_history_ids
             else:
-                recent_passes = rec_id.password_history_ids[0: recent_passes - 1]
+                recent_passes = rec_id.password_history_ids[0 : recent_passes - 1]
             if recent_passes.filtered(
                 lambda r: crypt.verify(password, r.password_crypt)
             ):
@@ -215,7 +211,7 @@ class ResUsers(models.Model):
                 )
 
     def _set_encrypted_password(self, uid, pw):
-        """ It saves password crypt history for history rules """
-        super(ResUsers, self)._set_encrypted_password(uid, pw)
-
+        """It saves password crypt history for history rules"""
+        res = super(ResUsers, self)._set_encrypted_password(uid, pw)
         self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
+        return res
