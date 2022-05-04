@@ -7,6 +7,7 @@
         <field name="arch" type="xml">
             <field name="enabled" position="after">
                 <field name="autologin" />
+                <field name="login_url_without_oauth" />
             </field>
         </field>
     </record>
