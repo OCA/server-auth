@@ -34,7 +34,7 @@ class OAuthAutoLogin(OAuthLogin):
 
     @http.route()
     def web_login(self, *args, **kw):
-        response = super().web_log in(*args, **kw)
+        response = super().web_login(*args, **kw)
         if not response.is_qweb:
             # presumably a redirect already
             return response
