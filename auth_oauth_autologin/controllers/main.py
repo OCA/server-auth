@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import werkzeug
+from odoo.http import request
 
 from odoo import http
 
@@ -30,7 +31,6 @@ class OAuthAutoLogin(OAuthLogin):
                 return False
         else:
             return False
-
 
     @http.route()
     def web_login(self, *args, **kw):
