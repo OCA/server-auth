@@ -14,3 +14,10 @@ class AuthOauthProvider(models.Model):
             "the login screen redirects to the OAuth provider."
         ),
     )
+
+    login_url_without_oauth = fields.Text(
+        string="Login Url without Oauth",
+        help=(
+            "Url used for login without Oauth Method."
+        )
+    )

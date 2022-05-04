@@ -21,13 +21,26 @@ class OAuthAutoLogin(OAuthLogin):
         if len(providers) == 1:
             return providers[0].get("auth_link")
 
+    def _test_login_url(self):
+        providers = [p for p in self.list_providers() if p.get("autologin")]
+        if len(providers) == 1:
+            if providers[0].get("login_url_without_oauth") == request.httprequest.host_url:
+                return True
+            else:
+                return False
+        else:
+            return False
+
+
     @http.route()
     def web_login(self, *args, **kw):
-        response = super().web_login(*args, **kw)
+        response = super().web_log in(*args, **kw)
         if not response.is_qweb:
             # presumably a redirect already
             return response
         if self._autologin_disabled():
+            return response
+        if self._test_login_url():
             return response
         auth_link = self._autologin_link()
         if not auth_link:
