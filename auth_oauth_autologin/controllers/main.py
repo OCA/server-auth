@@ -25,12 +25,10 @@ class OAuthAutoLogin(OAuthLogin):
     def _test_login_url(self):
         providers = [p for p in self.list_providers() if p.get("autologin")]
         if len(providers) == 1:
-            if providers[0].get("login_url_without_oauth") == request.httprequest.host_url:
+            if (providers[0].get("login_url_without_oauth") ==
+                    request.httprequest.host_url):
                 return True
-            else:
-                return False
-        else:
-            return False
+        return False
 
     @http.route()
     def web_login(self, *args, **kw):
