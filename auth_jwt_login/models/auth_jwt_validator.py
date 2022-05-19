@@ -1,4 +1,7 @@
 import time
+
+import werkzeug
+
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
 
@@ -17,7 +20,7 @@ class AuthJwtValidator(models.Model):
             if timestamp_expiration_date:
                 timestamp_now = int(time.time() * 1000.0)
                 if (timestamp_expiration_date - timestamp_now) < 0:
-                    raise ValidationError
+                    raise werkzeug.exceptions.Forbidden(_("Token not valid."))
             if 'username' in payload and 'password' in payload:
                 user = self.env['res.users'].search(
                     [
