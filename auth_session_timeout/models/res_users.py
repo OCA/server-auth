@@ -54,10 +54,10 @@ class ResUsers(models.Model):
         return True
 
     @api.model_cr_context
-    def _auth_timeout_check(self):
+    def _auth_timeout_check(self, auth_method='user'):
         """Perform session timeout validation and expire if needed."""
 
-        if not http.request:
+        if not http.request or auth_method in ['public', 'none']:
             return
 
         session = http.request.session
