@@ -279,6 +279,19 @@ class KeycloakCreateWiz(models.TransientModel):
         # so we are forced to do anothe call to get its data :(
         return self._get_users(token, search=data['username'])[0]
 
+
+
+    def _send_password_mail(self, token, uuid):
+        """Sends email carrying a link to set password for newly created user."""
+        logger.info('RESET Calling %s' % self.endpoint)
+        url = self.endpoint + uuid + "/execute-actions-email"
+        headers = {
+            'Authorization': 'Bearer %s' % token,
+        }
+        resp = requests.put(self.endpoint, headers=headers, json=['UPDATE_PASSWORD'])
+        self._validate_response(resp)
+        return resp.json()
+
     @api.multi
     def button_create_user(self):
         """Create users on Keycloak.
@@ -305,7 +318,9 @@ class KeycloakCreateWiz(models.TransientModel):
                 'oauth_uid': keycloak_user['id'],
                 'oauth_provider_id': self.provider_id.id,
             })
+            self._send_password_mail(uuid=keycloak_user['id'])
         action = self.env.ref('base.action_res_users').read()[0]
         action['domain'] = [('id', 'in', self.user_ids.ids)]
         logger.debug('Create keycloak users STOP')
         return action
+
