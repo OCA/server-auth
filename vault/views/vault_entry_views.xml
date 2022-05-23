@@ -164,7 +164,7 @@
                     context="{'group_by': 'vault_id'}"
                 />
                 <searchpanel>
-                    <field name="parent_id" string="Entries" enable_counters="1" />
+                    <field name="parent_id" string="Entries" />
                 </searchpanel>
             </search>
         </field>
