@@ -15,6 +15,7 @@
           <field name="users_endpoint" />
           <field name="superuser" />
           <field name="superuser_pwd" />
+          <field name="send_password_email" />
           <field name="users_management_enabled" />
           <button string="Sync users" context="{'default_provider_id': id}"
                   name="%(auth_keycloak.keycloak_sync_users)d"

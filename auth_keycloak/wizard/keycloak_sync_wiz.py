@@ -50,6 +50,11 @@ class KeycloakSyncMixin(models.AbstractModel):
         default='username:login',
     )
 
+    send_password_email = fields.Boolean(
+        related='provider_id.send_password_email',
+        readonly=True,
+    )
+
     def _validate_setup(self):
         """Make sure we are ready to talk to Keycloak."""
         self.ensure_one()
@@ -306,7 +311,11 @@ class KeycloakCreateWiz(models.TransientModel):
                 'oauth_uid': keycloak_user['id'],
                 'oauth_provider_id': self.provider_id.id,
             })
-            self._send_password_mail(token, uuid=keycloak_user['id'])
+
+            # Send Reset Password Link
+            if self.send_password_email:
+                self._send_password_mail(token, uuid=keycloak_user['id'])
+
         action = self.env.ref('base.action_res_users').read()[0]
         action['domain'] = [('id', 'in', self.user_ids.ids)]
         return action
