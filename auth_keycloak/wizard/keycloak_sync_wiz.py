@@ -238,6 +238,7 @@ class KeycloakCreateWiz(models.TransientModel):
         values = {
             'username': odoo_user.login,
             'email': odoo_user.email,
+            'enabled': True,
         }
         if 'firstname' in odoo_user.partner_id:
             # partner_firstname installed
