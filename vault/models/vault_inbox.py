@@ -22,11 +22,7 @@ class VaultInbox(models.Model):
         "to create new inboxes you should give them your inbox link from your key "
         "management.",
     )
-    user_id = fields.Many2one(
-        "res.users",
-        "Vault",
-        required=True,
-    )
+    user_id = fields.Many2one("res.users", "Vault", required=True,)
     name = fields.Char(required=True)
     secret = fields.Char(readonly=True)
     filename = fields.Char()
@@ -69,15 +65,7 @@ class VaultInbox(models.Model):
         return self.search([("token", "=", token)])
 
     def store_in_inbox(
-        self,
-        name,
-        secret,
-        secret_file,
-        iv,
-        key,
-        user,
-        filename,
-        ip=None,
+        self, name, secret, secret_file, iv, key, user, filename, ip=None,
     ):
         if len(self) == 0:
             log = _("Created by %s via %s") % (user.name, ip or "n/a")
@@ -97,10 +85,7 @@ class VaultInbox(models.Model):
 
         self.ensure_one()
         if self.accesses > 0 and datetime.now() < self.expiration:
-            log = _("Written by %s via %s") % (
-                self.env.user.name,
-                ip or "n/a",
-            )
+            log = _("Written by %s via %s") % (self.env.user.name, ip or "n/a",)
 
             self.write(
                 {

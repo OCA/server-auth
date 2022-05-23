@@ -42,9 +42,7 @@ class Vault(models.Model):
     allowed_delete = fields.Boolean(compute="_compute_access", store=False)
 
     master_key = fields.Char(
-        compute="_compute_master_key",
-        inverse="_inverse_master_key",
-        store=False,
+        compute="_compute_master_key", inverse="_inverse_master_key", store=False,
     )
 
     uuid = fields.Char(default=lambda self: uuid4(), required=True, readonly=True)

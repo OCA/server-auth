@@ -14,9 +14,6 @@ class VaultShareLog(models.Model):
     _order = "create_date DESC"
 
     share_id = fields.Many2one(
-        "vault.share",
-        ondelete="cascade",
-        readonly=True,
-        required=True,
+        "vault.share", ondelete="cascade", readonly=True, required=True,
     )
     name = fields.Char(readonly=True)

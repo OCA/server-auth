@@ -25,9 +25,7 @@ class ImportWizard(models.TransientModel):
 
     vault_id = fields.Many2one("vault", "Vault")
     parent_id = fields.Many2one(
-        "vault.entry",
-        "Parent Entry",
-        domain="[('vault_id', '=', vault_id)]",
+        "vault.entry", "Parent Entry", domain="[('vault_id', '=', vault_id)]",
     )
     master_key = fields.Char(related="vault_id.master_key")
     name = fields.Char()
