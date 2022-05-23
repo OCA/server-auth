@@ -318,7 +318,7 @@ class KeycloakCreateWiz(models.TransientModel):
                 'oauth_uid': keycloak_user['id'],
                 'oauth_provider_id': self.provider_id.id,
             })
-            self._send_password_mail(uuid=keycloak_user['id'])
+            self._send_password_mail(token, uuid=keycloak_user['id'])
         action = self.env.ref('base.action_res_users').read()[0]
         action['domain'] = [('id', 'in', self.user_ids.ids)]
         logger.debug('Create keycloak users STOP')
