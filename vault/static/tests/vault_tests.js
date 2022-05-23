@@ -3,7 +3,7 @@
 
 /* global ArrayBuffer, QUnit, Uint8Array */
 
-odoo.define("vault.tests", function (require) {
+odoo.define("vault.tests", function(require) {
     "use strict";
 
     var utils = require("vault.utils");
@@ -11,8 +11,8 @@ odoo.define("vault.tests", function (require) {
     QUnit.module(
         "vault",
         {
-            before: function () {
-                utils.askpass = async function () {
+            before: function() {
+                utils.askpass = async function() {
                     return {
                         password: "test",
                         keyfile: "",
@@ -20,7 +20,7 @@ odoo.define("vault.tests", function (require) {
                 };
             },
         },
-        function () {
+        function() {
             function is_keypair(keys, assert) {
                 assert.equal(keys.publicKey instanceof CryptoKey, true);
                 assert.equal(keys.publicKey.type, "public");
@@ -28,7 +28,7 @@ odoo.define("vault.tests", function (require) {
                 assert.equal(keys.privateKey.type, "private");
             }
 
-            QUnit.test("vault: Test conversion utils", async function (assert) {
+            QUnit.test("vault: Test conversion utils", async function(assert) {
                 assert.expect(7);
 
                 let text = "hello world";
@@ -46,7 +46,7 @@ odoo.define("vault.tests", function (require) {
                 assert.equal("Hello World", utils.capitalize("hello world"));
             });
 
-            QUnit.test("vault: Test generation utils", async function (assert) {
+            QUnit.test("vault: Test generation utils", async function(assert) {
                 assert.expect(12);
 
                 let data = utils.generate_bytes(5);
@@ -72,7 +72,7 @@ odoo.define("vault.tests", function (require) {
                 assert.equal(valid, true);
             });
 
-            QUnit.test("vault: Test asymmetric encryption", async function (assert) {
+            QUnit.test("vault: Test asymmetric encryption", async function(assert) {
                 assert.expect(2);
                 const text = "hello world";
                 const key = await utils.generate_key_pair();
@@ -85,7 +85,7 @@ odoo.define("vault.tests", function (require) {
                 );
             });
 
-            QUnit.test("vault: Test symmetric encryption", async function (assert) {
+            QUnit.test("vault: Test symmetric encryption", async function(assert) {
                 assert.expect(2);
                 const text = "hello world";
                 const key = await utils.generate_key();
@@ -96,7 +96,7 @@ odoo.define("vault.tests", function (require) {
                 assert.strictEqual(text, await utils.sym_decrypt(key, crypted, iv));
             });
 
-            QUnit.test("vault: Test import/export", async function (assert) {
+            QUnit.test("vault: Test import/export", async function(assert) {
                 assert.expect(3);
 
                 const key = await utils.generate_key_pair();
@@ -121,7 +121,7 @@ odoo.define("vault.tests", function (require) {
                 assert.deepEqual(master_key, tmp);
             });
 
-            QUnit.test("vault: Test vault class", async function (assert) {
+            QUnit.test("vault: Test vault class", async function(assert) {
                 assert.expect(12);
 
                 var vault = require("vault");
@@ -138,7 +138,7 @@ odoo.define("vault.tests", function (require) {
                 is_keypair(vault.keys, assert);
             });
 
-            QUnit.test("vault: Importer/exporter", async function (assert) {
+            QUnit.test("vault: Importer/exporter", async function(assert) {
                 // The exporter won't skip empty keys
                 const child = {
                     uuid: "42a",

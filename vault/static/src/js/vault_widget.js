@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.fields", function (require) {
+odoo.define("vault.fields", function(require) {
     "use strict";
 
     var core = require("web.core");
@@ -16,7 +16,7 @@ odoo.define("vault.fields", function (require) {
     var QWeb = core.qweb;
 
     var VaultAbstract = {
-        supported: function () {
+        supported: function() {
             return utils.supported();
         },
         /**
@@ -26,12 +26,12 @@ odoo.define("vault.fields", function (require) {
          * @param {Object} options
          * @returns promise for the encryption
          */
-        _setValue: function (value, options) {
+        _setValue: function(value, options) {
             const self = this;
             const _super = this._super;
 
             if (utils.supported()) {
-                return this._encrypt(value).then(function (data) {
+                return this._encrypt(value).then(function(data) {
                     _super.call(self, data, options);
                 });
             }
@@ -43,7 +43,7 @@ odoo.define("vault.fields", function (require) {
          * @param {String} field
          * @param {String} value
          */
-        _setFieldValue: function (field, value) {
+        _setFieldValue: function(field, value) {
             const data = {};
             data[field] = value;
 
@@ -58,7 +58,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @returns the IV to use
          */
-        _getIV: function () {
+        _getIV: function() {
             if (!utils.supported()) return null;
 
             // IV already read. Reuse it
@@ -79,7 +79,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @returns the master key to use
          */
-        _getMasterKey: async function () {
+        _getMasterKey: async function() {
             if (!utils.supported()) return null;
 
             // Check if the master key is already extracted
@@ -102,7 +102,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onShowValue: async function (ev) {
+        _onShowValue: async function(ev) {
             ev.stopPropagation();
 
             this.decrypted = !this.decrypted;
@@ -118,7 +118,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onCopyValue: async function (ev) {
+        _onCopyValue: async function(ev) {
             ev.stopPropagation();
 
             const value = await this._decrypt(this.value);
@@ -131,7 +131,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onSendValue: async function (ev) {
+        _onSendValue: async function(ev) {
             ev.stopPropagation();
 
             const key = await utils.generate_key();
@@ -158,7 +158,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onSaveValue: async function (ev) {
+        _onSaveValue: async function(ev) {
             ev.stopPropagation();
 
             const key = await utils.generate_key();
@@ -187,7 +187,7 @@ odoo.define("vault.fields", function (require) {
          * @param {String} data
          * @returns the decrypted data
          */
-        _decrypt: async function (data) {
+        _decrypt: async function(data) {
             if (!utils.supported()) return null;
 
             const iv = this._getIV();
@@ -201,7 +201,7 @@ odoo.define("vault.fields", function (require) {
          * @param {String} data
          * @returns the encrypted data
          */
-        _encrypt: async function (data) {
+        _encrypt: async function(data) {
             if (!utils.supported()) return null;
 
             const iv = this._getIV();
@@ -228,7 +228,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.field_key = this.attrs.key || "master_key";
@@ -242,7 +242,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        _onGenerateValue: async function (ev) {
+        _onGenerateValue: async function(ev) {
             ev.stopPropagation();
 
             const password = await utils.generate_pass();
@@ -255,7 +255,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @private
          */
-        _renderReadonly: function () {
+        _renderReadonly: function() {
             this._renderValue(this.decrypted_value || "********");
         },
 
@@ -265,7 +265,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @override
          */
-        _renderEdit: function () {
+        _renderEdit: function() {
             if (this.field.size && this.field.size > 0)
                 this.$el.attr("maxlength", this.field.size);
             return this._super.apply(this, arguments);
@@ -277,7 +277,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {String} value to render
          */
-        _renderValue: function (value) {
+        _renderValue: function(value) {
             const self = this;
             this.$el.html(
                 QWeb.render(this.template, {
@@ -295,7 +295,7 @@ odoo.define("vault.fields", function (require) {
          * @param {JQuery} $input
          * @returns the element
          */
-        _prepareInput: function ($input) {
+        _prepareInput: function($input) {
             const self = this;
             const inputAttrs = {
                 placeholder: self.attrs.placeholder || "",
@@ -306,7 +306,7 @@ odoo.define("vault.fields", function (require) {
             this.$input.attr(inputAttrs);
 
             if (utils.supported()) {
-                this._decrypt(this.value).then(function (data) {
+                this._decrypt(this.value).then(function(data) {
                     self.$input.val(self._formatValue(data));
                 });
             }
@@ -318,7 +318,7 @@ odoo.define("vault.fields", function (require) {
          * @override
          * @returns {String} the content of the input
          */
-        _getValue: function () {
+        _getValue: function() {
             return this.$("input").val();
         },
     });
@@ -332,7 +332,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.field_key = this.attrs.key || "master_key";
@@ -345,7 +345,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        on_save_as: async function (ev) {
+        on_save_as: async function(ev) {
             if (!this.value) {
                 this.do_warn(
                     _t("Save As..."),
@@ -371,10 +371,10 @@ odoo.define("vault.fields", function (require) {
     var VaultExportFile = basic_fields.FieldBinaryFile.extend(VaultAbstract, {
         className: "o_vault",
         events: _.extend({}, basic_fields.AbstractFieldBinary.prototype.events, {
-            click: function (event) {
+            click: function(event) {
                 if (this.mode === "readonly" && this.value) this.on_save_as(event);
             },
-            "click .o_input": function () {
+            "click .o_input": function() {
                 this.$(".o_input_file").click();
             },
         }),
@@ -384,7 +384,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.field_key = this.attrs.key || "master_key";
@@ -396,7 +396,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @override
          */
-        _render: function () {
+        _render: function() {
             if (this.value) {
                 this.$el.empty().append($("<span/>").addClass("fa fa-download"));
                 this.$el.css("cursor", "pointer");
@@ -411,7 +411,7 @@ odoo.define("vault.fields", function (require) {
          * @private
          * @param {OdooEvent} ev
          */
-        on_save_as: async function (ev) {
+        on_save_as: async function(ev) {
             if (this.value && utils.supported()) {
                 ev.stopPropagation();
 
@@ -453,7 +453,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.field_iv = this.attrs.iv || "iv";
@@ -468,7 +468,7 @@ odoo.define("vault.fields", function (require) {
          * @param {String} data
          * @returns the decrypted data
          */
-        _decrypt: async function (data) {
+        _decrypt: async function(data) {
             if (!utils.supported()) return null;
 
             const iv = this.recordData[this.field_iv];
@@ -485,7 +485,7 @@ odoo.define("vault.fields", function (require) {
          *
          * @private
          */
-        _renderEdit: function () {
+        _renderEdit: function() {
             this._renderReadonly();
         },
     });
@@ -503,14 +503,14 @@ odoo.define("vault.fields", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.field_key = this.attrs.key || "key";
             this.decrypted = false;
         },
 
-        _renderReadonly: function () {
+        _renderReadonly: function() {
             this.do_toggle(Boolean(this.value));
             if (this.value) {
                 this.$el.html(
@@ -533,7 +533,7 @@ odoo.define("vault.fields", function (require) {
          * @param {String} data
          * @returns the decrypted data
          */
-        _decrypt: async function (data) {
+        _decrypt: async function(data) {
             if (!utils.supported()) return null;
 
             const iv = this.recordData[this.field_iv];

@@ -14,9 +14,6 @@ class VaultInboxLog(models.Model):
     _order = "create_date DESC"
 
     inbox_id = fields.Many2one(
-        "vault.inbox",
-        ondelete="cascade",
-        readonly=True,
-        required=True,
+        "vault.inbox", ondelete="cascade", readonly=True, required=True,
     )
     name = fields.Char(readonly=True)

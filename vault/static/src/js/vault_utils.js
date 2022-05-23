@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.utils", function (require) {
+odoo.define("vault.utils", function(require) {
     "use strict";
 
     var core = require("web.core");
@@ -50,7 +50,7 @@ odoo.define("vault.utils", function (require) {
     function toBinary(buffer) {
         if (!buffer) return "";
 
-        const chars = Array.from(new Uint8Array(buffer)).map(function (b) {
+        const chars = Array.from(new Uint8Array(buffer)).map(function(b) {
             return String.fromCharCode(b);
         });
         return chars.join("");
@@ -78,7 +78,7 @@ odoo.define("vault.utils", function (require) {
     function toBase64(buffer) {
         if (!buffer) return "";
 
-        const chars = Array.from(new Uint8Array(buffer)).map(function (b) {
+        const chars = Array.from(new Uint8Array(buffer)).map(function(b) {
             return String.fromCharCode(b);
         });
         return btoa(chars.join(""));
@@ -194,7 +194,7 @@ odoo.define("vault.utils", function (require) {
                     {
                         text: _t("Enter"),
                         classes: "btn-primary",
-                        click: async function () {
+                        click: async function() {
                             const password = this.$("#password").val();
                             const keyfile = this.$("#keyfile")[0].files[0];
 
@@ -229,7 +229,7 @@ odoo.define("vault.utils", function (require) {
                     },
                     {
                         text: _t("Cancel"),
-                        click: function () {
+                        click: function() {
                             dialog.close();
                             reject(_t("Cancelled"));
                         },
@@ -286,7 +286,7 @@ odoo.define("vault.utils", function (require) {
                     {
                         text: _t("Enter"),
                         classes: "btn-primary",
-                        click: async function () {
+                        click: async function() {
                             if (!password) throw new Error(_t("Missing password"));
 
                             dialog.close();
@@ -295,7 +295,7 @@ odoo.define("vault.utils", function (require) {
                     },
                     {
                         text: _t("Cancel"),
-                        click: function () {
+                        click: function() {
                             dialog.close();
                             reject(_t("Cancelled"));
                         },
@@ -537,7 +537,7 @@ odoo.define("vault.utils", function (require) {
      * @returns capitalized string
      */
     function capitalize(s) {
-        return s.toLowerCase().replace(/\b\w/g, function (c) {
+        return s.toLowerCase().replace(/\b\w/g, function(c) {
             return c.toUpperCase();
         });
     }

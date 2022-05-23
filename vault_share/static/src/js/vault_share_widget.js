@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-odoo.define("vault.share.widget", function (require) {
+odoo.define("vault.share.widget", function(require) {
     "use strict";
 
     var basic_fields = require("web.basic_fields");
@@ -28,7 +28,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.pin_size = this.attrs.pin_size || sh_utils.PinSize;
@@ -42,7 +42,7 @@ odoo.define("vault.share.widget", function (require) {
          * @param {String} data
          * @returns the decrypted data
          */
-        _decrypt: async function (data) {
+        _decrypt: async function(data) {
             if (!data) return data;
 
             const private_key = await vault.get_private_key();
@@ -55,7 +55,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @private
          */
-        _renderReadonly: function () {
+        _renderReadonly: function() {
             this._renderValue(this.decrypted_value || "********");
         },
 
@@ -64,7 +64,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @private
          */
-        _renderEdit: function () {
+        _renderEdit: function() {
             this._renderValue(this.decrypted_value || "********");
         },
 
@@ -74,7 +74,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @param {String} value
          */
-        _renderValue: function (value) {
+        _renderValue: function(value) {
             const self = this;
             this.$el.html(
                 QWeb.render(this.template, {
@@ -98,7 +98,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.pin_size = this.attrs.pin_size || sh_utils.PinSize;
@@ -113,7 +113,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @private
          */
-        _storePin: async function () {
+        _storePin: async function() {
             const salt = utils.generate_iv_base64();
             const crypted_pin = await utils.asym_encrypt(
                 await vault.get_public_key(),
@@ -129,7 +129,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @returns the pin
          */
-        _getPin: async function () {
+        _getPin: async function() {
             if (this.pin) return this.pin;
 
             this.pin = this.recordData[this.field_pin];
@@ -154,7 +154,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @returns the salt
          */
-        _getSalt: function () {
+        _getSalt: function() {
             if (this.salt) return this.salt;
 
             this.salt = this.recordData[this.field_salt];
@@ -172,7 +172,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @param {String} crypted
          */
-        _decrypt: async function (crypted) {
+        _decrypt: async function(crypted) {
             if (crypted === false) return false;
 
             if (!utils.supported()) return null;
@@ -191,7 +191,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @param {String} data
          */
-        _encrypt: async function (data) {
+        _encrypt: async function(data) {
             if (!utils.supported()) return null;
 
             const iv = this._getIV();
@@ -208,7 +208,7 @@ odoo.define("vault.share.widget", function (require) {
          * @override
          * @private
          */
-        _renderReadonly: function () {
+        _renderReadonly: function() {
             const self = this;
             this.$el.html(
                 QWeb.render(this.template, {
@@ -223,7 +223,7 @@ odoo.define("vault.share.widget", function (require) {
          * @override
          * @returns {String} the content of the input
          */
-        _getValue: function () {
+        _getValue: function() {
             return this.$input.val();
         },
     });
@@ -241,7 +241,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @override
          */
-        init: function () {
+        init: function() {
             this._super.apply(this, arguments);
 
             this.field_key = this.attrs.key || "key";
@@ -257,7 +257,7 @@ odoo.define("vault.share.widget", function (require) {
          *
          * @private
          */
-        _storePin: async function () {
+        _storePin: async function() {
             const salt = utils.generate_iv_base64();
             const crypted_pin = await utils.asym_encrypt(
                 await vault.get_public_key(),
@@ -273,7 +273,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @returns the pin
          */
-        _getPin: async function () {
+        _getPin: async function() {
             if (this.pin) return this.pin;
 
             this.pin = this.recordData[this.field_pin];
@@ -298,7 +298,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @returns the salt
          */
-        _getSalt: function () {
+        _getSalt: function() {
             if (this.salt) return this.salt;
 
             this.salt = this.recordData[this.field_salt];
@@ -310,7 +310,7 @@ odoo.define("vault.share.widget", function (require) {
             return this.salt;
         },
 
-        _renderReadonly: function () {
+        _renderReadonly: function() {
             this.do_toggle(Boolean(this.value));
             if (this.value) {
                 this.$el.html(
@@ -332,7 +332,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @param {String} crypted
          */
-        _decrypt: async function (crypted) {
+        _decrypt: async function(crypted) {
             if (!utils.supported()) return null;
 
             const iv = this._getIV();
@@ -349,7 +349,7 @@ odoo.define("vault.share.widget", function (require) {
          * @private
          * @param {String} data
          */
-        _encrypt: async function (data) {
+        _encrypt: async function(data) {
             if (!utils.supported()) return null;
 
             const iv = this._getIV();

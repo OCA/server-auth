@@ -40,9 +40,7 @@ class VaultEntry(models.Model):
     allowed_delete = fields.Boolean(related="vault_id.allowed_delete", store=False)
 
     complete_name = fields.Char(
-        compute="_compute_complete_name",
-        store=True,
-        readonly=True,
+        compute="_compute_complete_name", store=True, readonly=True,
     )
     uuid = fields.Char(default=lambda self: uuid4(), required=True)
     name = fields.Char(required=True)
@@ -51,9 +49,7 @@ class VaultEntry(models.Model):
     tags = fields.Many2many("vault.tag")
     expire_date = fields.Datetime("Expires on", default=False)
     expired = fields.Boolean(
-        compute="_compute_expired",
-        search="_search_expired",
-        store=False,
+        compute="_compute_expired", search="_search_expired", store=False,
     )
 
     _sql_constraints = [

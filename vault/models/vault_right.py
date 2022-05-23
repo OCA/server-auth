@@ -11,18 +11,11 @@ class VaultRight(models.Model):
     _order = "user_id"
 
     vault_id = fields.Many2one(
-        "vault",
-        "Vault",
-        readonly=True,
-        required=True,
-        ondelete="cascade",
+        "vault", "Vault", readonly=True, required=True, ondelete="cascade",
     )
     master_key = fields.Char(related="vault_id.master_key", readonly=True, store=False)
     user_id = fields.Many2one(
-        "res.users",
-        "User",
-        domain=[("keys", "!=", False)],
-        required=True,
+        "res.users", "User", domain=[("keys", "!=", False)], required=True,
     )
     public_key = fields.Char(compute="_compute_public_key", readonly=True, store=False)
     perm_create = fields.Boolean(
