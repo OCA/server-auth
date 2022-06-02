@@ -19,8 +19,11 @@ Base User Show Email
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
     :target: https://translation.odoo-community.org/projects/server-auth-12-0/server-auth-12-0-base_user_show_email
     :alt: Translate me on Weblate
+.. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
+    :target: https://runbot.odoo-community.org/runbot/251/12.0
+    :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| 
+|badge1| |badge2| |badge3| |badge4| |badge5| 
 
 In recent Odoo versions, the login field is tightly linked to the email field
 (the field is displayed with an "Email" label, and it will populate the email of the user if it contains an "@" character).
