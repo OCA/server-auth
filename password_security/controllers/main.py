@@ -48,7 +48,7 @@ class PasswordSecurityHome(AuthSignupHome):
         # I was kicked out, so set login_success in request params to False
         request.params["login_success"] = False
         redirect = request.env.user.partner_id.signup_url
-        return http.redirect_with_hash(redirect)
+        return request.redirect(redirect)
 
     @http.route()
     def web_auth_signup(self, *args, **kw):
