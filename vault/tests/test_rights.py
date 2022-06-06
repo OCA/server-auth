@@ -52,7 +52,7 @@ class TestAccessRights(TransactionCase):
 
     def test_no_create(self):
         self.env["vault.right"].create(
-            {"vault_id": self.vault.id, "user_id": self.user.id, "perm_create": False, }
+            {"vault_id": self.vault.id, "user_id": self.user.id, "perm_create": False}
         )
 
         for obj in [self.field, self.entry, self.vault]:
