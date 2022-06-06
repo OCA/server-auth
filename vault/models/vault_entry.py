@@ -1,4 +1,5 @@
 # © 2021 Florian Kantelberg - initOS GmbH
+# Copyright 2022 Tecnativa - Víctor Martínez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -72,6 +73,38 @@ class VaultEntry(models.Model):
                 rec.complete_name = f"{rec.parent_id.complete_name} / {rec.name}"
             else:
                 rec.complete_name = rec.name
+
+    @api.model
+    def search_panel_select_range(self, field_name, **kwargs):
+        """We add the following contexts related to searchpanel:
+        - entry_short_name: Show just the name instead of full path.
+        - from_search_panel: It will be used to overwrite domain.
+        Remove the limit of records (default is 200).
+        """
+        kwargs.update(limit=False)
+        return super(
+            VaultEntry,
+            self.with_context(from_search_panel=True, entry_short_name=True),
+        ).search_panel_select_range(field_name, **kwargs)
+
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        """Changes related to searchpanel:
+        - Add a domain to only show records with children.
+        """
+        domain = domain if domain else []
+        if self.env.context.get("from_search_panel"):
+            domain += [("child_ids", "!=", False)]
+        res = super().search_read(
+            domain=domain, fields=fields, offset=offset, limit=limit, order=order
+        )
+        return res
+
+    @api.depends("name", "complete_name")
+    def _compute_display_name(self):
+        if not self.env.context.get("entry_short_name", False):
+            return super()._compute_display_name()
+        for record in self:
+            record.display_name = record.name
 
     @api.depends("expire_date")
     def _compute_expired(self):
