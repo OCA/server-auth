@@ -73,6 +73,20 @@ class VaultEntry(models.Model):
             else:
                 rec.complete_name = rec.name
 
+    @api.model
+    def search_panel_select_range(self, field_name):
+        """Add context to show just the name in searchpanel instead of full path"""
+        return super(
+            VaultEntry, self.with_context(entry_short_name=True)
+        ).search_panel_select_range(field_name)
+
+    @api.depends("name", "complete_name")
+    def _compute_display_name(self):
+        if not self.env.context.get("entry_short_name", False):
+            return super()._compute_display_name()
+        for record in self:
+            record.display_name = record.name
+
     @api.depends("expire_date")
     def _compute_expired(self):
         now = datetime.now()
