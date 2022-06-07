@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
+from typing import Set
 
 from odoo import SUPERUSER_ID, _, api, fields, models
 from odoo.exceptions import AccessDenied, ValidationError
@@ -22,29 +23,6 @@ class ResUser(models.Model):
         "auth.saml.provider", string="SAML Provider"
     )
     saml_uid = fields.Char("SAML User ID", help="SAML Provider user_id")
-
-    @api.constrains("password_crypt", "password", "saml_uid")
-    def check_no_password_with_saml(self):
-        """Ensure no Odoo user possesses both an SAML user ID and an Odoo
-        password. Except admin which is not constrained by this rule.
-        """
-        if self._allow_saml_and_password():
-            pass
-
-        else:
-            # Super admin is the only user we allow to have a local password
-            # in the database
-            if (
-                self.password_crypt
-                and self.saml_uid
-                and self.id is not SUPERUSER_ID
-            ):
-                raise ValidationError(
-                    _(
-                        "This database disallows users to have both passwords "
-                        "and SAML IDs. Errors for login {}"
-                    ).format(self.login)
-                )
 
     _sql_constraints = [
         (
@@ -262,6 +240,17 @@ class ResUser(models.Model):
         return super(ResUser, self).write(vals)
 
     @api.model
+    def _saml_allowed_user_ids(self) -> Set[int]:
+        """Users that can have a password even if the option to disallow it is set.
+        It includes superuser and the admin if it exists.
+        """
+        allowed_users = {SUPERUSER_ID}
+        user_admin = self.env.ref("base.user_admin", False)
+        if user_admin:
+            allowed_users.add(user_admin.id)
+        return allowed_users
+
+    @api.model
     def _allow_saml_and_password(self):
 
         return self.env["res.config.settings"].allow_saml_and_password()
@@ -278,7 +267,67 @@ class ResUser(models.Model):
             raise ValidationError(
                 _(
                     "This database disallows users to have both passwords "
-                    "and SAML IDs. Errors for login %s"
+                    "and SAML IDs. Error for login {}."
                 ).format(self.login)
             )
         super(ResUser, self)._set_encrypted_password(encrypted)
+
+    def _inverse_password(self):
+        """Inverse method of the password field."""
+        # Redefine base method to block setting password on users with SAML ids
+        # And also to be able to set password to a blank value
+        if not self._allow_saml_and_password():
+            saml_users = self.filtered(
+                lambda user: user.sudo().saml_uid
+                and self.id not in self._saml_allowed_user_ids()
+                and user.password
+            )
+            if saml_users:
+
+                # same error as an api.constrains because it is a constraint.
+                # a standard constrains would require the use of SQL as the
+                # password field is obfuscated by the base module.
+                raise ValidationError(
+                    _(
+                        "This database disallows users to "
+                        "have both passwords and SAML IDs. "
+                        "Error for logins %s."
+                    )
+                    % (", ".join(saml_users.mapped("login")),)
+                )
+        # handle setting password to NULL
+        blank_password_users = self.filtered(
+            lambda user: user.password is False
+        )
+        non_blank_password_users = self - blank_password_users
+        if non_blank_password_users:
+            # pylint: disable=protected-access
+            super(ResUser, non_blank_password_users)._inverse_password()
+        if blank_password_users:
+            # similar to what Odoo does in Users._set_encrypted_password
+            self.env.cr.execute(
+                "UPDATE res_users SET password = NULL WHERE id IN %s",
+                (tuple(blank_password_users.ids),),
+            )
+            self.invalidate_cache(["password"], blank_password_users.ids)
+        return
+
+    def allow_saml_and_password_changed(self):
+        """Called after the parameter is changed."""
+        if not self._allow_saml_and_password():
+            # sudo because the user doing the parameter change might not have
+            # the right to search or write users
+            users_to_blank_password = self.sudo().search(
+                [
+                    "&",
+                    ("saml_uid", "!=", False),
+                    ("id", "not in", list(self._saml_allowed_user_ids())),
+                ]
+            )
+            _logger.debug(
+                "Removing password from %s user(s)",
+                len(users_to_blank_password),
+            )
+            users_to_blank_password.write({
+                "password": False, "password_crypt": False,
+            })

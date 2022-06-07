@@ -2,5 +2,6 @@
 
 from . import auth_saml  # noqa: F401
 from . import base_settings  # noqa: F401
+from . import ir_config_parameter  # noqa: F401
 from . import res_users  # noqa: F401
 from . import saml_token  # noqa: F401
