@@ -607,6 +607,7 @@ msgstr ""
 #. module: vault
 #: code:addons/vault/models/res_users_key.py:0
 #: code:addons/vault/models/res_users_key.py:0
+#: code:addons/vault/models/res_users_key.py:0
 #, python-format
 msgid "Invalid parameter"
 msgstr ""
@@ -1256,6 +1257,11 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_tag
 #, python-format
 msgid "Vault tag"
+msgstr ""
+
+#. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_users_key__version
+msgid "Version"
 msgstr ""
 
 #. module: vault
