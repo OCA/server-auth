@@ -4,10 +4,11 @@
 import logging
 import re
 
-from odoo import SUPERUSER_ID, api, models, registry as registry_get
+from odoo import SUPERUSER_ID, api, models
 from odoo.http import request
 
 from ..exceptions import (
+    CompositeJwtError,
     UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
     UnauthorizedSessionMismatch,
@@ -55,20 +56,33 @@ class IrHttpJwt(models.AbstractModel):
 
     @classmethod
     def _auth_method_jwt(cls, validator_name=None):
-        assert request.db
         assert not request.uid
         assert not request.session.uid
         token = cls._get_bearer_token()
         assert token
-        registry = registry_get(request.db)
-        with registry.cursor() as cr:
-            env = api.Environment(cr, SUPERUSER_ID, {})
-            validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
-            assert len(validator) == 1
-            payload = validator._decode(token)
-            uid = validator._get_and_check_uid(payload)
-            assert uid
-            partner_id = validator._get_and_check_partner_id(payload)
+        # # Use request cursor to allow partner creation strategy in validator
+        env = api.Environment(request.cr, SUPERUSER_ID, {})
+        validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
+        assert len(validator) == 1
+
+        payload = None
+        exceptions = {}
+        while validator:
+            try:
+                payload = validator._decode(token)
+                break
+            except Exception as e:
+                exceptions[validator.name] = e
+                validator = validator.next_validator_id
+
+        if not payload:
+            if len(exceptions) == 1:
+                raise list(exceptions.values())[0]
+            raise CompositeJwtError(exceptions)
+
+        uid = validator._get_and_check_uid(payload)
+        assert uid
+        partner_id = validator._get_and_check_partner_id(payload)
         request.uid = uid  # this resets request.env
         request.jwt_payload = payload
         request.jwt_partner_id = partner_id

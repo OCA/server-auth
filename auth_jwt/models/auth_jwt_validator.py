@@ -67,6 +67,12 @@ class AuthJwtValidator(models.Model):
     partner_id_strategy = fields.Selection([("email", "From email claim")])
     partner_id_required = fields.Boolean()
 
+    next_validator_id = fields.Many2one(
+        "auth.jwt.validator",
+        domain="[('id', '!=', id)]",
+        help="Next validator to try if this one fails",
+    )
+
     _sql_constraints = [
         ("name_uniq", "unique(name)", "JWT validator names must be unique !"),
     ]
@@ -78,6 +84,22 @@ class AuthJwtValidator(models.Model):
                 raise ValidationError(
                     _("Name %r is not a valid python identifier.") % (rec.name,)
                 )
+
+    @api.constrains("next_validator_id")
+    def _check_next_validator_id(self):
+        # Prevent circular references
+        for rec in self:
+            validator = rec
+            chain = [validator.name]
+            while validator:
+                validator = validator.next_validator_id
+                chain.append(validator.name)
+                if rec == validator:
+                    raise ValidationError(
+                        _("Validators mustn't make a closed chain: {}.").format(
+                            " -> ".join(chain)
+                        )
+                    )
 
     @api.model
     def _get_validator_by_name_domain(self, validator_name):
