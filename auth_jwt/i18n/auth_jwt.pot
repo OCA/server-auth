@@ -154,6 +154,16 @@ msgid "Name %r is not a valid python identifier."
 msgstr ""
 
 #. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__next_validator_id
+msgid "Next Validator"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__next_validator_id
+msgid "Next validator to try if this one fails"
+msgstr ""
+
+#. module: auth_jwt
 #: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__ps256
 msgid "PS256 - RSASSA-PSS using SHA-256 and MGF1 padding with SHA-256"
 msgstr ""
@@ -246,6 +256,12 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__user_id_strategy
 msgid "User Id Strategy"
+msgstr ""
+
+#. module: auth_jwt
+#: code:addons/auth_jwt/models/auth_jwt_validator.py:0
+#, python-format
+msgid "Validators mustn't make a closed chain: {}."
 msgstr ""
 
 #. module: auth_jwt
