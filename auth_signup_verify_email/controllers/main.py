@@ -26,7 +26,7 @@ class SignupVerifyEmail(AuthSignupHome):
 
         # Check good format of e-mail
         try:
-            validate_email(values.get("login", ""))
+            validate_email(values.get("login", ""), test_environment=True)
         except EmailSyntaxError as error:
             qcontext["error"] = getattr(
                 error, "message", _("That does not seem to be an email address."),

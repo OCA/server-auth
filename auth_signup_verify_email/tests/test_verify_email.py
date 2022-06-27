@@ -39,11 +39,11 @@ class UICase(HttpCase):
         """Test rejection of bad emails."""
         self.data["login"] = "bad email"
         doc = self.html_doc(data=self.data)
-        self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
+        self.assertTrue(doc.xpath("//p[hasclass('alert', 'alert-danger')]"))
 
     @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
     def test_good_email(self):
         """Test acceptance of good emails."""
         self.data["login"] = "test@test.com"
         doc = self.html_doc(data=self.data)
-        self.assertTrue(doc.xpath('//p[@class="alert alert-success"]'))
+        self.assertTrue(doc.xpath("//p[hasclass('alert', 'alert-success')]"))
