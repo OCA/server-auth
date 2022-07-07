@@ -4,3 +4,4 @@ email_validator
 lxml
 pysaml2
 python-ldap
+python-jose
