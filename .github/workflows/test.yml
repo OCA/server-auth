@@ -65,6 +65,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
+      - name: Install pysaml2 dependencies
+        run: apt-get install -y xmlsec1
       - name: Install addons and dependencies
         run: oca_install_addons
       - name: Check licenses
