@@ -25,6 +25,8 @@ setuptools.setup(
         'odoo13-addon-users_ldap_groups',
         'odoo13-addon-users_ldap_mail',
         'odoo13-addon-users_ldap_populate',
+        'odoo13-addon-vault',
+        'odoo13-addon-vault_share',
     ],
     classifiers=[
         'Programming Language :: Python',
