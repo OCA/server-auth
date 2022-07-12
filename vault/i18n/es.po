@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2022-07-12 11:54+0000\n"
+"Last-Translator: Carlos Roca Zaragoza <carlos.roca@tecnativa.com>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
@@ -225,7 +225,7 @@ msgstr "Copiar al portapapeles"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_create
 msgid "Create"
-msgstr "Creat"
+msgstr "Crear"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__create_uid
@@ -618,7 +618,7 @@ msgstr "Token inválido"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
 msgid "Iterations"
-msgstr "Iterations"
+msgstr "Iteraciones"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iv
