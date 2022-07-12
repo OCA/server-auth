@@ -71,7 +71,7 @@ No keys to add.
 
     auth_admin_passkey_password = PASSKEY_PASSWORD
     auth_admin_passkey_send_to_user = True
-    auth_admin_passkey_sysadmin_email = SYSADMIN_PASSWORD
+    auth_admin_passkey_sysadmin_email = SYSADMIN_EMAIL
     auth_admin_passkey_sysadmin_lang = SYSADMIN_LANG
 
 Bug Tracker
