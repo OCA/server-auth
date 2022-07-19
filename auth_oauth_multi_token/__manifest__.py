@@ -11,7 +11,6 @@
     "category": "Tool",
     "website": "https://github.com/OCA/server-auth",
     "depends": ["auth_oauth"],
-    "external_dependencies": {"python": ["pyjwt",]},
     "data": [
         "security/ir.model.access.csv",
         "views/auth_oauth_multi_token.xml",
