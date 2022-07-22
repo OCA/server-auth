@@ -23,6 +23,7 @@ class AuthApiKey(models.Model):
         help="""The user used to process the requests authenticated by
         the api key""",
     )
+    active = fields.Boolean(related="user_id.active")
 
     _sql_constraints = [("name_uniq", "unique(name)", "Api Key name must be unique.")]
 
