@@ -4,8 +4,7 @@
 import logging
 from contextlib import contextmanager
 from threading import current_thread
-
-from odoo import SUPERUSER_ID, api, models
+from odoo import api, models, SUPERUSER_ID
 from odoo.exceptions import AccessDenied
 from odoo.service import wsgi_server
 
@@ -62,14 +61,10 @@ class ResUsers(models.Model):
     @classmethod
     def _auth_attempt_force_raise(cls, login, method):
         """Force a method to raise an AccessDenied on falsey return."""
-        try:
-            with cls._auth_attempt(login):
-                result = method()
-                if not result:
-                    # Force exception to record auth failure
-                    raise AccessDenied()
-        except AccessDenied:
-            pass  # `_auth_attempt()` did the hard part already
+        with cls._auth_attempt(login):
+            result = method()
+            if not result:
+                raise AccessDenied()
         return result
 
     @classmethod
@@ -127,7 +122,7 @@ class ResUsers(models.Model):
         )
 
     @api.model
-    def check_credentials(self, password):
+    def _check_credentials(self, password):
         """This is the most important and specific auth check method.
 
         When we get here, it means that Odoo already checked the user exists
@@ -150,4 +145,4 @@ class ResUsers(models.Model):
                 error.reason = "banned"
                 raise error
             # Continue with other auth systems
-            return super(ResUsers, self).check_credentials(password)
+            return super(ResUsers, self)._check_credentials(password)

@@ -5,12 +5,14 @@ from threading import current_thread
 
 from decorator import decorator
 from mock import patch
-from odoo import http
-from odoo.tests.common import HttpCase, at_install, post_install
-from odoo.tools import mute_logger
 from werkzeug.utils import redirect
 
+from odoo import http
+from odoo.tests.common import at_install, HttpCase, post_install
+from odoo.tools import mute_logger
+
 from ..models import res_authentication_attempt, res_users
+
 
 GARBAGE_LOGGERS = (
     "werkzeug",

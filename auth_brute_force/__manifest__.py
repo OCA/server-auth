@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Authentication - Brute-Force Filter",
-    "version": "12.0.1.0.1",
+    "version": "12.0.1.2.0",
     "category": "Tools",
     "summary": "Track Authentication Attempts and Prevent Brute-force Attacks",
     "author": "GRAP, " "Tecnativa, " "Odoo Community Association (OCA)",
@@ -11,10 +11,10 @@
     "license": "AGPL-3",
     "depends": [
         # If we don't depend on it, it would inhibit this addon
-        "auth_crypt",
+        "base",
     ],
     "data": [
-        "security/ir_model_access.yml",
+        "security/ir.model.access.csv",
         "views/view.xml",
         "views/action.xml",
         "views/menu.xml",

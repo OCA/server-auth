@@ -1,12 +1,11 @@
 # Copyright 2015 GRAP - Sylvain LE GAL
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import ipaddress
 import json
-import logging
 from distutils import util
-from urllib import _urlopener
-
+import logging
+import ipaddress
+from urllib.request import urlopen
 from odoo import api, fields, models
 
 GEOLOCALISATION_URL = "http://ip-api.com/json/{}"
@@ -51,7 +50,7 @@ class ResAuthenticationAttempt(models.Model):
         for item in self:
             url = GEOLOCALISATION_URL.format(item.remote)
             try:
-                res = json.loads(_urlopener(url, timeout=5).read())
+                res = json.loads(urlopen(url, timeout=5).read())
             except Exception:
                 _logger.warning(
                     "Couldn't fetch details from %s",

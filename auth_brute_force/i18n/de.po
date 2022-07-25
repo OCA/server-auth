@@ -29,7 +29,7 @@ msgstr "Authentifizierungsversuche"
 #. module: auth_brute_force
 #: model:ir.model.fields,field_description:auth_brute_force.field_res_authentication_attempt__result
 msgid "Authentication Result"
-msgstr ""
+msgstr "Ergebnis der Authentifizierung"
 
 #. module: auth_brute_force
 #: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
