@@ -21,7 +21,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[auth_api_key](auth_api_key/) | 13.0.1.0.0 |  | Authenticate http requests from an API key
+[auth_api_key](auth_api_key/) | 13.0.1.1.0 |  | Authenticate http requests from an API key
 [auth_from_http_remote_user](auth_from_http_remote_user/) | 13.0.1.0.0 |  | Authenticate via HTTP Remote User
 [auth_jwt](auth_jwt/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | JWT bearer token authentication.
 [auth_jwt_demo](auth_jwt_demo/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
