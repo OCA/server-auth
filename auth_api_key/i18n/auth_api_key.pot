@@ -19,11 +19,6 @@ msgid "API Key"
 msgstr ""
 
 #. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__active
-msgid "Active"
-msgstr ""
-
-#. module: auth_api_key
 #: model:ir.model.constraint,message:auth_api_key.constraint_auth_api_key_name_uniq
 msgid "Api Key name must be unique."
 msgstr ""
