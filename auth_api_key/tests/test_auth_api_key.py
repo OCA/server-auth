@@ -43,3 +43,9 @@ class TestAuthApiKey(TransactionCase):
         )
         with self.assertRaises(ValidationError):
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
+
+    def test_user_archived(self):
+        demo_user = self.env.ref("base.user_demo")
+        demo_user.active = False
+        with self.assertRaises(ValidationError), self.env.cr.savepoint():
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"), demo_user.id
