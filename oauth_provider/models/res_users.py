@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import uuid
-from openerp import models, fields
+from odoo import models, fields
 
 
 class ResUsers(models.Model):

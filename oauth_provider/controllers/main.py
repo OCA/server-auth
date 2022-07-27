@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -7,8 +6,8 @@ import logging
 import werkzeug.utils
 import werkzeug.wrappers
 from datetime import datetime
-from openerp import http, fields
-from openerp.addons.web.controllers.main import ensure_db
+from odoo import http, fields
+from odoo.addons.web.controllers.main import ensure_db
 
 _logger = logging.getLogger(__name__)
 
@@ -20,8 +19,6 @@ except ImportError:
 
 
 class OAuth2ProviderController(http.Controller):
-    def __init__(self):
-        super(OAuth2ProviderController, self).__init__()
 
     def _get_request_information(self):
         """ Retrieve needed arguments for oauthlib methods """
@@ -89,8 +86,8 @@ class OAuth2ProviderController(http.Controller):
                 uri, http_method=http_method, body=body, headers=headers)
             # Store only some values, because the pickling of the full request
             # object is not possible
-            http.request.httpsession['oauth_scopes'] = scopes
-            http.request.httpsession['oauth_credentials'] = {
+            http.request.session['oauth_scopes'] = scopes
+            http.request.session['oauth_credentials'] = {
                 'client_id': credentials['client_id'],
                 'redirect_uri': credentials['redirect_uri'],
                 'response_type': credentials['response_type'],
@@ -127,7 +124,7 @@ class OAuth2ProviderController(http.Controller):
     def authorize_post(self, *args, **kwargs):
         """ Redirect to the requested URI during the authorization """
         client = http.request.env['oauth.provider.client'].search([
-            ('identifier', '=', http.request.httpsession.get(
+            ('identifier', '=', http.request.session.get(
                 'oauth_credentials', {}).get('client_id'))])
         if not client:
             return http.request.render(
@@ -139,8 +136,8 @@ class OAuth2ProviderController(http.Controller):
 
         # Retrieve needed arguments for oauthlib methods
         uri, http_method, body, headers = self._get_request_information()
-        scopes = http.request.httpsession['oauth_scopes']
-        credentials = http.request.httpsession['oauth_credentials']
+        scopes = http.request.session['oauth_scopes']
+        credentials = http.request.session['oauth_credentials']
         headers, body, status = oauth2_server.create_authorization_response(
             uri, http_method=http_method, body=body, headers=headers,
             scopes=scopes, credentials=credentials)
@@ -160,7 +157,7 @@ class OAuth2ProviderController(http.Controller):
 
         # If no client_id is specified, get it from session
         if client_id is None:
-            client_id = http.request.httpsession.get(
+            client_id = http.request.session.get(
                 'oauth_credentials', {}).get('client_id')
 
         client = http.request.env['oauth.provider.client'].sudo().search([
@@ -252,7 +249,7 @@ class OAuth2ProviderController(http.Controller):
             return self._json_response(
                 data={'error': 'invalid_or_expired_token'}, status=401)
 
-        model_obj = http.request.env['ir.model'].search([
+        model_obj = http.request.env['ir.model'].sudo().search([
             ('model', '=', model),
         ])
         if not model_obj:
@@ -269,11 +266,11 @@ class OAuth2ProviderController(http.Controller):
         ensure_db()
         body = oauthlib.common.urlencode(
             http.request.httprequest.values.items())
-        db_token = http.request.env['oauth.provider.token'].search([
+        db_token = http.request.env['oauth.provider.token'].sudo().search([
             ('token', '=', token),
         ])
         if not db_token:
-            db_token = http.request.env['oauth.provider.token'].search([
+            db_token = http.request.env['oauth.provider.token'].sudo().search([
                 ('refresh_token', '=', token),
             ])
         if not db_token:
