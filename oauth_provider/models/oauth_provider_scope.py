@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -6,8 +5,8 @@ import datetime
 import dateutil
 import time
 from collections import defaultdict
-from openerp import models, api, fields
-from openerp.tools.safe_eval import safe_eval
+from odoo import models, api, fields
+from odoo.tools.safe_eval import safe_eval
 
 
 class OAuthProviderScope(models.Model):
@@ -58,7 +57,7 @@ class OAuthProviderScope(models.Model):
         """ Return the data matching the scopes from the requested model """
         data = defaultdict(dict)
         eval_context = self._get_ir_filter_eval_context()
-        all_scopes_records = self.env[model]
+        all_scopes_records = None
         for scope in self.filtered(lambda record: record.model == model):
             # Retrieve the scope's domain
             filter_domain = [(1, '=', 1)]
@@ -80,7 +79,7 @@ class OAuthProviderScope(models.Model):
                         data[record_data['id']][field] = value
 
             # Keep a list of records that match all scopes
-            if not all_scopes_records:
+            if all_scopes_records is None:
                 all_scopes_records = records
             else:
                 all_scopes_records &= records
@@ -88,6 +87,7 @@ class OAuthProviderScope(models.Model):
         # If all scopes are required to match, filter the results to keep only
         # those mathing all scopes
         if all_scopes_match:
+            all_scopes_records = all_scopes_records or self.env[model]
             data = dict(filter(
                 lambda record_data: record_data[0] in all_scopes_records.ids,
                 data.items()))
