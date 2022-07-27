@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import hashlib
 import uuid
 import logging
-from openerp import models, api, fields
+from odoo import models, api, fields
 from ..oauth2.validator import OdooValidator
 
 _logger = logging.getLogger(__name__)
@@ -127,4 +126,4 @@ class OAuthProviderClient(models.Model):
             + user.sudo().oauth_identifier
 
         # Use a sha256 to avoid a too long final string
-        return hashlib.sha256(user_identifier).hexdigest()
+        return hashlib.sha256(user_identifier.encode('utf8')).hexdigest()

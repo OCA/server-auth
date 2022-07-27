@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from openerp.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase
 
 
 class TestOAuthProviderScope(TransactionCase):
 
     def setUp(self):
-        super(TestOAuthProviderScope, self).setUp()
+        super().setUp()
         self.filter = self.env['ir.filters'].create({
             'name': 'Current user',
             'model_id': 'res.users',
@@ -21,12 +20,15 @@ class TestOAuthProviderScope(TransactionCase):
             'model_id': self.env.ref('base.model_res_users').id,
             'filter_id': self.filter.id,
             'field_ids': [
-                (6, 0, [self.env.ref('base.field_res_users_email').id]),
+                (6, 0, [self.env.ref('base.field_res_users__email').id]),
             ],
         }
+        self.env.cr.execute(
+            "update res_users set active=True where id=%s", (self.env.user.id,),
+        )
 
     def new_scope(self, vals=None):
-        values = self.scope_vals
+        values = dict(self.scope_vals)
         if vals is not None:
             values.update(vals)
 
@@ -133,9 +135,9 @@ class TestOAuthProviderScope(TransactionCase):
         scopes += self.new_scope({
             'code': 'Profile',
             'field_ids': [(6, 0, [
-                self.env.ref('base.field_res_users_name').id,
-                self.env.ref('base.field_res_users_city').id,
-                self.env.ref('base.field_res_users_country_id').id,
+                self.env.ref('base.field_res_users__name').id,
+                self.env.ref('base.field_res_users__city').id,
+                self.env.ref('base.field_res_users__country_id').id,
             ])],
         })
         scopes += self.new_scope({
@@ -143,7 +145,7 @@ class TestOAuthProviderScope(TransactionCase):
             'code': 'All groups',
             'filter_id': False,
             'field_ids': [
-                (6, 0, [self.env.ref('base.field_res_groups_name').id]),
+                (6, 0, [self.env.ref('base.field_res_groups__name').id]),
             ],
         })
 
@@ -218,7 +220,7 @@ class TestOAuthProviderScope(TransactionCase):
             'code': 'All groups',
             'filter_id': False,
             'field_ids': [
-                (6, 0, [self.env.ref('base.field_res_groups_name').id]),
+                (6, 0, [self.env.ref('base.field_res_groups__name').id]),
             ],
         })
 

@@ -1,16 +1,15 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
-from openerp import fields, exceptions
-from openerp.tests.common import TransactionCase
+from odoo import fields, exceptions
+from odoo.tests.common import TransactionCase
 
 
 class TestOAuthProviderToken(TransactionCase):
 
     def setUp(self):
-        super(TestOAuthProviderToken, self).setUp()
+        super().setUp()
         self.client = self.env['oauth.provider.client'].create({
             'name': 'Client',
             'identifier': 'client',
@@ -33,9 +32,12 @@ class TestOAuthProviderToken(TransactionCase):
             'model_id': self.env.ref('base.model_res_users').id,
             'filter_id': self.filter.id,
             'field_ids': [
-                (6, 0, [self.env.ref('base.field_res_users_email').id]),
+                (6, 0, [self.env.ref('base.field_res_users__email').id]),
             ],
         }
+        self.env.cr.execute(
+            "update res_users set active=True where id=%s", (self.env.user.id,),
+        )
 
     def new_token(self, vals=None):
         values = self.token_vals

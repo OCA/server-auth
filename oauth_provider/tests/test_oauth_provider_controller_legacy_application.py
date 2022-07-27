@@ -32,9 +32,10 @@ class TestOAuthProviderController(
         Must return an unsupported_grant_type error
         """
         response = self.post_request('/oauth2/token')
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client_id'})
+            json.loads(response_text), {'error': 'invalid_client_id'})
 
     def test_token_error_wrong_grant_type(self):
         """ Check /oauth2/token with an invalid grant type
@@ -47,9 +48,10 @@ class TestOAuthProviderController(
             'username': 'Wrong username',
             'password': 'Wrong password',
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
-            json.loads(response.data), {'error': 'unsupported_grant_type'})
+            json.loads(response_text), {'error': 'unsupported_grant_type'})
 
     def test_token_error_missing_username(self):
         """ Check /oauth2/token without username
@@ -60,8 +62,9 @@ class TestOAuthProviderController(
             'client_id': self.client.identifier,
             'grant_type': self.client.grant_type,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data), {
+        self.assertEqual(json.loads(response_text), {
             'error': 'invalid_request',
             'error_description': 'Request is missing username parameter.',
         })
@@ -76,8 +79,9 @@ class TestOAuthProviderController(
             'grant_type': self.client.grant_type,
             'username': 'Wrong username',
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data), {
+        self.assertEqual(json.loads(response_text), {
             'error': 'invalid_request',
             'error_description': 'Request is missing password parameter.',
         })
@@ -90,9 +94,10 @@ class TestOAuthProviderController(
         response = self.post_request('/oauth2/token', data={
             'grant_type': self.client.grant_type,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client_id'})
+            json.loads(response_text), {'error': 'invalid_client_id'})
 
     def test_token_error_wrong_client_identifier(self):
         """ Check /oauth2/token with a wrong client identifier
@@ -103,9 +108,10 @@ class TestOAuthProviderController(
             'grant_type': self.client.grant_type,
             'client_id': 'Wrong client identifier',
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client_id'})
+            json.loads(response_text), {'error': 'invalid_client_id'})
 
     def test_token_error_wrong_username(self):
         """ Check /oauth2/token with a wrong username
@@ -118,8 +124,9 @@ class TestOAuthProviderController(
             'username': 'Wrong username',
             'password': 'demo',
         })
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(json.loads(response.data), {
+        response_text = response.data.decode('utf8')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response_text), {
             'error': 'invalid_grant',
             'error_description': 'Invalid credentials given.',
         })
@@ -135,8 +142,9 @@ class TestOAuthProviderController(
             'username': self.user.login,
             'password': 'Wrong password',
         })
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(json.loads(response.data), {
+        response_text = response.data.decode('utf8')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response_text), {
             'error': 'invalid_grant',
             'error_description': 'Invalid credentials given.',
         })
@@ -151,9 +159,10 @@ class TestOAuthProviderController(
             'client_id': 'Wrong client id',
             'scope': self.client.scope_ids[0].code,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client_id'})
+            json.loads(response_text), {'error': 'invalid_client_id'})
 
     def test_token_error_missing_refresh_token(self):
         """ Check /oauth2/token in refresh token mode without refresh token
@@ -165,8 +174,9 @@ class TestOAuthProviderController(
             'client_id': self.client.identifier,
             'scope': self.client.scope_ids[0].code,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data), {
+        self.assertEqual(json.loads(response_text), {
             'error': 'invalid_request',
             'error_description': 'Missing refresh token parameter.',
         })
@@ -182,8 +192,9 @@ class TestOAuthProviderController(
             'scope': self.client.scope_ids[0].code,
             'refresh_token': 'Wrong refresh token',
         })
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(json.loads(response.data), {'error': 'invalid_grant'})
+        response_text = response.data.decode('utf8')
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response_text), {'error': 'invalid_grant'})
 
     def test_token_with_missing_secret(self):
         """ Check client authentication without the secret provided
@@ -201,9 +212,10 @@ class TestOAuthProviderController(
             'username': self.user.login,
             'password': 'demo',
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client'})
+            json.loads(response_text), {'error': 'invalid_client'})
 
     def test_token_with_unexpected_secret(self):
         """ Check client authentication with an unexpected secret provided
@@ -212,7 +224,9 @@ class TestOAuthProviderController(
         """
         # Don't define a secret for the client
         auth_string = base64.b64encode(
-            '{client.identifier}:secret'.format(client=self.client))
+            '{client.identifier}:secret'.format(client=self.client)
+            .encode('utf8')
+        ).decode('utf8')
 
         # Ask a token to the server
         response = self.post_request('/oauth2/token', data={
@@ -225,9 +239,10 @@ class TestOAuthProviderController(
             'Authorization',
             'Basic {auth_string}'.format(auth_string=auth_string)),
         ])
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client'})
+            json.loads(response_text), {'error': 'invalid_client'})
 
     def test_token_with_wrong_secret(self):
         """ Check client authentication with a wrong secret
@@ -237,7 +252,9 @@ class TestOAuthProviderController(
         # Define a secret for the client
         self.client.secret = 'OAuth Client secret'
         auth_string = base64.b64encode(
-            '{client.identifier}:secret'.format(client=self.client))
+            '{client.identifier}:secret'.format(client=self.client)
+            .encode('utf8')
+        ).decode('utf8')
 
         # Ask a token to the server
         response = self.post_request('/oauth2/token', data={
@@ -250,16 +267,19 @@ class TestOAuthProviderController(
             'Authorization',
             'Basic {auth_string}'.format(auth_string=auth_string)),
         ])
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client'})
+            json.loads(response_text), {'error': 'invalid_client'})
 
     def test_token_with_secret(self):
         """ Check client authentication from Authorization header """
         # Define a secret for the client
         self.client.secret = 'OAuth Client secret'
         auth_string = base64.b64encode(
-            '{client.identifier}:{client.secret}'.format(client=self.client))
+            '{client.identifier}:{client.secret}'.format(client=self.client)
+            .encode('utf8')
+        ).decode('utf8')
 
         # Ask a token to the server
         response = self.post_request('/oauth2/token', data={
@@ -272,7 +292,8 @@ class TestOAuthProviderController(
             'Authorization',
             'Basic {auth_string}'.format(auth_string=auth_string)),
         ])
-        response_data = json.loads(response.data)
+        response_text = response.data.decode('utf8')
+        response_data = json.loads(response_text)
         # A new token should have been generated
         # We can safely pick the latest generated token here, because no other
         # token could have been generated during the test
@@ -293,7 +314,9 @@ class TestOAuthProviderController(
         """
         # Don't define a secret for the client
         auth_string = base64.b64encode(
-            '{client.identifier}:secret'.format(client=self.client))
+            '{client.identifier}:secret'.format(client=self.client)
+            .encode('utf8')
+        ).decode('utf8')
 
         # Ask a token to the server
         response = self.post_request('/oauth2/token', data={
@@ -306,7 +329,8 @@ class TestOAuthProviderController(
             'Authorization',
             'Digest {auth_string}'.format(auth_string=auth_string)),
         ])
-        response_data = json.loads(response.data)
+        response_text = response.data.decode('utf8')
+        response_data = json.loads(response_text)
         # A new token should have been generated
         # We can safely pick the latest generated token here, because no other
         # token could have been generated during the test
@@ -329,7 +353,9 @@ class TestOAuthProviderController(
         # Define a secret for the client
         self.client.secret = 'OAuth Client secret'
         auth_string = base64.b64encode(
-            '{client.identifier}:{client.secret}'.format(client=self.client))
+            '{client.identifier}:{client.secret}'.format(client=self.client)
+            .encode('utf8')
+        ).decode('utf8')
 
         # Ask a token to the server
         response = self.post_request('/oauth2/token', data={
@@ -342,9 +368,10 @@ class TestOAuthProviderController(
             'Authorization',
             'Digest {auth_string}'.format(auth_string=auth_string)),
         ])
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client'})
+            json.loads(response_text), {'error': 'invalid_client'})
 
     def test_successful_token_retrieval(self):
         """ Check the full process for a LegacyApplication
@@ -359,7 +386,8 @@ class TestOAuthProviderController(
             'username': self.user.login,
             'password': 'demo',
         })
-        response_data = json.loads(response.data)
+        response_text = response.data.decode('utf8')
+        response_data = json.loads(response_text)
         # A new token should have been generated
         # We can safely pick the latest generated token here, because no other
         # token could have been generated during the test
