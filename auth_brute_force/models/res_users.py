@@ -4,7 +4,8 @@
 import logging
 from contextlib import contextmanager
 from threading import current_thread
-from odoo import api, models, SUPERUSER_ID
+
+from odoo import SUPERUSER_ID, api, models
 from odoo.exceptions import AccessDenied
 from odoo.service import wsgi_server
 

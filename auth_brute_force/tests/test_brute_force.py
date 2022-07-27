@@ -1,18 +1,20 @@
 # Copyright 2017 Tecnativa - Jairo Llopis
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
+import logging
 from threading import current_thread
+from unittest.mock import patch
 
 from decorator import decorator
-from mock import patch
-from werkzeug.utils import redirect
-
 from odoo import http
-from odoo.tests.common import at_install, HttpCase, post_install
+from odoo.exceptions import AccessDenied
+from odoo.tests.common import HttpCase, at_install, post_install
 from odoo.tools import mute_logger
+from werkzeug.utils import redirect
 
 from ..models import res_authentication_attempt, res_users
 
+_logger = logging.getLogger(__name__)
 
 GARBAGE_LOGGERS = (
     "werkzeug",
@@ -121,7 +123,7 @@ class BruteForceCase(HttpCase):
         try:
             del current_thread().environ
         except AttributeError:
-            pass
+            _logger.info("Skip AttributeError")
         # Complex password to avoid conflicts with `password_security`
         self.good_password = "Admin$%02584"
         self.data_demo = {
@@ -130,8 +132,12 @@ class BruteForceCase(HttpCase):
         }
         with self.cursor() as cr:
             env = self.env(cr)
-            env["ir.config_parameter"].set_param("auth_brute_force.max_by_ip_user", 3)
-            env["ir.config_parameter"].set_param("auth_brute_force.max_by_ip", 4)
+            env["ir.config_parameter"].set_param(
+                "auth_brute_force.max_by_ip_user", 3
+            )
+            env["ir.config_parameter"].set_param(
+                "auth_brute_force.max_by_ip", 4
+            )
             # Clean attempts to be able to count in tests
             env["res.authentication.attempt"].search([]).unlink()
             # Make sure involved users have good passwords
@@ -165,7 +171,7 @@ class BruteForceCase(HttpCase):
         # Make sure user is logged out
         self.url_open("/web/session/logout", timeout=30)
         # Fail 3 times
-        for n in range(3):
+        for _ in range(3):
             response = self.url_open("/web/login", data1, 30)
             # If you fail, you get /web/login again
             self.assertTrue(
@@ -243,7 +249,7 @@ class BruteForceCase(HttpCase):
         # Make sure user is logged out
         self.url_open("/web/session/logout", timeout=30)
         # Fail 3 times
-        for n in range(3):
+        for _ in range(3):
             response = self.url_open("/web/login", data1, 30)
             # If you fail, you get /web/login again
             self.assertTrue(
@@ -319,7 +325,7 @@ class BruteForceCase(HttpCase):
         # Make sure user is logged out
         self.url_open("/web/session/logout", timeout=30)
         # Fail 3 times
-        for n in range(3):
+        for _ in range(3):
             response = self.url_open("/web/login", data1, 30)
             # If you fail, you get /web/login again
             self.assertTrue(
@@ -378,7 +384,7 @@ class BruteForceCase(HttpCase):
             "password": "1234",  # Wrong
         }
         # Fail 3 times
-        for n in range(3):
+        for _ in range(3):
             self.assertFalse(
                 self.xmlrpc_common.authenticate(
                     self.env.cr.dbname, data1["login"], data1["password"], {}
@@ -451,7 +457,7 @@ class BruteForceCase(HttpCase):
             "password": "1234",  # Wrong
         }
         # Fail 3 times
-        for n in range(3):
+        for _ in range(3):
             self.assertFalse(
                 self.xmlrpc_common.authenticate(
                     self.env.cr.dbname, data1["login"], data1["password"], {}
@@ -557,7 +563,7 @@ class BruteForceCase(HttpCase):
             "password": self.good_password,
         }
         # Fail 3 times
-        for n in range(3):
+        for _ in range(3):
             self.assertFalse(
                 self.xmlrpc_common.authenticate(
                     self.env.cr.dbname, data1["login"], data1["password"], {}
@@ -617,12 +623,11 @@ class BruteForceCase(HttpCase):
         with self.cursor() as cr:
             env = self.env(cr)
             # Fail 3 times
-            for n in range(3):
-                self.assertFalse(
+            for _ in range(3):
+                with self.assertRaises(AccessDenied):
                     env["res.users"].authenticate(
                         cr.dbname, data1["login"], data1["password"], {}
                     )
-                )
             self.assertEqual(
                 env["res.authentication.attempt"].search(count=True, args=[]),
                 0,
@@ -635,11 +640,10 @@ class BruteForceCase(HttpCase):
             )
             # Now I know the password, and login works
             data1["password"] = self.good_password
-            self.assertTrue(
+            with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
                     cr.dbname, data1["login"], data1["password"], {}
                 )
-            )
 
     @mute_logger(*GARBAGE_LOGGERS)
     def test_orm_login_unexisting(self, *args):
@@ -651,12 +655,11 @@ class BruteForceCase(HttpCase):
         with self.cursor() as cr:
             env = self.env(cr)
             # Fail 3 times
-            for n in range(3):
-                self.assertFalse(
+            for _ in range(3):
+                with self.assertRaises(AccessDenied):
                     env["res.users"].authenticate(
                         cr.dbname, data1["login"], data1["password"], {}
                     )
-                )
             self.assertEqual(
                 env["res.authentication.attempt"].search(count=True, args=[]),
                 0,
@@ -669,8 +672,7 @@ class BruteForceCase(HttpCase):
             )
             # Now I know the user, and login works
             data1["login"] = "admin"
-            self.assertTrue(
+            with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
                     cr.dbname, data1["login"], data1["password"], {}
                 )
-            )
