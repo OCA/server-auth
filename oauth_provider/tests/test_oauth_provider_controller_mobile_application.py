@@ -63,7 +63,7 @@ class TestOAuthProviderController(
             'expires_in': 3600,
             'scope': token.scope_ids.code,
         }.items())
-        self.assertEqual(
+        self.assertUrlsEqual(
             response.headers['Location'], '{uri_base}#{query_string}'.format(
                 uri_base=self.redirect_uri_base, query_string=query_string))
         self.assertEqual(token.user_id, self.user)
@@ -85,9 +85,10 @@ class TestOAuthProviderController(
             'state': state,
         })
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.client.name in response.data)
-        self.assertTrue(self.client.scope_ids[0].name in response.data)
-        self.assertTrue(self.client.scope_ids[0].description in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue(self.client.name in response_text)
+        self.assertTrue(self.client.scope_ids[0].name in response_text)
+        self.assertTrue(self.client.scope_ids[0].description in response_text)
 
         # Then, call the POST route to validate the authorization
         response = self.post_request('/oauth2/authorize')
@@ -107,7 +108,7 @@ class TestOAuthProviderController(
             'expires_in': 3600,
             'scope': token.scope_ids.code,
         }.items())
-        self.assertEqual(
+        self.assertUrlsEqual(
             response.headers['Location'], '{uri_base}#{query_string}'.format(
                 uri_base=self.redirect_uri_base, query_string=query_string))
         self.assertEqual(token.user_id, self.user)

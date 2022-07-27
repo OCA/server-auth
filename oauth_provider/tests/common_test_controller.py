@@ -1,23 +1,23 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import mock
 import logging
 from datetime import datetime, timedelta
+from urllib.parse import parse_qs, urlparse
 from werkzeug.test import Client
 from werkzeug.wrappers import BaseResponse
-from openerp import fields
-from openerp.service import wsgi_server
-from openerp.tests.common import TransactionCase
-from openerp.tools.misc import consteq
+from odoo import fields
+from odoo.service import wsgi_server
+from odoo.tests.common import TransactionCase
+from odoo.tools.misc import consteq
 
 _logger = logging.getLogger(__name__)
 
 
 class OAuthProviderControllerTransactionCase(TransactionCase):
     def setUp(self, application_type):
-        super(OAuthProviderControllerTransactionCase, self).setUp()
+        super().setUp()
 
         # Initialize controller test stuff
         self.werkzeug_environ = {
@@ -46,7 +46,7 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
                 'model_id': self.env.ref('base.model_res_users').id,
                 'filter_id': self.filter.id,
                 'field_ids': [
-                    (6, 0, [self.env.ref('base.field_res_users_email').id]),
+                    (6, 0, [self.env.ref('base.field_res_users__email').id]),
                 ],
             }), (0, 0, {
                 'name': 'Profile',
@@ -56,8 +56,8 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
                 'filter_id': self.filter.id,
                 'field_ids': [
                     (6, 0, [
-                        self.env.ref('base.field_res_users_name').id,
-                        self.env.ref('base.field_res_users_city').id,
+                        self.env.ref('base.field_res_users__name').id,
+                        self.env.ref('base.field_res_users__city').id,
                     ]),
                 ],
             })],
@@ -83,7 +83,7 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
         self.get_request('/web/session/logout')
         self.logged_user = False
 
-    @mock.patch('openerp.http.WebRequest.env', new_callable=mock.PropertyMock)
+    @mock.patch('odoo.http.WebRequest.env', new_callable=mock.PropertyMock)
     def get_request(self, uri, request_env, data=None, headers=None):
         """ Execute a GET request on the test client """
         # Mock the http request's environ to allow it to see test records
@@ -94,8 +94,8 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
             uri, query_string=data, environ_base=self.werkzeug_environ,
             headers=headers)
 
-    @mock.patch('openerp.http.WebRequest.env', new_callable=mock.PropertyMock)
-    @mock.patch('openerp.http.WebRequest.validate_csrf')
+    @mock.patch('odoo.http.WebRequest.env', new_callable=mock.PropertyMock)
+    @mock.patch('odoo.http.WebRequest.validate_csrf')
     def post_request(
             self, uri, validate_csrf, request_env, data=None, headers=None):
         """ Execute a POST request on the test client """
@@ -119,3 +119,10 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
             'expires_at': fields.Datetime.to_string(
                 datetime.now() + timedelta(seconds=3600)),
         })
+
+    def assertUrlsEqual(self, url1, url2):
+        """ Test if strings are the same url, ignoring order of parameters """
+        u1 = urlparse(url1)
+        u2 = urlparse(url2)
+        self.assertEqual(u1[:4], u2[:4])
+        self.assertEqual(parse_qs(u1.query), parse_qs(u2.query))
