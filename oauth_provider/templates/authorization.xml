@@ -4,7 +4,7 @@
     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 -->
 <odoo>
-    <template id="oauth_provider.authorization" name="OAuth Authorization Error">
+    <template id="authorization" name="OAuth Authorization Error">
         <t t-set="disable_footer" t-value="True"/>
         <t t-call="web.login_layout">
             <form class="oe_login_form" role="form" method="post" action="/oauth2/authorize">
@@ -25,7 +25,7 @@
             </form>
         </t>
     </template>
-    <template id="oauth_provider.authorization_error" name="OAuth Authorization Error">
+    <template id="authorization_error" name="OAuth Authorization Error">
         <t t-set="disable_footer" t-value="True"/>
         <t t-call="web.login_layout">
             <div class="panel panel-danger">
