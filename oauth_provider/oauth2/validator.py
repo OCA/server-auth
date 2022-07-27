@@ -1,12 +1,10 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
 import logging
 from datetime import datetime, timedelta
-from openerp import http
-from openerp import fields
+from odoo import exceptions, fields, http
 
 _logger = logging.getLogger(__name__)
 
@@ -44,7 +42,7 @@ class OdooValidator(RequestValidator):
     def authenticate_client(self, request, *args, **kwargs):
         """ Authenticate the client """
         auth_string = self._extract_auth(request)
-        auth_string_decoded = base64.b64decode(auth_string)
+        auth_string_decoded = base64.b64decode(auth_string).decode('utf8')
 
         # If we don't have a proper auth string, get values in the request body
         if ':' not in auth_string_decoded:
@@ -173,7 +171,7 @@ class OdooValidator(RequestValidator):
 
     def save_bearer_token(self, token, request, *args, **kwargs):
         """ Store the bearer token into the database """
-        scopes = token.get('scope', '').split()
+        scopes = (token.get('scope') or '').split()
         http.request.env['oauth.provider.token'].sudo().create({
             'token': token['access_token'],
             'token_type': token['token_type'],
@@ -250,7 +248,10 @@ class OdooValidator(RequestValidator):
     def validate_user(
             self, username, password, client, request, *args, **kwargs):
         """ Ensure the usernamd and password are valid """
-        uid = http.request.session.authenticate(
-            http.request.session.db, username, password)
+        try:
+            uid = http.request.session.authenticate(
+                http.request.session.db, username, password)
+        except exceptions.AccessDenied:
+            uid = []
         request.odoo_user = http.request.env['res.users'].browse(uid)
         return bool(uid)

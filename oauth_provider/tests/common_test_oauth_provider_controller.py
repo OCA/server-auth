@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -7,7 +6,7 @@ import json
 import mock
 import logging
 from datetime import datetime
-from openerp import fields
+from odoo import fields
 
 _logger = logging.getLogger(__name__)
 
@@ -21,8 +20,9 @@ class TestOAuthProviderAurhorizeController(object):
         self.login('demo', 'demo')
         response = self.get_request('/oauth2/authorize')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Unknown Client Identifier!' in response.data)
-        self.assertTrue('This client identifier is invalid.' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Unknown Client Identifier!' in response_text)
+        self.assertTrue('This client identifier is invalid.' in response_text)
 
     def test_authorize_error_invalid_request(self):
         """ Call /oauth2/authorize with only the client_id argument
@@ -34,9 +34,10 @@ class TestOAuthProviderAurhorizeController(object):
             'client_id': self.client.identifier,
         })
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Error: invalid_request' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Error: invalid_request' in response_text)
         self.assertTrue('An unknown error occured! Please contact your '
-                        'administrator' in response.data)
+                        'administrator' in response_text)
 
     def test_authorize_error_unsupported_response_type(self):
         """ Call /oauth2/authorize with an unsupported response type
@@ -49,9 +50,10 @@ class TestOAuthProviderAurhorizeController(object):
             'response_type': 'wrong response type',
         })
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Error: unsupported_response_type' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Error: unsupported_response_type' in response_text)
         self.assertTrue('An unknown error occured! Please contact your '
-                        'administrator' in response.data)
+                        'administrator' in response_text)
 
     def test_authorize_error_wrong_scopes(self):
         """ Call /oauth2/authorize with wrong scopes
@@ -65,9 +67,10 @@ class TestOAuthProviderAurhorizeController(object):
             'scope': 'wrong scope',
         })
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Error: invalid_scope' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Error: invalid_scope' in response_text)
         self.assertTrue('An unknown error occured! Please contact your '
-                        'administrator' in response.data)
+                        'administrator' in response_text)
 
     def test_authorize_error_wrong_uri(self):
         """ Call the authorize method with a wrong redirect_uri
@@ -81,8 +84,9 @@ class TestOAuthProviderAurhorizeController(object):
             'redirect_uri': 'http://wrong.redirect.uri',
         })
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Error: invalid_request' in response.data)
-        self.assertTrue('Mismatching redirect URI' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Error: invalid_request' in response_text)
+        self.assertTrue('Mismatching redirect URI' in response_text)
 
     def test_authorize_error_missing_uri(self):
         """ Call /oauth2/authorize without any configured redirect URI
@@ -97,8 +101,9 @@ class TestOAuthProviderAurhorizeController(object):
             'scope': self.client.scope_ids[0].code,
         })
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Error: invalid_request' in response.data)
-        self.assertTrue('Missing redirect URI.' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Error: invalid_request' in response_text)
+        self.assertTrue('Missing redirect URI.' in response_text)
 
     def test_authorize_post_errors(self):
         """ Call /oauth2/authorize in POST without any session
@@ -108,8 +113,9 @@ class TestOAuthProviderAurhorizeController(object):
         self.login('demo', 'demo')
         response = self.post_request('/oauth2/authorize')
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('Unknown Client Identifier!' in response.data)
-        self.assertTrue('This client identifier is invalid.' in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue('Unknown Client Identifier!' in response_text)
+        self.assertTrue('This client identifier is invalid.' in response_text)
 
     @mock.patch('openerp.http.WebRequest.env', new_callable=mock.PropertyMock)
     def test_authorize_unsafe_chars(self, request_env):
@@ -126,7 +132,8 @@ class TestOAuthProviderAurhorizeController(object):
             '/oauth2/authorize', query_string=query_string,
             environ_base=self.werkzeug_environ)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.client.name in response.data)
+        response_text = response.data.decode('utf8')
+        self.assertTrue(self.client.name in response_text)
 
 
 class TestOAuthProviderRefreshTokenController(object):
@@ -139,8 +146,9 @@ class TestOAuthProviderRefreshTokenController(object):
             'grant_type': 'refresh_token',
             'refresh_token': token.refresh_token,
         })
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(json.loads(response.data), {'error': 'invalid_scope'})
+        self.assertEqual(response.status_code, 400)
+        response_text = response.data.decode('utf8')
+        self.assertEqual(json.loads(response_text), {'error': 'invalid_scope'})
 
     def test_refresh_token(self):
         """ Get a new token using the refresh token """
@@ -152,7 +160,8 @@ class TestOAuthProviderRefreshTokenController(object):
             'grant_type': 'refresh_token',
             'refresh_token': token.refresh_token,
         })
-        response_data = json.loads(response.data)
+        response_text = response.data.decode('utf8')
+        response_data = json.loads(response_text)
         # A new token should have been generated
         # We can safely pick the latest generated token here, because no other
         # token could have been generated during the test
@@ -176,8 +185,9 @@ class TestOAuthProviderTokeninfoController(object):
         """
         response = self.get_request('/oauth2/tokeninfo')
         self.assertEqual(response.status_code, 401)
+        response_text = response.data.decode('utf8')
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_or_expired_token'})
+            json.loads(response_text), {'error': 'invalid_or_expired_token'})
 
     def test_tokeninfo(self):
         """ Retrieve token information """
@@ -188,7 +198,8 @@ class TestOAuthProviderTokeninfoController(object):
         })
         token_lifetime = (fields.Datetime.from_string(token.expires_at) -
                           datetime.now()).seconds
-        response_data = json.loads(response.data)
+        response_text = response.data.decode('utf8')
+        response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response_data['audience'], token.client_id.identifier)
@@ -201,8 +212,13 @@ class TestOAuthProviderTokeninfoController(object):
             token_lifetime + 5)
         self.assertEqual(
             response_data['user_id'],
-            hashlib.sha256(token.client_id.identifier +
-                           token.user_id.oauth_identifier).hexdigest())
+            hashlib.sha256(
+                (
+                    token.client_id.identifier +
+                    token.user_id.oauth_identifier
+                ).encode('utf8')
+            ).hexdigest()
+        )
 
     def test_tokeninfo_without_scopes(self):
         """ Call /oauth2/tokeninfo without any scope
@@ -217,7 +233,8 @@ class TestOAuthProviderTokeninfoController(object):
         })
         token_lifetime = (fields.Datetime.from_string(token.expires_at) -
                           datetime.now()).seconds
-        response_data = json.loads(response.data)
+        response_text = response.data.decode('utf8')
+        response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response_data['audience'], token.client_id.identifier)
@@ -237,9 +254,10 @@ class TestOAuthProviderUserinfoController(object):
         Must return an invalid_or_expired_token error
         """
         response = self.get_request('/oauth2/userinfo')
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_or_expired_token'})
+            json.loads(response_text), {'error': 'invalid_or_expired_token'})
 
     def test_userinfo_single_scope(self):
         """ Retrieve user information with only a single scope """
@@ -250,8 +268,9 @@ class TestOAuthProviderUserinfoController(object):
         response = self.get_request('/oauth2/userinfo', data={
             'access_token': token.token,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), {
+        self.assertEqual(json.loads(response_text), {
             'id': self.user.id,
             'email': self.user.email,
         })
@@ -265,11 +284,12 @@ class TestOAuthProviderUserinfoController(object):
         response = self.get_request('/oauth2/userinfo', data={
             'access_token': token.token,
         })
+        response_text = response.data.decode('utf8')
         # The Email scope allows to read the email
         # The Profile scope allows to read the name and city
         # The id of the recod is always added (standard Odoo behaviour)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), {
+        self.assertEqual(json.loads(response_text), {
             'id': self.user.id,
             'name': self.user.name,
             'email': self.user.email,
@@ -284,9 +304,10 @@ class TestOAuthProviderOtherinfoController(object):
         Must return an invalid_or_expired_token error
         """
         response = self.get_request('/oauth2/otherinfo')
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_or_expired_token'})
+            json.loads(response_text), {'error': 'invalid_or_expired_token'})
 
     def test_otherinfo_error_missing_model(self):
         """ Call /oauth2/otherinfo method without the model argument
@@ -296,8 +317,9 @@ class TestOAuthProviderOtherinfoController(object):
         token = self.new_token()
         response = self.get_request(
             '/oauth2/otherinfo', data={'access_token': token.token})
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data), {'error': 'invalid_model'})
+        self.assertEqual(json.loads(response_text), {'error': 'invalid_model'})
 
     def test_otherinfo_error_invalid_model(self):
         """ Call /oauth2/otherinfo method withan invalid model
@@ -308,8 +330,9 @@ class TestOAuthProviderOtherinfoController(object):
         response = self.get_request(
             '/oauth2/otherinfo',
             data={'access_token': token.token, 'model': 'invalid.model'})
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response.data), {'error': 'invalid_model'})
+        self.assertEqual(json.loads(response_text), {'error': 'invalid_model'})
 
     def test_otherinfo_user_information(self):
         """ Call /oauth2/otherinfo to retrieve information using the token """
@@ -324,7 +347,7 @@ class TestOAuthProviderOtherinfoController(object):
             'model_id': self.env.ref('base.model_res_groups').id,
             'filter_id': False,
             'field_ids': [
-                (6, 0, [self.env.ref('base.field_res_groups_name').id]),
+                (6, 0, [self.env.ref('base.field_res_groups__name').id]),
             ],
         })
         # Retrieve user information
@@ -332,11 +355,12 @@ class TestOAuthProviderOtherinfoController(object):
             'access_token': token.token,
             'model': 'res.users',
         })
+        response_text = response.data.decode('utf8')
         # The Email scope allows to read the email
         # The Profile scope allows to read the name and city
         # The id of the recod is always added (standard Odoo behaviour)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.data), {str(self.user.id): {
+        self.assertEqual(json.loads(response_text), {str(self.user.id): {
             'id': self.user.id,
             'name': self.user.name,
             'email': self.user.email,
@@ -356,7 +380,7 @@ class TestOAuthProviderOtherinfoController(object):
             'model_id': self.env.ref('base.model_res_groups').id,
             'filter_id': False,
             'field_ids': [
-                (6, 0, [self.env.ref('base.field_res_groups_name').id]),
+                (6, 0, [self.env.ref('base.field_res_groups__name').id]),
             ],
         })
 
@@ -366,9 +390,10 @@ class TestOAuthProviderOtherinfoController(object):
             'access_token': token.token,
             'model': 'res.groups',
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            sorted(json.loads(response.data).keys()),
+            sorted(json.loads(response_text).keys()),
             sorted(map(str, all_groups.ids)))
 
 
@@ -376,9 +401,10 @@ class TestOAuthProviderRevokeTokenController(object):
     def test_revoke_token_error_missing_arguments(self):
         """ Call /oauth2/revoke_token method without any argument """
         response = self.post_request('/oauth2/revoke_token')
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_or_expired_token'})
+            json.loads(response_text), {'error': 'invalid_or_expired_token'})
 
     def test_revoke_token_error_missing_client_id(self):
         """ Call /oauth2/revoke_token method without client identifier """
@@ -386,18 +412,20 @@ class TestOAuthProviderRevokeTokenController(object):
         response = self.post_request('/oauth2/revoke_token', data={
             'token': token.token,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_client'})
+            json.loads(response_text), {'error': 'invalid_client'})
 
     def test_revoke_token_error_missing_token(self):
         """ Call /oauth2/revoke_token method without token """
         response = self.post_request('/oauth2/revoke_token', data={
             'client_id': self.client.identifier,
         })
+        response_text = response.data.decode('utf8')
         self.assertEqual(response.status_code, 401)
         self.assertEqual(
-            json.loads(response.data), {'error': 'invalid_or_expired_token'})
+            json.loads(response_text), {'error': 'invalid_or_expired_token'})
 
     def test_revoke_access_token(self):
         """ Revoke an access token """
