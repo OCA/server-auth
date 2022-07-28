@@ -44,7 +44,6 @@ msgstr "Creata il"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
-#: model:ir.model.fields,field_description:auth_api_key.field_ir_http__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -55,7 +54,6 @@ msgstr "Instradamento HTTP"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__id
-#: model:ir.model.fields,field_description:auth_api_key.field_ir_http__id
 msgid "ID"
 msgstr "ID"
 
@@ -66,7 +64,6 @@ msgstr "Chiave"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
-#: model:ir.model.fields,field_description:auth_api_key.field_ir_http____last_update
 msgid "Last Modified on"
 msgstr "Ultima modifica il"
 
