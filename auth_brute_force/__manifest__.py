@@ -6,8 +6,11 @@
     "version": "15.0.1.0.0",
     "category": "Tools",
     "summary": "Track Authentication Attempts and Prevent Brute-force Attacks",
-    "author": "GRAP, " "Tecnativa, " "Odoo Community Association (OCA)",
-    "website": "https://github.com/OCA/server-tools",
+    "author": "Nitrokey GmbH,"
+    "GRAP, "
+    "Tecnativa, "
+    "Odoo Community Association (OCA)",
+    "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
     "depends": [
         "base",

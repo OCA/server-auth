@@ -5,6 +5,7 @@ import logging
 from threading import current_thread
 
 from decorator import decorator
+
 from odoo.exceptions import AccessDenied
 from odoo.tests.common import HttpCase, tagged
 from odoo.tools import mute_logger

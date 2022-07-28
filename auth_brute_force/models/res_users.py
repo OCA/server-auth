@@ -110,9 +110,7 @@ class ResUsers(models.Model):
     def _login(cls, db, login, password, user_agent_env):
         return cls._auth_attempt_force_raise(
             login,
-            lambda: super(ResUsers, cls)._login(
-                db, login, password, user_agent_env
-            ),
+            lambda: super(ResUsers, cls)._login(db, login, password, user_agent_env),
         )
 
     @classmethod
@@ -148,6 +146,4 @@ class ResUsers(models.Model):
                 error.reason = "banned"
                 raise error
             # Continue with other auth systems
-            return super(ResUsers, self)._check_credentials(
-                password, user_agent_env
-            )
+            return super(ResUsers, self)._check_credentials(password, user_agent_env)
