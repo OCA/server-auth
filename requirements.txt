@@ -3,6 +3,7 @@ cryptography<37
 email_validator
 lasso
 lxml
+oauthlib
 pyotp
 python-jose
 python-ldap
