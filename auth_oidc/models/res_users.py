@@ -70,7 +70,12 @@ class ResUsers(models.Model):
             ).json()
             validation.update(data)
         # required check
-        if not validation.get("user_id"):
+        if "sub" in validation and "user_id" not in validation:
+            # set user_id for auth_oauth, user_id is not an OpenID Connect standard
+            # claim:
+            # https://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
+            validation["user_id"] = validation["sub"]
+        elif not validation.get("user_id"):
             _logger.error("user_id claim not found in id_token (after mapping).")
             raise AccessDenied()
         # retrieve and sign in user
