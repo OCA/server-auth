@@ -3,7 +3,7 @@
 import logging
 
 import json
-
+from odoo import http
 import uuid
 
 import werkzeug.urls
@@ -12,6 +12,7 @@ import werkzeug.utils
 from odoo.http import request
 
 from odoo.addons.auth_oauth.controllers.main import OAuthLogin
+from odoo.addons.web.controllers.main import Session
 
 
 _logger = logging.getLogger(__name__)
@@ -47,3 +48,16 @@ class OAuthLoginKeycloak(OAuthLogin):
                 werkzeug.url_encode(params)
             )
         return providers
+
+
+
+
+class SessionAutoLogout(Session):
+
+    @http.route('/web/session/logout', type='http', auth="none")
+    def logout(self, redirect='/web'):
+        # request.session.logout(keep_db=True)
+        # return werkzeug.utils.redirect('/logout', 303)
+
+        redirect = '/logout'
+        return super(SessionAutoLogout, self).logout(redirect=redirect)
