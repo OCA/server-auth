@@ -24,7 +24,7 @@
                     <field name="group_line_ids">
                         <tree editable="bottom">
                             <field name="group_id" />
-                            <field name="expression" />
+                            <field name="expression" placeholder="token['scope']['value'] == 'hello world'" />
                         </tree>
                     </field>
                 </group>

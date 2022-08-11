@@ -105,8 +105,12 @@ class AuthOauthProviderGroupLine(models.Model):
         self.ensure_one()
 
         class Defaultdict2(collections.defaultdict):
+            """Class keeping yielding defaultdicts"""
             def __init__(self, *args, **kwargs):
                 super().__init__(Defaultdict2, *args, **kwargs)
+
+            def __eq__(self, other):
+                return False
 
         return tools.safe_eval(
             self.expression, {
