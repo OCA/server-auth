@@ -142,7 +142,7 @@ class KeycloakSyncWiz(models.TransientModel):
         """
         self._validate_setup()
         token = self._get_token()
-        users = self._get_users(token)
+        users = self._get_users(token, max=-1)
         # map users by match key
         keycloak_key, odoo_key = self.login_match_key.split(':')
         logins_mapping = {
