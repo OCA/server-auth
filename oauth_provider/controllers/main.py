@@ -1,7 +1,7 @@
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import json
+import base64
 import logging
 import werkzeug.utils
 import werkzeug.wrappers
@@ -19,45 +19,16 @@ except ImportError:
 
 
 class OAuth2ProviderController(http.Controller):
-
     def _get_request_information(self):
-        """ Retrieve needed arguments for oauthlib methods """
-        uri = http.request.httprequest.base_url
-        http_method = http.request.httprequest.method
-        body = oauthlib.common.urlencode(
-            http.request.httprequest.values.items())
-        headers = http.request.httprequest.headers
-
-        return uri, http_method, body, headers
+        return http.request.env['ir.http']._oauth_get_request_information()
 
     def _check_access_token(self, access_token):
-        """ Check if the provided access token is valid """
-        token = http.request.env['oauth.provider.token'].search([
-            ('token', '=', access_token),
-        ])
-        if not token:
-            return False
-
-        oauth2_server = token.client_id.get_oauth2_server()
-        # Retrieve needed arguments for oauthlib methods
-        uri, http_method, body, headers = self._get_request_information()
-
-        # Validate request information
-        valid, oauthlib_request = oauth2_server.verify_request(
-            uri, http_method=http_method, body=body, headers=headers)
-
-        if valid:
-            return token
-
-        return False
+        return http.request.env['ir.http']._oauth_check_access_token(access_token)
 
     def _json_response(self, data=None, status=200, headers=None):
-        """ Returns a json response to the client """
-        if headers is None:
-            headers = {'Content-Type': 'application/json'}
-
-        return werkzeug.wrappers.BaseResponse(
-            json.dumps(data), status=status, headers=headers)
+        return http.request.env['ir.http']._oauth_json_response(
+            data=data, status=status, headers=headers
+        )
 
     @http.route('/oauth2/authorize', type='http', auth='user', methods=['GET'])
     def authorize(self, client_id=None, response_type=None, redirect_uri=None,
@@ -68,7 +39,7 @@ class OAuth2ProviderController(http.Controller):
         If the client is configured to skip the authorization page, directly
         redirects to the requested URI
         """
-        client = http.request.env['oauth.provider.client'].search([
+        client = http.request.env['oauth.provider.client'].sudo().search([
             ('identifier', '=', client_id),
         ])
         if not client:
@@ -123,7 +94,7 @@ class OAuth2ProviderController(http.Controller):
         '/oauth2/authorize', type='http', auth='user', methods=['POST'])
     def authorize_post(self, *args, **kwargs):
         """ Redirect to the requested URI during the authorization """
-        client = http.request.env['oauth.provider.client'].search([
+        client = http.request.env['oauth.provider.client'].sudo().search([
             ('identifier', '=', http.request.session.get(
                 'oauth_credentials', {}).get('client_id'))])
         if not client:
@@ -160,6 +131,15 @@ class OAuth2ProviderController(http.Controller):
             client_id = http.request.session.get(
                 'oauth_credentials', {}).get('client_id')
 
+        # Get from headers if available
+        if client_id is None:
+            auth_header = http.request.httprequest.headers.get('Authorization')
+            basic = 'basic '
+            if auth_header and auth_header.lower().startswith(basic):
+                client_id = base64.b64decode(
+                    auth_header[len(basic):]
+                ).decode('utf8').split(':')[0]
+
         client = http.request.env['oauth.provider.client'].sudo().search([
             ('identifier', '=', client_id),
         ])
@@ -175,18 +155,18 @@ class OAuth2ProviderController(http.Controller):
 
         # Retrieve the authorization code, if any, to get Odoo's user id
         existing_code = http.request.env[
-            'oauth.provider.authorization.code'].search([
+            'oauth.provider.authorization.code'].sudo().search([
                 ('client_id.identifier', '=', client_id),
                 ('code', '=', code),
             ])
         if existing_code:
             credentials['odoo_user_id'] = existing_code.user_id.id
         # Retrieve the existing token, if any, to get Odoo's user id
-        existing_token = http.request.env['oauth.provider.token'].search([
+        existing_token = http.request.env['oauth.provider.token'].sudo().search([
             ('client_id.identifier', '=', client_id),
             ('refresh_token', '=', refresh_token),
         ])
-        if existing_token:
+        if refresh_token and existing_token:
             credentials['odoo_user_id'] = existing_token.user_id.id
 
         headers, body, status = oauth2_server.create_token_response(
@@ -219,10 +199,10 @@ class OAuth2ProviderController(http.Controller):
 
         # Add the oauth user identifier, if user's information access is
         # allowed by the token's scopes
-        user_data = token.get_data_for_model(
+        user_data = token._get_data_for_model(
             'res.users', res_id=token.user_id.id)
         if 'id' in user_data:
-            data.update(user_id=token.generate_user_id())
+            data.update(user_id=token._generate_user_id())
         return self._json_response(data=data)
 
     @http.route('/oauth2/userinfo', type='http', auth='none', methods=['GET'])
@@ -237,17 +217,15 @@ class OAuth2ProviderController(http.Controller):
             return self._json_response(
                 data={'error': 'invalid_or_expired_token'}, status=401)
 
-        data = token.get_data_for_model('res.users', res_id=token.user_id.id)
+        data = token._get_data_for_model('res.users', res_id=token.user_id.id)
         return self._json_response(data=data)
 
-    @http.route('/oauth2/otherinfo', type='http', auth='none', methods=['GET'])
+    @http.route(
+        '/oauth2/otherinfo', type='http', auth='oauth_provider', methods=['GET'],
+    )
     def otherinfo(self, access_token=None, model=None, *args, **kwargs):
         """ Return allowed information about the requested model """
         ensure_db()
-        token = self._check_access_token(access_token)
-        if not token:
-            return self._json_response(
-                data={'error': 'invalid_or_expired_token'}, status=401)
 
         model_obj = http.request.env['ir.model'].sudo().search([
             ('model', '=', model),
@@ -256,7 +234,7 @@ class OAuth2ProviderController(http.Controller):
             return self._json_response(
                 data={'error': 'invalid_model'}, status=400)
 
-        data = token.get_data_for_model(model)
+        data = http.request.oauth_token._get_data_for_model(model)
         return self._json_response(data=data)
 
     @http.route(
