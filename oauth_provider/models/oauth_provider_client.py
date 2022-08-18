@@ -34,7 +34,7 @@ class OAuthProviderClient(models.Model):
             ('web application', 'Web Application'),
             ('mobile application', 'Mobile Application'),
             ('legacy application', 'Legacy Application'),
-            ('backend application', 'Backend Application (not implemented)'),
+            ('backend application', 'Backend Application'),
         ], required=True, default='web application',
         help='Application type to be used with this client.')
     grant_type = fields.Selection(
@@ -66,6 +66,9 @@ class OAuthProviderClient(models.Model):
         comodel_name='oauth.provider.redirect.uri', inverse_name='client_id',
         string='OAuth Redirect URIs',
         help='Allowed redirect URIs for the client.')
+    user_id = fields.Many2one(
+        comodel_name='res.users',
+        help='Map calls from this client to this user for backend applications')
 
     _sql_constraints = [
         ('identifier_unique', 'UNIQUE (identifier)',
@@ -112,7 +115,7 @@ class OAuthProviderClient(models.Model):
             return oauth2.BackendApplicationServer(validator, **kwargs)
 
     @api.multi
-    def generate_user_id(self, user):
+    def _generate_user_id(self, user):
         """ Generates a unique user identifier for this client
 
         Include the client and user identifiers in the final identifier to
