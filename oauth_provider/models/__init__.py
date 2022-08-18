@@ -1,6 +1,7 @@
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from . import ir_http
 from . import oauth_provider_authorization_code
 from . import oauth_provider_redirect_uri
 from . import oauth_provider_scope
