@@ -77,14 +77,14 @@ class OAuthProviderToken(models.Model):
         return domain
 
     @api.multi
-    def generate_user_id(self):
+    def _generate_user_id(self):
         """ Generates a unique user identifier for this token """
         self.ensure_one()
 
-        return self.client_id.generate_user_id(self.user_id)
+        return self.client_id._generate_user_id(self.user_id)
 
     @api.multi
-    def get_data_for_model(self, model, res_id=None, all_scopes_match=False):
+    def _get_data_for_model(self, model, res_id=None, all_scopes_match=False):
         """ Returns the data of the accessible records of the requested model,
 
         Data are returned depending on the allowed scopes for the token
@@ -94,5 +94,5 @@ class OAuthProviderToken(models.Model):
         self.ensure_one()
 
         # Retrieve records allowed from all scopes
-        return self.sudo(user=self.user_id).scope_ids.get_data_for_model(
-            model, res_id=res_id, all_scopes_match=all_scopes_match)
+        return self.scope_ids._get_data_for_model(
+            model, self.user_id, res_id=res_id, all_scopes_match=all_scopes_match)
