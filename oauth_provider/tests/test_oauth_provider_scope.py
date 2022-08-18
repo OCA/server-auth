@@ -35,36 +35,36 @@ class TestOAuthProviderScope(TransactionCase):
         return self.env['oauth.provider.scope'].create(values)
 
     def test_get_data_from_model_without_filter(self):
-        """ Check the values returned by the get_data_for_model method when no
+        """ Check the values returned by the _get_data_for_model method when no
         filter is defined
         """
         scope = self.new_scope({'filter_id': False})
 
         # Check a simple call with the right model
-        data = scope.get_data_for_model('res.users')
+        data = scope._get_data_for_model('res.users', self.env.user)
         # Check that we have multiple users (otherwise this test is useless)
         self.assertTrue(len(self.env['res.users'].search([]).ids) > 1)
         self.assertEqual(
             set(data.keys()), set(self.env['res.users'].search([]).ids))
 
     def test_get_data_from_model_without_filter_wrong_model(self):
-        """ Check the values returned by the get_data_for_model method when no
+        """ Check the values returned by the _get_data_for_model method when no
         filter is defined
         """
         scope = self.new_scope({'filter_id': False})
 
         # Check a simple call with a wrong model
-        data = scope.get_data_for_model('res.partner')
+        data = scope._get_data_for_model('res.partner', self.env.user)
         self.assertEqual(data, {})
 
     def test_get_data_from_model_with_filter(self):
-        """ Check the values returned by the get_data_for_model method when no
+        """ Check the values returned by the _get_data_for_model method when no
         res_id is supplied
         """
         scope = self.new_scope()
 
         # Check a simple call with the right model
-        data = scope.get_data_for_model('res.users')
+        data = scope._get_data_for_model('res.users', self.env.user)
         self.assertEqual(data, {
             self.env.user.id: {
                 'id': self.env.user.id,
@@ -73,61 +73,63 @@ class TestOAuthProviderScope(TransactionCase):
         })
 
     def test_get_data_from_model_with_filter_wrong_model(self):
-        """ Check the values returned by the get_data_for_model method when no
+        """ Check the values returned by the _get_data_for_model method when no
         res_id is supplied
         """
         scope = self.new_scope()
 
         # Check a simple call with a wrong model
-        data = scope.get_data_for_model('res.partner')
+        data = scope._get_data_for_model('res.partner', self.env.user)
         self.assertEqual(data, {})
 
     def test_get_data_from_model_with_res_id_and_no_filter(self):
-        """ Check the values returned by the get_data_for_model method when a
+        """ Check the values returned by the _get_data_for_model method when a
         res_id is supplied
         """
         scope = self.new_scope({'filter_id': False})
 
         # Check a simple call with the right model
-        data = scope.get_data_for_model('res.users', res_id=self.env.user.id)
+        data = scope._get_data_for_model(
+            'res.users', self.env.user, res_id=self.env.user.id)
         self.assertEqual(data, {
             'id': self.env.user.id,
             'email': self.env.user.email,
         })
 
     def test_get_data_from_model_with_res_id_and_no_filter_wrong_model(self):
-        """ Check the values returned by the get_data_for_model method when a
+        """ Check the values returned by the _get_data_for_model method when a
         res_id is supplied
         """
         scope = self.new_scope({'filter_id': False})
 
         # Check a simple call with a wrong model
-        data = scope.get_data_for_model(
-            'res.partner', res_id=self.env.user.id + 1)
+        data = scope._get_data_for_model(
+            'res.partner', self.env.user, res_id=self.env.user.id + 1)
         self.assertEqual(data, {})
 
     def test_get_data_from_model_with_res_id(self):
-        """ Check the values returned by the get_data_for_model method when a
+        """ Check the values returned by the _get_data_for_model method when a
         res_id is supplied
         """
         scope = self.new_scope()
 
         # Check a simple call with the right model
-        data = scope.get_data_for_model('res.users', res_id=self.env.user.id)
+        data = scope._get_data_for_model(
+            'res.users', self.env.user, res_id=self.env.user.id)
         self.assertEqual(data, {
             'id': self.env.user.id,
             'email': self.env.user.email,
         })
 
     def test_get_data_from_model_with_res_id_wrong_model(self):
-        """ Check the values returned by the get_data_for_model method when a
+        """ Check the values returned by the _get_data_for_model method when a
         res_id is supplied
         """
         scope = self.new_scope()
 
         # Check a simple call with a wrong model
-        data = scope.get_data_for_model(
-            'res.partner', res_id=self.env.user.id + 1)
+        data = scope._get_data_for_model(
+            'res.partner', self.env.user, res_id=self.env.user.id + 1)
         self.assertEqual(data, {})
 
     def _generate_multiple_scopes(self):
@@ -152,7 +154,7 @@ class TestOAuthProviderScope(TransactionCase):
         return scopes
 
     def test_get_data_from_model_with_multiple_scopes_empty_fields(self):
-        """ Check the values returned by the get_data_for_model method when
+        """ Check the values returned by the _get_data_for_model method when
         calling on multiple scopes
         """
         scopes = self._generate_multiple_scopes()
@@ -160,7 +162,7 @@ class TestOAuthProviderScope(TransactionCase):
         # Check a simple call with the right model with empty fields
         self.env.user.city = False
         self.env.user.country_id = False
-        data = scopes.get_data_for_model('res.users')
+        data = scopes._get_data_for_model('res.users', self.env.user)
         self.assertEqual(data, {self.env.user.id: {
             'id': 1,
             'email': self.env.user.email,
@@ -170,7 +172,7 @@ class TestOAuthProviderScope(TransactionCase):
         }})
 
     def test_get_data_from_model_with_multiple_scopesfirst_model(self):
-        """ Check the values returned by the get_data_for_model method when
+        """ Check the values returned by the _get_data_for_model method when
         calling on multiple scopes
         """
         scopes = self._generate_multiple_scopes()
@@ -179,7 +181,7 @@ class TestOAuthProviderScope(TransactionCase):
         country = self.env.ref('base.fr')
         self.env.user.city = 'Paris'
         self.env.user.country_id = country
-        data = scopes.get_data_for_model('res.users')
+        data = scopes._get_data_for_model('res.users', self.env.user)
         self.assertEqual(data, {self.env.user.id: {
             'id': 1,
             'email': self.env.user.email,
@@ -189,24 +191,24 @@ class TestOAuthProviderScope(TransactionCase):
         }})
 
     def test_get_data_from_model_with_multiple_scopes_second_model(self):
-        """ Check the values returned by the get_data_for_model method when
+        """ Check the values returned by the _get_data_for_model method when
         calling on multiple scopes
         """
         scopes = self._generate_multiple_scopes()
 
         # Check a simple call with another right model
-        data = scopes.get_data_for_model('res.groups')
+        data = scopes._get_data_for_model('res.groups', self.env.user)
         self.assertEqual(
             set(data.keys()), set(self.env['res.groups'].search([]).ids))
 
     def test_get_data_from_model_with_multiple_scopes_wrong_model(self):
-        """ Check the values returned by the get_data_for_model method when
+        """ Check the values returned by the _get_data_for_model method when
         calling on multiple scopes
         """
         scopes = self._generate_multiple_scopes()
 
         # Check a simple call with a wrong model
-        data = scopes.get_data_for_model('res.partner')
+        data = scopes._get_data_for_model('res.partner', self.env.user)
         self.assertEqual(data, {})
 
     def _generate_multiple_scopes_match(self):
@@ -227,48 +229,49 @@ class TestOAuthProviderScope(TransactionCase):
         return scopes
 
     def test_get_data_from_model_with_all_scopes_match(self):
-        """ Check the values returned by the get_data_for_model method when all
+        """ Check the values returned by the _get_data_for_model method when all
         scopes are required to match
         """
         scopes = self._generate_multiple_scopes_match()
 
         # Check a simple call with the right model with any scope match
         # returned records
-        data = scopes.get_data_for_model('res.users')
+        data = scopes._get_data_for_model('res.users', self.env.user)
         self.assertEqual(
             set(data.keys()), set(self.env['res.users'].search([]).ids))
 
     def test_get_data_from_model_with_all_scopes_match_first_model(self):
-        """ Check the values returned by the get_data_for_model method when all
+        """ Check the values returned by the _get_data_for_model method when all
         scopes are required to match
         """
         scopes = self._generate_multiple_scopes_match()
 
         # Check a simple call with the right model with all scopes required to
         # match returned records
-        data = scopes.get_data_for_model('res.users', all_scopes_match=True)
+        data = scopes._get_data_for_model(
+            'res.users', self.env.user, all_scopes_match=True)
         self.assertEqual(data, {self.env.user.id: {
             'id': 1,
             'email': self.env.user.email,
         }})
 
     def test_get_data_from_model_with_all_scopes_match_second_model(self):
-        """ Check the values returned by the get_data_for_model method when all
+        """ Check the values returned by the _get_data_for_model method when all
         scopes are required to match
         """
         scopes = self._generate_multiple_scopes_match()
 
         # Check a simple call with another right model
-        data = scopes.get_data_for_model('res.groups')
+        data = scopes._get_data_for_model('res.groups', self.env.user)
         self.assertEqual(
             set(data.keys()), set(self.env['res.groups'].search([]).ids))
 
     def test_get_data_from_model_with_all_scopes_match_wrong_model(self):
-        """ Check the values returned by the get_data_for_model method when all
+        """ Check the values returned by the _get_data_for_model method when all
         scopes are required to match
         """
         scopes = self._generate_multiple_scopes_match()
 
         # Check a simple call with a wrong model
-        data = scopes.get_data_for_model('res.partner')
+        data = scopes._get_data_for_model('res.partner', self.env.user)
         self.assertEqual(data, {})
