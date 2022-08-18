@@ -35,6 +35,7 @@
                             <field name="skip_authorization" attrs="{'invisible': [('application_type', 'not in', ('mobile application', 'web application'))]}"/>
                             <field name="scope_ids" widget="many2many_tags"/>
                             <field name="token_type"/>
+                            <field name="user_id" attrs="{'invisible': [('application_type', 'not in', ('backend application'))]}"/>
                         </group>
                     </group>
                     <notebook colspan="4">
