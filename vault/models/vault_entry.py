@@ -1,4 +1,5 @@
 # © 2021 Florian Kantelberg - initOS GmbH
+# Copyright 2022 Tecnativa - Víctor Martínez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -71,10 +72,28 @@ class VaultEntry(models.Model):
 
     @api.model
     def search_panel_select_range(self, field_name):
-        """Add context to show just the name in searchpanel instead of full path"""
+        """We add the following contexts related to searchpanel:
+        - entry_short_name: Show just the name instead of full path.
+        - search_panel_limit: It will be a small hack to NOT limit records.
+        """
         return super(
-            VaultEntry, self.with_context(entry_short_name=True)
+            VaultEntry,
+            self.with_context(search_panel_limit=False, entry_short_name=True),
         ).search_panel_select_range(field_name)
+
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None):
+        """Changes related to searchpanel:
+        - Remove the limit of records (default is 200). In v14 it is not necessary.
+        - Add a domain to only show records with children.
+        """
+        limit = self.env.context.get("search_panel_limit", limit)
+        domain = domain if domain else []
+        if "search_panel_limit" in self.env.context:
+            domain += [("child_ids", "!=", False)]
+        res = super().search_read(
+            domain=domain, fields=fields, offset=offset, limit=limit, order=order
+        )
+        return res
 
     @api.depends("name", "complete_name")
     def _compute_display_name(self):
