@@ -53,6 +53,7 @@
                                 name="parent_id"
                                 options="{'no_open': true, 'no_create_edit': true, 'no_quick_create': true}"
                             />
+                            <field name="complete_name" invisible="1" />
                             <field name="name" />
                             <field name="url" widget="url" />
                             <field name="tags" widget="many2many_tags" />
