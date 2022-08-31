@@ -1,4 +1,5 @@
 # © 2021 Florian Kantelberg - initOS GmbH
+# Copyright 2022 Tecnativa - Víctor Martínez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
@@ -158,3 +159,8 @@ class TestVault(TransactionCase):
         self.assertTrue(domain[0] == "|")
         self.assertIn(("expire_date", "=", False), domain)
         self.assertTrue(any(("expire_date", ">=") == d[:2] for d in domain))
+
+    def test_vault_entry_search_panel_limit(self):
+        res = self.entry.search_panel_select_range("parent_id")
+        total_items = self.env["vault.entry"].search_count([("child_ids", "!=", False)])
+        self.assertEqual(len(res["values"]), total_items)
