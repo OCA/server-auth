@@ -5,7 +5,7 @@
     "name": "Vault - Share",
     "summary": "Implementation of a mechanism to share secrets",
     "license": "AGPL-3",
-    "version": "14.0.1.1.0",
+    "version": "14.0.1.2.0",
     "website": "https://github.com/OCA/server-auth",
     "application": False,
     "author": "initOS GmbH, Odoo Community Association (OCA)",
