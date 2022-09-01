@@ -4,10 +4,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: 2022-06-06 06:57+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -216,6 +214,7 @@ msgstr ""
 #. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
 msgid "Copy to clipboard"
 msgstr ""
@@ -301,6 +300,8 @@ msgid "Delete"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:vault.field_res_users__display_name
 #: model:ir.model.fields,field_description:vault.field_res_users_key__display_name
 #: model:ir.model.fields,field_description:vault.field_vault__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_abstract__display_name
@@ -477,6 +478,7 @@ msgstr ""
 #. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
 msgid "Generate"
 msgstr ""
@@ -496,11 +498,14 @@ msgstr ""
 #. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
 msgid "Hide"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__id
+#: model:ir.model.fields,field_description:vault.field_res_users__id
 #: model:ir.model.fields,field_description:vault.field_res_users_key__id
 #: model:ir.model.fields,field_description:vault.field_vault__id
 #: model:ir.model.fields,field_description:vault.field_vault_abstract__id
@@ -667,6 +672,8 @@ msgid "Keys"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:vault.field_res_users____last_update
 #: model:ir.model.fields,field_description:vault.field_res_users_key____last_update
 #: model:ir.model.fields,field_description:vault.field_vault____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_abstract____last_update
@@ -967,6 +974,8 @@ msgstr ""
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
 #: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
 msgid "Save in a vault"
 msgstr ""
@@ -1003,6 +1012,7 @@ msgstr ""
 #. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
 msgid "Send the secret to an user"
 msgstr ""
@@ -1021,6 +1031,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
+#: code:addons/vault/static/src/xml/templates.xml:0
 #: code:addons/vault/static/src/xml/templates.xml:0
 #, python-format
 msgid "Show"
