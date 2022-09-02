@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: 2022-07-12 11:54+0000\n"
+"POT-Creation-Date: 2022-09-01 08:38+0000\n"
+"PO-Revision-Date: 2022-09-01 10:38+0200\n"
 "Last-Translator: Carlos Roca Zaragoza <carlos.roca@tecnativa.com>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.3.2\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
@@ -1250,6 +1250,11 @@ msgstr "Compartir los secretos de entrada de vault"
 #, python-format
 msgid "Vault tag"
 msgstr "Etiqueta de vault"
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "Vaults"
+msgstr ""
 
 #. module: vault
 #: code:addons/vault/models/vault_log.py:0
