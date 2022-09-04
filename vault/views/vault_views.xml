@@ -70,17 +70,6 @@
                         <field name="name" />
                         <field name="user_id" />
                         <field name="note" />
-
-                        <field
-                            name="field_ids"
-                            options="{'create': False, 'delete': False}"
-                            invisible="1"
-                        />
-                        <field
-                            name="file_ids"
-                            options="{'create': False, 'delete': False}"
-                            invisible="1"
-                        />
                     </group>
 
                     <notebook>

@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -15,3 +15,11 @@ class VaultFile(models.Model):
     _inherit = ["vault.abstract.field", "vault.abstract"]
 
     value = fields.Binary(attachment=False)
+
+    @api.model
+    def search_read(self, *args, **kwargs):
+        if self.env.context.get("vault_reencrypt"):
+            return super(VaultFile, self.with_context(bin_size=False)).search_read(
+                *args, **kwargs
+            )
+        return super().search_read(*args, **kwargs)
