@@ -186,76 +186,77 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} options
          */
         _deleteVaultRight: async function (record, changes, options) {
+            const self = this;
             const master_key = await utils.generate_key();
             const current_key = await vault.unwrap(record.data.master_key);
 
-            // Update the rights
-            for (const right of record.data.right_ids.data) {
-                if (changes.ids.indexOf(right.id) < 0) {
+            // We only need to re-encrypt once per iteration
+            if (this._vault_changes) return;
+
+            // This stores the additional changes made to rights, fields, and files
+            this._vault_changes = [];
+
+            // Convert the datapoint IDs to database IDs because we are loading
+            const deleted = [];
+            for (const right_id of changes.ids) {
+                const rec = await this.model.get(right_id, {raw: true});
+                deleted.push(rec.res_id);
+            }
+
+            // Update the rights. Load without limit
+            const right_handle = await this.model.load({
+                domain: [["vault_id", "=", record.res_id]],
+                fields: ["key"],
+                modelName: "vault.right",
+                limit: 0,
+                type: "list",
+            });
+
+            const rights = await this.model.get(right_handle, {raw: true});
+            for (const right of rights.data) {
+                if (deleted.indexOf(right.res_id) < 0) {
                     const key = await vault.wrap_with(
                         master_key,
                         right.data.public_key
                     );
 
-                    await this._applyChanges(
-                        record.id,
-                        {
-                            right_ids: {
-                                operation: "UPDATE",
-                                id: right.id,
-                                data: {key: key},
-                            },
-                        },
+                    await this._applyChanges(right.id, {key: key}, options);
+                }
+                this._vault_changes.push(right.id);
+            }
+
+            async function reencrypt(model) {
+                // Load the entire data from the database
+                const handle = await self.model.load({
+                    context: {vault_reencrypt: true},
+                    domain: [["vault_id", "=", record.res_id]],
+                    fields: ["iv", "value"],
+                    modelName: model,
+                    limit: 0,
+                    type: "list",
+                });
+
+                const records = await self.model.get(handle, {raw: true});
+                for (const rec of records.data) {
+                    if (!rec.data) continue;
+
+                    const d = rec.data;
+                    const val = await utils.sym_decrypt(current_key, d.value, d.iv);
+                    const iv = utils.generate_iv_base64();
+                    const encrypted = await utils.sym_encrypt(master_key, val, iv);
+
+                    await self._applyChanges(
+                        rec.id,
+                        {value: encrypted, iv: iv},
                         options
                     );
+                    self._vault_changes.push(rec.id);
                 }
             }
 
-            // Re-encrypt the fields
-            for (const field of record.data.field_ids.data) {
-                const val = await utils.sym_decrypt(
-                    current_key,
-                    field.data.value,
-                    field.data.iv
-                );
-                const iv = utils.generate_iv_base64();
-                const encrypted = await utils.sym_encrypt(master_key, val, iv);
-
-                await this._applyChanges(
-                    record.id,
-                    {
-                        field_ids: {
-                            operation: "UPDATE",
-                            id: field.id,
-                            data: {value: encrypted, iv: iv},
-                        },
-                    },
-                    options
-                );
-            }
-
-            // Re-encrypt the files
-            for (const file of record.data.file_ids.data) {
-                const val = await utils.sym_decrypt(
-                    current_key,
-                    file.data.content,
-                    file.data.iv
-                );
-                const iv = utils.generate_iv_base64();
-                const encrypted = await utils.sym_encrypt(master_key, val, iv);
-
-                await this._applyChanges(
-                    record.id,
-                    {
-                        file_ids: {
-                            operation: "UPDATE",
-                            id: file.id,
-                            data: {content: encrypted, iv: iv},
-                        },
-                    },
-                    options
-                );
-            }
+            // Re-encrypt vault.field and vault.file
+            await reencrypt("vault.field");
+            await reencrypt("vault.file");
         },
 
         /**
@@ -349,6 +350,46 @@ odoo.define("vault.controller", function (require) {
                 await this._applyChangesImportWizard(record, changes, options);
 
             return result;
+        },
+
+        /**
+         * Check if there are additional changes made which needs to be pushed to
+         * the database
+         *
+         * @override
+         * @param {String} recordID
+         * @param {Object} options
+         */
+        saveRecord: async function (recordID, options) {
+            const res = await this._super(...arguments);
+            if (this.modelName !== "vault") return res;
+
+            if (!this._vault_changes) return res;
+
+            const opts = _.defaults(options || {}, {savePoint: false});
+
+            // Apply the changes to rights, fields, and files
+            const changes = this._vault_changes.slice();
+            this._vault_changes = [];
+            for (const rec_id of changes)
+                await this.model.save(rec_id, {
+                    reload: false,
+                    savePoint: opts.savePoint,
+                });
+            return res;
+        },
+
+        /**
+         * Invalidate the additional vault changes
+         *
+         * @override
+         */
+        _discardChanges: async function () {
+            const res = await this._super(...arguments);
+            if (this.modelName !== "vault") return res;
+
+            this._vault_changes = [];
+            return res;
         },
     });
 });
