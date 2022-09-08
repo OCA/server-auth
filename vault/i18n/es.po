@@ -303,6 +303,8 @@ msgid "Delete"
 msgstr "Borrar"
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__display_name
+#: model:ir.model.fields,field_description:vault.field_res_users__display_name
 #: model:ir.model.fields,field_description:vault.field_res_users_key__display_name
 #: model:ir.model.fields,field_description:vault.field_vault__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_abstract__display_name
@@ -502,6 +504,8 @@ msgid "Hide"
 msgstr "Ocultar"
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__id
+#: model:ir.model.fields,field_description:vault.field_res_users__id
 #: model:ir.model.fields,field_description:vault.field_res_users_key__id
 #: model:ir.model.fields,field_description:vault.field_vault__id
 #: model:ir.model.fields,field_description:vault.field_vault_abstract__id
@@ -565,6 +569,7 @@ msgstr "Ruta del asistente de importación para vaults"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
+#: model:ir.model.fields,field_description:vault.field_res_users__inbox_ids
 #: model:ir.model.fields,field_description:vault.field_vault_inbox_log__inbox_id
 #: model:ir.ui.menu,name:vault.menu_vault_inbox
 msgid "Inbox"
@@ -614,6 +619,11 @@ msgstr "Parámetro no válido"
 #, python-format
 msgid "Invalid token"
 msgstr "Token inválido"
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid "Invalidate private key"
+msgstr ""
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
@@ -669,6 +679,8 @@ msgid "Keys"
 msgstr "Claves"
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings____last_update
+#: model:ir.model.fields,field_description:vault.field_res_users____last_update
 #: model:ir.model.fields,field_description:vault.field_res_users_key____last_update
 #: model:ir.model.fields,field_description:vault.field_vault____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_abstract____last_update
@@ -1252,6 +1264,16 @@ msgid "Vault tag"
 msgstr "Etiqueta de vault"
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "Vaults"
+msgstr ""
+
+#. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_users_key__version
+msgid "Version"
+msgstr ""
+
+#. module: vault
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Warning"
@@ -1299,6 +1321,12 @@ msgstr ""
 "claves.\n"
 "                        Si un usuario no aparece, por favor, pídale que los "
 "genere."
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid ""
+"You will loose access to all vaults and your inbox. Do you want to continue?"
+msgstr ""
 
 #. module: vault
 #. openerp-web

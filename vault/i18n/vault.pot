@@ -566,6 +566,7 @@ msgstr ""
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
+#: model:ir.model.fields,field_description:vault.field_res_users__inbox_ids
 #: model:ir.model.fields,field_description:vault.field_vault_inbox_log__inbox_id
 #: model:ir.ui.menu,name:vault.menu_vault_inbox
 msgid "Inbox"
@@ -616,6 +617,11 @@ msgstr ""
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Invalid token"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid "Invalidate private key"
 msgstr ""
 
 #. module: vault
@@ -1311,6 +1317,12 @@ msgstr ""
 msgid ""
 "You can only send the secret to the user who has generated a key-pair.\n"
 "                        If an user is not showing please ask him to generate these."
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid ""
+"You will loose access to all vaults and your inbox. Do you want to continue?"
 msgstr ""
 
 #. module: vault

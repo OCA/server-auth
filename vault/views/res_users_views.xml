@@ -47,6 +47,13 @@
                         string="New inbox link"
                         class="btn-primary"
                     />
+                    <button
+                        name="action_invalidate_key"
+                        type="object"
+                        string="Invalidate private key"
+                        class="btn-secondary"
+                        confirm="You will loose access to all vaults and your inbox. Do you want to continue?"
+                    />
                     <button special="cancel" string="Cancel" class="btn-secondary" />
                 </footer>
             </form>
