@@ -83,6 +83,22 @@ class Controller(http.Controller):
 
         return {"public_key": user.active_key.public}
 
+    @http.route("/vault/inbox/get", auth="user", type="json")
+    def vault_get_inbox(self):
+        inboxes = request.env.user.inbox_ids
+        return {inbox.token: inbox.key for inbox in inboxes}
+
+    @http.route("/vault/inbox/store", auth="user", type="json")
+    def vault_store_inbox(self, keys):
+        if not isinstance(keys, dict):
+            return
+
+        for inbox in request.env.user.inbox_ids:
+            key = keys.get(inbox.token)
+
+            if isinstance(key, str):
+                inbox.key = key
+
     @http.route("/vault/keys/store", auth="user", type="json")
     def vault_store_keys(self, **kwargs):
         """Store the key pair for the current user"""
@@ -109,4 +125,4 @@ class Controller(http.Controller):
             master_key = keys.get(right.vault_id.uuid)
 
             if isinstance(master_key, str):
-                right.key = master_key
+                right.sudo().key = master_key

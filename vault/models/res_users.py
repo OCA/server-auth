@@ -19,6 +19,7 @@ class ResUsers(models.Model):
     )
     keys = fields.One2many("res.users.key", "user_id", readonly=True)
     vault_right_ids = fields.One2many("vault.right", "user_id", readonly=True)
+    inbox_ids = fields.One2many("vault.inbox", "user_id")
     inbox_enabled = fields.Boolean(default=True)
     inbox_link = fields.Char(compute="_compute_inbox_link", readonly=True, store=False)
     inbox_token = fields.Char(default=lambda self: uuid4(), readonly=True)
@@ -37,12 +38,24 @@ class ResUsers(models.Model):
 
     @api.model
     def action_get_vault(self):
-        return self.sudo().env.ref("vault.action_res_users_keys").read()[0]
+        action = self.sudo().env.ref("vault.action_res_users_keys")
+        result = action.read()[0]
+        result["res_id"] = self.env.uid
+        return result
 
     def action_new_inbox_token(self):
         self.ensure_one()
         self.sudo().inbox_token = uuid4()
-        return {"type": "ir.actions.act_window_close"}
+        return self.action_get_vault()
+
+    def action_invalidate_key(self):
+        """Disable the current key and remove all accesses to the vaults"""
+        self.ensure_one()
+        self.keys.write({"current": False})
+        self.vault_right_ids.sudo().unlink()
+        self.inbox_ids.unlink()
+        self.env["vault"].search([])._compute_access()
+        return self.action_get_vault()
 
     @api.model
     def find_user_of_inbox(self, token):

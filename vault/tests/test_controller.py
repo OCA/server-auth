@@ -169,3 +169,24 @@ class TestController(TransactionCase):
 
         self.controller.vault_store_right_keys({vault.uuid: "new key"})
         self.assertEqual(vault.right_ids.key, "new key")
+
+    @mute_logger("odoo.sql_db")
+    def test_vault_inbox_keys(self, request_mock):
+        request_mock.env = self.env
+        self.assertFalse(self.controller.vault_get_inbox())
+
+        inbox = self.inbox.copy({"user_id": self.env.uid})
+
+        response = self.controller.vault_get_inbox()
+        self.assertEqual(response, {inbox.token: inbox.key})
+
+    @mute_logger("odoo.sql_db")
+    def test_vault_store_inbox_key(self, request_mock):
+        request_mock.env = self.env
+        inbox = self.inbox.copy({"user_id": self.env.uid})
+        inbox.user_id = self.env.user
+
+        self.controller.vault_store_inbox(None)
+
+        self.controller.vault_store_inbox({inbox.token: "new key"})
+        self.assertEqual(inbox.key, "new key")
