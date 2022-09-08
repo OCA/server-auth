@@ -71,8 +71,6 @@ odoo.define("vault.controller", function (require) {
          * @private
          */
         _newVaultKeyPair: async function () {
-            const master_keys = await this._rpc({route: "/vault/rights/get"});
-
             // Get the current private key
             const private_key = await vault.get_private_key();
 
@@ -82,7 +80,8 @@ odoo.define("vault.controller", function (require) {
             const public_key = await vault.get_public_key();
 
             // Re-encrypt the master keys
-            const result = {};
+            const master_keys = await this._rpc({route: "/vault/rights/get"});
+            let result = {};
             for (const uuid in master_keys) {
                 result[uuid] = await utils.wrap(
                     await utils.unwrap(master_keys[uuid], private_key),
@@ -91,6 +90,18 @@ odoo.define("vault.controller", function (require) {
             }
 
             await this._rpc({route: "/vault/rights/store", params: {keys: result}});
+
+            // Re-encrypt the inboxes to not loose it
+            const inbox_keys = await this._rpc({route: "/vault/inbox/get"});
+            result = {};
+            for (const uuid in inbox_keys) {
+                result[uuid] = await utils.wrap(
+                    await utils.unwrap(inbox_keys[uuid], private_key),
+                    public_key
+                );
+            }
+
+            await this._rpc({route: "/vault/inbox/store", params: {keys: result}});
 
             await this.reload();
         },
