@@ -25,6 +25,7 @@ setuptools.setup(
         'odoo14-addon-user_log_view',
         'odoo14-addon-users_ldap_groups',
         'odoo14-addon-users_ldap_mail',
+        'odoo14-addon-users_ldap_populate',
         'odoo14-addon-vault',
         'odoo14-addon-vault_share',
     ],
