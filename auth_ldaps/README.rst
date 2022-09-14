@@ -14,16 +14,16 @@ LDAPS authentication
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/14.0/auth_ldaps
+    :target: https://github.com/OCA/server-auth/tree/15.0/auth_ldaps
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
     :target: https://translation.odoo-community.org/projects/server-auth-14-0/server-auth-14-0-auth_ldaps
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/14.0
+    :target: https://runbot.odoo-community.org/runbot/251/15.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| |badge5|
 
 This module allows to authenticate using a LDAP over SSL system.
 
@@ -38,7 +38,7 @@ Installation
 To verify LDAPS server certificate, you need to:
 
 #. Add the CA certificate of the LDAPS on your server as a trusted certificate
-#. Check the Verify certificate´ flag in configuration
+#. Check the `Verify certificate` flag in configuration
 
 Configuration
 =============
@@ -46,7 +46,7 @@ Configuration
 To configure this module, you need to:
 
 #. Access Settings / General Settings / LDAP Authentication / LDAP Server
-#. Check the ´Use LDAPS´ flag
+#. Check the `Use LDAPS` flag
 
 Bug Tracker
 ===========
@@ -54,7 +54,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_ldaps%0Aversion:%2014.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_ldaps%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -90,6 +90,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/14.0/auth_ldaps>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/15.0/auth_ldaps>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
