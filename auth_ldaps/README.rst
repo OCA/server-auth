@@ -17,13 +17,13 @@ LDAPS authentication
     :target: https://github.com/OCA/server-auth/tree/15.0/auth_ldaps
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-14-0/server-auth-14-0-auth_ldaps
+    :target: https://translation.odoo-community.org/projects/server-auth-15-0/server-auth-15-0-auth_ldaps
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
     :target: https://runbot.odoo-community.org/runbot/251/15.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5|
+|badge1| |badge2| |badge3| |badge4| |badge5| 
 
 This module allows to authenticate using a LDAP over SSL system.
 
@@ -38,7 +38,7 @@ Installation
 To verify LDAPS server certificate, you need to:
 
 #. Add the CA certificate of the LDAPS on your server as a trusted certificate
-#. Check the `Verify certificate` flag in configuration
+#. Check the ``Verify certificate`` flag in configuration
 
 Configuration
 =============
@@ -46,7 +46,7 @@ Configuration
 To configure this module, you need to:
 
 #. Access Settings / General Settings / LDAP Authentication / LDAP Server
-#. Check the `Use LDAPS` flag
+#. Check the ``Use LDAPS`` flag
 
 Bug Tracker
 ===========
