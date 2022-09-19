@@ -12,6 +12,10 @@
     "website": "https://github.com/OCA/server-auth",
     "depends": [],
     "external_dependencies": {"python": ["pyjwt", "cryptography"]},
-    "data": ["security/ir.model.access.csv", "views/auth_jwt_validator_views.xml"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/auth_jwt_validator_views.xml",
+        "views/res_partner_views.xml",
+    ],
     "demo": [],
 }

@@ -72,6 +72,7 @@ class TestAuthMethod(TransactionCase):
         issuer="http://the.issuer",
         secret_key="thesecret",
         partner_id_required=False,
+        partner_id_strategy="email",
     ):
         return self.env["auth.jwt.validator"].create(
             dict(
@@ -82,7 +83,7 @@ class TestAuthMethod(TransactionCase):
                 audience=audience,
                 issuer=issuer,
                 user_id_strategy="static",
-                partner_id_strategy="email",
+                partner_id_strategy=partner_id_strategy,
                 partner_id_required=partner_id_required,
             )
         )
@@ -286,6 +287,51 @@ class TestAuthMethod(TransactionCase):
         with self._mock_request(authorization=authorization):
             with self.assertRaises(UnauthorizedPartnerNotFound):
                 self.env["ir.http"]._auth_method_jwt_validator6()
+
+    def test_partner_id_strategy_email_create_partner_existing(self):
+        partner = self.env["res.partner"].search([("email", "!=", False)])[0]
+        self._create_validator("validator6", partner_id_strategy="email_create")
+        authorization = "Bearer " + self._create_token(email=partner.email)
+        with self._mock_request(authorization=authorization) as request:
+            self.env["ir.http"]._auth_method_jwt_validator6()
+            self.assertEqual(request.jwt_partner_id, partner.id)
+
+    def test_partner_id_strategy_email_create_partner_not_existing(self):
+        self._create_validator("validator6", partner_id_strategy="email_create")
+        authorization = "Bearer " + self._create_token(
+            email="notyetanemail@example.com"
+        )
+        with self._mock_request(authorization=authorization) as request:
+            self.env["ir.http"]._auth_method_jwt_validator6()
+            self.assertTrue(request.jwt_partner_id)
+            partner = self.env["res.partner"].browse(request.jwt_partner_id)
+            self.assertEqual(partner.email, "notyetanemail@example.com")
+            self.assertEqual(partner.auth_jwt_email, "notyetanemail@example.com")
+            self.assertTrue(partner.created_by_jwt)
+
+    def test_partner_id_strategy_email_changed_on_partner(self):
+        partner = self.env["res.partner"].search([("email", "!=", False)])[0]
+        original_email = partner.email
+        partner.auth_jwt_email = original_email
+        partner.email = "yetanotheremail@example.com"
+
+        self._create_validator("validator6")
+        authorization = "Bearer " + self._create_token(email=original_email)
+        with self._mock_request(authorization=authorization) as request:
+            self.env["ir.http"]._auth_method_jwt_validator6()
+            self.assertEqual(request.jwt_partner_id, partner.id)
+
+    def test_partner_id_strategy_email_changed_on_partner_for_another_email(self):
+        partner = self.env["res.partner"].search([("email", "!=", False)])[0]
+        original_email = partner.email
+        partner.auth_jwt_email = original_email
+        partner.email = "yetanotheremail@example.com"
+
+        self._create_validator("validator6")
+        authorization = "Bearer " + self._create_token(email=partner.email)
+        with self._mock_request(authorization=authorization) as request:
+            self.env["ir.http"]._auth_method_jwt_validator6()
+            self.assertFalse(request.jwt_partner_id)
 
     def test_get_validator(self):
         AuthJwtValidator = self.env["auth.jwt.validator"]

@@ -5,7 +5,7 @@ import logging
 from functools import partial
 
 import jwt  # pylint: disable=missing-manifest-dependency
-from jwt import PyJWKClient
+from jwt import PyJWKClient  # pylint: disable=missing-manifest-dependency
 from werkzeug.exceptions import InternalServerError
 
 from odoo import _, api, fields, models, tools
@@ -64,7 +64,12 @@ class AuthJwtValidator(models.Model):
         [("static", "Static")], required=True, default="static"
     )
     static_user_id = fields.Many2one("res.users", default=1)
-    partner_id_strategy = fields.Selection([("email", "From email claim")])
+    partner_id_strategy = fields.Selection(
+        [
+            ("email", "From email claim"),
+            ("email_create", "From email claim, create if not found"),
+        ]
+    )
     partner_id_required = fields.Boolean()
 
     next_validator_id = fields.Many2one(
@@ -170,17 +175,48 @@ class AuthJwtValidator(models.Model):
             raise InternalServerError()
         return uid
 
+    def _create_partner_from_payload(self, payload):
+        return self.env["res.partner"].create(
+            {
+                "name": payload.get("name", "Guest"),
+                "phone": payload.get("phone_number"),
+                "email": payload.get("email"),
+                "website": payload.get("website"),
+                "auth_jwt_email": payload.get("email"),
+                "created_by_jwt": True,
+            }
+        )
+
+    def _get_partner_from_email(self, email):
+        partner = self.env["res.partner"].search([("auth_jwt_email", "=", email)])
+
+        if not len(partner):
+            partner = self.env["res.partner"].search(
+                [("email", "=", email), ("auth_jwt_email", "=", False)]
+            )
+
+        return partner
+
     def _get_partner_id(self, payload):
         # override for additional strategies
-        if self.partner_id_strategy == "email":
+        if self.partner_id_strategy in ["email", "email_create"]:
             email = payload.get("email")
             if not email:
                 _logger.debug("JWT payload does not have an email claim")
                 return
-            partner = self.env["res.partner"].search([("email", "=", email)])
+
+            partner = self._get_partner_from_email(email)
+
+            if not len(partner) and self.partner_id_strategy == "email_create":
+                partner = self._create_partner_from_payload(payload)
+
             if len(partner) != 1:
                 _logger.debug("%d partners found for email %s", len(partner), email)
                 return
+
+            if not partner.auth_jwt_email:
+                partner.auth_jwt_email = email
+
             return partner.id
 
     def _get_and_check_partner_id(self, payload):
