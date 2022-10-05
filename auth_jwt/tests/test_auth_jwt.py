@@ -224,6 +224,10 @@ class TestAuthMethod(TransactionCase):
         token = self._create_token(exp_delta=-100)
         with self.assertRaises(UnauthorizedInvalidToken):
             validator._decode(token)
+        token = "asdf.asdf.asdf"
+        self.signature_type = "other"
+        with self.assertRaises(UnauthorizedInvalidToken):
+            validator._decode(token)
 
     def test_multiple_aud(self):
         validator = self._create_validator("validator", audience="a1,a2")
