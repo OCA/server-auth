@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo-addon-auth_api_key_server_env>=15.0dev,<15.1dev',
         'odoo-addon-auth_saml>=15.0dev,<15.1dev',
         'odoo-addon-auth_session_timeout>=15.0dev,<15.1dev',
+        'odoo-addon-auth_user_case_insensitive>=15.0dev,<15.1dev',
     ],
     classifiers=[
         'Programming Language :: Python',
