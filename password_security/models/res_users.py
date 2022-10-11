@@ -281,7 +281,7 @@ class ResUsers(models.Model):
             suggestions = estimation["feedback"]["suggestions"]
             full_msg = estimation["feedback"]["warning"] + "\n"
             if suggestions:
-                full_msg += _("Suggestion(s) :\n")
+                full_msg += _("Suggestion(s) :") + "\n"
                 for suggestion in suggestions:
                     full_msg += suggestion
             raise PassError(full_msg)

@@ -1,23 +1,41 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * password_security
+# 	* password_security
 #
-# Translators:
-# OCA Transbot <transbot@odoo-community.org>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 10.0\n"
+"Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-22 01:12+0000\n"
-"PO-Revision-Date: 2021-07-12 10:48+0000\n"
+"PO-Revision-Date: 2022-10-10 13:07+0000\n"
 "Last-Translator: Logan Gônet <logan.gonet@horanet.com>\n"
 "Language-Team: French (https://www.transifex.com/oca/teams/23907/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.3.2\n"
+"Plural-Forms: \n"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "A word by itself is easy to guess."
+msgstr "Un mot est facile à deviner."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Add another word or two. Uncommon words are better."
+msgstr "Ajoutez un ou deux mots. Les mots inhabituels sont mieux."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "All-uppercase is almost as easy to guess as all-lowercase."
+msgstr "Les majuscules sont presque aussi faciles à deviner que les minuscules."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
@@ -28,16 +46,66 @@ msgstr ""
 "nouveau son mot de passe"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:200
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Avoid dates and years that are associated with you."
+msgstr "Évitez les dates et les années qui vous sont associées."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Avoid recent years."
+msgstr "Évitez les années récentes."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Avoid repeated words and characters."
+msgstr "Évitez les mots et les caractères répétés."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Avoid sequences."
+msgstr "Évitez les séquences."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Avoid years that are associated with you."
+msgstr "Évitez les années qui vous sont associées."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Interdire l'utilisation des %d mots de passe les plus récents"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Capitalization doesn't help very much."
+msgstr "La capitalisation n’aide pas beaucoup."
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_length
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_length
 msgid "Characters"
 msgstr "Longueur minimale"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Common names and surnames are easy to guess."
+msgstr "Les noms communs et les noms de famille sont faciles à deviner."
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_company
@@ -65,6 +133,13 @@ msgid "Date"
 msgstr "Date"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Dates are often easy to guess."
+msgstr "Les dates sont souvent faciles à deviner."
+
+#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_expiration
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_expiration
 msgid "Days"
@@ -82,8 +157,8 @@ msgid ""
 "Disallow reuse of this many previous passwords - use negative number for "
 "infinite, or 0 to disable"
 msgstr ""
-"Empêche la réutilisation de plusieurs mots de passe précédents - Utilisez un "
-"nombre négatif pour l'infini, ou 0 pour désactiver cette fonctionnalité"
+"Empêche la réutilisation de plusieurs mots de passe précédents - Utilisez un"
+" nombre négatif pour l'infini, ou 0 pour désactiver cette fonctionnalité"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__display_name
@@ -145,6 +220,20 @@ msgid "Lowercase"
 msgstr "Des lettres minuscules"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Lowercase letter (At least %(password_lower_config)d character)"
+msgstr "Des lettres minuscules (au moins %(password_lower_config)d caractère)"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Lowercase letter (At least %(password_lower_config)d characters)"
+msgstr "Des lettres minuscules (au moins %(password_lower_config)d caractères)"
+
+#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_minimum
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_minimum
 msgid "Minimum Hours"
@@ -175,7 +264,7 @@ msgstr "Nombre minimum de caractères spéciaux"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of strength estimation"
-msgstr ""
+msgstr "Nombre minimal de l'estimation de la force"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -183,16 +272,45 @@ msgid "Minimum number of uppercase characters"
 msgstr "Nombre minimum de caractères majuscules"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:107
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Must contain the following:"
 msgstr "Doit contenir :"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Names and surnames by themselves are easy to guess."
+msgstr "Les noms et prénoms sont faciles à deviner"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "No need for symbols, digits, or uppercase letters."
+msgstr "Pas besoin de symboles, chiffres ou majuscules"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_numeric
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_numeric
 msgid "Numeric"
 msgstr "Des chiffres"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Numeric digit (At least %(password_numeric_config)d character)"
+msgstr "Des caractères numériques (au moins %(password_numeric_config)d caractère)"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Numeric digit (At least %(password_numeric_config)d characters)"
+msgstr "Des caractères numériques (au moins %(password_numeric_config)d caractères)"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users__password_history_ids
@@ -210,7 +328,15 @@ msgid "Password expires in"
 msgstr "Le mot de passe expire dans"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:177
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Password must be %d characters or more."
+msgstr "Le mot de passe doit compter %d caractères ou plus."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -218,6 +344,39 @@ msgid ""
 msgstr ""
 "Les mots de passe peuvent seulement être changé toutes les %d heure(s). "
 "Veuillez contacter votre administrateur pour obtenir de l'aide."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"Predictable substitutions like '@' instead of 'a' don't help very much."
+msgstr ""
+"Des substitutions prévisibles comme '@' au lieu de 'a' n’aident pas "
+"beaucoup."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Recent years are easy to guess."
+msgstr "Les années récentes sont faciles à deviner."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Repeats like \"aaa\" are easy to guess."
+msgstr "Les répétitions comme \"aaa\" sont faciles à deviner."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Repeats like \"abcabcabc\" are only slightly harder  to guess than \"abc\"."
+msgstr ""
+"Les répétitions comme \"abcabcabc\" ne sont que légèrement plus difficiles à"
+" deviner que \"abc\"."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_lower
@@ -255,22 +414,130 @@ msgid "Res Users Password History"
 msgstr "Historique des mots de passe des utilisateurs"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Reversed words aren't much harder to guess."
+msgstr "Les mots inversés ne sont pas plus difficiles à deviner."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Sequences like \"abc\" or \"6543\" are easy to guess."
+msgstr "Les séquences comme \"abc\" ou \"6543\" sont faciles à deviner."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Short keyboard patterns are easy to guess."
+msgstr "Les motifs de clavier courts sont faciles à deviner."
+
+#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_special
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
 msgid "Special"
 msgstr "Des caractères spéciaux"
 
 #. module: password_security
-#: code:addons/password_security/models/res_company.py:62
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Special character (At least %(password_special_config)d character)"
+msgstr "Des caractères spéciaux (au moins %(password_special_config)d caractère)"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Special character (At least %(password_special_config)d characters)"
+msgstr ""
+"Des caractères spéciaux (au moins %(password_special_config)d caractères)"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Straight rows of keys are easy to guess."
+msgstr "Les lignes droites des touches du clavier sont faciles à deviner."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Suggestion(s) :"
+msgstr "Suggestion(s) :"
+
+#. module: password_security
+#: code:addons/password_security/models/res_company.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_company.py:0
 #, python-format
 msgid "The estimation must be between 0 and 4."
 msgstr "L'estimation doit être comprise entre 0 et 4."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "This is a top-10 common password."
+msgstr "C’est un des 10 mots de passe les plus courants."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "This is a top-100 common password."
+msgstr "C’est un des 100 mots de passe les plus courants."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "This is a very common password."
+msgstr "C’est un mot de passe très courant."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "This is similar to a commonly used password."
+msgstr "Ceci est similaire à un mot de passe couramment utilisé."
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_upper
 msgid "Uppercase"
 msgstr "Des lettres majuscules"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Uppercase letter (At least %(password_upper_config)d character)"
+msgstr "Des lettres majuscules (au moins %(password_upper_config)d caractère)"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Uppercase letter (At least %(password_upper_config)d characters)"
+msgstr ""
+"Des lettres majuscules (au moins %(password_upper_config)d caractères)"
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Use a few words, avoid common phrases."
+msgstr "Utilisez quelques mots, évitez les phrases courantes."
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#: code:addons/setup/password_security/odoo/addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Use a longer keyboard pattern with more turns."
+msgstr "Utilisez un motif clavier plus long avec plus de tournures."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -294,35 +561,80 @@ msgstr "Utilisateurs"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:40
+#: code:addons/password_security/static/src/js/password_gauge.js:36
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:36
 #, python-format
-msgid "at least %d characters"
-msgstr "au moins %d caractères"
+msgid "at least"
+msgstr "au moins"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:49
+#: code:addons/password_security/static/src/js/password_gauge.js:45
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:45
+#, python-format
+msgid " lower case characters"
+msgstr " caractères minuscules"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:39
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:39
+#, python-format
+msgid " characters"
+msgstr " caractères"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:53
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:53
+#, python-format
+msgid " upper case characters"
+msgstr " caractères majuscules"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:60
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:60
+#, python-format
+msgid " numeric characters"
+msgstr " caractères numériques"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:67
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:67
+#, python-format
+msgid " special characters"
+msgstr " caractères spéciaux"
+
+#. module: password_security
+#. openerp-web
+#: code:addons/password_security/static/src/js/password_gauge.js:0
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d lower case characters"
 msgstr "au moins %d caractères minuscules"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:67
+#: code:addons/password_security/static/src/js/password_gauge.js:0
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d numeric characters"
 msgstr "au moins %d caractères numériques"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:76
+#: code:addons/password_security/static/src/js/password_gauge.js:0
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d special characters"
 msgstr "au moins %d caractères spéciaux"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:58
+#: code:addons/password_security/static/src/js/password_gauge.js:0
+#: code:addons/setup/password_security/odoo/addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d upper case characters"
 msgstr "au moins %d caractères majuscules"
@@ -341,27 +653,3 @@ msgstr "heures."
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "previous passwords."
 msgstr "mots de passe précédents."
-
-#~ msgid "Extra"
-#~ msgstr "Options supplémentaires"
-
-#~ msgid "Required Characters"
-#~ msgstr "Doit contenir"
-
-#~ msgid "Timings"
-#~ msgstr "Durées"
-
-#~ msgid "Lowercase letter"
-#~ msgstr "Lettre minuscule"
-
-#~ msgid "Numeric digit"
-#~ msgstr "Nombre"
-
-#~ msgid "Password must be %d characters or more."
-#~ msgstr "Le mot de passe doit contenir %d caractères ou plus."
-
-#~ msgid "Special character"
-#~ msgstr "Caractère spécial"
-
-#~ msgid "Uppercase letter"
-#~ msgstr "Lettre majuscule"
