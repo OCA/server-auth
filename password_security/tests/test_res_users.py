@@ -81,14 +81,12 @@ class TestResUsers(TransactionCase):
             "password_numeric": self.main_comp.password_numeric,
             "password_special": self.main_comp.password_special,
         }
-        self.main_comp.write(
-            {
-                "password_lower": 2,
-                "password_upper": 2,
-                "password_numeric": 2,
-                "password_special": 2,
-            }
-        )
+        self.main_comp.write({
+            "password_lower": 2,
+            "password_upper": 2,
+            "password_numeric": 2,
+            "password_special": 2,
+        })
         with self.assertRaises(PassError):
             rec_id._check_password("password")
         self.main_comp.write(default_vals)
