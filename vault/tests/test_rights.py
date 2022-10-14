@@ -134,8 +134,6 @@ class TestAccessRights(TransactionCase):
         with self.assertRaises(AccessError):
             right.with_user(self.user).write({"perm_share": True, "key": "abc"})
 
-        right.with_user(self.user).write({"key": "abc"})
-
     def test_user_share_granted(self):
         # Granted permission to share
         right = self.env["vault.right"].create(
