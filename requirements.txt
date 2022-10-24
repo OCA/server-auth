@@ -3,7 +3,5 @@ cryptography
 email_validator
 lxml
 pyjwt
-pysaml2
-python-jose[cryptography]
 python-ldap
 zxcvbn
