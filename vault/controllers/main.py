@@ -125,4 +125,4 @@ class Controller(http.Controller):
             master_key = keys.get(right.vault_id.uuid)
 
             if isinstance(master_key, str):
-                right.key = master_key
+                right.sudo().key = master_key
