@@ -50,7 +50,7 @@ class ResUsers(models.Model):
         """Disable the current key and remove all accesses to the vaults"""
         self.ensure_one()
         self.active_key.write({"current": False})
-        self.vault_right_ids.unlink()
+        self.vault_right_ids.sudo().unlink()
         self.inbox_ids.unlink()
         self.env["vault"].search([])._compute_access()
         return self.action_get_vault()
