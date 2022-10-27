@@ -5,7 +5,7 @@
 {
     "name": "Password Security",
     "summary": "Allow admin to set password security requirements.",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.1.0",
     "author": "LasLabs, "
     "Kaushal Prajapati, "
     "Tecnativa, "
