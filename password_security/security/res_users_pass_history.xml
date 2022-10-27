@@ -16,7 +16,7 @@
     </record>
     <record id="erp_manager_pass_history_rule" model="ir.rule">
         <field name="name">Res Users Pass History Access</field>
-        <field name="perm_read">0</field>
+        <field name="perm_read">1</field>
         <field name="perm_write">0</field>
         <field name="perm_create">1</field>
         <field name="perm_unlink">0</field>
