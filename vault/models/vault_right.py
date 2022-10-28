@@ -88,6 +88,7 @@ class VaultRight(models.Model):
         return res
 
     def write(self, values):
+        # Continue with the normal access management
         res = super().write(values)
         perms = ["perm_write", "perm_delete", "perm_share", "perm_create"]
         if any(x in values for x in perms):
