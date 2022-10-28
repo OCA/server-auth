@@ -565,6 +565,7 @@ msgstr "Ruta del asistente de importación para vaults"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
+#: model:ir.model.fields,field_description:vault.field_res_users__inbox_ids
 #: model:ir.model.fields,field_description:vault.field_vault_inbox_log__inbox_id
 #: model:ir.ui.menu,name:vault.menu_vault_inbox
 msgid "Inbox"
@@ -614,6 +615,11 @@ msgstr "Parámetro no válido"
 #, python-format
 msgid "Invalid token"
 msgstr "Token inválido"
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid "Invalidate private key"
+msgstr ""
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
@@ -1304,6 +1310,12 @@ msgstr ""
 "claves.\n"
 "                        Si un usuario no aparece, por favor, pídale que los "
 "genere."
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid ""
+"You will loose access to all vaults and your inbox. Do you want to continue?"
+msgstr ""
 
 #. module: vault
 #. openerp-web
