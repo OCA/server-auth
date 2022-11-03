@@ -10,6 +10,7 @@
     'author':
         'Therp BV, '
         'Odoo Community Association (OCA)',
+    'website': 'https://github.com/OCA/server-auth',
     'license': 'AGPL-3',
     'summary':
         'Adds user accounts to groups based on rules defined '

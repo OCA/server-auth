@@ -4,6 +4,7 @@
     "name": "LDAP Populate",
     "version": "12.0.1.0.1",
     "author": "Therp BV, Odoo Community Association (OCA)",
+    'website': 'https://github.com/OCA/server-auth',
     "license": "AGPL-3",
     "category": 'Tools',
     "depends": [

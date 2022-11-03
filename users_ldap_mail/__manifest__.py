@@ -7,6 +7,7 @@
     'depends': ["auth_ldap"],
     'author': "Daniel Reis,"
               "Odoo Community Association (OCA)",
+    'website': 'https://github.com/OCA/server-auth',
     'license': 'AGPL-3',
     'category': "Tools",
     'data': [

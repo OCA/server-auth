@@ -24,6 +24,7 @@
               "Odoo Community Association (OCA)",
     "summary": "2nd factor authentication via U2F devices",
     'category': 'Extra Tools',
+    'website': 'https://github.com/OCA/server-auth',
     'license': 'LGPL-3',
     'depends': ['base', 'web'],
     'data': [
