@@ -8,7 +8,7 @@
     'version': '12.0.1.1.0',
     'category': 'base',
     'author': "GRAP,Odoo Community Association (OCA)",
-    'website': 'https://www.github.com/OCA/server-auth',
+    'website': 'https://github.com/OCA/server-auth',
     'license': 'AGPL-3',
     'depends': [
         'base',
