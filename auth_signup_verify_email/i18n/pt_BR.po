@@ -1,0 +1,47 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * auth_signup_verify_email
+#
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: server-tools (8.0)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-27 14:01+0000\n"
+"PO-Revision-Date: 2019-09-03 03:23+0000\n"
+"Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/oca/OCA-server-"
+"tools-8-0/language/pt_BR/)\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 3.8\n"
+
+#. module: auth_signup_verify_email
+#: code:addons/auth_signup_verify_email/controllers/main.py:0
+#, python-format
+msgid "Another user is already registered using this email address."
+msgstr "Outro usuário já está registrado usando este endereço de email."
+
+#. module: auth_signup_verify_email
+#: code:addons/auth_signup_verify_email/controllers/main.py:0
+#, python-format
+msgid "Check your email to activate your account!"
+msgstr "Verifique seu e-mail para ativar sua conta!"
+
+#. module: auth_signup_verify_email
+#: code:addons/auth_signup_verify_email/controllers/main.py:0
+#, python-format
+msgid "Something went wrong, please try again later or contact us."
+msgstr "Ocorreu um erro. Tente novamente mais tarde ou entre em contato."
+
+#. module: auth_signup_verify_email
+#: code:addons/auth_signup_verify_email/controllers/main.py:0
+#, python-format
+msgid "That does not seem to be an email address."
+msgstr "Esse não parece ser um endereço de email."
+
+#~ msgid "email"
+#~ msgstr "email"
