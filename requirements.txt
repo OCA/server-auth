@@ -1,13 +1,10 @@
-# auth_totp
-pyotp
-# auth_signup_verify_email
+# generated from manifests external_dependencies
+cryptography<37
 email_validator
-# auth_u2f
-python-u2flib-server
-# password_security
-zxcvbn
-# auth_saml
 lasso
-# auth_oidc
-python-jose<3.3.0
-python2-secrets
+lxml
+pyotp
+python-jose
+python-ldap
+python-u2flib-server
+zxcvbn
