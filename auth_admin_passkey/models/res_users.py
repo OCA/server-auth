@@ -60,9 +60,9 @@ class ResUsers(models.Model):
         }
         return subject, "<pre>%s</pre>" % body
 
-    def _check_credentials(self, password):
+    def check_credentials(self, password):
         try:
-            super(ResUsers, self)._check_credentials(password)
+            super(ResUsers, self).check_credentials(password)
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
