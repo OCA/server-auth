@@ -30,7 +30,6 @@ class ResUsers(models.Model):
         response = requests.post(
             oauth_provider.token_endpoint,
             data=dict(
-                client_id=oauth_provider.client_id,
                 grant_type="authorization_code",
                 code=code,
                 code_verifier=oauth_provider.code_verifier,  # PKCE
