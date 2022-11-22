@@ -75,7 +75,22 @@ class ResUsers(models.Model):
             raise AccessDenied()
         # retrieve and sign in user
         params["access_token"] = access_token
-        login = self._auth_oauth_signin(provider, validation, params)
+        login = False
+        try:
+            login = self._auth_oauth_signin(provider, validation, params)
+        except AccessDenied:
+            # if login failed because signup is disabled, retry with enabled signup
+            original_invitation_scope = self._get_signup_invitation_scope()
+            if original_invitation_scope == 'b2b':
+                try:
+                    self.env['ir.config_parameter'].sudo().set_param(
+                        'auth_signup.invitation_scope', 'b2c'
+                    )
+                    login = self._auth_oauth_signin(provider, validation, params)
+                finally:
+                    self.env['ir.config_parameter'].sudo().set_param(
+                        'auth_signup.invitation_scope', original_invitation_scope
+                    )
         if not login:
             raise AccessDenied()
         # return user credentials
