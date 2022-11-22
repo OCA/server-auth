@@ -29,8 +29,58 @@ msgid "Code Verifier"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__expression
+msgid "Expression"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__group_id
+msgid "Group"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__group_line_ids
+msgid "Group mappings"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__id
+msgid "ID"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
 msgid "JWKS URL"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__write_date
+msgid "Last Updated on"
 msgstr ""
 
 #. module: auth_oidc
@@ -51,6 +101,11 @@ msgstr ""
 #. module: auth_oidc
 #: selection:auth.oauth.provider,flow:0
 msgid "OpenID Connect (implicit flow, not recommended)"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider_group_line__provider_id
+msgid "Provider"
 msgstr ""
 
 #. module: auth_oidc
@@ -99,6 +154,16 @@ msgid "Validation URL"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider_group_line__expression
+msgid "Variables: user, token"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model,name:auth_oidc.model_auth_oauth_provider_group_line
+msgid "auth.oauth.provider.group_line"
+msgstr ""
+
+#. module: auth_oidc
 #: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
 msgid "e.g from:to upn:email sub:user_id"
 msgstr ""
@@ -106,5 +171,10 @@ msgstr ""
 #. module: auth_oidc
 #: model:auth.oauth.provider,body:auth_oidc.local_keycloak
 msgid "keycloak:8080 on localhost"
+msgstr ""
+
+#. module: auth_oidc
+#: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
+msgid "token['scope']['value'] == 'hello world'"
 msgstr ""
 
