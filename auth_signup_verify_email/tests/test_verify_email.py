@@ -2,7 +2,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from lxml.html import document_fromstring
-from mock import patch
+
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 from odoo.tests.common import HttpCase
 from odoo.tools.misc import mute_logger
