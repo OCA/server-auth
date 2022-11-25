@@ -4,3 +4,5 @@ pyjwt
 pysaml2
 python-jose
 python-ldap
+email_validator
+lxml
