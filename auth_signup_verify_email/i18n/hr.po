@@ -21,24 +21,28 @@ msgstr ""
 "X-Generator: Weblate 3.8\n"
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Another user is already registered using this email address."
 msgstr "Drugi korisnik je već registriran sa ovom mail adresom."
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Check your email to activate your account!"
 msgstr "Provjerite svoj e-mail za aktivaciu računa!"
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Something went wrong, please try again later or contact us."
 msgstr "Nešto nije u redu, molimo pokušajte ponovo ili nas kontaktirajte."
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "That does not seem to be an email address."
