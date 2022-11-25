@@ -1,8 +1,8 @@
 # generated from manifests external_dependencies
 cryptography
+email_validator
+lxml
 pyjwt
 pysaml2
 python-jose
 python-ldap
-email_validator
-lxml
