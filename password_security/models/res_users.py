@@ -198,7 +198,7 @@ class ResUsers(models.Model):
             if recent_passes < 0:
                 recent_passes = rec_id.password_history_ids
             else:
-                recent_passes = rec_id.password_history_ids[0 : recent_passes - 1]
+                recent_passes = rec_id.password_history_ids[0 : recent_passes]
             if recent_passes.filtered(
                 lambda r: crypt.verify(password, r.password_crypt)
             ):
