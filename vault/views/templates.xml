@@ -2,7 +2,7 @@
 <odoo>
     <template id="inbox">
         <t t-call="web.login_layout">
-            <t t-call-assets="vault.inbox_frontend" t-css="false" />
+            <t t-call-assets="vault.assets_frontend" t-css="false" defer_load="True" />
 
             <form
                 class="oe_login_form"

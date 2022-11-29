@@ -2,7 +2,11 @@
 <odoo>
     <template id="share">
         <t t-call="web.login_layout">
-            <t t-call-assets="vault_share.share_frontend" t-css="false" />
+            <t
+                t-call-assets="vault_share.assets_frontend"
+                t-css="false"
+                defer_load="True"
+            />
 
             <input type="hidden" id="encrypted" t-att-value="encrypted" />
             <input type="hidden" id="encrypted_file" t-att-value="encrypted_file" />

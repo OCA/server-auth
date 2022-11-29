@@ -3,11 +3,12 @@
 
 import logging
 from datetime import datetime
-from unittest.mock import patch
 from uuid import uuid4
 
 from odoo.tests import TransactionCase
 from odoo.tools import mute_logger
+
+from odoo.addons.website.tools import MockRequest
 
 from ..controllers import main
 
@@ -28,10 +29,6 @@ class TestShare(TransactionCase):
         }
 
         self.share = self.env["vault.share"].create(self.vals)
-
-        patcher = patch("odoo.http.request")
-        self.addCleanup(patcher.stop)
-        patcher.start()
 
     @mute_logger("odoo.sql_db")
     def test_share(self):
@@ -55,23 +52,22 @@ class TestShare(TransactionCase):
         # Search for invalid token
         self.assertEqual(share.browse(), share.get(uuid4()))
 
-    @patch("odoo.addons.vault_share.controllers.main.request")
     @mute_logger("odoo.sql_db")
-    def test_vault_share(self, request_mock):
+    def test_vault_share(self):
         def return_context(template, context):
             self.assertEqual(template, "vault_share.share")
             return context
 
-        request_mock.env = self.env
-        request_mock.render.side_effect = return_context
-        controller = main.Controller()
+        with MockRequest(self.env) as request_mock:
+            request_mock.render.side_effect = return_context
+            controller = main.Controller()
 
-        response = controller.vault_share("")
-        self.assertIn("error", response)
+            response = controller.vault_share("")
+            self.assertIn("error", response)
 
-        response = controller.vault_share(self.share.token)
-        self.assertEqual(response["salt"], self.share.salt)
+            response = controller.vault_share(self.share.token)
+            self.assertEqual(response["salt"], self.share.salt)
 
-        self.share.accesses = 0
-        response = controller.vault_share(self.share.token)
-        self.assertIn("error", response)
+            self.share.accesses = 0
+            response = controller.vault_share(self.share.token)
+            self.assertIn("error", response)

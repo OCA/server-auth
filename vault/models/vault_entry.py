@@ -44,6 +44,7 @@ class VaultEntry(models.Model):
         compute="_compute_complete_name",
         store=True,
         readonly=True,
+        recursive=True,
     )
     uuid = fields.Char(default=lambda self: uuid4(), required=True)
     name = fields.Char(required=True)
@@ -81,7 +82,6 @@ class VaultEntry(models.Model):
         - from_search_panel: It will be used to overwrite domain.
         Remove the limit of records (default is 200).
         """
-        kwargs.update(limit=False)
         return super(
             VaultEntry,
             self.with_context(from_search_panel=True, entry_short_name=True),
@@ -94,10 +94,9 @@ class VaultEntry(models.Model):
         domain = domain if domain else []
         if self.env.context.get("from_search_panel"):
             domain += [("child_ids", "!=", False)]
-        res = super().search_read(
+        return super().search_read(
             domain=domain, fields=fields, offset=offset, limit=limit, order=order
         )
-        return res
 
     @api.depends("name", "complete_name")
     def _compute_display_name(self):
@@ -124,8 +123,12 @@ class VaultEntry(models.Model):
     def log_change(self, action):
         self.ensure_one()
         self.log_info(
-            _("%s entry %s by %s")
-            % (action, self.complete_name, self.env.user.display_name)
+            _("%(action)s entry %(name)s by %(user)s")
+            % {
+                "action": action,
+                "name": self.complete_name,
+                "user": self.env.user.display_name,
+            }
         )
 
     @api.model_create_single
