@@ -43,5 +43,5 @@ class VaultStoreWizard(models.TransientModel):
                     "value": self.secret,
                 }
             )
-        except Exception:
-            pass
+        except Exception as e:
+            _logger.exception(e)
