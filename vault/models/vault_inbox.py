@@ -79,8 +79,9 @@ class VaultInbox(models.Model):
         filename,
         ip=None,
     ):
+        log_info = {"name": user.name, "ip": ip or "n/a"}
         if len(self) == 0:
-            log = _("Created by %s via %s") % (user.name, ip or "n/a")
+            log = _("Created by %(name)s via %(ip)s") % log_info
             return self.create(
                 {
                     "name": name,
@@ -97,10 +98,7 @@ class VaultInbox(models.Model):
 
         self.ensure_one()
         if self.accesses > 0 and datetime.now() < self.expiration:
-            log = _("Written by %s via %s") % (
-                self.env.user.name,
-                ip or "n/a",
-            )
+            log = _("Written by %(name)s via %(ip)s") % log_info
 
             self.write(
                 {

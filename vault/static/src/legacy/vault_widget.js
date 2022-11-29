@@ -4,18 +4,18 @@
 odoo.define("vault.fields", function (require) {
     "use strict";
 
-    var core = require("web.core");
-    var basic_fields = require("web.basic_fields");
-    var download = require("web.download");
-    var Exporter = require("vault.export");
-    var registry = require("web.field_registry");
-    var utils = require("vault.utils");
-    var vault = require("vault");
+    const core = require("web.core");
+    const basic_fields = require("web.basic_fields");
+    const download = require("web.download");
+    const Exporter = require("vault.export");
+    const registry = require("web.field_registry");
+    const utils = require("vault.utils");
+    const vault = require("vault");
 
-    var _t = core._t;
-    var QWeb = core.qweb;
+    const _t = core._t;
+    const QWeb = core.qweb;
 
-    var VaultAbstract = {
+    const VaultAbstract = {
         supported: function () {
             return utils.supported();
         },
@@ -211,7 +211,7 @@ odoo.define("vault.fields", function (require) {
     };
 
     // Basic field widget of the vault
-    var VaultField = basic_fields.InputField.extend(VaultAbstract, {
+    const VaultField = basic_fields.InputField.extend(VaultAbstract, {
         supportedFieldTypes: ["char"],
         tagName: "div",
         events: _.extend({}, basic_fields.InputField.prototype.events, {
@@ -324,7 +324,7 @@ odoo.define("vault.fields", function (require) {
     });
 
     // Widget used for using encrypted files
-    var VaultFile = basic_fields.FieldBinaryFile.extend(VaultAbstract, {
+    const VaultFile = basic_fields.FieldBinaryFile.extend(VaultAbstract, {
         className: "o_vault",
 
         /**
@@ -368,7 +368,7 @@ odoo.define("vault.fields", function (require) {
     });
 
     // Widget used for using export
-    var VaultExportFile = basic_fields.FieldBinaryFile.extend(VaultAbstract, {
+    const VaultExportFile = basic_fields.FieldBinaryFile.extend(VaultAbstract, {
         className: "o_vault",
         events: _.extend({}, basic_fields.AbstractFieldBinary.prototype.events, {
             click: function (event) {
@@ -439,7 +439,7 @@ odoo.define("vault.fields", function (require) {
         },
     });
 
-    var VaultInboxField = VaultField.extend({
+    const VaultInboxField = VaultField.extend({
         store_model: "vault.field",
         events: _.extend({}, VaultField.prototype.events, {
             "click .o_vault_show": "_onShowValue",
@@ -491,7 +491,7 @@ odoo.define("vault.fields", function (require) {
     });
 
     // Widget used to view shared incoming secrets encrypted with public keys
-    var VaultInboxFile = VaultFile.extend({
+    const VaultInboxFile = VaultFile.extend({
         store_model: "vault.file",
         template: "FileVaultInbox",
         events: _.extend({}, VaultFile.prototype.events, {
