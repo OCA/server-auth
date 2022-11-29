@@ -291,6 +291,8 @@ odoo.define("vault.controller", function (require) {
             if (changes.right_ids && changes.right_ids.operation === "DELETE") {
                 const self = this;
 
+                if (this._vault_changes) return;
+
                 Dialog.confirm(
                     self,
                     _t(
