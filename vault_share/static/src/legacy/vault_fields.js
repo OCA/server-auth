@@ -4,13 +4,13 @@
 odoo.define("vault.share.fields", function (require) {
     "use strict";
 
-    var core = require("web.core");
-    var sh_utils = require("vault.share.utils");
-    var utils = require("vault.utils");
-    var vault = require("vault");
-    var vault_fields = require("vault.fields");
+    const core = require("web.core");
+    const sh_utils = require("vault.share.utils");
+    const utils = require("vault.utils");
+    const vault = require("vault");
+    const vault_fields = require("vault.fields");
 
-    var _t = core._t;
+    const _t = core._t;
 
     // Extend the widget to share
     vault_fields.VaultField.include({
