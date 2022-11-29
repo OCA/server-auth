@@ -1,7 +1,7 @@
 // © 2021 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-/* global ArrayBuffer, QUnit, Uint8Array */
+/* global QUnit */
 
 odoo.define("vault.tests", function (require) {
     "use strict";
