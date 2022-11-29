@@ -4,18 +4,18 @@
 odoo.define("vault.share.widget", function (require) {
     "use strict";
 
-    var basic_fields = require("web.basic_fields");
-    var core = require("web.core");
-    var registry = require("web.field_registry");
-    var sh_utils = require("vault.share.utils");
-    var utils = require("vault.utils");
-    var vault = require("vault");
-    var vault_fields = require("vault.fields");
+    const basic_fields = require("web.basic_fields");
+    const core = require("web.core");
+    const registry = require("web.field_registry");
+    const sh_utils = require("vault.share.utils");
+    const utils = require("vault.utils");
+    const vault = require("vault");
+    const vault_fields = require("vault.fields");
 
-    var QWeb = core.qweb;
+    const QWeb = core.qweb;
 
     // Widget used to view the encrypted pin
-    var VaultPinField = basic_fields.InputField.extend(vault_fields.VaultAbstract, {
+    const VaultPinField = basic_fields.InputField.extend(vault_fields.VaultAbstract, {
         supportedFieldTypes: ["char"],
         events: _.extend({}, basic_fields.InputField.prototype.events, {
             "click .o_vault_show": "_onShowValue",
@@ -87,7 +87,7 @@ odoo.define("vault.share.widget", function (require) {
     });
 
     // Widget used to create shared outgoing secrets encrypted with a pin
-    var VaultShareField = vault_fields.VaultField.extend({
+    const VaultShareField = vault_fields.VaultField.extend({
         events: _.extend({}, vault_fields.VaultField.prototype.events, {
             "click .o_vault_save": "_onSaveValue",
         }),
@@ -229,7 +229,7 @@ odoo.define("vault.share.widget", function (require) {
     });
 
     // Widget used to view shared incoming secrets encrypted with public keys
-    var VaultShareFile = vault_fields.VaultFile.extend({
+    const VaultShareFile = vault_fields.VaultFile.extend({
         store_model: "vault.file",
         template: "FileVaultShare",
         events: _.extend({}, vault_fields.VaultFile.prototype.events, {

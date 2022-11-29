@@ -62,8 +62,10 @@ class VaultShare(models.Model):
 
         if datetime.now() < rec.expiration and rec.accesses > 0:
             rec.accesses -= 1
-            log = _("The share was accessed by %s via %s")
-            rec.log_ids = [(0, 0, {"name": log % (self.env.user.name, ip)})]
+            log = _("The share was accessed by %(name)s via %(ip)s")
+            rec.log_ids = [
+                (0, 0, {"name": log % {"name": self.env.user.name, "ip": ip or "n/a"}})
+            ]
             return rec
 
         return None
@@ -71,8 +73,8 @@ class VaultShare(models.Model):
     @api.model
     def create(self, vals):
         rec = super().create(vals)
-        log = _("The share was created by %s")
-        rec.log_ids = [(0, 0, {"name": log % self.env.user.name})]
+        log = _("The share was created by %(name)s")
+        rec.log_ids = [(0, 0, {"name": log % {"name": self.env.user.name}})]
         return rec
 
     @api.model
