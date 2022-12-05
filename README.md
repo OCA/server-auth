@@ -17,7 +17,11 @@ Modules for handling various authentication schemes
 
 [//]: # (addons)
 
-This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
+Available addons
+----------------
+addon | version | maintainers | summary
+--- | --- | --- | ---
+[auth_api_key](auth_api_key/) | 16.0.1.0.0 |  | Authenticate http requests from an API key
 
 [//]: # (end addons)
 
