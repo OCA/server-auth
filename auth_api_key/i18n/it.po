@@ -92,6 +92,7 @@ msgstr ""
 "        ambiente del server, inserire nel campo un valore fittizio."
 
 #. module: auth_api_key
+#. odoo-python
 #: code:addons/auth_api_key/models/auth_api_key.py:0
 #, python-format
 msgid "The key %s is not allowed"
@@ -112,6 +113,7 @@ msgid "User"
 msgstr "Utente"
 
 #. module: auth_api_key
+#. odoo-python
 #: code:addons/auth_api_key/models/auth_api_key.py:0
 #, python-format
 msgid "User is not allowed"
