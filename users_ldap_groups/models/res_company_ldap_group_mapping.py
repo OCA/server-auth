@@ -24,7 +24,6 @@ class ResCompanyLdapGroupMapping(models.Model):
         lambda self: [
             (o, o) for o in self.env["res.company.ldap.operator"].operators()
         ],
-        "Operator",
         help=(
             "The operator to check the attribute against the value\n"
             "For active directory, use 'contains'"
@@ -32,7 +31,6 @@ class ResCompanyLdapGroupMapping(models.Model):
         required=True,
     )
     value = fields.Char(
-        "Value",
         help=(
             "The value to check the attribute against.\n"
             "For active directory, use the dn of the desired group"
