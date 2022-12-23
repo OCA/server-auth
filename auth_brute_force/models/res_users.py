@@ -38,9 +38,8 @@ class ResUsers(models.Model):
         try:
             cls.environ = request.httprequest.environ
         except RuntimeError:
-            _logger.info(
-                "Request: Unbound"
-            )
+            _logger.info("Request: Unbound")
+            yield
         try:
             # Check if this call is nested
             attempt_id = cls.environ["auth_attempt_id"]
