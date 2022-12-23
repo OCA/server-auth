@@ -35,7 +35,12 @@ class ResUsers(models.Model):
     @contextmanager
     def _auth_attempt(cls, login):
         """Start an authentication attempt and track its state."""
-        cls.environ = request.httprequest.environ
+        try:
+            cls.environ = request.httprequest.environ
+        except RuntimeError:
+            _logger.info(
+                "Request: Unbound"
+            )
         try:
             # Check if this call is nested
             attempt_id = cls.environ["auth_attempt_id"]
