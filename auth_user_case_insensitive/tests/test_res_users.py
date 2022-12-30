@@ -44,22 +44,6 @@ class TestResUsers(TransactionCase):
         )
 
     def test_login_login_is_lowercased(self):
-        """verify the login is set to lowercase on login."""
-        rec_id = self.model_obj.search([("login", "=", "admin")])
-        res_id = self.model_obj._login(
-            self.env.registry.db_name,
-            "AdMiN",
-            "admin",
-            {"interactive": True},
-        )
-        self.assertEqual(
-            rec_id.id,
-            res_id,
-            "Login with with uppercase chars was not \
-            successful",
-        )
-
-    def test_login_login_is_lowercased(self):
         """It should verify the login is set to lowercase on login"""
         rec_id = self._new_record()
         # We have to commit this cursor, because `_login` uses a fresh cursor
@@ -71,14 +55,13 @@ class TestResUsers(TransactionCase):
             {"interactive": True},
         )
         # Now clean up our mess to preserve idempotence
-        with api.Environment.manage():
-            with registry(self.env.registry.db_name).cursor() as new_cr:
-                new_cr.execute(
-                    "DELETE FROM res_users WHERE \
-                    login='%s'"
-                    % self.login.lower()
-                )
-                new_cr.commit()
+        with registry(self.env.registry.db_name).cursor() as new_cr:
+            new_cr.execute(
+                "DELETE FROM res_users WHERE \
+                login='%s'"
+                % self.login.lower()
+            )
+            new_cr.commit()
         self.assertEqual(
             rec_id.id,
             res_id,
