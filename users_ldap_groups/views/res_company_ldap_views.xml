@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!--
+    Copyright 2018 Therp BV <https://therp.nl>
+    Copyright 2018 Brainbean Apps <https://brainbeanapps.com>
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+    -->
+    <record id="view_ldap_installer_form" model="ir.ui.view">
+        <field name="name">res.company.ldap.form</field>
+        <field name="model">res.company.ldap</field>
+        <field name="inherit_id" ref="auth_ldap.view_ldap_installer_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group/field[@name='ldap_server']/../..">
+                <group string="Map User Groups">
+                    <field name="only_ldap_groups" />
+                    <label for="group_mapping_ids" />
+                    <field name="group_mapping_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field
+                                name="ldap_attribute"
+                                attrs="{'required': [('operator','not in',['query'])], 'readonly': [('operator','in',['query'])]}"
+                            />
+                            <field name="operator" />
+                            <field name="value" />
+                            <field name="group_id" />
+                        </tree>
+                    </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
