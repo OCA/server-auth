@@ -11,6 +11,7 @@ setuptools.setup(
         'odoo-addon-auth_api_key>=15.0dev,<15.1dev',
         'odoo-addon-auth_api_key_group>=15.0dev,<15.1dev',
         'odoo-addon-auth_api_key_server_env>=15.0dev,<15.1dev',
+        'odoo-addon-auth_oidc>=15.0dev,<15.1dev',
         'odoo-addon-auth_saml>=15.0dev,<15.1dev',
         'odoo-addon-auth_session_timeout>=15.0dev,<15.1dev',
         'odoo-addon-auth_signup_verify_email>=15.0dev,<15.1dev',
