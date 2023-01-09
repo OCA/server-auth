@@ -87,31 +87,23 @@ class ResUsers(models.Model):
         message = []
         if company_id.password_lower:
             message.append(
-                _(
-                    "\n* Lowercase letter (at least %s characters)"
-                    % str(company_id.password_lower)
-                )
+                _("\n* Lowercase letter (at least %s characters)")
+                % str(company_id.password_lower)
             )
         if company_id.password_upper:
             message.append(
-                _(
-                    "\n* Uppercase letter (at least %s characters)"
-                    % str(company_id.password_upper)
-                )
+                _("\n* Uppercase letter (at least %s characters)")
+                % str(company_id.password_upper)
             )
         if company_id.password_numeric:
             message.append(
-                _(
-                    "\n* Numeric digit (at least %s characters)"
-                    % str(company_id.password_numeric)
-                )
+                _("\n* Numeric digit (at least %s characters)")
+                % str(company_id.password_numeric)
             )
         if company_id.password_special:
             message.append(
-                _(
-                    "\n* Special character (at least % characters)"
-                    % str(company_id.password_special)
-                )
+                _("\n* Special character (at least % characters)")
+                % str(company_id.password_special)
             )
         if message:
             message = [_("Must contain the following:")] + message
@@ -209,6 +201,7 @@ class ResUsers(models.Model):
 
     def _set_encrypted_password(self, uid, pw):
         """It saves password crypt history for history rules"""
-        super(ResUsers, self)._set_encrypted_password(uid, pw)
+        res = super(ResUsers, self)._set_encrypted_password(uid, pw)
 
         self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
+        return res
