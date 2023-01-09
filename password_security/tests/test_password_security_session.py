@@ -4,6 +4,7 @@
 from contextlib import contextmanager
 from unittest import mock
 
+from odoo.http import _request_stack
 from odoo.tests.common import TransactionCase
 
 from ..controllers import main
@@ -24,6 +25,12 @@ class TestPasswordSecuritySession(TransactionCase):
         self.fields = [
             {"name": "new_password", "value": self.passwd},
         ]
+        _request_stack.push(
+            mock.Mock(
+                env=self.env,
+            )
+        )
+        self.addCleanup(_request_stack.pop)
 
     @contextmanager
     def mock_assets(self):
