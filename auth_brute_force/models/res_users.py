@@ -35,7 +35,12 @@ class ResUsers(models.Model):
     @contextmanager
     def _auth_attempt(cls, login):
         """Start an authentication attempt and track its state."""
-        cls.environ = request.httprequest.environ
+        try:
+            cls.environ = request.httprequest.environ
+        except RuntimeError:
+            _logger.info("Request: Unbound")
+            yield
+            return
         try:
             # Check if this call is nested
             attempt_id = cls.environ["auth_attempt_id"]
@@ -45,6 +50,7 @@ class ResUsers(models.Model):
         if not attempt_id:
             # No attempt was created, so there's nothing to do here
             yield
+            return
         try:
             cls.environ["auth_attempt_id"] = attempt_id
             result = "successful"
@@ -150,3 +156,4 @@ class ResUsers(models.Model):
                 raise error
             # Continue with other auth systems
             return super(ResUsers, self)._check_credentials(password, user_agent_env)
+

@@ -3,6 +3,7 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo.tests.common import TransactionCase
+from odoo import api, registry
 
 
 class TestResUsers(TransactionCase):
@@ -57,3 +58,4 @@ class TestResUsers(TransactionCase):
             "Login with with uppercase chars was not \
             successful",
         )
+

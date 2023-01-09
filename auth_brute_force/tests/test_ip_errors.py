@@ -62,7 +62,7 @@ class RemoteAddressCheck(CommonTests):
             except AccessDenied:
                 _logger.info("AccessError with login: {}".format(data1["login"]))
             #  Check metadata of remote address
-            failed = env["res.authentication.attempt"].search(args=[])
+            failed = env["res.authentication.attempt"].search([])
 
             # Add ip=`demo` to whitelist and check again we will get True this time.
             failed.action_whitelist_add()
@@ -124,3 +124,4 @@ class RemoteAddressCheck(CommonTests):
     #             )
     #         failed = env["res.authentication.attempt"].search(args=[])
     #         self.assertTrue(all(failed.mapped('remote_metadata')))
+
