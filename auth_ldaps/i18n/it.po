@@ -22,21 +22,6 @@ msgid "Company LDAP configuration"
 msgstr "Configurazione LDAP azienda"
 
 #. module: auth_ldaps
-#: model:ir.model.fields,field_description:auth_ldaps.field_res_company_ldap__display_name
-msgid "Display Name"
-msgstr "Nome visualizzato"
-
-#. module: auth_ldaps
-#: model:ir.model.fields,field_description:auth_ldaps.field_res_company_ldap__id
-msgid "ID"
-msgstr "ID"
-
-#. module: auth_ldaps
-#: model:ir.model.fields,field_description:auth_ldaps.field_res_company_ldap____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: auth_ldaps
 #: model:ir.model.fields,field_description:auth_ldaps.field_res_company_ldap__skip_cert_validation
 msgid "Skip certificate validation"
 msgstr "Saltare verifica del certificato"
@@ -45,3 +30,12 @@ msgstr "Saltare verifica del certificato"
 #: model:ir.model.fields,field_description:auth_ldaps.field_res_company_ldap__is_ssl
 msgid "Use LDAPS"
 msgstr "Utilizzare LDAPS"
+
+#~ msgid "Display Name"
+#~ msgstr "Nome visualizzato"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
