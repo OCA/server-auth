@@ -267,7 +267,7 @@ class BruteForceCase(CommonTests):
                 except AccessDenied:
                     # _logger.info("AccessError with login: {}".format(data1['login']))
                     continue
-            failed = env["res.authentication.attempt"].search(args=[])
+            failed = env["res.authentication.attempt"].search([])
             self.assertEqual(
                 len(failed),
                 3,
@@ -312,7 +312,7 @@ class BruteForceCase(CommonTests):
                 except AccessDenied:
                     # _logger.info("AccessError with login: {}".format(data1['login']))
                     continue
-            failed = env["res.authentication.attempt"].search(args=[])
+            failed = env["res.authentication.attempt"].search([])
             self.assertFalse(
                 env["res.authentication.attempt"]._trusted(
                     "127.0.0.1",
@@ -374,7 +374,7 @@ class BruteForceCase(CommonTests):
                     # _logger.info("AccessError with login: {}".format(data1['login']))
                     continue
             self.assertEqual(
-                env["res.authentication.attempt"].search(count=True, args=[]),
+                env["res.authentication.attempt"].search([], count=True),
                 3,
             )
             # Now I know the user, and login works
@@ -392,3 +392,4 @@ class BruteForceCase(CommonTests):
                 int,
                 "Access denied",
             )
+

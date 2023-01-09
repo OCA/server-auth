@@ -7,7 +7,7 @@ from distutils import util
 
 import requests
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 GEOLOCALISATION_URL = "http://ip-api.com/json/{}"
 
@@ -23,10 +23,10 @@ class ResAuthenticationAttempt(models.Model):
     result = fields.Selection(
         string="Authentication Result",
         selection=[
-            ("successful", "Successful"),
-            ("failed", "Failed"),
-            ("banned", "Banned"),
-            ("unbanned", "Unbanned"),
+            ("successful", _("Successful")),
+            ("failed", _("Failed")),
+            ("banned", _("Banned")),
+            ("unbanned", _("Unbanned")),
         ],
         index=True,
     )
