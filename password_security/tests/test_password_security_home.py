@@ -5,8 +5,10 @@ from contextlib import contextmanager
 from datetime import datetime, timedelta
 from unittest import mock
 
+from werkzeug.urls import url_parse
+
 from odoo.exceptions import UserError
-from odoo.http import Response
+from odoo.http import Response, _request_stack
 from odoo.tests.common import HttpCase, TransactionCase
 
 from ..controllers import main
@@ -37,6 +39,12 @@ class TestPasswordSecurityHome(TransactionCase):
         self.qcontext = {
             "password": self.passwd,
         }
+        _request_stack.push(
+            mock.Mock(
+                env=self.env,
+            )
+        )
+        self.addCleanup(_request_stack.pop)
 
     @contextmanager
     def mock_assets(self):
@@ -57,7 +65,7 @@ class TestPasswordSecurityHome(TransactionCase):
             with mock.patch("%s.request" % IMPORT) as request:
                 with mock.patch("%s.ensure_db" % IMPORT) as ensure:
                     with mock.patch("%s.http" % IMPORT) as http:
-                        http.redirect_with_hash.return_value = MockResponse()
+                        http.request.redirect.return_value = MockResponse()
                         mocks.update(
                             {
                                 "request": request,
@@ -122,7 +130,7 @@ class TestPasswordSecurityHome(TransactionCase):
             user._password_has_expired.return_value = True
             res = self.password_security_home.web_login()
             self.assertEqual(
-                assets["http"].redirect_with_hash(),
+                request.redirect(),
                 res,
             )
 
@@ -210,31 +218,30 @@ class TestPasswordSecurityHome(TransactionCase):
 
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
-@mock.patch("odoo.http.redirect_with_hash", return_value="redirected")
 class LoginCase(HttpCase):
-    def test_web_login_authenticate(self, redirect_mock, *args):
+    def test_web_login_authenticate(self, *args):
         """It should allow authenticating by login"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
         )
         # Redirected to /web because it succeeded
-        redirect_mock.assert_any_call("/web")
-        self.assertEqual(response.text, "redirected")
+        path = url_parse(response.url).path
+        self.assertEqual(path, "/web")
+        self.assertEqual(response.status_code, 200)
 
-    def test_web_login_authenticate_fail(self, redirect_mock, *args):
+    def test_web_login_authenticate_fail(self, *args):
         """It should fail auth"""
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "noadmin"},
         )
-        redirect_mock.assert_not_called()
         self.assertIn(
             "Wrong login/password",
             response.text,
         )
 
-    def test_web_login_expire_pass(self, redirect_mock, *args):
+    def test_web_login_expire_pass(self, *args):
         """It should expire password if necessary"""
         three_days_ago = datetime.now() - timedelta(days=3)
         with self.cursor() as cr:
@@ -245,15 +252,6 @@ class LoginCase(HttpCase):
         response = self.url_open(
             "/web/login",
             {"login": "admin", "password": "admin"},
-            timeout=30,
         )
-        # Password has expired, I'm redirected to reset it
-        all_urls = [
-            call[0][0]
-            for call in redirect_mock.call_args_list
-            if isinstance(call[0][0], str)
-        ]
-        self.assertTrue(all_urls)
-        start = response.url.replace("/login", "/reset_password?")
-        self.assertTrue(any(url.startswith(start) for url in all_urls))
-        self.assertEqual(response.text, "redirected")
+        path = url_parse(response.url).path
+        self.assertEqual(path, "/web/reset_password")
