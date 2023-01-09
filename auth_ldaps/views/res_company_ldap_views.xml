@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--
+    Copyright (C) 2017 Creu Blanca
+    Copyright (C) 2018 Brainbean Apps
+    License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
+    -->
+    <record id="view_ldap_installer_form" model="ir.ui.view">
+        <field name="name">res.company.ldap.form</field>
+        <field name="model">res.company.ldap</field>
+        <field name="inherit_id" ref="auth_ldap.view_ldap_installer_form" />
+        <field name="arch" type="xml">
+            <field name="ldap_tls" position="after">
+                <field name="is_ssl" />
+                <field name="skip_cert_validation" />
+            </field>
+        </field>
+    </record>
+</odoo>
