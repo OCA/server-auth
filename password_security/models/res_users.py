@@ -8,7 +8,7 @@ import re
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 try:
@@ -102,7 +102,7 @@ class ResUsers(models.Model):
             )
         if company_id.password_special:
             message.append(
-                _("\n* Special character (at least % characters)")
+                _("\n* Special character (at least %s characters)")
                 % str(company_id.password_special)
             )
         if message:
@@ -133,7 +133,7 @@ class ResUsers(models.Model):
             ".{%d,}$" % int(company_id.password_length),
         ]
         if not re.search("".join(password_regex), password):
-            raise UserError(self.password_match_message())
+            raise ValidationError(self.password_match_message())
 
         estimation = self.get_estimation(password)
         if estimation["score"] < company_id.password_estimate:
