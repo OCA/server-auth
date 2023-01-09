@@ -23,11 +23,16 @@
     },
     "license": "LGPL-3",
     "data": [
-        "views/password_security.xml",
         "views/res_config_settings_views.xml",
         "security/ir.model.access.csv",
         "security/res_users_pass_history.xml",
     ],
+    "assets": {
+        "web.assets_common": [
+            "/password_security/static/src/js/password_gauge.js",
+            "/password_security/static/lib/zxcvbn/zxcvbn.min.js",
+        ],
+    },
     "demo": [
         "demo/res_users.xml",
     ],
