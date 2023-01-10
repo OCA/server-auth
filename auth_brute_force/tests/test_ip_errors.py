@@ -100,28 +100,3 @@ class RemoteAddressCheck(CommonTests):
     @skip_unless_addons_installed("web-2")
     def test_check_decorator(self, *args):
         """skip_unless_addons_installed checking with wrong module name"""
-
-    # Test login with user's real IP.
-    # @mute_logger(*GARBAGE_LOGGERS)
-    # def test_login_with_real_ip(self, *args):
-    #     #  Get real ip
-    #     def getIP():
-    #         d = str(urlopen('http://checkip.dyndns.com/').read())
-    #         return r.compile(r'Address: (\d+\.\d+\.\d+\.\d+)').search(d).group(1)
-    #
-    #     ip = getIP()
-    #     data1 = {
-    #         "login": "test_user",  # Wrong
-    #         "password": '1234',
-    #     }
-    #     with self.cursor() as cr:
-    #         env = self.env(cr)
-    #         # Create new fake request wit real ip
-    #         self.create_fake_request(ip)
-    #         with self.assertRaises(AccessDenied):
-    #             env["res.users"].authenticate(
-    #                 cr.dbname, data1["login"], data1["password"], {}
-    #             )
-    #         failed = env["res.authentication.attempt"].search(args=[])
-    #         self.assertTrue(all(failed.mapped('remote_metadata')))
-

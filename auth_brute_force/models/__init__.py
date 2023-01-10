@@ -1,2 +1,1 @@
-from . import res_authentication_attempt
-from . import res_users
+from . import res_authentication_attempt, res_users

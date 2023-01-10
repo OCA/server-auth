@@ -1,7 +1,7 @@
 import time
+from unittest import TestCase
 
 from odoo.http import _request_stack
-from unittest import TestCase
 from odoo.tools import DotDict
 
 from . import models

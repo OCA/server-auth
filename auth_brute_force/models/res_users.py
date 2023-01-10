@@ -156,4 +156,3 @@ class ResUsers(models.Model):
                 raise error
             # Continue with other auth systems
             return super(ResUsers, self)._check_credentials(password, user_agent_env)
-

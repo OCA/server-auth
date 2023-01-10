@@ -392,4 +392,3 @@ class BruteForceCase(CommonTests):
                 int,
                 "Access denied",
             )
-
