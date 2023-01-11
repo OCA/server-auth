@@ -8,14 +8,14 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 07:44+0000\n"
 "PO-Revision-Date: 2022-06-06 09:54+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.3\n"
-"Last-Translator: \n"
-"Language: es\n"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__accesses
@@ -161,7 +161,7 @@ msgstr ""
 
 #. module: vault_share
 #. openerp-web
-#: code:addons/vault_share/static/src/xml/templates.xml:0
+#: code:addons/vault_share/static/src/backend/templates.xml:0
 #, python-format
 msgid "Save in a vault"
 msgstr "Guardar en un vault"
@@ -188,14 +188,14 @@ msgstr "Compartir url"
 
 #. module: vault_share
 #. openerp-web
-#: code:addons/vault_share/static/src/js/vault_fields.js:0
+#: code:addons/vault_share/static/src/legacy/vault_fields.js:0
 #, python-format
 msgid "Share the secret"
 msgstr "Compartir el secreto"
 
 #. module: vault_share
 #. openerp-web
-#: code:addons/vault_share/static/src/xml/templates.xml:0
+#: code:addons/vault_share/static/src/backend/templates.xml:0
 #, python-format
 msgid "Share the secret with an external user"
 msgstr "Compartir el secreto con usuario externo"
@@ -220,15 +220,15 @@ msgstr "Recursos comparidos"
 #: model:ir.model.fields,help:vault_share.field_vault_share__expiration
 msgid "Specifies how long a share can be accessed until deletion."
 msgstr ""
-"Especifica el tiempo que se puede acceder a un recurso compartido hasta "
-"su eliminación."
+"Especifica el tiempo que se puede acceder a un recurso compartido hasta su "
+"eliminación."
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__accesses
 msgid "Specifies how often a share can be accessed before deletion."
 msgstr ""
-"Especifica la frecuencia con la que se puede acceder a un recurso "
-"compartido antes de eliminarlo."
+"Especifica la frecuencia con la que se puede acceder a un recurso compartido "
+"antes de eliminarlo."
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__pin
@@ -244,14 +244,14 @@ msgstr "El secreto ha expirado"
 #. module: vault_share
 #: code:addons/vault_share/models/vault_share.py:0
 #, python-format
-msgid "The share was accessed by %s via %s"
-msgstr "El recurso compartido fue accedido por %s a través de %s"
+msgid "The share was accessed by %(name)s via %(ip)s"
+msgstr ""
 
 #. module: vault_share
 #: code:addons/vault_share/models/vault_share.py:0
 #, python-format
-msgid "The share was created by %s"
-msgstr "El recurso compartido fue creado por %s"
+msgid "The share was created by %(name)s"
+msgstr ""
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__token
@@ -286,3 +286,11 @@ msgstr ""
 #, python-format
 msgid "Vault share outgoing secrets"
 msgstr ""
+
+#, python-format
+#~ msgid "The share was accessed by %s via %s"
+#~ msgstr "El recurso compartido fue accedido por %s a través de %s"
+
+#, python-format
+#~ msgid "The share was created by %s"
+#~ msgstr "El recurso compartido fue creado por %s"
