@@ -1,8 +1,9 @@
-# auth_signup_verify_email
+# generated from manifests external_dependencies
+cryptography
 email_validator
-python-ldap==3.1.0
-# password_security
-zxcvbn-python==4.4.24
-python-jose[cryptography]
-# auth_saml
+lxml
+pyjwt
 pysaml2
+python-jose[cryptography]
+python-ldap
+zxcvbn
