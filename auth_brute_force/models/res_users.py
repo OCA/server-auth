@@ -74,17 +74,16 @@ class ResUsers(models.Model):
         """Force a method to raise an AccessDenied on falsey return."""
         with cls._auth_attempt(login):
             result = method()
-            # TODO: Not in use right now,
-            # TODO: So, it is more likely to remove these 2 lines of code.
-            # if not result:
-            #     raise AccessDenied()
         return result
 
     @classmethod
     def _auth_attempt_new(cls, login):
         """Store one authentication attempt, not knowing the result."""
         # Get the right remote address
-        remote_addr = cls.environ.get("REMOTE_ADDR", False)
+        try:
+            remote_addr = cls.environ.get("REMOTE_ADDR", False)
+        except AttributeError:
+            return False
         # Exit if it doesn't make sense to store this attempt
         if not remote_addr:
             return False
@@ -102,7 +101,10 @@ class ResUsers(models.Model):
     @classmethod
     def _auth_attempt_update(cls, values):
         """Update a given auth attempt if we still ignore its result."""
-        auth_id = cls.environ.get("auth_attempt_id", False)
+        try:
+            auth_id = cls.environ.get("auth_attempt_id", False)
+        except AttributeError:
+            return {}
         if not auth_id:
             return {}  # No running auth attempt; nothing to do
         # Use a separate cursor to keep changes always
