@@ -16,6 +16,7 @@ _logger = logging.getLogger(__name__)
 
 class ResAuthenticationAttempt(models.Model):
     _name = "res.authentication.attempt"
+    _description = "Monitor authentications attempts"
     _order = "create_date desc"
 
     login = fields.Char(string="Tried Login", index=True)
