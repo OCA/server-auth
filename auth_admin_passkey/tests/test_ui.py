@@ -4,18 +4,25 @@
 
 from lxml import html
 from werkzeug.test import Client
-from werkzeug.wrappers import BaseResponse
+from werkzeug.wrappers import Response
 
-from odoo.service import wsgi_server
+from odoo import http
 from odoo.tests import common, tagged
 from odoo.tools import config
 
 
 @tagged("post_install", "-at_install")
 class TestUI(common.HttpCase):
-    def setUp(self):
-        super(TestUI, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
+        cls.werkzeug_environ = {"REMOTE_ADDR": "127.0.0.1"}
+        cls.test_client = Client(http.root, Response)
+        cls.test_client.get("/web/session/logout")
 
+    def setUp(self):
+        super().setUp()
         with self.registry.cursor() as test_cursor:
             env = self.env(test_cursor)
 
@@ -34,10 +41,6 @@ class TestUI(common.HttpCase):
             )
 
             self.dbname = env.cr.dbname
-
-        self.werkzeug_environ = {"REMOTE_ADDR": "127.0.0.1"}
-        self.test_client = Client(wsgi_server.application, BaseResponse)
-        self.test_client.get("/web/session/logout")
 
     def html_doc(self, response):
         """Get an HTML LXML document."""

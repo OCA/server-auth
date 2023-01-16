@@ -11,27 +11,29 @@ from odoo.tools import config
 class TestAuthAdminPasskey(common.TransactionCase):
     """Tests for 'Auth Admin Passkey' Module"""
 
-    def setUp(self):
-        super(TestAuthAdminPasskey, self).setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
 
-        self.ResUsers = self.env["res.users"]
+        cls.ResUsers = cls.env["res.users"]
 
-        self.db = self.env.cr.dbname
+        cls.db = cls.env.cr.dbname
 
-        self.user_login = "auth_admin_passkey_user"
-        self.user_password = "Auth_admin_passkey_password*1"
-        self.sysadmin_passkey = "SysAdminPasskeyPa$$w0rd"
-        self.bad_password = "Bad_password*000001"
-        self.bad_login = "bad_login"
+        cls.user_login = "auth_admin_passkey_user"
+        cls.user_password = "Auth_admin_passkey_password*1"
+        cls.sysadmin_passkey = "SysAdminPasskeyPa$$w0rd"
+        cls.bad_password = "Bad_password*000001"
+        cls.bad_login = "bad_login"
 
-        user = self.ResUsers.create(
+        user = cls.ResUsers.create(
             {
-                "login": self.user_login,
-                "password": self.user_password,
+                "login": cls.user_login,
+                "password": cls.user_password,
                 "name": "auth_admin_passkey User",
             }
         )
-        self.user = user.with_user(user)
+        cls.user = user.with_user(user)
 
     def test_01_normal_login_succeed(self):
         self.user._check_credentials(self.user_password, {"interactive": True})
