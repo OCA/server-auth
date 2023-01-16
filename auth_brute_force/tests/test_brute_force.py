@@ -37,7 +37,10 @@ class BruteForceCase(CommonTests):
         for _ in range(num_of_times):
             try:
                 env["res.users"].authenticate(
-                    cr.dbname, data["login"], data["password"], {"interactive": True}
+                    cr.dbname,
+                    data["login"],
+                    data["password"],
+                    {"interactive": True},
                 )
             except AccessDenied:
                 continue
@@ -164,12 +167,18 @@ class BruteForceCase(CommonTests):
             # Fail 3 times
             with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {"interactive": True}
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 )
             for _ in range(3):
                 try:
                     env["res.users"].authenticate(
-                        cr.dbname, data1["login"], data1["password"], {"interactive": True}
+                        cr.dbname,
+                        data1["login"],
+                        data1["password"],
+                        {"interactive": True},
                     )
                 except AccessDenied:
                     # _logger.info("AccessError with login: {}".format(data1['login']))
@@ -209,12 +218,18 @@ class BruteForceCase(CommonTests):
             # Fail 3 times
             with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {"interactive": True}
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 )
             for _ in range(3):
                 try:
                     env["res.users"].authenticate(
-                        cr.dbname, data1["login"], data1["password"], {"interactive": True},
+                        cr.dbname,
+                        data1["login"],
+                        data1["password"],
+                        {"interactive": True},
                     )
                 except AccessDenied:
                     # _logger.info("AccessError with login: {}".format(data1['login']))
@@ -245,11 +260,17 @@ class BruteForceCase(CommonTests):
             )
             with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {"interactive": True},
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 )
             try:
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {"interactive": True},
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 )
             except AccessDenied:
                 _logger.info("AccessError with login: {}".format(data1["login"]))
@@ -270,12 +291,18 @@ class BruteForceCase(CommonTests):
             # Fail 3 times
             with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {"interactive": True}
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 )
             for _ in range(3):
                 try:
                     env["res.users"].authenticate(
-                        cr.dbname, data1["login"], data1["password"], {"interactive": True}
+                        cr.dbname,
+                        data1["login"],
+                        data1["password"],
+                        {"interactive": True},
                     )
                 except AccessDenied:
                     # _logger.info("AccessError with login: {}".format(data1['login']))
@@ -294,7 +321,10 @@ class BruteForceCase(CommonTests):
             )
             self.assertIsInstance(
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {"interactive": True}
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 ),
                 int,
                 "Access denied",

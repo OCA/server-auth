@@ -42,12 +42,18 @@ class RemoteAddressCheck(CommonTests):
             # Fail 3 times
             with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {}
+                    cr.dbname,
+                    data1["login"],
+                    data1["password"],
+                    {"interactive": True},
                 )
             for _ in range(2):
                 try:
                     env["res.users"].authenticate(
-                        cr.dbname, data1["login"], data1["password"], {}
+                        cr.dbname,
+                        data1["login"],
+                        data1["password"],
+                        {"interactive": True},
                     )
                 except AccessDenied:
                     # _logger.info("AccessError with login: {}".format(data1['login']))
@@ -57,7 +63,7 @@ class RemoteAddressCheck(CommonTests):
             # Try to login with `demo` ip
             try:
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {}
+                    cr.dbname, data1["login"], data1["password"], {"interactive": True}
                 )
             except AccessDenied:
                 _logger.info("AccessError with login: {}".format(data1["login"]))
@@ -94,7 +100,7 @@ class RemoteAddressCheck(CommonTests):
             # Try to login
             with self.assertRaises(AccessDenied):
                 env["res.users"].authenticate(
-                    cr.dbname, data1["login"], data1["password"], {}
+                    cr.dbname, data1["login"], data1["password"], {"interactive": True}
                 )
 
     @skip_unless_addons_installed("web-2")
