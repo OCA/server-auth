@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import fields, models
+from odoo import fields, models, tools
 
 _logger = logging.getLogger(__name__)
 
@@ -43,7 +43,7 @@ class CompanyLDAP(models.Model):
         for value_key, conf_name in mapping:
             try:
                 if conf[conf_name]:
-                    values[value_key] = ldap_entry[1][conf[conf_name]][0]
+                    values[value_key] = tools.ustr(ldap_entry[1][conf[conf_name]][0])
             except KeyError:
                 _logger.warning(
                     'No LDAP attribute "%s" found for login  "%s"'
