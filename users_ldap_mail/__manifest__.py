@@ -4,7 +4,7 @@
 
 {
     "name": "LDAP mapping for user name and e-mail",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "depends": ["auth_ldap"],
     "author": "Daniel Reis," "Odoo Community Association (OCA)",
     "maintainers": ["joao-p-marques"],
