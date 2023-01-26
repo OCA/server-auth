@@ -2,9 +2,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import hashlib
-import uuid
 import logging
-from odoo import models, api, fields
+import uuid
+
+from odoo import api, fields, models
+
 from ..oauth2.validator import OdooValidator
 
 _logger = logging.getLogger(__name__)
@@ -12,87 +14,111 @@ _logger = logging.getLogger(__name__)
 try:
     from oauthlib import oauth2
 except ImportError:
-    _logger.debug('Cannot `import oauthlib`.')
+    _logger.debug("Cannot `import oauthlib`.")
 
 
 class OAuthProviderClient(models.Model):
-    _name = 'oauth.provider.client'
-    _description = 'OAuth Provider Client'
+    _name = "oauth.provider.client"
+    _description = "OAuth Provider Client"
 
-    name = fields.Char(required=True, help='Name of this client.')
+    name = fields.Char(required=True, help="Name of this client.")
     identifier = fields.Char(
-        string='Client Identifier', required=True, readonly=True,
-        default=lambda self: str(uuid.uuid4()), copy=False,
-        help='Unique identifier of the client.')
-    secret = fields.Char(
-        help='Optional secret used to authenticate the client.')
+        string="Client Identifier",
+        required=True,
+        readonly=True,
+        default=lambda self: str(uuid.uuid4()),
+        copy=False,
+        help="Unique identifier of the client.",
+    )
+    secret = fields.Char(help="Optional secret used to authenticate the client.")
     skip_authorization = fields.Boolean(
-        help='Check this box if the user shouldn\'t be prompted to authorize '
-        'or not the requested scopes.')
+        help="Check this box if the user shouldn't be prompted to authorize "
+        "or not the requested scopes."
+    )
     application_type = fields.Selection(
         selection=[
-            ('web application', 'Web Application'),
-            ('mobile application', 'Mobile Application'),
-            ('legacy application', 'Legacy Application'),
-            ('backend application', 'Backend Application'),
-        ], required=True, default='web application',
-        help='Application type to be used with this client.')
+            ("web application", "Web Application"),
+            ("mobile application", "Mobile Application"),
+            ("legacy application", "Legacy Application"),
+            ("backend application", "Backend Application"),
+        ],
+        required=True,
+        default="web application",
+        help="Application type to be used with this client.",
+    )
     grant_type = fields.Selection(
         selection=[
-            ('authorization_code', 'Authorization Code'),
-            ('implicit', 'Implicit'),
-            ('password', 'Password'),
-            ('client_credentials', 'Client Credentials'),
-        ], string='OAuth Grant Type',
-        compute='_compute_grant_response_type', store=True,
-        help='Grant type used by the client for OAuth.')
+            ("authorization_code", "Authorization Code"),
+            ("implicit", "Implicit"),
+            ("password", "Password"),
+            ("client_credentials", "Client Credentials"),
+        ],
+        string="OAuth Grant Type",
+        compute="_compute_grant_response_type",
+        store=True,
+        help="Grant type used by the client for OAuth.",
+    )
     response_type = fields.Selection(
         selection=[
-            ('code', 'Authorization Code'),
-            ('token', 'Token'),
-            ('none', 'None'),
-        ], string='OAuth Response Type',
-        compute='_compute_grant_response_type', store=True,
-        help='Response type used by the client for OAuth.')
+            ("code", "Authorization Code"),
+            ("token", "Token"),
+            ("none", "None"),
+        ],
+        string="OAuth Response Type",
+        compute="_compute_grant_response_type",
+        store=True,
+        help="Response type used by the client for OAuth.",
+    )
     token_type = fields.Selection(
-        selection=[('random', 'Randomly generated')],
-        required=True, default='random',
-        help='Type of token to return. The base module only provides randomly '
-        'generated tokens.')
+        selection=[("random", "Randomly generated")],
+        required=True,
+        default="random",
+        help="Type of token to return. The base module only provides randomly "
+        "generated tokens.",
+    )
     scope_ids = fields.Many2many(
-        comodel_name='oauth.provider.scope', string='Allowed Scopes',
-        help='List of scopes the client is allowed to access.')
+        comodel_name="oauth.provider.scope",
+        string="Allowed Scopes",
+        help="List of scopes the client is allowed to access.",
+    )
     redirect_uri_ids = fields.One2many(
-        comodel_name='oauth.provider.redirect.uri', inverse_name='client_id',
-        string='OAuth Redirect URIs',
-        help='Allowed redirect URIs for the client.')
+        comodel_name="oauth.provider.redirect.uri",
+        inverse_name="client_id",
+        string="OAuth Redirect URIs",
+        help="Allowed redirect URIs for the client.",
+    )
     user_id = fields.Many2one(
-        comodel_name='res.users',
-        help='Map calls from this client to this user for backend applications')
+        comodel_name="res.users",
+        help="Map calls from this client to this user for backend applications",
+    )
 
     _sql_constraints = [
-        ('identifier_unique', 'UNIQUE (identifier)',
-         'The identifier of the client must be unique !'),
+        (
+            "identifier_unique",
+            "UNIQUE (identifier)",
+            "The identifier of the client must be unique !",
+        ),
     ]
 
     @api.model
     def application_type_mapping(self):
         return {
-            'web application': ('authorization_code', 'code'),
-            'mobile application': ('implicit', 'token'),
-            'legacy application': ('password', 'none'),
-            'backend application': ('client_credentials', 'none'),
+            "web application": ("authorization_code", "code"),
+            "mobile application": ("implicit", "token"),
+            "legacy application": ("password", "none"),
+            "backend application": ("client_credentials", "none"),
         }
 
-    @api.depends('application_type')
+    @api.depends("application_type")
     def _compute_grant_response_type(self):
         applications = self.application_type_mapping()
         for client in self:
             client.grant_type, client.response_type = applications[
-                client.application_type]
+                client.application_type
+            ]
 
     def get_oauth2_server(self, validator=None, **kwargs):
-        """ Returns an OAuth2 server instance, depending on the client application type
+        """Returns an OAuth2 server instance, depending on the client application type
 
         Generates an OdooValidator instance if no custom validator is defined
         All other arguments are directly passed to the server constructor (for
@@ -103,17 +129,17 @@ class OAuthProviderClient(models.Model):
         if validator is None:
             validator = OdooValidator()
 
-        if self.application_type == 'web application':
+        if self.application_type == "web application":
             return oauth2.WebApplicationServer(validator, **kwargs)
-        elif self.application_type == 'mobile application':
+        elif self.application_type == "mobile application":
             return oauth2.MobileApplicationServer(validator, **kwargs)
-        elif self.application_type == 'legacy application':
+        elif self.application_type == "legacy application":
             return oauth2.LegacyApplicationServer(validator, **kwargs)
-        elif self.application_type == 'backend application':
+        elif self.application_type == "backend application":
             return oauth2.BackendApplicationServer(validator, **kwargs)
 
     def _generate_user_id(self, user):
-        """ Generates a unique user identifier for this client
+        """Generates a unique user identifier for this client
 
         Include the client and user identifiers in the final identifier to
         generate a different identifier for the same user, depending on the
@@ -122,8 +148,7 @@ class OAuthProviderClient(models.Model):
         """
         self.ensure_one()
 
-        user_identifier = self.identifier \
-            + user.sudo().oauth_identifier
+        user_identifier = self.identifier + user.sudo().oauth_identifier
 
         # Use a sha256 to avoid a too long final string
-        return hashlib.sha256(user_identifier.encode('utf8')).hexdigest()
+        return hashlib.sha256(user_identifier.encode("utf8")).hexdigest()
