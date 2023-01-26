@@ -55,7 +55,7 @@ class OAuthProviderScope(models.Model):
     def _get_data_for_model(self, model, user, res_id=None, all_scopes_match=False):
         """ Return the data matching the scopes from the requested model """
         data = defaultdict(dict)
-        eval_context = self.sudo(user)._get_ir_filter_eval_context()
+        eval_context = self.with_user(user)._get_ir_filter_eval_context()
         all_scopes_records = None
         for scope in self.filtered(lambda record: record.model == model):
             # Retrieve the scope's domain
@@ -68,7 +68,7 @@ class OAuthProviderScope(models.Model):
 
             # Retrieve data of the matching records, depending on the scope's
             # fields
-            records = self.env[model].sudo(user).search(filter_domain)
+            records = self.env[model].with_user(user).search(filter_domain)
             for record_data in records.read(scope.field_ids.mapped('name')):
                 for field, value in record_data.items():
                     if isinstance(value, tuple):
