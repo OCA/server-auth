@@ -38,6 +38,7 @@ class OAuthProviderToken(models.Model):
          'The refresh token must be unique per client !'),
     ]
 
+    @api.depends("expires_at")
     def _compute_active(self):
         for token in self:
             token.active = fields.Datetime.now() < token.expires_at
