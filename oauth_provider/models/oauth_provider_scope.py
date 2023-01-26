@@ -52,7 +52,6 @@ class OAuthProviderScope(models.Model):
             'user': self.env.user,
         }
 
-    @api.multi
     def _get_data_for_model(self, model, user, res_id=None, all_scopes_match=False):
         """ Return the data matching the scopes from the requested model """
         data = defaultdict(dict)
