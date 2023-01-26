@@ -84,7 +84,6 @@ class OAuthProviderClient(models.Model):
             'backend application': ('client_credentials', 'none'),
         }
 
-    @api.multi
     @api.depends('application_type')
     def _compute_grant_response_type(self):
         applications = self.application_type_mapping()
@@ -92,7 +91,6 @@ class OAuthProviderClient(models.Model):
             client.grant_type, client.response_type = applications[
                 client.application_type]
 
-    @api.multi
     def get_oauth2_server(self, validator=None, **kwargs):
         """ Returns an OAuth2 server instance, depending on the client application type
 
@@ -114,7 +112,6 @@ class OAuthProviderClient(models.Model):
         elif self.application_type == 'backend application':
             return oauth2.BackendApplicationServer(validator, **kwargs)
 
-    @api.multi
     def _generate_user_id(self, user):
         """ Generates a unique user identifier for this client
 
