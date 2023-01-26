@@ -38,7 +38,6 @@ class OAuthProviderToken(models.Model):
          'The refresh token must be unique per client !'),
     ]
 
-    @api.multi
     def _compute_active(self):
         for token in self:
             token.active = fields.Datetime.now() < token.expires_at
@@ -76,14 +75,12 @@ class OAuthProviderToken(models.Model):
 
         return domain
 
-    @api.multi
     def _generate_user_id(self):
         """ Generates a unique user identifier for this token """
         self.ensure_one()
 
         return self.client_id._generate_user_id(self.user_id)
 
-    @api.multi
     def _get_data_for_model(self, model, res_id=None, all_scopes_match=False):
         """ Returns the data of the accessible records of the requested model,
 
