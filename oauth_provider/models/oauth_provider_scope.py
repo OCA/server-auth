@@ -2,80 +2,91 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import datetime
-import dateutil
 import time
 from collections import defaultdict
-from odoo import models, api, fields
+
+import dateutil
+
+from odoo import api, fields, models
 from odoo.tools.safe_eval import safe_eval
 
 
 class OAuthProviderScope(models.Model):
-    _name = 'oauth.provider.scope'
-    _description = 'OAuth Provider Scope'
+    _name = "oauth.provider.scope"
+    _description = "OAuth Provider Scope"
 
     name = fields.Char(
-        required=True, translate=True,
-        help='Name of the scope, displayed to the user.')
-    code = fields.Char(
-        required=True, help='Code of the scope, used in OAuth requests.')
+        required=True, translate=True, help="Name of the scope, displayed to the user."
+    )
+    code = fields.Char(required=True, help="Code of the scope, used in OAuth requests.")
     description = fields.Text(
-        required=True, translate=True,
-        help='Description of the scope, displayed to the user.')
+        required=True,
+        translate=True,
+        help="Description of the scope, displayed to the user.",
+    )
     model_id = fields.Many2one(
-        comodel_name='ir.model', string='Model', required=True,
-        help='Model allowed to be accessed by this scope.')
+        comodel_name="ir.model",
+        string="Model",
+        required=True,
+        help="Model allowed to be accessed by this scope.",
+    )
     model = fields.Char(
-        related='model_id.model', string='Model Name', readonly=True,
-        help='Name of the model allowed to be accessed by this scope.')
+        related="model_id.model",
+        string="Model Name",
+        readonly=True,
+        help="Name of the model allowed to be accessed by this scope.",
+    )
     filter_id = fields.Many2one(
-        comodel_name='ir.filters', string='Filter',
+        comodel_name="ir.filters",
+        string="Filter",
         domain="[('model_id', '=', model)]",
-        help='Filter applied to retrieve records allowed by this scope.')
+        help="Filter applied to retrieve records allowed by this scope.",
+    )
     field_ids = fields.Many2many(
-        comodel_name='ir.model.fields', string='Fields',
+        comodel_name="ir.model.fields",
+        string="Fields",
         domain="[('model_id', '=', model_id)]",
-        help='Fields allowed by this scope.')
+        help="Fields allowed by this scope.",
+    )
 
     _sql_constraints = [
-        ('code_unique', 'UNIQUE (code)',
-         'The code of the scopes must be unique !'),
+        ("code_unique", "UNIQUE (code)", "The code of the scopes must be unique !"),
     ]
 
     @api.model
     def _get_ir_filter_eval_context(self):
-        """ Returns the base eval context for ir.filter domains evaluation """
+        """Returns the base eval context for ir.filter domains evaluation"""
         return {
-            'datetime': datetime,
-            'dateutil': dateutil,
-            'time': time,
-            'uid': self.env.uid,
-            'user': self.env.user,
+            "datetime": datetime,
+            "dateutil": dateutil,
+            "time": time,
+            "uid": self.env.uid,
+            "user": self.env.user,
         }
 
     def _get_data_for_model(self, model, user, res_id=None, all_scopes_match=False):
-        """ Return the data matching the scopes from the requested model """
+        """Return the data matching the scopes from the requested model"""
         data = defaultdict(dict)
         eval_context = self.with_user(user)._get_ir_filter_eval_context()
         all_scopes_records = None
         for scope in self.filtered(lambda record: record.model == model):
             # Retrieve the scope's domain
-            filter_domain = [(1, '=', 1)]
+            filter_domain = [(1, "=", 1)]
             if scope.filter_id:
-                filter_domain = safe_eval(
-                    scope.filter_id.domain, eval_context)
+                filter_domain = safe_eval(scope.filter_id.domain, eval_context)
             if res_id is not None:
-                filter_domain.append(('id', '=', res_id))
+                filter_domain.append(("id", "=", res_id))
 
             # Retrieve data of the matching records, depending on the scope's
             # fields
             records = self.env[model].with_user(user).search(filter_domain)
-            for record_data in records.read(scope.field_ids.mapped('name')):
+            for record_data in records.read(scope.field_ids.mapped("name")):
                 for field, value in record_data.items():
                     if isinstance(value, tuple):
                         # Return only the name for a many2one
-                        data[record_data['id']][field] = value[1]
+                        data[record_data["id"]][field] = value[1]
                     else:
-                        data[record_data['id']][field] = value
+                        data[record_data["id"]][field] = value
 
             # Keep a list of records that match all scopes
             if all_scopes_records is None:
@@ -87,9 +98,12 @@ class OAuthProviderScope(models.Model):
         # those mathing all scopes
         if all_scopes_match:
             all_scopes_records = all_scopes_records or self.env[model]
-            data = dict(filter(
-                lambda record_data: record_data[0] in all_scopes_records.ids,
-                data.items()))
+            data = dict(
+                filter(
+                    lambda record_data: record_data[0] in all_scopes_records.ids,
+                    data.items(),
+                )
+            )
 
         # If a single record was requested, return only data coming from this
         # record
