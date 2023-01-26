@@ -65,7 +65,6 @@
         <field name="name">OAuth Provider Scopes</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">oauth.provider.scope</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="search_view_id" ref="view_oauth_provider_scope_search"/>
         <field name="domain">[]</field>
