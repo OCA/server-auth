@@ -2,6 +2,7 @@
 cryptography
 email_validator
 lxml
+oauthlib
 pyjwt
 pysaml2
 python-jose
