@@ -37,6 +37,7 @@ class ResUsers(models.Model):
                 redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
             ),
             auth=auth,
+            timeout=10,
         )
         response.raise_for_status()
         response_json = response.json()
