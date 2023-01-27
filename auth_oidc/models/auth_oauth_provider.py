@@ -48,7 +48,7 @@ class AuthOauthProvider(models.Model):
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_key(self, kid):
-        r = requests.get(self.jwks_uri)
+        r = requests.get(self.jwks_uri, timeout=10)
         r.raise_for_status()
         response = r.json()
         for key in response["keys"]:
