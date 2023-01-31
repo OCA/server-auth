@@ -28,6 +28,7 @@ class OAuthProviderScope(models.Model):
         comodel_name="ir.model",
         string="Model",
         required=True,
+        ondelete="cascade",
         help="Model allowed to be accessed by this scope.",
     )
     model = fields.Char(
