@@ -19,7 +19,8 @@ class OdooValidator(RequestValidator):
     """OAuth2 validator to be used in Odoo
 
     This is an implementation of oauthlib's RequestValidator interface
-    https://github.com/idan/oauthlib/oauthlib/oauth2/rfc6749/request_validator.py
+    https://github.com/oauthlib/oauthlib
+        /blob/master/oauthlib/oauth2/rfc6749/request_validator.py
     """
 
     def _load_client(self, request, client_id=None):
@@ -40,7 +41,6 @@ class OdooValidator(RequestValidator):
                 or http.request.env.user
                 or http.request.env.ref("base.public_user")
             )
-            request.client.client_id = request.client.identifier
 
     def _extract_auth(self, request):
         """Extract auth string from request headers"""
@@ -64,7 +64,6 @@ class OdooValidator(RequestValidator):
             client_id, client_secret = auth_string_decoded.split(":", 1)
 
         self._load_client(request, client_id=client_id)
-        request.client_id = request.client.client_id
         return (request.client.identifier == client_id) and (
             request.client.secret or ""
         ) == (client_secret or "")
