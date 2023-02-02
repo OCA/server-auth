@@ -20,7 +20,7 @@ class TestOAuthProviderToken(TransactionCase):
             "user_id": self.env.user.id,
             "client_id": self.client.id,
             "token": "token",
-            "expires_at": fields.Datetime.now(),
+            "expires_at": fields.Datetime.to_string(fields.Datetime.now()),
         }
         self.filter = self.env["ir.filters"].create(
             {

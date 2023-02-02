@@ -8,8 +8,6 @@ from datetime import datetime
 
 import mock
 
-from odoo import fields
-
 _logger = logging.getLogger(__name__)
 
 
@@ -230,9 +228,7 @@ class TestOAuthProviderTokeninfoController(object):
                 "access_token": token.token,
             },
         )
-        token_lifetime = (
-            fields.Datetime.from_string(token.expires_at) - datetime.now()
-        ).seconds
+        token_lifetime = (token.expires_at - datetime.now()).seconds
         response_text = response.data.decode("utf8")
         response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
@@ -268,9 +264,7 @@ class TestOAuthProviderTokeninfoController(object):
                 "access_token": token.token,
             },
         )
-        token_lifetime = (
-            fields.Datetime.from_string(token.expires_at) - datetime.now()
-        ).seconds
+        token_lifetime = (token.expires_at - datetime.now()).seconds
         response_text = response.data.decode("utf8")
         response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
