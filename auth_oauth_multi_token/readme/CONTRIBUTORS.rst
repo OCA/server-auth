@@ -3,5 +3,7 @@
 * `Tecnativa <https://www.tecnativa.com/>`__:
 
   * Jairo Llopis
+  * Sergio Teruel
 
-  * Stéphane Bidoul <stephane.bidoul@acsone.eu>
+* Stéphane Bidoul <stephane.bidoul@acsone.eu>
+* Dan Tillinghast
