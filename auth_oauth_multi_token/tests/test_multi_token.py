@@ -4,7 +4,7 @@
 import json
 
 from odoo import exceptions
-from odoo.tests.common import SavepointCase
+from odoo.tests import SavepointCase
 
 
 class TestMultiToken(SavepointCase):
