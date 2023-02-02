@@ -8,7 +8,7 @@ from datetime import datetime
 import werkzeug.utils
 import werkzeug.wrappers
 
-from odoo import fields, http
+from odoo import http
 
 from odoo.addons.web.controllers.main import ensure_db
 
@@ -264,9 +264,7 @@ class OAuth2ProviderController(http.Controller):
                 data={"error": "invalid_or_expired_token"}, status=401
             )
 
-        token_lifetime = (
-            fields.Datetime.from_string(token.expires_at) - datetime.now()
-        ).seconds
+        token_lifetime = (token.expires_at - datetime.now()).seconds
         # Base data to return
         data = {
             "audience": token.client_id.identifier,
