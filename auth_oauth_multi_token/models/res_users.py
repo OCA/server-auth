@@ -66,10 +66,10 @@ class ResUsers(models.Model):
             res.oauth_master_uuid = self._generate_oauth_master_uuid()
 
     @api.model
-    def _check_credentials(self, password):
+    def _check_credentials(self, password, env):
         """Override to check credentials against multi tokens."""
         try:
-            return super()._check_credentials(password)
+            return super()._check_credentials(password, env)
         except exceptions.AccessDenied:
             res = self.multi_token_model.sudo().search(
                 [("user_id", "=", self.env.uid), ("oauth_access_token", "=", password)]
