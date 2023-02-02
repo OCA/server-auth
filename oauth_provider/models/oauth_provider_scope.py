@@ -1,14 +1,10 @@
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import datetime
-import time
 from collections import defaultdict
 
-import dateutil
-
 from odoo import api, fields, models
-from odoo.tools.safe_eval import safe_eval
+from odoo.tools.safe_eval import datetime, dateutil, safe_eval, time
 
 
 class OAuthProviderScope(models.Model):
