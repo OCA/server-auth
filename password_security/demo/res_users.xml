@@ -1,0 +1,9 @@
+<!--
+    Copyright 2016 LasLabs Inc.
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+-->
+<odoo>
+    <record id="base.user_root" model="res.users">
+        <field eval="datetime.now()" name="password_write_date" />
+    </record>
+</odoo>
