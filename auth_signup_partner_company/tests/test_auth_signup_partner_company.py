@@ -19,7 +19,7 @@ class TestAuthSignupPartnerCompany(TransactionCase):
 
     def test_auth_signpu_partner_company(self):
         self.env["res.users"].signup(
-            {"name": "Test", "login": "test@gmail.com", "password": "123"}
+            {"name": "Test", "login": "test@gmail.com", "password": "12345678"}
         )
         user = self.env["res.users"].search([("login", "=", "test@gmail.com")])
         self.assertEqual(user.company_id, self.company)
@@ -27,7 +27,7 @@ class TestAuthSignupPartnerCompany(TransactionCase):
 
         self.env.company = self.company_jpy
         self.env["res.users"].signup(
-            {"name": "Test1", "login": "test1@gmail.com", "password": "123"}
+            {"name": "Test1", "login": "test1@gmail.com", "password": "12345678"}
         )
         user = self.env["res.users"].search([("login", "=", "test1@gmail.com")])
         self.assertEqual(user.company_id, self.company_jpy)
