@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 ACSONE SA/NV
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <template id="login" inherit_id="web.login" name="Device Login buttons">
+
+        <xpath expr="//div[hasclass('o_login_auth')]" position="inside">
+            <em t-attf-class="d-block text-center text-muted small">- or -</em>
+            <div class="o_auth_device list-group mt-1 mb-1 text-left">
+                <a
+                    class="list-group-item list-group-item-action py-2"
+                    data-toggle="modal"
+                    data-target="#loginDevice"
+                >
+                    <i class="fa fa-credit-card" />
+                    Log in with your Device
+                </a>
+            </div>
+        </xpath>
+        <xpath expr="//form" position="after">
+            <div
+                class="modal fade"
+                id="loginDevice"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="loginDeviceLabel"
+                aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5
+                                class="modal-title"
+                                id="loginDeviceLabel"
+                            >Log in with your device</h5>
+                        <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                            >×</button>
+                      </div>
+                    <form
+                            id="login_device"
+                            class="oe_login_device_form"
+                            role="form"
+                            t-attf-action="/auth_device/login"
+                            method="post"
+                        >
+                      <input
+                                type="hidden"
+                                name="csrf_token"
+                                t-att-value="request.csrf_token()"
+                            />
+                      <input type="hidden" name="redirect" t-att-value="redirect" />
+                      <div class="modal-body">
+                        <div class="form-group field-password">
+                            <img
+                                        alt="Scan your device"
+                                        src="/auth_device/static/img/scan.jpg"
+                                    />
+                            <label for="device_input">Device Code</label>
+                            <input
+                                        type="password"
+                                        placeholder="Code"
+                                        name="device_code"
+                                        id="device_code_input"
+                                        required="required"
+                                        autofocus="autofocus"
+                                        maxlength="12"
+                                    />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                >Close</button>
+                        <button
+                                    id="submit_device_code"
+                                    name="submit_device_code"
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >Log In</button>
+                      </div>
+                    </form>
+                </div>
+              </div>
+            </div>
+        </xpath>
+    </template>
+
+
+</odoo>

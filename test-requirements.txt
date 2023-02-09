@@ -1,1 +1,2 @@
 pyjwt[cryptography]
+psycopg2-binary
