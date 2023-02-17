@@ -19,6 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: auth_user_case_insensitive
+#. odoo-python
 #: code:addons/auth_user_case_insensitive/hooks.py:0
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
@@ -36,5 +37,8 @@ msgstr ""
 
 #. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
-msgid "Users"
-msgstr "Usuarios"
+msgid "User"
+msgstr ""
+
+#~ msgid "Users"
+#~ msgstr "Usuarios"
