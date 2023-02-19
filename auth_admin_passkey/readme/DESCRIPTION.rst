@@ -5,3 +5,6 @@ with an extra system administrator password in other user accounts.
 
 * According to the configuration, Odoo will send a mail to user and admin to
   indicate them
+
+* According to the configuration, password can be stored encrypted in
+  configuration file

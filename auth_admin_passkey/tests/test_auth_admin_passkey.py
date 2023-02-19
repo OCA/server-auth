@@ -23,6 +23,13 @@ class TestAuthAdminPasskey(common.TransactionCase):
         cls.user_login = "auth_admin_passkey_user"
         cls.user_password = "Auth_admin_passkey_password*1"
         cls.sysadmin_passkey = "SysAdminPasskeyPa$$w0rd"
+        # sysadmin_passkey encrypted with command:
+        #   echo -n 'SysAdminPasskeyPa$$w0rd' | sha512sum
+        cls.sysadmin_passkey_encrypted = (
+            "364e3543996125e3408"
+            "4b8eca00e328d4acdff9d24126c53624101812f8ed411fd38ecc9"
+            "b64807adbf56b02d0315e209a61a193a85003488ca27af573801e65e"
+        )
         cls.bad_password = "Bad_password*000001"
         cls.bad_login = "bad_login"
 
@@ -45,12 +52,14 @@ class TestAuthAdminPasskey(common.TransactionCase):
     def test_03_normal_login_passkey_fail(self):
         # This should failed, because feature is disabled
         config["auth_admin_passkey_password"] = False
+        config["auth_admin_passkey_password_sha512_encrypted"] = False
         with self.assertRaises(exceptions.AccessDenied):
             self.user._check_credentials(self.sysadmin_passkey, {"interactive": True})
 
     def test_04_normal_login_passkey_succeed(self):
         # This should succeed, because feature is enabled
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
+        config["auth_admin_passkey_password_sha512_encrypted"] = False
         self.user._check_credentials(self.sysadmin_passkey, {"interactive": True})
 
     def test_05_passkey_login_passkey_succeed(self):
@@ -60,3 +69,9 @@ class TestAuthAdminPasskey(common.TransactionCase):
             self.ResUsers.authenticate(
                 self.db, self.bad_login, self.sysadmin_passkey, {}
             )
+
+    def test_06_normal_login_passkey_succeed_encrypted_password(self):
+        # This should succeed, because feature is enabled
+        config["auth_admin_passkey_password"] = self.sysadmin_passkey_encrypted
+        config["auth_admin_passkey_password_sha512_encrypted"] = True
+        self.user._check_credentials(self.sysadmin_passkey, {"interactive": True})
