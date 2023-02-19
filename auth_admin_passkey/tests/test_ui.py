@@ -29,6 +29,13 @@ class TestUI(common.HttpCase):
             self.user_login = "auth_admin_passkey_user"
             self.user_password = "Auth_admin_passkey_password*1"
             self.sysadmin_passkey = "SysAdminPasskeyPa$$w0rd"
+            # sysadmin_passkey encrypted with command:
+            #   echo -n 'SysAdminPasskeyPa$$w0rd' | sha512sum
+            self.sysadmin_passkey_encrypted = (
+                "364e3543996125e3408"
+                "4b8eca00e328d4acdff9d24126c53624101812f8ed411fd38ecc9"
+                "b64807adbf56b02d0315e209a61a193a85003488ca27af573801e65e"
+            )
             self.bad_password = "Bad_password*000001"
             self.bad_login = "bad_login"
 
@@ -100,6 +107,7 @@ class TestUI(common.HttpCase):
     def test_03_passkey_login_succeed(self):
         # We enable auth_admin_passkey feature
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
+        config["auth_admin_passkey_password_sha512_encrypted"] = False
 
         # Our passkey user wants to go to backoffice part of Odoo
         response = self.get_request("/web/", data={"db": self.dbname})
@@ -122,6 +130,7 @@ class TestUI(common.HttpCase):
     def test_04_passkey_login_fail(self):
         # We disable auth_admin_passkey feature
         config["auth_admin_passkey_password"] = False
+        config["auth_admin_passkey_password_sha512_encrypted"] = False
 
         # Our passkey user wants to go to backoffice part of Odoo
         response = self.get_request("/web/", data={"db": self.dbname})
@@ -140,3 +149,26 @@ class TestUI(common.HttpCase):
 
         # Passkey feature is disabled so he's redirected to login page again
         self.assertIn("Wrong login/password", response.data.decode("utf8"))
+
+    def test_05_passkey_login_encrypted_succeed(self):
+        # We enable auth_admin_passkey feature with encryption
+        config["auth_admin_passkey_password"] = self.sysadmin_passkey_encrypted
+        config["auth_admin_passkey_password_sha512_encrypted"] = True
+
+        # Our passkey user wants to go to backoffice part of Odoo
+        response = self.get_request("/web/", data={"db": self.dbname})
+
+        # He notices that he's redirected to login page as not authenticated
+        self.assertIn("oe_login_form", response.data.decode("utf8"))
+
+        # He needs to enter his credentials and submit the form
+        data = {
+            "login": self.user_login,
+            "password": self.sysadmin_passkey,
+            "csrf_token": self.csrf_token(response),
+            "db": self.dbname,
+        }
+        response = self.post_request("/web/login/", data=data)
+
+        # He notices that his redirected to backoffice
+        self.assertNotIn("oe_login_form", response.data.decode("utf8"))
