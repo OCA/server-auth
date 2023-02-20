@@ -4,6 +4,6 @@
 -->
 <odoo>
     <record id="base.user_root" model="res.users">
-        <field eval="datetime.now()" name="password_write_date" />
+        <field name="password_write_date" eval="datetime.now()" />
     </record>
 </odoo>
