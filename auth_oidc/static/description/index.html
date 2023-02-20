@@ -410,16 +410,16 @@ library, not to be confused with <tt class="docutils literal">jose</tt> which is
 <p>Example configuration with OpenID Connect implicit flow.
 This configuration is not recommended because it exposes the access token
 to the client, and in logs.</p>
-<dl class="docutils">
-<dt># configure a new web application in Azure with OpenID and implicit flow (see</dt>
-<dd>the <a class="reference external" href="https://docs.microsoft.com/en-us/powerapps/maker/portals/configure/configure-openid-provider)">provider documentation</a>)</dd>
-<dt># in this application the redirect url must be be “&lt;url of your</dt>
-<dd>server&gt;/auth_oauth/signin” and of course this URL should be reachable from
-Azure</dd>
-<dt># create a new authentication provider in Odoo with the following</dt>
-<dd>parameters (see the <a class="reference external" href="https://docs.microsoft.com/en-us/powerapps/maker/portals/configure/configure-openid-settings">portal documentation</a>
-for more information):</dd>
-</dl>
+<ol class="arabic simple">
+<li>configure a new web application in Azure with OpenID and implicit flow (see
+the <a class="reference external" href="https://docs.microsoft.com/en-us/powerapps/maker/portals/configure/configure-openid-provider)">provider documentation</a>)</li>
+<li>in this application the redirect url must be be “&lt;url of your
+server&gt;/auth_oauth/signin” and of course this URL should be reachable from
+Azure</li>
+<li>create a new authentication provider in Odoo with the following
+parameters (see the <a class="reference external" href="https://docs.microsoft.com/en-us/powerapps/maker/portals/configure/configure-openid-settings">portal documentation</a>
+for more information):</li>
+</ol>
 <ul class="simple">
 <li>Provider Name: Azure</li>
 <li>Auth Flow: OpenID Connect</li>
@@ -435,10 +435,12 @@ for more information):</dd>
 <h2><a class="toc-backref" href="#id7">Setup for Keycloak</a></h2>
 <p>Example configuration with OpenID Connect authorization code flow.</p>
 <p>In Keycloak:</p>
-<p># configure a new Client
-# make sure Authorization Code Flow is Enabled.
-# configure the client Access Type as “confidential” and take note of the client secret in the Credentials tab
-# configure the redirect url to be “&lt;url of your server&gt;/auth_oauth/signin”</p>
+<ol class="arabic simple">
+<li>configure a new Client</li>
+<li>make sure Authorization Code Flow is Enabled.</li>
+<li>configure the client Access Type as “confidential” and take note of the client secret in the Credentials tab</li>
+<li>configure the redirect url to be “&lt;url of your server&gt;/auth_oauth/signin”</li>
+</ol>
 <p>In Odoo, create a new Oauth Provider with the following parameters:</p>
 <ul class="simple">
 <li>Provider name: Keycloak (or any name you like that identify your keycloak
