@@ -15,9 +15,6 @@ class ResConfigSettings(models.TransientModel):
     password_history = fields.Integer(
         related="company_id.password_history", readonly=False
     )
-    password_length = fields.Integer(
-        related="company_id.password_length", readonly=False
-    )
     password_lower = fields.Integer(related="company_id.password_lower", readonly=False)
     password_upper = fields.Integer(related="company_id.password_upper", readonly=False)
     password_numeric = fields.Integer(
