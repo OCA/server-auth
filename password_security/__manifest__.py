@@ -5,8 +5,9 @@
 {
     "name": "Password Security",
     "summary": "Allow admin to set password security requirements.",
-    "version": "15.0.1.0.0",
+    "version": "16.0.1.0.0",
     "author": "LasLabs, "
+    "Onestein, "
     "Kaushal Prajapati, "
     "Tecnativa, "
     "initOS GmbH, "
@@ -27,12 +28,6 @@
         "security/ir.model.access.csv",
         "security/res_users_pass_history.xml",
     ],
-    "assets": {
-        "web.assets_common": [
-            "/password_security/static/src/js/password_gauge.js",
-            "/password_security/static/lib/zxcvbn/zxcvbn.min.js",
-        ],
-    },
     "demo": [
         "demo/res_users.xml",
     ],

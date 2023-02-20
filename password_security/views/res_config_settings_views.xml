@@ -14,10 +14,10 @@
         <field name="arch" type="xml">
             <!-- We hide Odoo's minlength sections so it does not create confusion -->
             <xpath expr="//label[@for='minlength']/../.." position="attributes">
-                <attribute name="style">display: none</attribute>
+                <attribute name="invisible">1</attribute>
             </xpath>
             <!-- Add our password policy fields -->
-            <xpath expr="//div[@id='access_rights']" position="before">
+            <xpath expr="//div[@id='enable_password_reset']" position="after">
                 <div class="col-12 col-lg-6 o_setting_box" title="Password Policy">
                     <div class="o_setting_left_pane" />
                     <div class="o_setting_right_pane">
@@ -53,7 +53,7 @@
                             <div class="mt16">
                                 <span>
                                     Minimum number of characters
-                                    <field name="password_length" class="oe_inline" />
+                                    <field name="minlength" class="oe_inline" />
                                 </span>
                             </div>
                             <div class="mt16">

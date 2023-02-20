@@ -14,11 +14,6 @@ class ResCompany(models.Model):
         default=60,
         help="How many days until passwords expire",
     )
-    password_length = fields.Integer(
-        "Characters",
-        default=12,
-        help="Minimum number of characters",
-    )
     password_lower = fields.Integer(
         "Lowercase",
         default=1,
@@ -58,5 +53,5 @@ class ResCompany(models.Model):
 
     @api.constrains("password_estimate")
     def _check_password_estimate(self):
-        if 0 > self.password_estimate > 4:
+        if self.password_estimate < 0 or self.password_estimate > 4:
             raise ValidationError(_("The estimation must be between 0 and 4."))

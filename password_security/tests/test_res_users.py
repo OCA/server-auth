@@ -43,7 +43,7 @@ class TestResUsers(TransactionCase):
         old_write_date = rec_id.password_write_date
         time.sleep(2)
         rec_id.write({"password": "asdQWE123$%^2"})
-        rec_id.refresh()
+        rec_id.invalidate_recordset()
         new_write_date = rec_id.password_write_date
         self.assertNotEqual(
             old_write_date,
@@ -56,7 +56,7 @@ class TestResUsers(TransactionCase):
         old_write_date = rec_id.password_write_date
         time.sleep(2)
         rec_id.write({"name": "Luser"})
-        rec_id.refresh()
+        rec_id.invalidate_recordset()
         new_write_date = rec_id.password_write_date
         self.assertEqual(
             old_write_date,
@@ -92,7 +92,7 @@ class TestResUsers(TransactionCase):
     def test_password_is_expired_if_record_has_no_write_date(self):
         rec_id = self._new_record()
         rec_id.write({"password_write_date": None})
-        rec_id.refresh()
+        rec_id.invalidate_recordset()
         self.assertTrue(
             rec_id._password_has_expired(),
             "Record has no password write date but check failed.",
@@ -102,7 +102,7 @@ class TestResUsers(TransactionCase):
         rec_id = self._new_record()
         old_write_date = "1970-01-01 00:00:00"
         rec_id.write({"password_write_date": old_write_date})
-        rec_id.refresh()
+        rec_id.invalidate_recordset()
         self.assertTrue(
             rec_id._password_has_expired(),
             "Password is out of date but check failed.",
@@ -118,7 +118,7 @@ class TestResUsers(TransactionCase):
     def test_expire_password_generates_token(self):
         rec_id = self._new_record()
         rec_id.sudo().action_expire_password()
-        rec_id.refresh()
+        rec_id.invalidate_recordset()
         token = rec_id.partner_id.signup_token
         self.assertTrue(
             token,
