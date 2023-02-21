@@ -9,7 +9,7 @@
     "author": "XCG Consulting, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
-    "depends": ["base_setup"],
+    "depends": ["base_setup", "web"],
     "external_dependencies": {
         # Place an upper bound on cryptography version to be compatible with
         # pyopenssl 19 mentioned in Odoo 15's requirements.txt. If we don't do
