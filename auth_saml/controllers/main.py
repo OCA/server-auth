@@ -68,10 +68,6 @@ class SAMLLogin(Home):
             domain.append(("autoredirect", "=", True))
         providers = request.env["auth.saml.provider"].sudo().search_read(domain)
 
-        for provider in providers:
-            # Compatibility with auth_oauth/controllers/main.py in order to
-            # avoid KeyError rendering template_auth_oauth_providers
-            provider.setdefault("auth_link", "")
         return providers
 
     def _saml_autoredirect(self):
@@ -131,7 +127,7 @@ class SAMLLogin(Home):
             else:
                 error = None
 
-            response.qcontext["providers"] = providers
+            response.qcontext["saml_providers"] = providers
 
             if error:
                 response.qcontext["error"] = error
