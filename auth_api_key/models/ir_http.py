@@ -34,3 +34,9 @@ class IrHttp(models.AbstractModel):
                 return True
         _logger.error("Wrong HTTP_API_KEY, access denied")
         raise AccessDenied()
+
+    @classmethod
+    def _auth_method_public_or_api_key(cls):
+        if "HTTP_API_KEY" not in request.httprequest.environ:
+            return cls._auth_method_public()
+        return cls._auth_method_api_key()
