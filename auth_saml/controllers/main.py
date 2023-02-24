@@ -1,5 +1,5 @@
 # Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016, 2022 XCG Consulting <https://xcg-consulting.fr/>
+# Copyright (C) 2010-2016, 2022-2023 XCG Consulting <https://xcg-consulting.fr/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
@@ -7,6 +7,7 @@ import json
 import logging
 
 import werkzeug.utils
+from werkzeug.exceptions import BadRequest
 from werkzeug.urls import url_quote_plus
 
 import odoo
@@ -53,7 +54,8 @@ def fragment_to_query_string(func):
 
 
 class SAMLLogin(Home):
-    def _list_saml_providers_domain(self):
+    # Disable pylint self use as the method is meant to be reused in other modules
+    def _list_saml_providers_domain(self):  # pylint: disable=no-self-use
         return []
 
     def list_saml_providers(self, with_autoredirect: bool = False) -> models.Model:
@@ -66,7 +68,8 @@ class SAMLLogin(Home):
         if with_autoredirect:
             domain.append(("autoredirect", "=", True))
         providers = request.env["auth.saml.provider"].sudo().search_read(domain)
-
+        for provider in providers:
+            provider["auth_link"] = self._auth_saml_request_link(provider)
         return providers
 
     def _saml_autoredirect(self):
@@ -78,10 +81,20 @@ class SAMLLogin(Home):
         )
         if autoredirect_providers and not disable_autoredirect:
             return werkzeug.utils.redirect(
-                "/auth_saml/get_auth_request?pid=%d" % autoredirect_providers[0]["id"],
+                self._auth_saml_request_link(autoredirect_providers[0]),
                 303,
             )
         return None
+
+    def _auth_saml_request_link(self, provider: models.Model):
+        """Return the auth request link for the provided provider"""
+        params = {
+            "pid": provider["id"],
+        }
+        redirect = request.params.get("redirect")
+        if redirect:
+            params["redirect"] = redirect
+        return "/auth_saml/get_auth_request?%s" % werkzeug.urls.url_encode(params)
 
     @http.route()
     def web_client(self, s_action=None, **kw):
@@ -143,7 +156,6 @@ class AuthSAMLController(http.Controller):
         The provider will automatically set things like the dbname, provider
         id, etc.
         """
-
         redirect = request.params.get("redirect") or "web"
         if not redirect.startswith(("//", "http://", "https://")):
             redirect = "{}{}".format(
@@ -198,6 +210,8 @@ class AuthSAMLController(http.Controller):
         state = json.loads(kw["RelayState"])
         provider = state["p"]
         dbname = state["d"]
+        if not http.db_filter([dbname]):
+            return BadRequest()
         context = state.get("c", {})
         registry = registry_get(dbname)
 
@@ -215,8 +229,15 @@ class AuthSAMLController(http.Controller):
                 )
                 action = state.get("a")
                 menu = state.get("m")
+                redirect = (
+                    werkzeug.urls.url_unquote_plus(state["r"])
+                    if state.get("r")
+                    else False
+                )
                 url = "/"
-                if action:
+                if redirect:
+                    url = redirect
+                elif action:
                     url = "/#action=%s" % action
                 elif menu:
                     url = "/#menu_id=%s" % menu

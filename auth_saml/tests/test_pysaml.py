@@ -1,5 +1,8 @@
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 import base64
+import html
 import os
+from unittest.mock import patch
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
@@ -85,6 +88,21 @@ class TestPySaml(HttpCase):
         self.assertIn("Login with Authentic", response.text)
         self.assertIn(self.url_saml_request, response.text)
 
+    def test_ensure_provider_appears_on_login_with_redirect_param(self):
+        """Test that SAML provider is listed in the login page keeping the redirect"""
+        response = self.url_open(
+            "/web/login?redirect=%2Fweb%23action%3D37%26model%3Dir.module.module%26view"
+            "_type%3Dkanban%26menu_id%3D5"
+        )
+        self.assertIn("Login with Authentic", response.text)
+        self.assertIn(
+            "/auth_saml/get_auth_request?pid={}&amp;redirect=%2Fweb%23action%3D37%26mod"
+            "el%3Dir.module.module%26view_type%3Dkanban%26menu_id%3D5".format(
+                self.saml_provider.id
+            ),
+            response.text,
+        )
+
     def test_ensure_metadata_present(self):
         response = self.url_open(
             "/auth_saml/metadata?p=%d&d=%s"
@@ -96,7 +114,7 @@ class TestPySaml(HttpCase):
 
     def test_ensure_get_auth_request_redirects(self):
         response = self.url_open(
-            "/auth_saml/get_auth_request?pid=%d" % (self.saml_provider.id),
+            "/auth_saml/get_auth_request?pid=%d" % self.saml_provider.id,
             allow_redirects=False,
         )
         self.assertTrue(response.ok)
@@ -160,7 +178,7 @@ class TestPySaml(HttpCase):
         self.assertEqual(200, response.status_code)
         unpacked_response = response._unpack()
 
-        (_database, login, token) = (
+        (database, login, token) = (
             self.env["res.users"]
             .sudo()
             .auth_saml(
@@ -168,6 +186,7 @@ class TestPySaml(HttpCase):
             )
         )
 
+        self.assertEqual(database, self.env.cr.dbname)
         self.assertEqual(login, self.user.login)
 
         # We should not be able to log in with the wrong token
@@ -273,3 +292,47 @@ class TestPySaml(HttpCase):
         ).value = "False"
         # Test base.user_admin exception
         self.env.ref("base.user_admin").password = "nNRST4j*->sEatNGg._!"
+
+    def test_db_filtering(self):
+        # change filter to only allow our db.
+        with patch("odoo.http.db_filter", new=lambda *args, **kwargs: []):
+            self.add_provider_to_user()
+
+            redirect_url = self.saml_provider._get_auth_request()
+            response = self.idp.fake_login(redirect_url)
+            unpacked_response = response._unpack()
+
+            for key in unpacked_response:
+                unpacked_response[key] = html.unescape(unpacked_response[key])
+            response = self.url_open("/auth_saml/signin", data=unpacked_response)
+            self.assertFalse(response.ok)
+            self.assertIn(response.status_code, [400, 404])
+
+    def test_redirect_after_login(self):
+        """Test that providing a redirect will be kept after SAML login."""
+        self.add_provider_to_user()
+
+        redirect_url = self.saml_provider._get_auth_request(
+            {
+                "r": "%2Fweb%23action%3D37%26model%3Dir.module.module%26view_type%3Dkan"
+                "ban%26menu_id%3D5"
+            }
+        )
+        response = self.idp.fake_login(redirect_url)
+        unpacked_response = response._unpack()
+
+        for key in unpacked_response:
+            unpacked_response[key] = html.unescape(unpacked_response[key])
+        response = self.url_open(
+            "/auth_saml/signin",
+            data=unpacked_response,
+            allow_redirects=True,
+            timeout=300,
+        )
+        self.assertTrue(response.ok)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.url,
+            self.base_url()
+            + "/web#action=37&model=ir.module.module&view_type=kanban&menu_id=5",
+        )
