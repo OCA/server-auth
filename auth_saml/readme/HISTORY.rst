@@ -1,3 +1,13 @@
+15.0.1.4.0
+~~~~~~~~~~
+
+Handle redirect after authentification.
+
+15.0.1.3.0
+~~~~~~~~~~
+
+Improve login page.
+
 15.0.1.1.0
 ~~~~~~~~~~
 
