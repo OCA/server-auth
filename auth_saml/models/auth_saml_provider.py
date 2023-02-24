@@ -191,7 +191,7 @@ class AuthSamlProvider(models.Model):
 
         return keys_path
 
-    def _get_config_for_provider(self, base_url: str = None):
+    def _get_config_for_provider(self, base_url: str = None) -> Saml2Config:
         """
         Internal helper to get a configured Saml2Client
         """
@@ -237,7 +237,7 @@ class AuthSamlProvider(models.Model):
         sp_config.allow_unknown_attributes = True
         return sp_config
 
-    def _get_client_for_provider(self, base_url: str = None):
+    def _get_client_for_provider(self, base_url: str = None) -> Saml2Client:
         sp_config = self._get_config_for_provider(base_url)
         saml_client = Saml2Client(config=sp_config)
         return saml_client
@@ -336,7 +336,7 @@ class AuthSamlProvider(models.Model):
             {"saml_provider_id": self.id, "saml_request_id": reqid}
         )
 
-    def _metadata_string(self, valid=None, base_url=None):
+    def _metadata_string(self, valid=None, base_url: str = None):
         self.ensure_one()
 
         sp_config = self._get_config_for_provider(base_url)
