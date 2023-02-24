@@ -12,7 +12,6 @@ class CompanyLDAP(models.Model):
     _inherit = "res.company.ldap"
 
     name_attribute = fields.Char(
-        "Name Attribute",
         default="cn",
         help="By default 'cn' is used. "
         "For ActiveDirectory you might use 'displayName' instead.",
@@ -46,7 +45,8 @@ class CompanyLDAP(models.Model):
                     values[value_key] = tools.ustr(ldap_entry[1][conf[conf_name]][0])
             except KeyError:
                 _logger.warning(
-                    'No LDAP attribute "%s" found for login  "%s"'
-                    % (conf.get(conf_name), values.get("login"))
+                    'No LDAP attribute "%s" found for login  "%s"',
+                    conf.get(conf_name),
+                    values.get("login"),
                 )
         return values
