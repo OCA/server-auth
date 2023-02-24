@@ -1,3 +1,8 @@
+15.0.1.2.0
+~~~~~~~~~~
+
+Handle redirect after authentification.
+
 15.0.1.1.0
 ~~~~~~~~~~
 
