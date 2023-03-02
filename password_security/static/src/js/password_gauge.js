@@ -14,20 +14,20 @@ odoo.define("password_security.policy", function (require) {
          *
          * @param {Object} info
          * @param {Number} [info.password_length=4]
-         * @param {Number} [info.password_lower=1]
-         * @param {Number} [info.password_upper=1]
-         * @param {Number} [info.password_numeric=1]
-         * @param {Number} [info.password_special=1]
+         * @param {Number} [info.password_lower]
+         * @param {Number} [info.password_upper]
+         * @param {Number} [info.password_numeric]
+         * @param {Number} [info.password_special]
          * @param {Number} [info.password_estimate=3]
          */
         init: function (info) {
             this._super(info);
 
             this._password_length = info.password_length || 4;
-            this._password_lower = info.password_lower || 1;
-            this._password_upper = info.password_upper || 1;
-            this._password_numeric = info.password_numeric || 1;
-            this._password_special = info.password_special || 1;
+            this._password_lower = info.password_lower;
+            this._password_upper = info.password_upper;
+            this._password_numeric = info.password_numeric;
+            this._password_special = info.password_special;
             this._password_estimate = info.password_estimate || 3;
         },
 
@@ -79,6 +79,10 @@ odoo.define("password_security.policy", function (require) {
         },
 
         _calculate_password_score: function (pattern, min_count, password) {
+            if (!min_count) {
+                return 1.0;
+            }
+
             var matchMinCount = new RegExp(
                 "(.*" + pattern + ".*){" + min_count + ",}",
                 "g"
