@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 ACSONE SA/NV
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record model="ir.ui.view" id="oauth_ropc_provider_form_view">
+        <field name="name">oauth.ropc.provider.form (in auth_oauth_ropc)</field>
+        <field name="model">oauth.ropc.provider</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="client_id" />
+                        <field name="client_secret" />
+                        <field name="auth_endpoint" />
+                        <field name="resource" />
+                        <field name="scope" />
+                        <field name="active" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="oauth_ropc_provider_tree_view">
+        <field name="name">oauth.ropc.provider.tree (in auth_oauth_ropc)</field>
+        <field name="model">oauth.ropc.provider</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="client_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="oauth_ropc_provider_act_window">
+        <field name="name">oauth ROPC Providers</field>
+        <field name="res_model">oauth.ropc.provider</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+
+    <record model="ir.ui.menu" id="oauth_ropc_provider_menu">
+        <field name="name">oauth ROPC Providers</field>
+        <field name="parent_id" ref="base.menu_users" />
+        <field name="action" ref="oauth_ropc_provider_act_window" />
+        <field name="sequence" eval="50" />
+    </record>
+
+</odoo>
