@@ -58,5 +58,5 @@ class ResCompany(models.Model):
 
     @api.constrains("password_estimate")
     def _check_password_estimate(self):
-        if 0 > self.password_estimate > 4:
+        if self.password_estimate < 0 or self.password_estimate > 4:
             raise ValidationError(_("The estimation must be between 0 and 4."))
