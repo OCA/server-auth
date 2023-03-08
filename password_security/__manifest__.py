@@ -32,6 +32,9 @@
             "/password_security/static/src/js/password_gauge.js",
             "/password_security/static/lib/zxcvbn/zxcvbn.min.js",
         ],
+        "web.qunit_suite_tests": [
+            "password_security/static/tests/**/*",
+        ],
     },
     "demo": [
         "demo/res_users.xml",
