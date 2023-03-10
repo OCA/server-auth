@@ -42,11 +42,11 @@ class ResUsers(models.Model):
     def write(self, vals):
         if vals.get("password"):
             vals["password_write_date"] = fields.Datetime.now()
-        return super().write(vals)
+        return super(ResUsers, self).write(vals)
 
     @api.model
     def get_password_policy(self):
-        data = super().get_password_policy()
+        data = super(ResUsers, self).get_password_policy()
         company_id = self.env.user.company_id
         data.update(
             {
@@ -60,7 +60,7 @@ class ResUsers(models.Model):
         return data
 
     def _check_password_policy(self, passwords):
-        result = super()._check_password_policy(passwords)
+        result = super(ResUsers, self)._check_password_policy(passwords)
 
         for password in passwords:
             if not password:
@@ -202,7 +202,7 @@ class ResUsers(models.Model):
 
     def _set_encrypted_password(self, uid, pw):
         """It saves password crypt history for history rules"""
-        res = super()._set_encrypted_password(uid, pw)
+        res = super(ResUsers, self)._set_encrypted_password(uid, pw)
 
         self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
         return res
@@ -215,4 +215,4 @@ class ResUsers(models.Model):
             if not self.env.user._is_admin():
                 users = self.filtered(lambda user: user.active)
                 users._validate_pass_reset()
-        return super().action_reset_password()
+        return super(ResUsers, self).action_reset_password()
