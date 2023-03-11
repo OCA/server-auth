@@ -24,7 +24,7 @@ class ResUsers(models.Model):
     def create(self, vals_list):
         """Overload create multiple to lowercase login."""
         for val in vals_list:
-            val["login"] = val.get("login", "").lower()
+            val["login"] = str(val.get("login", "")).lower()
         return super(ResUsers, self).create(vals_list)
 
     def write(self, vals):
