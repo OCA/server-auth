@@ -1,0 +1,6 @@
+diff a/.pre-commit-config.yaml b/.pre-commit-config.yaml	(rejected hunks)
+@@ -27,3 +27,3 @@ repos:
+   - repo: https://github.com/acsone/setuptools-odoo
+-    rev: 3.0.6
++    rev: 3.1.8
+     hooks:
