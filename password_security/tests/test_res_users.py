@@ -2,10 +2,10 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 from odoo.exceptions import UserError
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
-class TestResUsers(SavepointCase):
+class TestResUsers(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(TestResUsers, cls).setUpClass()
@@ -17,6 +17,7 @@ class TestResUsers(SavepointCase):
         }
         cls.password = "asdQWE123$%^"
         cls.main_comp = cls.env.ref("base.main_company")
+        cls.main_comp.password_policy_enabled = True
         cls.vals = {
             "name": "User",
             "login": cls.login,

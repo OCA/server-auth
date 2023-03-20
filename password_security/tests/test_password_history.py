@@ -12,6 +12,7 @@ class TestPasswordHistory(TransactionCase):
         user = self.env.ref("base.user_admin")
         user.company_id.update(
             {
+                "password_policy_enabled": True,
                 "password_estimate": 0,
                 "password_length": 0,
                 "password_lower": 0,

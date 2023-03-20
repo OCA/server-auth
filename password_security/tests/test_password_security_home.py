@@ -33,6 +33,8 @@ class MockPassError(UserError):
 class TestPasswordSecurityHome(TransactionCase):
     def setUp(self):
         super(TestPasswordSecurityHome, self).setUp()
+        self.main_comp = self.env.ref("base.main_company")
+        self.main_comp.password_policy_enabled = True
         self.PasswordSecurityHome = main.PasswordSecurityHome
         self.password_security_home = self.PasswordSecurityHome()
         self.passwd = "I am a password!"
@@ -175,6 +177,11 @@ class TestPasswordSecurityHome(TransactionCase):
 
 @mock.patch("odoo.http.WebRequest.validate_csrf", return_value=True)
 class LoginCase(HttpCase):
+    def setUp(self):
+        super(LoginCase, self).setUp()
+        self.main_comp = self.env.ref("base.main_company")
+        self.main_comp.password_policy_enabled = True
+
     def test_web_login_authenticate(self, *args):
         """It should allow authenticating by login"""
         response = self.url_open(
