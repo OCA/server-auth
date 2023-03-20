@@ -19,9 +19,9 @@ Vault
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
     :target: https://translation.odoo-community.org/projects/server-auth-13-0/server-auth-13-0-vault
     :alt: Translate me on Weblate
-.. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/13.0
-    :alt: Try me on Runbot
+.. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
+    :target: https://runboat.odoo-community.org/webui/builds.html?repo=OCA/server-auth&target_branch=13.0
+    :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
 
@@ -47,6 +47,12 @@ Known issues / Roadmap
 
  * Support challenge-response/FIDO2
  * Support for argon2 and kdbx v4
+
+* When changing an entry from one vault to another existing vault, the values added on
+  this entry cannot be accessed, so the field vault is going to be readonly when it
+  is defined.
+
+  If you want to move entries between vaults you can use the export -> import option.
 
 Bug Tracker
 ===========
