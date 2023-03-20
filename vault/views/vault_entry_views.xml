@@ -48,7 +48,12 @@
 
                     <group>
                         <group>
-                            <field name="vault_id" invisible="1" />
+                            <field
+                                name="vault_id"
+                                invisible="1"
+                                force_save="1"
+                                attrs="{'readonly': [('vault_id', '!=', False)]}"
+                            />
                             <field
                                 name="parent_id"
                                 options="{'no_open': true, 'no_create_edit': true, 'no_quick_create': true}"
