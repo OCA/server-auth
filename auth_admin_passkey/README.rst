@@ -33,7 +33,7 @@ with an extra system administrator password in other user accounts.
 * According to the configuration, Odoo will send a mail to user and admin to
   indicate them
 
-* According to the configuration, password can be stored encrypted in 
+* According to the configuration, password can be stored encrypted in
   configuration file
 
 **Table of contents**
@@ -53,7 +53,7 @@ following keys in your ``odoo.cfg`` configuration file.
 
 * ``auth_admin_passkey_password_sha512_encrypted`` (default False), if enabled,
   auth_admin_passkey_password should be the password encrypted with sha512.
-  On linux, this can be done using this command: 
+  On linux, this can be done using this command:
   ``echo -n YOUR_PASSWORD_AUTH_ADMIN_PASSKEY | sha512sum``
 
 * ``auth_admin_passkey_send_to_user`` (default True), if enabled, an email
