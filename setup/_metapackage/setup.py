@@ -16,6 +16,7 @@ setuptools.setup(
         'odoo-addon-auth_oidc>=15.0dev,<15.1dev',
         'odoo-addon-auth_saml>=15.0dev,<15.1dev',
         'odoo-addon-auth_session_timeout>=15.0dev,<15.1dev',
+        'odoo-addon-auth_signup_partner_company>=15.0dev,<15.1dev',
         'odoo-addon-auth_signup_verify_email>=15.0dev,<15.1dev',
         'odoo-addon-auth_user_case_insensitive>=15.0dev,<15.1dev',
         'odoo-addon-password_security>=15.0dev,<15.1dev',
