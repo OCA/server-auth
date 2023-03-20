@@ -20,12 +20,12 @@ msgstr ""
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
-msgid "%s entry %s by %s"
-msgstr "%s registrado %s por %s"
+msgid "%(action)s entry %(name)s by %(user)s"
+msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "A-Z"
 msgstr "A-Z"
@@ -155,7 +155,7 @@ msgstr "Por vault"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
@@ -166,14 +166,14 @@ msgstr "Cancelar"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Cancelled"
 msgstr "Cancelado"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Characters:"
 msgstr "Caracteres:"
@@ -205,7 +205,7 @@ msgstr "Opciones de Configuración"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Confirm your password:"
 msgstr "Confirma tu contraseña:"
@@ -217,7 +217,7 @@ msgstr "Contenido"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Copy to clipboard"
 msgstr "Copiar al portapapeles"
@@ -247,16 +247,16 @@ msgid "Created by"
 msgstr "Creado por"
 
 #. module: vault
+#: code:addons/vault/models/vault_inbox.py:0
+#, python-format
+msgid "Created by %(name)s via %(ip)s"
+msgstr ""
+
+#. module: vault
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #, python-format
 msgid "Created by %s"
 msgstr "Creado por %s"
-
-#. module: vault
-#: code:addons/vault/models/vault_inbox.py:0
-#, python-format
-msgid "Created by %s via %s"
-msgstr "Creado por %s via %s"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__create_date
@@ -303,12 +303,8 @@ msgid "Delete"
 msgstr "Borrar"
 
 #. module: vault
-#: model:ir.model.fields,field_description:vault.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:vault.field_res_users__display_name
 #: model:ir.model.fields,field_description:vault.field_res_users_key__display_name
 #: model:ir.model.fields,field_description:vault.field_vault__display_name
-#: model:ir.model.fields,field_description:vault.field_vault_abstract__display_name
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_entry__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_field__display_name
@@ -327,7 +323,7 @@ msgstr "Nombre a mostrar"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_controller.js:0
+#: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "Do you really want to create a new key pair and set it active?"
 msgstr "¿Realmente quieres crear un nuevo par de claves y activarlo?"
@@ -339,14 +335,14 @@ msgstr "Descargar"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Enter"
 msgstr "Ingrese a"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Enter your password:"
 msgstr "Ingresa tu contraseña:"
@@ -416,21 +412,21 @@ msgstr "Asistente de exportación para vaults"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export keys to object store"
 msgstr "Fallo en la exportación de claves al almacén de objetos"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export the keys to the database"
 msgstr "Fallo en la exportación de claves a la base de datos"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to import keys from database"
 msgstr "Fallo en la importación de claves desde la base de datos"
@@ -479,14 +475,14 @@ msgstr "Huella digital"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Generate"
 msgstr "Generar"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Generate a new secret:"
 msgstr "Generar nuevo secreto:"
@@ -498,18 +494,14 @@ msgstr "Agrupado"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Hide"
 msgstr "Ocultar"
 
 #. module: vault
-#: model:ir.model.fields,field_description:vault.field_res_config_settings__id
-#: model:ir.model.fields,field_description:vault.field_res_users__id
 #: model:ir.model.fields,field_description:vault.field_res_users_key__id
 #: model:ir.model.fields,field_description:vault.field_vault__id
-#: model:ir.model.fields,field_description:vault.field_vault_abstract__id
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__id
 #: model:ir.model.fields,field_description:vault.field_vault_entry__id
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__id
 #: model:ir.model.fields,field_description:vault.field_vault_field__id
@@ -656,7 +648,8 @@ msgstr "Clave"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/user_menu.esm.js:0
 #, python-format
 msgid "Key Management"
 msgstr "Gestión de claves"
@@ -668,7 +661,7 @@ msgstr "Clave de usuario"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Keyfile:"
 msgstr "Archivo de llaves:"
@@ -679,12 +672,8 @@ msgid "Keys"
 msgstr "Claves"
 
 #. module: vault
-#: model:ir.model.fields,field_description:vault.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:vault.field_res_users____last_update
 #: model:ir.model.fields,field_description:vault.field_res_users_key____last_update
 #: model:ir.model.fields,field_description:vault.field_vault____last_update
-#: model:ir.model.fields,field_description:vault.field_vault_abstract____last_update
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_entry____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_field____last_update
@@ -741,7 +730,7 @@ msgstr "Última actualización en"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Length:"
 msgstr "Longitud:"
@@ -792,7 +781,7 @@ msgstr "Falta el nombre del fichero"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Missing password"
 msgstr "Falta la contraseña"
@@ -884,7 +873,7 @@ msgstr "Registro padre"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Password:"
 msgstr "Contraseña:"
@@ -906,29 +895,29 @@ msgstr "Usuario permanente"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_export.js:0
-#: code:addons/vault/static/src/js/vault_import.js:0
+#: code:addons/vault/static/src/backend/export.esm.js:0
+#: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the database"
 msgstr "Por favor, introduzca la contraseña de la base de datos"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_import.js:0
+#: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the keepass database"
 msgstr "Por favor, introduzca la contraseña de la base de datos keepass"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Please enter the password for your private key"
 msgstr "Por favor, introduzca la contraseña de su clave privada"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Please enter your password or upload a keyfile:"
 msgstr "Por favor, introduzca su contraseña o cargue un archivo de claves:"
@@ -970,14 +959,14 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "Save As..."
 msgstr "Guardar como..."
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Save in a vault"
 msgstr "Guardar en un vault"
@@ -1013,14 +1002,14 @@ msgstr "Enviar"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Send the secret to an user"
 msgstr "Enviar secreto a un usuario"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "Send the secret to another user"
 msgstr "Enviar secreto a otro usuario"
@@ -1032,7 +1021,7 @@ msgstr "Compartir"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Show"
 msgstr "Mostrar"
@@ -1045,7 +1034,7 @@ msgstr "Algo ha ido mal en el encriptado"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Special"
 msgstr "Especial"
@@ -1062,7 +1051,7 @@ msgstr "Tienda"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "Store the secret in a vault"
 msgstr "Guarda el secreto en un vault"
@@ -1094,7 +1083,7 @@ msgstr "El UUID debe ser único."
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "The field is empty, there's nothing to save!"
 msgstr "El campo está vacío, ¡no hay nada que guardar!"
@@ -1106,7 +1095,7 @@ msgstr "Los archivos deben terminar en uno de los tipos de archivo admitidos:"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "The passwords aren't matching"
 msgstr "Las contraseñas no coinciden"
@@ -1136,7 +1125,7 @@ msgstr "El usuario debe ser único"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_controller.js:0
+#: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "This will re-encrypt everything in the vault. Do you want to proceed?"
 msgstr "Esto volverá a encriptar todo en el vault. ¿Quieres proceder?"
@@ -1148,7 +1137,7 @@ msgstr "Token"
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_import.js:0
+#: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Unsupported file to import"
 msgstr "Archivo no compatible para importar"
@@ -1301,8 +1290,8 @@ msgstr "Escribir"
 #. module: vault
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
-msgid "Written by %s via %s"
-msgstr "Escrito por %s via %s"
+msgid "Written by %(name)s via %(ip)s"
+msgstr ""
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
@@ -1330,7 +1319,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "a-z"
 msgstr "a-z"
@@ -1341,3 +1330,15 @@ msgstr "a-z"
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 msgid "or"
 msgstr "o"
+
+#, python-format
+#~ msgid "%s entry %s by %s"
+#~ msgstr "%s registrado %s por %s"
+
+#, python-format
+#~ msgid "Created by %s via %s"
+#~ msgstr "Creado por %s via %s"
+
+#, python-format
+#~ msgid "Written by %s via %s"
+#~ msgstr "Escrito por %s via %s"

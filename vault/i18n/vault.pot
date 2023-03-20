@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 14.0\n"
+"Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,12 +16,12 @@ msgstr ""
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
-msgid "%s entry %s by %s"
+msgid "%(action)s entry %(name)s by %(user)s"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "A-Z"
 msgstr ""
@@ -149,8 +149,8 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
@@ -161,15 +161,15 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Cancelled"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Characters:"
 msgstr ""
@@ -201,7 +201,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Confirm your password:"
 msgstr ""
@@ -213,8 +213,8 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Copy to clipboard"
 msgstr ""
@@ -244,15 +244,15 @@ msgid "Created by"
 msgstr ""
 
 #. module: vault
-#: code:addons/vault/wizards/vault_send_wizard.py:0
+#: code:addons/vault/models/vault_inbox.py:0
 #, python-format
-msgid "Created by %s"
+msgid "Created by %(name)s via %(ip)s"
 msgstr ""
 
 #. module: vault
-#: code:addons/vault/models/vault_inbox.py:0
+#: code:addons/vault/wizards/vault_send_wizard.py:0
 #, python-format
-msgid "Created by %s via %s"
+msgid "Created by %s"
 msgstr ""
 
 #. module: vault
@@ -300,12 +300,8 @@ msgid "Delete"
 msgstr ""
 
 #. module: vault
-#: model:ir.model.fields,field_description:vault.field_res_config_settings__display_name
-#: model:ir.model.fields,field_description:vault.field_res_users__display_name
 #: model:ir.model.fields,field_description:vault.field_res_users_key__display_name
 #: model:ir.model.fields,field_description:vault.field_vault__display_name
-#: model:ir.model.fields,field_description:vault.field_vault_abstract__display_name
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_entry__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_field__display_name
@@ -324,7 +320,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_controller.js:0
+#: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "Do you really want to create a new key pair and set it active?"
 msgstr ""
@@ -336,15 +332,15 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Enter"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Enter your password:"
 msgstr ""
@@ -414,21 +410,21 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export keys to object store"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export the keys to the database"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to import keys from database"
 msgstr ""
@@ -477,15 +473,15 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Generate"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Generate a new secret:"
 msgstr ""
@@ -497,19 +493,15 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Hide"
 msgstr ""
 
 #. module: vault
-#: model:ir.model.fields,field_description:vault.field_res_config_settings__id
-#: model:ir.model.fields,field_description:vault.field_res_users__id
 #: model:ir.model.fields,field_description:vault.field_res_users_key__id
 #: model:ir.model.fields,field_description:vault.field_vault__id
-#: model:ir.model.fields,field_description:vault.field_vault_abstract__id
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__id
 #: model:ir.model.fields,field_description:vault.field_vault_entry__id
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__id
 #: model:ir.model.fields,field_description:vault.field_vault_field__id
@@ -566,6 +558,7 @@ msgstr ""
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
+#: model:ir.model.fields,field_description:vault.field_res_users__inbox_ids
 #: model:ir.model.fields,field_description:vault.field_vault_inbox_log__inbox_id
 #: model:ir.ui.menu,name:vault.menu_vault_inbox
 msgid "Inbox"
@@ -619,6 +612,11 @@ msgid "Invalid token"
 msgstr ""
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid "Invalidate private key"
+msgstr ""
+
+#. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
 msgid "Iterations"
 msgstr ""
@@ -649,7 +647,8 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/user_menu.esm.js:0
 #, python-format
 msgid "Key Management"
 msgstr ""
@@ -661,7 +660,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Keyfile:"
 msgstr ""
@@ -672,12 +671,8 @@ msgid "Keys"
 msgstr ""
 
 #. module: vault
-#: model:ir.model.fields,field_description:vault.field_res_config_settings____last_update
-#: model:ir.model.fields,field_description:vault.field_res_users____last_update
 #: model:ir.model.fields,field_description:vault.field_res_users_key____last_update
 #: model:ir.model.fields,field_description:vault.field_vault____last_update
-#: model:ir.model.fields,field_description:vault.field_vault_abstract____last_update
-#: model:ir.model.fields,field_description:vault.field_vault_abstract_field____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_entry____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_field____last_update
@@ -734,7 +729,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Length:"
 msgstr ""
@@ -785,8 +780,8 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Missing password"
 msgstr ""
@@ -878,7 +873,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Password:"
 msgstr ""
@@ -900,29 +895,29 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_export.js:0
-#: code:addons/vault/static/src/js/vault_import.js:0
+#: code:addons/vault/static/src/backend/export.esm.js:0
+#: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the database"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_import.js:0
+#: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the keepass database"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault.js:0
+#: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Please enter the password for your private key"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Please enter your password or upload a keyfile:"
 msgstr ""
@@ -964,18 +959,18 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "Save As..."
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Save in a vault"
 msgstr ""
@@ -1011,15 +1006,15 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Send the secret to an user"
 msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "Send the secret to another user"
 msgstr ""
@@ -1031,8 +1026,8 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Show"
 msgstr ""
@@ -1045,7 +1040,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Special"
 msgstr ""
@@ -1062,7 +1057,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "Store the secret in a vault"
 msgstr ""
@@ -1094,8 +1089,8 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_widget.js:0
-#: code:addons/vault/static/src/js/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
+#: code:addons/vault/static/src/legacy/vault_widget.js:0
 #, python-format
 msgid "The field is empty, there's nothing to save!"
 msgstr ""
@@ -1107,7 +1102,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_utils.js:0
+#: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "The passwords aren't matching"
 msgstr ""
@@ -1135,7 +1130,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_controller.js:0
+#: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "This will re-encrypt everything in the vault. Do you want to proceed?"
 msgstr ""
@@ -1147,7 +1142,7 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/js/vault_import.js:0
+#: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Unsupported file to import"
 msgstr ""
@@ -1297,7 +1292,7 @@ msgstr ""
 #. module: vault
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
-msgid "Written by %s via %s"
+msgid "Written by %(name)s via %(ip)s"
 msgstr ""
 
 #. module: vault
@@ -1314,8 +1309,14 @@ msgid ""
 msgstr ""
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
+msgid ""
+"You will loose access to all vaults and your inbox. Do you want to continue?"
+msgstr ""
+
+#. module: vault
 #. openerp-web
-#: code:addons/vault/static/src/xml/templates.xml:0
+#: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "a-z"
 msgstr ""
