@@ -8,6 +8,7 @@ setuptools.setup(
     description="Meta package for oca-server-auth Odoo addons",
     version=version,
     install_requires=[
+        'odoo-addon-auth_admin_passkey>=16.0dev,<16.1dev',
         'odoo-addon-auth_api_key>=16.0dev,<16.1dev',
     ],
     classifiers=[
