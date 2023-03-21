@@ -8,6 +8,13 @@
         <field name="arch" type="xml">
             <form create="false" edit="false">
                 <sheet>
+                  <field name="active" invisible="1" />
+                  <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
                     <label for="name" class="oe_edit_only" />
                     <h1>
                         <field name="name" class="oe_inline" />
