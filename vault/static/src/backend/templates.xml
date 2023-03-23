@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="UserMenu.Actions">
+        <t t-jquery="[data-menu='settings']" t-operation="before">
+            <a
+                role="menuitem"
+                href="#"
+                data-menu="keys"
+                class="dropdown-item"
+            >Key Management</a>
+        </t>
+    </t>
+
+    <t t-name="vault.buttons">
+        <button
+            class="btn fa fa-eye o_vault_show"
+            t-if="show"
+            title="Show"
+            aria-label="Show"
+        />
+        <button
+            class="btn fa fa-eye-slash o_vault_show"
+            t-else=""
+            title="Hide"
+            aria-label="Hide"
+        />
+        <button
+            class="btn fa fa-clipboard o_vault_clipboard"
+            title="Copy to clipboard"
+            aria-label="Copy to clipboard"
+        />
+        <button
+            class="btn fa fa-share-alt o_vault_send"
+            title="Send the secret to an user"
+            aria-label="Send the secret to an user"
+        />
+    </t>
+
+    <div t-name="vault.askpass" class="o_form_view">
+        <label for="password" class="col-lg-auto col-form-label">
+            Please enter your password or upload a keyfile:
+        </label>
+
+        <table class="col o_group">
+            <tr>
+                <td class="o_td_label text-nowrap">
+                    <label class="o_form_label">Enter your password:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required="required"
+                    />
+                </td>
+            </tr>
+            <tr t-if="confirm">
+                <td class="o_td_label text-nowrap">
+                    <label class="o_form_label">Confirm your password:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="password"
+                        name="confirm"
+                        id="confirm"
+                        required="required"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td class="o_td_label text-nowrap">
+                    <label class="o_form_label">Keyfile:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="file"
+                        name="keyfile"
+                        id="keyfile"
+                        required="required"
+                    />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div t-name="vault.generate_pass" class="o_form_view">
+        <label for="password" class="col-lg-auto col-form-label">
+            Generate a new secret:
+        </label>
+
+        <table class="col o_group">
+            <tr>
+                <td class="o_td_label">
+                    <label class="o_form_label">Password:</label>
+                </td>
+                <td class="col-12">
+                    <span id="password" class="col-12 text-monospace" />
+                </td>
+            </tr>
+            <tr>
+                <td class="o_td_label">
+                    <label class="o_form_label">Length:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="range"
+                        id="length"
+                        min="8"
+                        max="64"
+                        value="15"
+                        class="col-12 custom-range align-middle"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td class="o_td_label">
+                    <label class="o_form_label">Characters:</label>
+                </td>
+                <td class="col-12">
+                    <input type="checkbox" id="big_letter" checked="checked" />
+                    <label class="o_form_label">A-Z</label>
+
+                    <input type="checkbox" id="small_letter" checked="checked" />
+                    <label class="o_form_label">a-z</label>
+
+                    <input type="checkbox" id="digits" checked="checked" />
+                    <label class="o_form_label">0-9</label>
+
+                    <input type="checkbox" id="special" />
+                    <label class="o_form_label">Special</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <t t-name="FieldVault">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-elif="widget.mode == 'edit'">
+            <button
+                class="btn fa fa-lock o_vault_generate"
+                title="Generate"
+                aria-label="Generate"
+            />
+            <input class="o_vault_value" t-esc="value" />
+        </div>
+        <div class="o_vault" t-else="">
+            <t t-call="vault.buttons" />
+            <span class="o_vault_value" t-esc="value" />
+        </div>
+    </t>
+
+    <t t-name="FieldVaultInbox">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-else="">
+            <t t-call="vault.buttons" />
+            <button
+                class="btn fa fa-save o_vault_save"
+                title="Save in a vault"
+                aria-label="Save in a vault"
+            />
+
+            <span class="o_vault_inbox" t-esc="value" />
+        </div>
+    </t>
+
+    <t t-name="FileVaultInbox">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-else="">
+            <button
+                class="btn fa fa-save o_vault_save"
+                title="Save in a vault"
+                aria-label="Save in a vault"
+            />
+
+            <span class="link">
+                <span class="fa fa-download" />
+                <t t-esc="filename" />
+            </span>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_search" model="ir.ui.view">
+        <field name="name">vault.search</field>
+        <field name="model">vault</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" operator="ilike" />
+                <field name="note" operator="ilike" />
+            </search>
+        </field>
+    </record>
+
+    <record id="action_open_entries" model="ir.actions.act_window">
+        <field name="name">Entries</field>
+        <field name="res_model">vault.entry</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[("vault_id", "=", active_id)]</field>
+        <field name="context">{
+            "default_vault_id": active_id,
+            "searchpanel_default_vault_id": active_id}
+        </field>
+        <field name="search_view_id" ref="view_vault_entry_search" />
+    </record>
+
+    <record id="view_vault_tree" model="ir.ui.view">
+        <field name="model">vault</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="user_id" />
+                <field name="note" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_vault_form" model="ir.ui.view">
+        <field name="model">vault</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        type="object"
+                        name="action_open_import_wizard"
+                        string="Import from file"
+                    />
+                    <button
+                        type="object"
+                        name="action_open_export_wizard"
+                        string="Export to file"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button"
+                            name="vault.action_open_entries"
+                            string="Entries"
+                            type="action"
+                            icon="fa-bars"
+                        />
+                    </div>
+
+                    <group>
+                        <field name="allowed_share" invisible="1" />
+                        <field name="allowed_write" invisible="1" />
+                        <field name="allowed_create" invisible="1" />
+                        <field name="allowed_delete" invisible="1" />
+                        <field name="master_key" invisible="1" required="1" />
+                        <field name="name" />
+                        <field name="user_id" />
+                        <field name="note" />
+                    </group>
+
+                    <notebook>
+                        <page
+                            string="Rights"
+                            attrs="{'invisible':[('allowed_share', '=', False)]}"
+                        >
+                            <field
+                                name="right_ids"
+                                context="{'default_vault_id': active_id}"
+                                options="{'create': [('allowed_share', '=', True)], 'delete': [('allowed_share', '=', True)]}"
+                            />
+                        </page>
+                        <page string="Log">
+                            <field name="log_ids" options="{'no_open': True}" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

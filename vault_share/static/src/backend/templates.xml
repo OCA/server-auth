@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="FieldVaultShare">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <input class="o_vault_share" t-elif="widget.mode == 'edit'" t-esc="value" />
+        <div class="o_vault" t-else="">
+            <t t-call="vault.buttons" />
+            <button
+                class="btn fa fa-save o_vault_save"
+                title="Save in a vault"
+                aria-label="Save in a vault"
+            />
+
+            <span class="o_vault_share" t-esc="value" />
+        </div>
+    </t>
+
+    <t t-name="FileVaultShare">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <t t-elif="widget.mode == 'edit'" t-call="FieldBinaryFile" />
+        <div class="o_vault" t-else="">
+            <button
+                class="btn fa fa-save o_vault_save"
+                title="Save in a vault"
+                aria-label="Save in a vault"
+            />
+
+            <span class="link"><span class="fa fa-download" /> <t
+                    t-esc="filename"
+                /></span>
+        </div>
+    </t>
+
+    <t t-name="FieldPinVault">
+        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-else="">
+            <t t-call="vault.buttons" />
+            <span class="o_vault_value" t-esc="value" />
+        </div>
+    </t>
+
+    <t t-extend="FieldVault">
+        <t t-jquery="span.o_vault_value" t-operation="before">
+            <button
+                class="btn fa fa-external-link o_vault_share"
+                title="Share the secret with an external user"
+                aria-label="Share the secret with an external user"
+            />
+        </t>
+    </t>
+</templates>

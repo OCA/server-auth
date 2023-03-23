@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vault,access_vault,model_vault,base.group_user,1,1,1,1
+access_vault_entry,access_vault_entry,model_vault_entry,base.group_user,1,1,1,1
+access_vault_export_wizard,access_vault_export_wizard,model_vault_export_wizard,base.group_user,1,1,1,1
+access_vault_field,access_vault_field,model_vault_field,base.group_user,1,1,1,1
+access_vault_file,access_vault_file,model_vault_file,base.group_user,1,1,1,1
+access_vault_import_wizard,access_vault_import_wizard,model_vault_import_wizard,base.group_user,1,1,1,1
+access_vault_import_wizard_path,access_vault_import_wizard_path,model_vault_import_wizard_path,base.group_user,1,1,1,1
+access_vault_inbox,access_vault_inbox,model_vault_inbox,base.group_user,1,1,1,1
+access_vault_inbox_log,access_vault_inbox_log,model_vault_inbox_log,base.group_user,1,1,1,1
+access_vault_log,access_vault_log,model_vault_log,base.group_user,1,0,0,0
+access_vault_right,access_vault_right,model_vault_right,base.group_user,1,1,1,1
+access_vault_send_wizard,access_vault_send_wizard,model_vault_send_wizard,base.group_user,1,1,1,1
+access_vault_store_wizard,access_vault_store_wizard,model_vault_store_wizard,base.group_user,1,1,1,1
+access_vault_tag,access_vault_tag,model_vault_tag,base.group_user,1,1,1,1
+access_vault_users_key,access_res_users_key,model_res_users_key,base.group_user,1,1,1,1
