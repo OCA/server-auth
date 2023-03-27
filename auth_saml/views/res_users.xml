@@ -10,7 +10,7 @@
             <xpath expr="//page[@name='access_rights']" position="after">
                 <page string="SAML">
                     <group>
-                        <field name="saml_ids" nolabel="1">
+                        <field name="saml_ids" nolabel="1" colspan="2">
                             <tree editable="bottom">
                                 <field name="saml_provider_id" />
                                 <field name="saml_uid" />

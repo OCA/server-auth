@@ -1,3 +1,2 @@
 # generated from manifests external_dependencies
-cryptography<37
 pysaml2
