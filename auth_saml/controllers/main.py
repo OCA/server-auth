@@ -14,12 +14,8 @@ import odoo
 from odoo import SUPERUSER_ID, _, api, http, models, registry as registry_get
 from odoo.http import request
 
-from odoo.addons.web.controllers.main import (
-    Home,
-    ensure_db,
-    login_and_redirect,
-    set_cookie_and_redirect,
-)
+from odoo.addons.web.controllers.home import Home, ensure_db
+from odoo.addons.web.controllers.utils import _get_login_redirect_url
 
 _logger = logging.getLogger(__name__)
 
@@ -31,7 +27,7 @@ _logger = logging.getLogger(__name__)
 
 def fragment_to_query_string(func):
     @functools.wraps(func)
-    def wrapper(self, req, **kw):
+    def wrapper(self, **kw):
         if not kw:
             return """<html><head><script>
                 var l = window.location;
@@ -43,7 +39,7 @@ def fragment_to_query_string(func):
                 }
                 window.location = r;
             </script></head><body></body></html>"""
-        return func(self, req, **kw)
+        return func(self, **kw)
 
     return wrapper
 
@@ -188,8 +184,7 @@ class AuthSAMLController(http.Controller):
 
     @http.route("/auth_saml/signin", type="http", auth="none", csrf=False)
     @fragment_to_query_string
-    # pylint: disable=unused-argument
-    def signin(self, req, **kw):
+    def signin(self, **kw):
         """
         Client obtained a saml token and passed it back
         to us... we need to validate it
@@ -241,7 +236,10 @@ class AuthSAMLController(http.Controller):
                     url = "/#action=%s" % action
                 elif menu:
                     url = "/#menu_id=%s" % menu
-                return login_and_redirect(*credentials, redirect_url=url)
+                pre_uid = request.session.authenticate(*credentials)
+                resp = request.redirect(_get_login_redirect_url(pre_uid, url), 303)
+                resp.autocorrect_location_header = False
+                return resp
 
             except odoo.exceptions.AccessDenied:
                 # saml credentials not valid,
@@ -258,11 +256,12 @@ class AuthSAMLController(http.Controller):
                 _logger.exception("SAML2: failure - %s", str(e))
                 url = "/web/login?saml_error=access-denied"
 
-        return set_cookie_and_redirect(url)
+        redirect = request.redirect(url, 303)
+        redirect.autocorrect_location_header = False
+        return redirect
 
     @http.route("/auth_saml/metadata", type="http", auth="none", csrf=False)
-    # pylint: disable=unused-argument
-    def saml_metadata(self, req, **kw):
+    def saml_metadata(self, **kw):
         provider = kw.get("p")
         dbname = kw.get("d")
         valid = kw.get("valid", None)
