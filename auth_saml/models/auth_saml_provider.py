@@ -27,7 +27,7 @@ class AuthSamlProvider(models.Model):
     _description = "SAML2 Provider"
     _order = "sequence, name"
 
-    name = fields.Char("Provider Name", required=True, index=True)
+    name = fields.Char("Provider Name", required=True, index="trigram")
     entity_id = fields.Char(
         "Entity ID",
         help="EntityID passed to IDP, used to identify the Odoo",

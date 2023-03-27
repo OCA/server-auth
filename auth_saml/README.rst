@@ -14,14 +14,14 @@ SAML2 Authentication
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/15.0/auth_saml
+    :target: https://github.com/OCA/server-auth/tree/16.0/auth_saml
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-15-0/server-auth-15-0-auth_saml
+    :target: https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_saml
     :alt: Translate me on Weblate
-.. |badge5| image:: https://img.shields.io/badge/runbot-Try%20me-875A7B.png
-    :target: https://runbot.odoo-community.org/runbot/251/15.0
-    :alt: Try me on Runbot
+.. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
+    :target: https://runboat.odoo-community.org/webui/builds.html?repo=OCA/server-auth&target_branch=16.0
+    :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5| 
 
@@ -91,35 +91,10 @@ Known issues / Roadmap
 Changelog
 =========
 
-15.0.1.1.0
+16.0.1.0.0
 ~~~~~~~~~~
 
-Fix the module by adding a transaction to commit the token.
-
-Fix the disallow password for users with SAML ids.
-Added tests to ensure the feature works correctly.
-Admin user is also an exception from not having a password. In Odoo 15.0, this is the standard user to connect for administrative task, not the super user.
-
-Improve provider form and list views.
-
-Add auto redirect on providers. Use disable_autoredirect as a parameter query to disable automatic redirection (for example ``https://example.com/web/login?disable_autoredirect=``)
-
-Add certificate file name fields to improve the UI.
-
-Add required on several fields of the SAML provider; without them the server will crash and there is not enough information to make SAML work.
-
-Split signing to have finer control and be compatible with more IDP.
-
-Integrate token into res.users.saml, removing auth_saml.token. No need for a separate table, and no more need to create lines in the table.
-
-Avoid server errors when user try metadata page without necessary parameters.
-
-Replace method call from ``odoo.http.redirect_with_hash`` to ``request.redirect`` as the former does not exists in Odoo 15.0 anymore.
-
-Improved the module documentation.
-
-15.0.1.0.0
-~~~~~~~~~~
+Initial migration for 16.0.
 
 Bug Tracker
 ===========
@@ -127,7 +102,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us smashing it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_saml%0Aversion:%2015.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_saml%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -142,11 +117,14 @@ Authors
 Contributors
 ~~~~~~~~~~~~
 
-* Florent Aide <florent.aide@xcg-consulting.fr>
-* Vincent Hatakeyama <vincent.hatakeyama@xcg-consulting.fr>
-* Alexandre Brun <alexandre.brun@xcg-consulting.fr>
+* `XCG Consulting <https://xcg-consulting.fr/>`__:
+
+  * Florent Aide <florent.aide@xcg-consulting.fr>
+  * Vincent Hatakeyama <vincent.hatakeyama@xcg-consulting.fr>
+  * Alexandre Brun
+  * Houzéfa Abbasbhay <houzefa.abba@xcg-consulting.fr>
+  * Szeka Wong <szeka.wong@xcg-consulting.fr>
 * Jeremy Co Kim Len <jeremy.cokimlen@vinci-concessions.com>
-* Houzéfa Abbasbhay <houzefa.abba@xcg-consulting.fr>
 * Jeffery Chen Fan <jeffery9@gmail.com>
 * Bhavesh Odedra <bodedra@opensourceintegrators.com>
 * `Tecnativa <https://www.tecnativa.com/>`__:
@@ -172,6 +150,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/15.0/auth_saml>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/16.0/auth_saml>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
