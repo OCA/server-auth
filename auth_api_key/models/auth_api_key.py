@@ -23,9 +23,11 @@ class AuthApiKey(models.Model):
         help="""The user used to process the requests authenticated by
         the api key""",
     )
-    # Not using related to stay backward compatible with having active key
-    # for an archived user (no need to be charged on active user for the api)
-    active = fields.Boolean(compute="_compute_active", readonly=False, store=True)
+    # Not using related to stay backward compatible with having active keys
+    # for archived users (no need being invoiced by Odoo for api request users)
+    active = fields.Boolean(
+        compute="_compute_active", readonly=False, store=True, default=True
+    )
 
     _sql_constraints = [("name_uniq", "unique(name)", "Api Key name must be unique.")]
 
@@ -52,10 +54,16 @@ class AuthApiKey(models.Model):
         self._retrieve_api_key_id.clear_cache(self.env[self._name])
         self._retrieve_uid_from_api_key.clear_cache(self.env[self._name])
 
-    @api.depends("user_id.active")
+    @api.depends(
+        "user_id.active", "user_id.company_id.archived_user_disable_auth_api_key"
+    )
     def _compute_active(self):
+        option_disable_key = self.user_id.company_id.archived_user_disable_auth_api_key
         for record in self:
-            record.active = record.user_id.active
+            if option_disable_key:
+                record.active = record.user_id.active
+            # To stay coherent if the option is disabled the active field is not
+            # changed. Because the field is stored, it should not be an issue.
 
     @api.model
     def create(self, vals):
