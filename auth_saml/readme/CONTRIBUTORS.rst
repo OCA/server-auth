@@ -1,8 +1,11 @@
-* Florent Aide <florent.aide@xcg-consulting.fr>
-* Vincent Hatakeyama <vincent.hatakeyama@xcg-consulting.fr>
-* Alexandre Brun <alexandre.brun@xcg-consulting.fr>
+* `XCG Consulting <https://xcg-consulting.fr/>`__:
+
+  * Florent Aide <florent.aide@xcg-consulting.fr>
+  * Vincent Hatakeyama <vincent.hatakeyama@xcg-consulting.fr>
+  * Alexandre Brun
+  * Houzéfa Abbasbhay <houzefa.abba@xcg-consulting.fr>
+  * Szeka Wong <szeka.wong@xcg-consulting.fr>
 * Jeremy Co Kim Len <jeremy.cokimlen@vinci-concessions.com>
-* Houzéfa Abbasbhay <houzefa.abba@xcg-consulting.fr>
 * Jeffery Chen Fan <jeffery9@gmail.com>
 * Bhavesh Odedra <bodedra@opensourceintegrators.com>
 * `Tecnativa <https://www.tecnativa.com/>`__:
