@@ -23,6 +23,7 @@ msgid "- or -"
 msgstr "- ou -"
 
 #. module: auth_saml
+#. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "Access Denied"
@@ -49,8 +50,8 @@ msgstr "Algorithme utilisé pour signer les requêtes."
 msgid ""
 "Allow SAML users to possess an Odoo password (warning: decreases security)"
 msgstr ""
-"Autoriser les utilisateurs avec SAML à aussi avoir un mot de passe Odoo ("
-"attention : abaisse la sécurité)"
+"Autoriser les utilisateurs avec SAML à aussi avoir un mot de passe Odoo "
+"(attention : abaisse la sécurité)"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_provider_view_search
@@ -80,9 +81,9 @@ msgid ""
 "the nameId in the IDP response."
 msgstr ""
 "Attribut retourné par le fournisseur d’identité à utiliser pour la "
-"correspondance avec un utilisateur Odoo. La valeur spéciale « subject.nameId "
-"» peut être utilisée pour une correspondance avec le nameId de la réponse du "
-"fournisseur d’identité."
+"correspondance avec un utilisateur Odoo. La valeur spéciale « subject."
+"nameId » peut être utilisée pour une correspondance avec le nameId de la "
+"réponse du fournisseur d’identité."
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__authn_requests_signed
@@ -112,11 +113,6 @@ msgid ""
 msgstr ""
 "Base de l’adresse universelle envoyé à Odoo avec ceci, plutôt que de la "
 "détecter depuis la requête ou le paramètre système « web.base.url »"
-
-#. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__body
-msgid "Button Description"
-msgstr "Description du bouton"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__css_class
@@ -187,8 +183,8 @@ msgid ""
 "Entity Identifier sent to the IDP. Often this would be the metadata URL, but "
 "it can be any string."
 msgstr ""
-"Identifiant de l’entité envoyé au fournisseur d’identité. C’est souvent l’"
-"URL des métadonnées, mais peut être toute chaîne."
+"Identifiant de l’entité envoyé au fournisseur d’identité. C’est souvent "
+"l’URL des métadonnées, mais peut être toute chaîne."
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__entity_id
@@ -296,6 +292,16 @@ msgid "Last Updated on"
 msgstr "Dernière modification le"
 
 #. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__body
+msgid "Link text in Login Dialog"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__body
+msgid "Login button label"
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__logout_requests_signed
 msgid "Logout Requests Signed"
 msgstr "Signature des requêtes de déconnexion"
@@ -322,6 +328,7 @@ msgid "Metadata URL"
 msgstr "Adresse universelle des métadonnées"
 
 #. module: auth_saml
+#. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "Missing parameters"
@@ -457,6 +464,7 @@ msgid "Sign Metadata"
 msgstr "Signer les métadonnées"
 
 #. module: auth_saml
+#. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "Sign up is not allowed on this database."
@@ -490,6 +498,7 @@ msgid "The current SAML token in use"
 msgstr "Le jeton SAML en cours d’utilisation"
 
 #. module: auth_saml
+#. odoo-python
 #: code:addons/auth_saml/models/res_users.py:0
 #, python-format
 msgid ""
@@ -500,6 +509,7 @@ msgstr ""
 "passe et un identifiant SAML. Erreur pour les identifiants %s"
 
 #. module: auth_saml
+#. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "Unknown provider"
@@ -515,6 +525,7 @@ msgstr ""
 "pouvez utiliser openssl pour générer le certificat et la clé."
 
 #. module: auth_saml
+#: model:ir.model,name:auth_saml.model_res_users
 #: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__user_id
 msgid "User"
 msgstr "Utilisateur"
@@ -523,11 +534,6 @@ msgstr "Utilisateur"
 #: model:ir.model,name:auth_saml.model_res_users_saml
 msgid "User to SAML Provider Mapping"
 msgstr "Mappage des utilisateurs aux fournisseurs SAML"
-
-#. module: auth_saml
-#: model:ir.model,name:auth_saml.model_res_users
-msgid "Users"
-msgstr "Utilisateurs"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_assertions_or_response_signed
@@ -555,6 +561,7 @@ msgid "Whether the request should be signed or not"
 msgstr "Signature ou non des requêtes"
 
 #. module: auth_saml
+#. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "You do not have access to this database. Please contact support."
@@ -572,6 +579,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Your provider will give you this XML once configured."
 msgstr "Votre fournisseur vous donnera ce XML une fois configuré."
+
+#~ msgid "Button Description"
+#~ msgstr "Description du bouton"
+
+#~ msgid "Users"
+#~ msgstr "Utilisateurs"
 
 #~ msgid ""
 #~ "Allow SAML users to posess an Odoo password (warning: decreases security)"
