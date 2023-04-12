@@ -15,6 +15,7 @@ from odoo.http import request
 
 from odoo.addons.web.controllers.main import (
     Home,
+    Session as WebSession,
     ensure_db,
     login_and_redirect,
     set_cookie_and_redirect,
@@ -270,3 +271,20 @@ class AuthSAMLController(http.Controller):
                 ),
                 [("Content-Type", "text/xml")],
             )
+
+
+class Session(WebSession):
+    @http.route("/web/session/logout", type="http", auth="none")
+    def logout(self, redirect="/web/login"):
+        # make sure that when a user logs out, he does not get immediately
+        # relogged in if autoredirect is enabled, so that they get an
+        # opportunity to authenticate with a normal password and get access
+        # e.g. to the admin account.
+        if "disable_autoredirect" not in redirect:
+            path, sep, parameters = redirect.partition("?")
+            if parameters:
+                parameters += "&disable_autoredirect="
+            else:
+                parameters = "disable_autoredirect="
+            redirect = path + "?" + parameters
+        return super().logout(redirect=redirect)
