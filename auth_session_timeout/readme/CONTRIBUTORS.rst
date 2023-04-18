@@ -6,3 +6,4 @@
 * Chandresh Thakkar <cthakkar@opensourceintegrators.com>
 * `Greenice <https://www.greenice.com>`_:
   * Fernando La Chica <fernandolachica@gmail.com>
+* Dhara Solanki <dhara.solanki@initos.com>

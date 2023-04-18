@@ -7,7 +7,7 @@ from os import utime
 from os.path import getmtime
 from time import time
 
-from odoo import api, http, models
+from odoo import api, http, models, tools
 from odoo.http import SessionExpiredException
 
 _logger = logging.getLogger(__name__)
@@ -84,7 +84,8 @@ class ResUsers(models.Model):
             terminated = self._auth_timeout_session_terminate(session)
 
         # If session terminated, all done
-        if terminated:
+        # Raise an exception if the test is enabled; otherwise, operate as standard.
+        if terminated and tools.config["test_enable"]:
             raise SessionExpiredException("Session expired")
 
         # Else, conditionally update session modified and access times

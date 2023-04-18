@@ -2,9 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 import time
+import unittest.mock as mock
 from contextlib import contextmanager
-
-import mock
 
 from odoo.http import SessionExpiredException
 from odoo.tests.common import TransactionCase
