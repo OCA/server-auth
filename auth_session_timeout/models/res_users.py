@@ -85,7 +85,7 @@ class ResUsers(models.Model):
 
         # If session terminated, all done
         if terminated:
-            raise SessionExpiredException("Session expired")
+            return SessionExpiredException("Session expired")
 
         # Else, conditionally update session modified and access times
         ignored_urls = self._auth_timeout_get_ignored_urls()

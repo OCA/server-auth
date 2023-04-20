@@ -3,10 +3,8 @@
 
 import time
 from contextlib import contextmanager
+from unittest import mock
 
-import mock
-
-from odoo.http import SessionExpiredException
 from odoo.tests.common import TransactionCase
 from odoo.tools.misc import mute_logger
 
@@ -70,8 +68,7 @@ class TestResUsers(TransactionCase):
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = -9999, []
             assets["getmtime"].return_value = 0
-            with self.assertRaises(SessionExpiredException):
-                self._auth_timeout_check(assets["http"])
+            self._auth_timeout_check(assets["http"])
             assets["http"].request.session.logout.assert_called_once_with(
                 keep_db=True,
             )
@@ -95,8 +92,7 @@ class TestResUsers(TransactionCase):
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 0, []
             assets["getmtime"].side_effect = OSError
-            with self.assertRaises(SessionExpiredException):
-                self._auth_timeout_check(assets["http"])
+            self._auth_timeout_check(assets["http"])
 
     def test_on_timeout_session_loggedout(self):
         with self._mock_assets(["http", "getmtime"]) as assets:
@@ -105,6 +101,5 @@ class TestResUsers(TransactionCase):
             assets["http"].request.session.dbname = self.env.cr.dbname
             assets["http"].request.session.sid = 123
             assets["http"].request.session.logout = mock.Mock()
-            with self.assertRaises(SessionExpiredException):
-                self.ResUsers._auth_timeout_check()
+            self.ResUsers._auth_timeout_check()
             self.assertTrue(assets["http"].request.session.logout.called)
