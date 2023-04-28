@@ -1,7 +1,7 @@
 import base64
 import os
 
-from odoo.exceptions import AccessDenied, UserError, ValidationError
+from odoo.exceptions import AccessDenied, ValidationError
 from odoo.tests import HttpCase, tagged
 
 from .fake_idp import FakeIDP
@@ -187,7 +187,7 @@ class TestPySaml(HttpCase):
         self.browse_ref(
             "auth_saml.allow_saml_uid_and_internal_password"
         ).value = "False"
-        with self.assertRaises(UserError):
+        with self.assertRaises(ValidationError):
             self.env["res.users"].with_context(no_reset_password=True).create(
                 {
                     "name": "New user with SAML",
