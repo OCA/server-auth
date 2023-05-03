@@ -132,7 +132,7 @@ class ResUser(models.Model):
         if not self.allow_saml_and_password():
             saml_users = self.filtered(
                 lambda user: user.sudo().saml_ids
-                and self.id not in self._saml_allowed_user_ids()
+                and user.id not in self._saml_allowed_user_ids()
                 and user.password
             )
             if saml_users:
