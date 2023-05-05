@@ -11,6 +11,7 @@ setuptools.setup(
         'odoo-addon-auth_admin_passkey>=16.0dev,<16.1dev',
         'odoo-addon-auth_api_key>=16.0dev,<16.1dev',
         'odoo-addon-auth_ldaps>=16.0dev,<16.1dev',
+        'odoo-addon-auth_oidc>=16.0dev,<16.1dev',
         'odoo-addon-auth_saml>=16.0dev,<16.1dev',
     ],
     classifiers=[
