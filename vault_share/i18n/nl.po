@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-05-05 10:45+0000\n"
+"PO-Revision-Date: 2023-05-05 13:33+0000\n"
 "Last-Translator: Bosd <c5e2fd43-d292-4c90-9d1f-74ff3436329a@anonaddy.me>\n"
 "Language-Team: none\n"
 "Language: nl\n"
@@ -19,7 +19,7 @@ msgstr ""
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__accesses
 msgid "Access counter"
-msgstr ""
+msgstr "Toegangsteller"
 
 #. module: vault_share
 #: model:ir.actions.server,name:vault_share.cron_share_clean_ir_actions_server
@@ -31,12 +31,12 @@ msgstr ""
 #. module: vault_share
 #: model:ir.model,name:vault_share.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Bedrijven"
 
 #. module: vault_share
 #: model:ir.model,name:vault_share.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Configuratie-instellingen"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__create_uid
@@ -53,7 +53,7 @@ msgstr "Aangemaakt op"
 #. module: vault_share
 #: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
 msgid "Days"
-msgstr ""
+msgstr "Dagen"
 
 #. module: vault_share
 #: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
@@ -63,7 +63,7 @@ msgstr ""
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_res_config_settings__vault_share_delay
 msgid "Delayed Deletion"
-msgstr ""
+msgstr "Uitgestelde verwijdering"
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_res_config_settings__vault_share_delay
@@ -81,17 +81,17 @@ msgstr "Schermnaam"
 #. module: vault_share
 #: model_terms:ir.ui.view,arch_db:vault_share.share
 msgid "Enter the pin:"
-msgstr ""
+msgstr "Voer de pincode in:"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__expiration
 msgid "Expiration"
-msgstr ""
+msgstr "Vervaldatum"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__filename
 msgid "Filename"
-msgstr ""
+msgstr "Bestandsnaam"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__id
@@ -103,7 +103,7 @@ msgstr "ID"
 #: code:addons/vault_share/controllers/main.py:0
 #, python-format
 msgid "Invalid token"
-msgstr ""
+msgstr "Ongeldige token"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__iv
@@ -131,7 +131,7 @@ msgstr "Laatst bijgewerkt op"
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__log_ids
 msgid "Log"
-msgstr ""
+msgstr "Log"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__name
@@ -144,12 +144,12 @@ msgstr "Naam"
 #: model:ir.model.constraint,message:vault_share.constraint_vault_share_value_check
 #, python-format
 msgid "No value found"
-msgstr ""
+msgstr "Geen waarde gevonden"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__pin
 msgid "Pin"
-msgstr ""
+msgstr "Pin"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__salt
@@ -164,34 +164,34 @@ msgstr ""
 #: code:addons/vault_share/static/src/backend/templates.xml:0
 #, python-format
 msgid "Save in a vault"
-msgstr ""
+msgstr "Opslaan in een kluis"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__secret
 msgid "Secret"
-msgstr ""
+msgstr "Geheim"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__secret_file
 msgid "Secret File"
-msgstr ""
+msgstr "Secret File"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share_log__share_id
 msgid "Share"
-msgstr ""
+msgstr "Delen"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__share_link
 msgid "Share URL"
-msgstr ""
+msgstr "Share URL"
 
 #. module: vault_share
 #. openerp-web
 #: code:addons/vault_share/static/src/legacy/vault_fields.js:0
 #, python-format
 msgid "Share the secret"
-msgstr ""
+msgstr "Deel het geheim"
 
 #. module: vault_share
 #. openerp-web
@@ -199,17 +199,17 @@ msgstr ""
 #: code:addons/vault_share/static/src/backend/templates.xml:0
 #, python-format
 msgid "Share the secret with an external user"
-msgstr ""
+msgstr "Het geheim delen met een externe gebruiker"
 
 #. module: vault_share
 #: model_terms:ir.ui.view,arch_db:vault_share.share
 msgid "Shared file:"
-msgstr ""
+msgstr "Gedeeld bestand:"
 
 #. module: vault_share
 #: model_terms:ir.ui.view,arch_db:vault_share.share
 msgid "Shared secret:"
-msgstr ""
+msgstr "Gedeeld geheim:"
 
 #. module: vault_share
 #: model:ir.actions.act_window,name:vault_share.action_vault_share
@@ -236,34 +236,34 @@ msgstr ""
 #: code:addons/vault_share/controllers/main.py:0
 #, python-format
 msgid "The secret expired"
-msgstr ""
+msgstr "Het geheim is verlopen"
 
 #. module: vault_share
 #: code:addons/vault_share/models/vault_share.py:0
 #, python-format
 msgid "The share was accessed by %(name)s via %(ip)s"
-msgstr ""
+msgstr "Het record werd geopend door %(name)s via %(ip)s"
 
 #. module: vault_share
 #: code:addons/vault_share/models/vault_share.py:0
 #, python-format
 msgid "The share was created by %(name)s"
-msgstr ""
+msgstr "Het record is gemaakt door %(name)s"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__token
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__user_id
 msgid "User"
-msgstr ""
+msgstr "Gebruiker"
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__share_link
 msgid "Using this link and pin people can access the secret."
-msgstr ""
+msgstr "Met deze link en pin kunnen mensen toegang krijgen tot het geheim."
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_res_company__vault_share_delay
