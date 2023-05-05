@@ -24,6 +24,7 @@ addon | version | maintainers | summary
 [auth_admin_passkey](auth_admin_passkey/) | 16.0.1.0.0 |  | Allows system administrator to authenticate with any account
 [auth_api_key](auth_api_key/) | 16.0.1.0.0 |  | Authenticate http requests from an API key
 [auth_ldaps](auth_ldaps/) | 16.0.1.0.0 |  | Allows to use LDAP over SSL authentication
+[auth_oidc](auth_oidc/) | 16.0.1.0.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 16.0.1.0.0 |  | SAML2 Authentication
 
 [//]: # (end addons)
