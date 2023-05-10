@@ -11,6 +11,6 @@
     "maintainers": ["sbidoul"],
     "website": "https://github.com/OCA/server-auth",
     "depends": ["auth_oauth"],
-    "data": ["views/auth_oauth_provider.xml"],
+    "data": ["views/assets.xml", "views/auth_oauth_provider.xml"],
     "demo": [],
 }
