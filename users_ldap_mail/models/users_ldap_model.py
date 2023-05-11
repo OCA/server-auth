@@ -12,7 +12,6 @@ class CompanyLDAP(models.Model):
     _inherit = "res.company.ldap"
 
     name_attribute = fields.Char(
-        "Name Attribute",
         default="cn",
         help="By default 'cn' is used. "
         "For ActiveDirectory you might use 'displayName' instead.",
