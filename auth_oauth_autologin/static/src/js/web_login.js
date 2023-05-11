@@ -15,7 +15,6 @@ odoo.define("auth_oauth_autologin.redirect", function(require) {
             if (url.includes("/web/login")) {
                 url = url.replace("/web/login", "/web");
             }
-            $.blockUI();
             this._rpc({
                 route: "/auth/auto_login_redirect_link",
                 params: {
@@ -25,7 +24,6 @@ odoo.define("auth_oauth_autologin.redirect", function(require) {
                 if (result) {
                     window.location = result;
                 }
-                $.unblockUI();
             });
             return def;
         },
