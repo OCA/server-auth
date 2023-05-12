@@ -10,7 +10,8 @@
                 <field name="oauth_access_max_token" />
             </field>
             <xpath expr="//field[@name='oauth_provider_id']/.." position="after">
-                <group name="multi_token_info" string="Latest tokens">
+                <group name="multi_token_info" string="Latest Tokens">
+                    <label for="oauth_access_token_ids" />
                     <field
                         name="oauth_access_token_ids"
                         nolabel="1"
