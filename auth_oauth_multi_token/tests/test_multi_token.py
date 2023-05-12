@@ -4,7 +4,7 @@
 import json
 
 from odoo import exceptions
-from odoo.tests import TransactionCase
+from odoo.tests.common import TransactionCase
 
 
 class TestMultiToken(TransactionCase):

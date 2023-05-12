@@ -4,8 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-14 09:02+0000\n"
+"PO-Revision-Date: 2023-05-14 09:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -55,7 +57,7 @@ msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
-msgid "Latest tokens"
+msgid "Latest Tokens"
 msgstr ""
 
 #. module: auth_oauth_multi_token
@@ -65,7 +67,7 @@ msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_max_token
-msgid "Max number of simultaneous connections"
+msgid "Max Number of Simultaneous Connections"
 msgstr ""
 
 #. module: auth_oauth_multi_token
@@ -75,20 +77,16 @@ msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_token_ids
-msgid "OAuth tokens"
+msgid "OAuth Tokens"
 msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model,name:auth_oauth_multi_token.model_auth_oauth_multi_token
-msgid "OAuth2 token"
-msgstr ""
-
-#. module: auth_oauth_multi_token
-#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__user_id
-msgid "User"
+msgid "OAuth2 Token"
 msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model,name:auth_oauth_multi_token.model_res_users
-msgid "Users"
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__user_id
+msgid "User"
 msgstr ""
