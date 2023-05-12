@@ -19,13 +19,13 @@ class ResUsers(models.Model):
     oauth_access_token_ids = fields.One2many(
         comodel_name="auth.oauth.multi.token",
         inverse_name="user_id",
-        string="OAuth tokens",
+        string="OAuth Tokens",
         copy=False,
         readonly=True,
         groups="base.group_system",
     )
     oauth_access_max_token = fields.Integer(
-        string="Max number of simultaneous connections", default=10, required=True
+        string="Max Number of Simultaneous Connections", default=10, required=True
     )
     oauth_master_uuid = fields.Char(
         string="Master UUID",

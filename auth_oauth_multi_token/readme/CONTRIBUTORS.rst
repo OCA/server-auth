@@ -7,3 +7,4 @@
 
 * Stéphane Bidoul <stephane.bidoul@acsone.eu>
 * Dan Tillinghast
+* Miku Laitinen
