@@ -10,7 +10,7 @@ class AuthOauthMultiToken(models.Model):
     """Define a set of tokens."""
 
     _name = "auth.oauth.multi.token"
-    _description = "OAuth2 token"
+    _description = "OAuth2 Token"
     _order = "id desc"
 
     oauth_access_token = fields.Char(
@@ -25,12 +25,12 @@ class AuthOauthMultiToken(models.Model):
         ondelete="cascade",
     )
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Override to validate tokens."""
-        token = super().create(vals)
-        token._oauth_validate_multi_token()
-        return token
+        tokens = super().create(vals_list)
+        tokens._oauth_validate_multi_token()
+        return tokens
 
     @api.model
     def _oauth_user_tokens(self, user_id):
@@ -42,11 +42,12 @@ class AuthOauthMultiToken(models.Model):
 
     def _oauth_validate_multi_token(self):
         """Check current user's token and clear them if max number reached."""
-        user_tokens = self._oauth_user_tokens(self.user_id.id)
-        max_token = self.user_id.oauth_access_max_token
-        if user_tokens and len(user_tokens) > max_token:
-            # clear last token
-            user_tokens[max_token - 1]._oauth_clear_token()
+        for token in self:
+            user_tokens = self._oauth_user_tokens(token.user_id.id)
+            max_token = token.user_id.oauth_access_max_token
+            if user_tokens and len(user_tokens) > max_token:
+                # clear last token
+                user_tokens[max_token - 1]._oauth_clear_token()
 
     def _oauth_clear_token(self):
         """Disable current token records."""
