@@ -169,9 +169,7 @@ class AuthSAMLController(http.Controller):
         provider_id = int(pid)
 
         provider = request.env["auth.saml.provider"].sudo().browse(provider_id)
-        redirect_url = provider._get_auth_request(
-            self._get_saml_extra_relaystate()
-        )
+        redirect_url = provider._get_auth_request()
         if not redirect_url:
             raise Exception(
                 "Failed to get auth request from provider. "
@@ -219,7 +217,6 @@ class AuthSAMLController(http.Controller):
                     .auth_saml(
                         provider,
                         saml_response,
-                        request.httprequest.url_root.rstrip("/"),
                     )
                 )
                 action = state.get("a")
