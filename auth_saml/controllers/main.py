@@ -170,7 +170,7 @@ class AuthSAMLController(http.Controller):
 
         provider = request.env["auth.saml.provider"].sudo().browse(provider_id)
         redirect_url = provider._get_auth_request(
-            self._get_saml_extra_relaystate(), request.httprequest.url_root.rstrip("/")
+            self._get_saml_extra_relaystate()
         )
         if not redirect_url:
             raise Exception(
