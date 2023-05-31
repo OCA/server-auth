@@ -18,5 +18,5 @@
         "views/auth_saml.xml",
         "security/ir.model.access.csv",
     ],
-    "development_status": "Production/Stable",
+    "development_status": "Beta",
 }
