@@ -1,9 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <odoo noupdate="1">
     <record id="provider_local_create_user" model="auth.saml.provider">
         <field name="name">Local Authentic server</field>
         <field name="create_user">True</field>
-        <field name="idp_metadata"><![CDATA[<?xml version="1.0"?>
+        <field
+            name="idp_metadata"
+        ><![CDATA[<?xml version="1.0"?>
 <md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="http://localhost:8080/simplesaml/saml2/idp/metadata.php">
   <md:IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <md:KeyDescriptor use="signing">
@@ -26,7 +28,9 @@
   </md:IDPSSODescriptor>
 </md:EntityDescriptor>]]>
         </field>
-        <field name="sp_metadata"><![CDATA[<?xml version="1.0"?>
+        <field
+            name="sp_metadata"
+        ><![CDATA[<?xml version="1.0"?>
 		<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
 		  xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
 		  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
@@ -45,7 +49,9 @@
 		</Organization>
 		</EntityDescriptor>]]>
         </field>
-        <field name="sp_pkey"><![CDATA[
+        <field
+            name="sp_pkey"
+        ><![CDATA[
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDFENv1etOugsnj
 B/Sn1paHfuhfhz38rs8MBOpAwoqiD74gnCskIWVV5J4D7QRx+v2HHGPZxJhHIKxH
@@ -78,7 +84,7 @@ ugHzwWvstIVybywY3s0ya8o=
         </field>
         <field name="css_class">zocial saml</field>
         <field name="body">Log in with Authentic</field>
-        <field name="enabled" eval="True"/>
+        <field name="enabled" eval="True" />
         <field name="matching_attribute">email</field>
     </record>
 </odoo>
