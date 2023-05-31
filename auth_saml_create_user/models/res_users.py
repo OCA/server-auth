@@ -4,7 +4,7 @@
 import logging
 import random
 
-from odoo import api, models
+from odoo import models
 
 _logger = logging.getLogger(__name__)
 s = "abcdefghijklmnopqrstuvwxyz034567890ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()?"
@@ -14,10 +14,9 @@ passlen = 16
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    @api.multi
-    def _auth_saml_signin(self, provider, validation, saml_response):
+    def _auth_saml_signin(self, provider: int, validation: dict, saml_response) -> str:
         saml_uid = validation["user_id"]
-        user_ids = self.search(
+        user_ids = self.env["res.users.saml"].search(
             [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)]
         )
         if self.check_if_create_user(provider) and not user_ids:
@@ -34,9 +33,18 @@ class ResUsers(models.Model):
             {
                 "name": saml_uid,
                 "login": saml_uid,
-                "saml_provider_id": provider,
                 "password": "".join(random.sample(s, passlen)),
                 "company_id": self.env["res.company"].sudo().browse(1).id,
             }
         )
-        new_user.write({"saml_uid": saml_uid})
+        _logger.debug('Odoo user  "%s" created' % saml_uid)
+        vals = {
+            "saml_provider_id": provider,
+            "saml_uid": saml_uid,
+            "user_id": new_user.id,
+        }
+        self.env["res.users.saml"].create(vals)
+
+        # Note: we need to commit to database because otherwise in phase of the first login
+        # the user obtain: "You do not have access to this database. Please contact support."
+        self.env.cr.commit()
