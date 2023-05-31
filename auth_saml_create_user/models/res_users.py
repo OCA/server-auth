@@ -14,7 +14,6 @@ passlen = 16
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    @api.multi
     def _auth_saml_signin(self, provider, validation, saml_response):
         saml_uid = validation["user_id"]
         user_ids = self.search(
