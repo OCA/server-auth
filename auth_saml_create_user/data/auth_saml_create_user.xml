@@ -50,7 +50,7 @@
         </EntityDescriptor>]]>
         </field>
         <field
-            name="sp_pem_pkey"
+            name="sp_pem_private"
         ><![CDATA[
 -----BEGIN PRIVATE KEY-----
 MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDFENv1etOugsnj
