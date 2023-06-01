@@ -84,7 +84,7 @@ ugHzwWvstIVybywY3s0ya8o=
         </field>
         <field name="css_class">zocial saml</field>
         <field name="body">Log in with Authentic</field>
-        <field name="enabled" eval="True" />
+        <field name="active" eval="True" />
         <field name="matching_attribute">email</field>
     </record>
 </odoo>
