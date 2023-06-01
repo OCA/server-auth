@@ -29,7 +29,7 @@
 </md:EntityDescriptor>]]>
         </field>
         <field
-            name="sp_metadata"
+            name="sp_metadata_url"
         ><![CDATA[<?xml version="1.0"?>
         <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata"
           xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
