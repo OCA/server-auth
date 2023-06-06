@@ -136,7 +136,7 @@ class AuthJwtValidator(models.Model):
                 header = jwt.get_unverified_header(token)
             except Exception as e:
                 _logger.info("Invalid token: %s", e)
-                raise UnauthorizedInvalidToken()
+                raise UnauthorizedInvalidToken() from e
             key = self._get_key(header.get("kid"))
             algorithm = self.public_key_algorithm
         try:
@@ -155,7 +155,7 @@ class AuthJwtValidator(models.Model):
             )
         except Exception as e:
             _logger.info("Invalid token: %s", e)
-            raise UnauthorizedInvalidToken()
+            raise UnauthorizedInvalidToken() from e
         return payload
 
     def _get_uid(self, payload):
@@ -216,7 +216,7 @@ class AuthJwtValidator(models.Model):
             try:
                 delattr(IrHttp.__class__, f"_auth_method_jwt_{rec.name}")
                 delattr(IrHttp.__class__, f"_auth_method_public_or_jwt_{rec.name}")
-            except AttributeError:
+            except AttributeError:  # pylint: disable=except-pass
                 pass
 
     @api.model_create_multi
