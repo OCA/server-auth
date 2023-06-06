@@ -13,12 +13,12 @@ class InMemoryWebStorageStateStore {
     }
 
     get(key) {
-        let item = this._data[key];
+        const item = this._data[key];
         return Promise.resolve(item);
     }
 
     remove(key) {
-        let item = this._data[key];
+        const item = this._data[key];
         delete this._data[key];
         return Promise.resolve(item);
     }
@@ -30,11 +30,11 @@ class InMemoryWebStorageStateStore {
 }
 
 async function onload() {
-    let settings_response = await fetch("/auth_settings.json");
-    let settings = await settings_response.json();
+    const settings_response = await fetch("/auth_settings.json");
+    const settings = await settings_response.json();
     settings.redirect_uri = window.location.href;
     settings.post_logout_redirect_uri = window.location.href;
-    // avoid storing JWT tokens in session storage
+    // Avoid storing JWT tokens in session storage
     settings.userStore = new InMemoryWebStorageStateStore();
     client = new Oidc.UserManager(settings);
     client.events.addAccessTokenExpiring(refresh);
@@ -42,8 +42,8 @@ async function onload() {
     const query = window.location.search;
     if (query.includes("code=") && query.includes("state=")) {
         // Process the redirect callback from the identity provider
-        let user = await client.signinCallback();
-        console.log(user); // don't do this IRL!
+        const user = await client.signinCallback();
+        console.log(user); // Don't do this IRL!
         // Use replaceState to redirect the user away and remove the querystring parameters
         window.history.replaceState({}, document.title, "/");
     }
@@ -52,7 +52,7 @@ async function onload() {
 }
 
 async function updateUI() {
-    let user = await client.getUser();
+    const user = await client.getUser();
     const isAuthenticated = Boolean(user);
 
     document.getElementById("btn-login").disabled = isAuthenticated;
@@ -77,9 +77,9 @@ async function refresh() {
 }
 
 async function _whoami(endpoint) {
-    let user = await client.getUser();
+    const user = await client.getUser();
     try {
-        let response = await fetch(
+        const response = await fetch(
             "http://localhost:8069/auth_jwt_demo/keycloak" + endpoint,
             {
                 headers: {
@@ -87,7 +87,7 @@ async function _whoami(endpoint) {
                 },
             }
         );
-        let data = await response.json();
+        const data = await response.json();
         alert(JSON.stringify(data));
     } catch (error) {
         alert(error);
