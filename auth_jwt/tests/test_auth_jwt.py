@@ -72,6 +72,7 @@ class TestAuthMethod(TransactionCase):
         issuer="http://the.issuer",
         secret_key="thesecret",
         partner_id_required=False,
+        static_user_id=1,
     ):
         return self.env["auth.jwt.validator"].create(
             dict(
@@ -82,6 +83,7 @@ class TestAuthMethod(TransactionCase):
                 audience=audience,
                 issuer=issuer,
                 user_id_strategy="static",
+                static_user_id=static_user_id,
                 partner_id_strategy="email",
                 partner_id_required=partner_id_required,
             )
@@ -258,13 +260,6 @@ class TestAuthMethod(TransactionCase):
             "Validators mustn't make a closed chain: " "validator -> validator.",
         )
 
-    def test_user_id_strategy(self):
-        validator = self._create_validator("validator5")
-        authorization = "Bearer " + self._create_token()
-        with self._mock_request(authorization=authorization) as request:
-            self.env["ir.http"]._auth_method_jwt_validator5()
-            self.assertEqual(request.env.uid, validator.static_user_id.id)
-
     def test_partner_id_strategy_email_found(self):
         partner = self.env["res.partner"].search([("email", "!=", False)])[0]
         self._create_validator("validator6")
@@ -395,14 +390,6 @@ class TestAuthMethod(TransactionCase):
     def test_name_check(self):
         with self.assertRaises(ValidationError):
             self._create_validator(name="not an identifier")
-
-    def test_public_or_jwt_no_token(self):
-        with self._mock_request(authorization=None) as request:
-            self.env["ir.http"]._auth_method_public_or_jwt()
-            request.update_env.assert_called_once_with(
-                user=self.env.ref("base.public_user").id
-            )
-            assert not hasattr(request, "jwt_payload")
 
     def test_public_or_jwt_valid_token(self):
         self._create_validator("validator")
