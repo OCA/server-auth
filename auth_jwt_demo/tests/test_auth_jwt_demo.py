@@ -38,6 +38,7 @@ class TestRegisterHook(tests.HttpCase):
         whoami = resp.json()
         self.assertEqual(whoami.get("name"), partner.name)
         self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
         # Try again in a user session, it will be rejected because auth_jwt
         # is not designed to work in user session.
         self.authenticate("demo", "demo")
@@ -49,3 +50,9 @@ class TestRegisterHook(tests.HttpCase):
         token = self._get_token(aud="invalid")
         resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
+
+    def test_public(self):
+        """A end-to-end test for anonymous/public access."""
+        resp = self.url_open("/auth_jwt_demo/keycloak/whoami-public-or-jwt")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["uid"], self.ref("base.public_user"))
