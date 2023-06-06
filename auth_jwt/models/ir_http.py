@@ -83,7 +83,7 @@ class IrHttpJwt(models.AbstractModel):
         uid = validator._get_and_check_uid(payload)
         assert uid
         partner_id = validator._get_and_check_partner_id(payload)
-        request.uid = uid  # this resets request.env
+        request.update_env(user=uid)
         request.jwt_payload = payload
         request.jwt_partner_id = partner_id
 

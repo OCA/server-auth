@@ -263,7 +263,7 @@ class TestAuthMethod(TransactionCase):
         authorization = "Bearer " + self._create_token()
         with self._mock_request(authorization=authorization) as request:
             self.env["ir.http"]._auth_method_jwt_validator5()
-            self.assertEqual(request.uid, validator.static_user_id.id)
+            self.assertEqual(request.env.uid, validator.static_user_id.id)
 
     def test_partner_id_strategy_email_found(self):
         partner = self.env["res.partner"].search([("email", "!=", False)])[0]
@@ -399,7 +399,9 @@ class TestAuthMethod(TransactionCase):
     def test_public_or_jwt_no_token(self):
         with self._mock_request(authorization=None) as request:
             self.env["ir.http"]._auth_method_public_or_jwt()
-            assert request.uid == self.env.ref("base.public_user").id
+            request.update_env.assert_called_once_with(
+                user=self.env.ref("base.public_user").id
+            )
             assert not hasattr(request, "jwt_payload")
 
     def test_public_or_jwt_valid_token(self):
