@@ -62,7 +62,7 @@
         <field name="name">auth.jwt.validator.tree</field>
         <field name="model">auth.jwt.validator</field>
         <field name="arch" type="xml">
-            <tree string="arch">
+            <tree>
                 <field name="name" />
                 <field name="issuer" />
                 <field name="audience" />
