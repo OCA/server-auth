@@ -24,6 +24,22 @@ class JWTTestController(Controller):
         return Response(json.dumps(data), content_type="application/json", status=200)
 
     @route(
+        "/auth_jwt_demo_cookie/whoami",
+        type="http",
+        auth="jwt_demo_cookie",
+        csrf=False,
+        cors="*",
+        save_session=False,
+        methods=["GET", "OPTIONS"],
+    )
+    def whoami_cookie(self):
+        data = {}
+        if request.jwt_partner_id:
+            partner = request.env["res.partner"].browse(request.jwt_partner_id)
+            data.update(name=partner.name, email=partner.email, uid=request.env.uid)
+        return Response(json.dumps(data), content_type="application/json", status=200)
+
+    @route(
         "/auth_jwt_demo/keycloak/whoami",
         type="http",
         auth="jwt_demo_keycloak",
