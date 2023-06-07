@@ -88,11 +88,13 @@ class TestAuthMethod(TransactionCase):
         )
 
     def test_missing_authorization_header(self):
+        self._create_validator("validator")
         with self._mock_request(authorization=None):
             with self.assertRaises(UnauthorizedMissingAuthorizationHeader):
-                self.env["ir.http"]._auth_method_jwt()
+                self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_malformed_authorization_header(self):
+        self._create_validator("validator")
         for authorization in (
             "a",
             "Bearer",
@@ -103,7 +105,7 @@ class TestAuthMethod(TransactionCase):
         ):
             with self._mock_request(authorization=authorization):
                 with self.assertRaises(UnauthorizedMalformedAuthorizationHeader):
-                    self.env["ir.http"]._auth_method_jwt()
+                    self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_auth_method_valid_token(self):
         self._create_validator("validator")

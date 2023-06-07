@@ -44,6 +44,32 @@ class TestRegisterHook(tests.HttpCase):
         resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
 
+    def test_whoami_cookie(self):
+        """A end-to-end test with positive authentication and cookie."""
+        partner = self.env["res.users"].search([("email", "!=", False)])[0]
+        token = self._get_token(email=partner.email)
+        resp = self.url_open(
+            "/auth_jwt_demo_cookie/whoami", headers={"Authorization": token}
+        )
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertEqual(whoami.get("name"), partner.name)
+        self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
+        cookie = resp.cookies.get("demo_auth")
+        self.assertTrue(cookie)
+        # Try again with the cookie.
+        resp = self.url_open(
+            "/auth_jwt_demo_cookie/whoami", headers={"Cookie": f"demo_auth={cookie}"}
+        )
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertEqual(whoami.get("name"), partner.name)
+        self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
+        cookie = resp.cookies.get("demo_auth")
+        self.assertTrue(cookie)
+
     def test_forbidden(self):
         """A end-to-end test with negative authentication."""
         token = self._get_token(aud="invalid")

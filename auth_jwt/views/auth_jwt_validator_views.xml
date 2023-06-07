@@ -7,12 +7,12 @@
             <form string="arch">
                 <sheet>
                     <group col="4">
-                        <group colspan="2">
+                        <group colspan="2" string="General">
                             <field name="name" />
-                            <field name="audience" />
                             <field name="next_validator_id" />
                         </group>
-                        <group colspan="2">
+                        <group colspan="2" string="Token validation">
+                            <field name="audience" />
                             <field name="issuer" />
                             <field name="signature_type" />
                             <field
@@ -41,7 +41,7 @@
                                     'required': [('signature_type', '=', 'public_key')]}"
                             />
                         </group>
-                        <group colspan="2">
+                        <group colspan="2" string="User">
                             <field name="user_id_strategy" />
                             <field
                                 name="static_user_id"
@@ -49,9 +49,25 @@
                                         'required': [('user_id_strategy', '=', 'static')]}"
                             />
                         </group>
-                        <group colspan="2">
+                        <group colspan="2" string="Partner">
                             <field name="partner_id_strategy" />
                             <field name="partner_id_required" />
+                        </group>
+                        <group colspan="2" string="Cookie">
+                            <field name="cookie_enabled" />
+                            <field
+                                name="cookie_name"
+                                attrs="{'required': [('cookie_enabled', '=', True)],
+                                        'invisible': [('cookie_enabled', '=', False)]}"
+                            />
+                            <field
+                                name="cookie_path"
+                                attrs="{'invisible': [('cookie_enabled', '=', False)]}"
+                            />
+                            <field
+                                name="cookie_max_age"
+                                attrs="{'invisible': [('cookie_enabled', '=', False)]}"
+                            />
                         </group>
                     </group>
                 </sheet>
