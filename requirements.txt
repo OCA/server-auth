@@ -1,4 +1,6 @@
 # generated from manifests external_dependencies
+cryptography
+pyjwt
 pysaml2
 python-jose
 python-ldap
