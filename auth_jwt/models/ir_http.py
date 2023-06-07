@@ -9,8 +9,10 @@ from odoo.http import request
 
 from ..exceptions import (
     CompositeJwtError,
+    UnauthorizedConfigurationError,
     UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
+    UnauthorizedMissingCookie,
     UnauthorizedSessionMismatch,
 )
 
@@ -55,11 +57,32 @@ class IrHttpJwt(models.AbstractModel):
         return super()._authenticate(endpoint)
 
     @classmethod
+    def _get_jwt_cookie_secret(cls):
+        secret = request.env["ir.config_parameter"].sudo().get_param("database.secret")
+        if not secret:
+            _logger.error("database.secret system parameter is not set.")
+            raise UnauthorizedConfigurationError()
+        return secret
+
+    @classmethod
+    def _get_jwt_payload(cls, validator):
+        """Obtain and validate the JWT payload from the request authorization header or
+        cookie."""
+        try:
+            token = cls._get_bearer_token()
+            assert token
+            return validator._decode(token)
+        except UnauthorizedMissingAuthorizationHeader:
+            if not validator.cookie_enabled:
+                raise
+            token = cls._get_cookie_token(validator.cookie_name)
+            assert token
+            return validator._decode(token, secret=cls._get_jwt_cookie_secret())
+
+    @classmethod
     def _auth_method_jwt(cls, validator_name=None):
         assert not request.uid
         assert not request.session.uid
-        token = cls._get_bearer_token()
-        assert token
         # # Use request cursor to allow partner creation strategy in validator
         env = api.Environment(request.cr, SUPERUSER_ID, {})
         validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
@@ -69,7 +92,7 @@ class IrHttpJwt(models.AbstractModel):
         exceptions = {}
         while validator:
             try:
-                payload = validator._decode(token)
+                payload = cls._get_jwt_payload(validator)
                 break
             except Exception as e:
                 exceptions[validator.name] = e
@@ -79,6 +102,23 @@ class IrHttpJwt(models.AbstractModel):
             if len(exceptions) == 1:
                 raise list(exceptions.values())[0]
             raise CompositeJwtError(exceptions)
+
+        if validator.cookie_enabled:
+            if not validator.cookie_name:
+                _logger.info("Cookie name not set for validator %s", validator.name)
+                raise UnauthorizedConfigurationError()
+            request.future_response.set_cookie(
+                key=validator.cookie_name,
+                value=validator._encode(
+                    payload,
+                    secret=cls._get_jwt_cookie_secret(),
+                    expire=validator.cookie_max_age,
+                ),
+                max_age=validator.cookie_max_age,
+                path=validator.cookie_path or "/",
+                secure=validator.cookie_secure,
+                httponly=True,
+            )
 
         uid = validator._get_and_check_uid(payload)
         assert uid
@@ -106,3 +146,11 @@ class IrHttpJwt(models.AbstractModel):
             _logger.info("Malformed Authorization header.")
             raise UnauthorizedMalformedAuthorizationHeader()
         return mo.group(1)
+
+    @classmethod
+    def _get_cookie_token(cls, cookie_name):
+        token = request.httprequest.cookies.get(cookie_name)
+        if not token:
+            _logger.info("Missing cookie %s.", cookie_name)
+            raise UnauthorizedMissingCookie()
+        return token
