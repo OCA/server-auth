@@ -1,7 +1,9 @@
 # Copyright 2021 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import datetime
 import logging
+from calendar import timegm
 from functools import partial
 
 import jwt  # pylint: disable=missing-manifest-dependency
@@ -73,6 +75,23 @@ class AuthJwtValidator(models.Model):
         help="Next validator to try if this one fails",
     )
 
+    cookie_enabled = fields.Boolean(
+        help=(
+            "Convert the JWT token into an HttpOnly Secure cookie. "
+            "When both an Authorization header and the cookie are present "
+            "in the request, the cookie is ignored."
+        )
+    )
+    cookie_name = fields.Char(default="authorization")
+    cookie_path = fields.Char(default="/")
+    cookie_max_age = fields.Integer(
+        default=86400 * 365,
+        help="Number of seconds until the cookie expires (Max-Age).",
+    )
+    cookie_secure = fields.Boolean(
+        default=True, help="Set to false only for development without https."
+    )
+
     _sql_constraints = [
         ("name_uniq", "unique(name)", "JWT validator names must be unique !"),
     ]
@@ -126,9 +145,27 @@ class AuthJwtValidator(models.Model):
         jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
         return jwks_client.get_signing_key(kid).key
 
-    def _decode(self, token):
+    def _encode(self, payload, secret, expire):
+        """Encode and sign a JWT payload so it can be decoded and validated with
+        _decode().
+
+        The aud and iss claims are set to this validator's values.
+        The exp claim is set according to the expire parameter.
+        """
+        payload = dict(
+            payload,
+            exp=timegm(datetime.datetime.utcnow().utctimetuple()) + expire,
+            aud=self.audience,
+            iss=self.issuer,
+        )
+        return jwt.encode(payload, key=secret, algorithm="HS256")
+
+    def _decode(self, token, secret=None):
         """Validate and decode a JWT token, return the payload."""
-        if self.signature_type == "secret":
+        if secret:
+            key = secret
+            algorithm = "HS256"
+        elif self.signature_type == "secret":
             key = self.secret_key
             algorithm = self.secret_algorithm
         else:

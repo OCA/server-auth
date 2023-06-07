@@ -8,6 +8,10 @@ class UnauthorizedMissingAuthorizationHeader(Unauthorized):
     pass
 
 
+class UnauthorizedMissingCookie(Unauthorized):
+    pass
+
+
 class UnauthorizedMalformedAuthorizationHeader(Unauthorized):
     pass
 
@@ -44,3 +48,7 @@ class CompositeJwtError(Unauthorized):
                 for validator_name, error in self.errors.items()
             )
         )
+
+
+class UnauthorizedConfigurationError(Unauthorized):
+    pass
