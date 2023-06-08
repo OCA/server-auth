@@ -75,3 +75,59 @@ class TestRegisterHook(tests.HttpCase):
         token = self._get_token(aud="invalid")
         resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
         self.assertEqual(resp.status_code, 401)
+
+    def test_public(self):
+        """A end-to-end test for anonymous/public access."""
+        resp = self.url_open("/auth_jwt_demo/whoami-public-or-jwt")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["uid"], self.ref("base.public_user"))
+        # now try with a token
+        partner = self.env["res.users"].search([("email", "!=", False)], limit=1)
+        token = self._get_token(email=partner.email)
+        resp = self.url_open(
+            "/auth_jwt_demo/whoami-public-or-jwt", headers={"Authorization": token}
+        )
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertEqual(whoami.get("name"), partner.name)
+        self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
+
+    def test_public_cookie_mode(self):
+        """A end-to-end test for anonymous/public access with cookie."""
+        resp = self.url_open("/auth_jwt_demo_cookie/whoami-public-or-jwt")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["uid"], self.ref("base.public_user"))
+        # now try with a token
+        partner = self.env["res.users"].search([("email", "!=", False)], limit=1)
+        token = self._get_token(email=partner.email)
+        resp = self.url_open(
+            "/auth_jwt_demo_cookie/whoami-public-or-jwt", headers={"Authorization": token}
+        )
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertEqual(whoami.get("name"), partner.name)
+        self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
+        # now try with the cookie
+        cookie = resp.cookies.get("demo_auth")
+        self.assertTrue(cookie)
+        partner = self.env["res.users"].search([("email", "!=", False)], limit=1)
+        token = self._get_token(email=partner.email)
+        resp = self.url_open(
+            "/auth_jwt_demo_cookie/whoami-public-or-jwt",
+            headers={"Cookie": f"demo_auth={cookie}"},
+        )
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertEqual(whoami.get("name"), partner.name)
+        self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
+        cookie = resp.cookies.get("demo_auth")
+        self.assertTrue(cookie)
+
+    def test_public_keyloak(self):
+        """A end-to-end test for anonymous/public access."""
+        resp = self.url_open("/auth_jwt_demo/keycloak/whoami-public-or-jwt")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()["uid"], self.ref("base.public_user"))
