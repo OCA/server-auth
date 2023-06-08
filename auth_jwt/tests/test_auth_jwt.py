@@ -15,8 +15,8 @@ from odoo.tools.misc import DotDict
 
 from ..exceptions import (
     AmbiguousJwtValidator,
-    CompositeJwtError,
     JwtValidatorNotFound,
+    UnauthorizedCompositeJwtError,
     UnauthorizedInvalidToken,
     UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
@@ -194,7 +194,7 @@ class TestAuthMethod(TransactionCase):
 
         authorization = "Bearer " + self._create_token()
         with self._mock_request(authorization=authorization):
-            with self.assertRaises(CompositeJwtError) as composite_error:
+            with self.assertRaises(UnauthorizedCompositeJwtError) as composite_error:
                 self.env["ir.http"]._auth_method_jwt_validator()
             self.assertEqual(
                 str(composite_error.exception),
