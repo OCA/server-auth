@@ -18,9 +18,25 @@ class JWTTestController(Controller):
     )
     def whoami(self):
         data = {}
-        if request.jwt_partner_id:
+        if getattr(request, "jwt_partner_id", None):
             partner = request.env["res.partner"].browse(request.jwt_partner_id)
             data.update(name=partner.name, email=partner.email, uid=request.env.uid)
+        return Response(json.dumps(data), content_type="application/json", status=200)
+
+    @route(
+        "/auth_jwt_demo/whoami-public-or-jwt",
+        type="http",
+        auth="public_or_jwt_demo",
+        csrf=False,
+        cors="*",
+        save_session=False,
+        methods=["GET", "OPTIONS"],
+    )
+    def whoami_public_or_jwt(self):
+        data = {"uid": request.env.uid}
+        if getattr(request, "jwt_partner_id", None):
+            partner = request.env["res.partner"].browse(request.jwt_partner_id)
+            data.update(name=partner.name, email=partner.email)
         return Response(json.dumps(data), content_type="application/json", status=200)
 
     @route(
@@ -33,10 +49,26 @@ class JWTTestController(Controller):
         methods=["GET", "OPTIONS"],
     )
     def whoami_cookie(self):
-        data = {}
-        if request.jwt_partner_id:
+        data = {"uid": request.env.uid}
+        if getattr(request, "jwt_partner_id", None):
             partner = request.env["res.partner"].browse(request.jwt_partner_id)
-            data.update(name=partner.name, email=partner.email, uid=request.env.uid)
+            data.update(name=partner.name, email=partner.email)
+        return Response(json.dumps(data), content_type="application/json", status=200)
+
+    @route(
+        "/auth_jwt_demo_cookie/whoami-public-or-jwt",
+        type="http",
+        auth="public_or_jwt_demo_cookie",
+        csrf=False,
+        cors="*",
+        save_session=False,
+        methods=["GET", "OPTIONS"],
+    )
+    def whoami_cookie_public_or_jwt(self):
+        data = {"uid": request.env.uid}
+        if getattr(request, "jwt_partner_id", None):
+            partner = request.env["res.partner"].browse(request.jwt_partner_id)
+            data.update(name=partner.name, email=partner.email)
         return Response(json.dumps(data), content_type="application/json", status=200)
 
     @route(
@@ -55,7 +87,7 @@ class JWTTestController(Controller):
         identity provider in tests/keycloak.
         """
         data = {}
-        if request.jwt_partner_id:
+        if getattr(request, "jwt_partner_id", None):
             partner = request.env["res.partner"].browse(request.jwt_partner_id)
             data.update(name=partner.name, email=partner.email)
         return Response(json.dumps(data), content_type="application/json", status=200)
@@ -75,11 +107,11 @@ class JWTTestController(Controller):
         You can play with this using the browser app in tests/spa and the
         identity provider in tests/keycloak.
         """
-        data = {}
-        if hasattr(request, "jwt_partner_id") and request.jwt_partner_id:
+        data = {"uid": request.env.uid}
+        if getattr(request, "jwt_partner_id", None):
             partner = request.env["res.partner"].browse(request.jwt_partner_id)
-            data.update(name=partner.name, email=partner.email, uid=request.env.uid)
+            data.update(name=partner.name, email=partner.email)
         else:
             # public
-            data.update(name="Anonymous", uid=request.env.uid)
+            data.update(name="Anonymous")
         return Response(json.dumps(data), content_type="application/json", status=200)
