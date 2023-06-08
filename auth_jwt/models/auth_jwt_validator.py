@@ -15,6 +15,7 @@ from odoo.exceptions import ValidationError
 
 from ..exceptions import (
     AmbiguousJwtValidator,
+    ConfigurationError,
     JwtValidatorNotFound,
     UnauthorizedInvalidToken,
     UnauthorizedPartnerNotFound,
@@ -272,3 +273,10 @@ class AuthJwtValidator(models.Model):
     def unlink(self):
         self._unregister_auth_method()
         return super().unlink()
+
+    def _get_jwt_cookie_secret(self):
+        secret = self.env["ir.config_parameter"].sudo().get_param("database.secret")
+        if not secret:
+            _logger.error("database.secret system parameter is not set.")
+            raise ConfigurationError()
+        return secret

@@ -58,14 +58,6 @@ class IrHttpJwt(models.AbstractModel):
         return super()._authenticate(endpoint)
 
     @classmethod
-    def _get_jwt_cookie_secret(cls):
-        secret = request.env["ir.config_parameter"].sudo().get_param("database.secret")
-        if not secret:
-            _logger.error("database.secret system parameter is not set.")
-            raise ConfigurationError()
-        return secret
-
-    @classmethod
     def _get_jwt_payload(cls, validator):
         """Obtain and validate the JWT payload from the request authorization header or
         cookie."""
@@ -78,7 +70,7 @@ class IrHttpJwt(models.AbstractModel):
                 raise
             token = cls._get_cookie_token(validator.cookie_name)
             assert token
-            return validator._decode(token, secret=cls._get_jwt_cookie_secret())
+            return validator._decode(token, secret=validator._get_jwt_cookie_secret())
 
     @classmethod
     def _auth_method_jwt(cls, validator_name=None):
@@ -112,7 +104,7 @@ class IrHttpJwt(models.AbstractModel):
                 key=validator.cookie_name,
                 value=validator._encode(
                     payload,
-                    secret=cls._get_jwt_cookie_secret(),
+                    secret=validator._get_jwt_cookie_secret(),
                     expire=validator.cookie_max_age,
                 ),
                 max_age=validator.cookie_max_age,
