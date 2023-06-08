@@ -3,6 +3,7 @@
 
 import datetime
 import logging
+import re
 from calendar import timegm
 from functools import partial
 
@@ -18,10 +19,14 @@ from ..exceptions import (
     ConfigurationError,
     JwtValidatorNotFound,
     UnauthorizedInvalidToken,
+    UnauthorizedMalformedAuthorizationHeader,
+    UnauthorizedMissingAuthorizationHeader,
     UnauthorizedPartnerNotFound,
 )
 
 _logger = logging.getLogger(__name__)
+
+AUTHORIZATION_RE = re.compile(r"^Bearer ([^ ]+)$")
 
 
 class AuthJwtValidator(models.Model):
@@ -280,3 +285,20 @@ class AuthJwtValidator(models.Model):
             _logger.error("database.secret system parameter is not set.")
             raise ConfigurationError()
         return secret
+
+    @api.model
+    def _parse_bearer_authorization(self, authorization):
+        """Parse a Bearer token authorization header and return the token.
+
+        Raises UnauthorizedMissingAuthorizationHeader if authorization is falsy.
+        Raises UnauthorizedMalformedAuthorizationHeader if invalid.
+        """
+        if not authorization:
+            _logger.info("Missing Authorization header.")
+            raise UnauthorizedMissingAuthorizationHeader()
+        # https://tools.ietf.org/html/rfc6750#section-2.1
+        mo = AUTHORIZATION_RE.match(authorization)
+        if not mo:
+            _logger.info("Malformed Authorization header.")
+            raise UnauthorizedMalformedAuthorizationHeader()
+        return mo.group(1)

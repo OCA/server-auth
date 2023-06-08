@@ -2,7 +2,6 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import logging
-import re
 
 from odoo import SUPERUSER_ID, api, models
 from odoo.http import request
@@ -11,16 +10,12 @@ from ..exceptions import (
     ConfigurationError,
     Unauthorized,
     UnauthorizedCompositeJwtError,
-    UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
     UnauthorizedMissingCookie,
     UnauthorizedSessionMismatch,
 )
 
 _logger = logging.getLogger(__name__)
-
-
-AUTHORIZATION_RE = re.compile(r"^Bearer ([^ ]+)$")
 
 
 class IrHttpJwt(models.AbstractModel):
@@ -130,15 +125,9 @@ class IrHttpJwt(models.AbstractModel):
     def _get_bearer_token(cls):
         # https://tools.ietf.org/html/rfc2617#section-3.2.2
         authorization = request.httprequest.environ.get("HTTP_AUTHORIZATION")
-        if not authorization:
-            _logger.info("Missing Authorization header.")
-            raise UnauthorizedMissingAuthorizationHeader()
-        # https://tools.ietf.org/html/rfc6750#section-2.1
-        mo = AUTHORIZATION_RE.match(authorization)
-        if not mo:
-            _logger.info("Malformed Authorization header.")
-            raise UnauthorizedMalformedAuthorizationHeader()
-        return mo.group(1)
+        return request.env["auth.jwt.validator"]._parse_bearer_authorization(
+            authorization
+        )
 
     @classmethod
     def _get_cookie_token(cls, cookie_name):
