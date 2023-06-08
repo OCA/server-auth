@@ -8,8 +8,9 @@ from odoo import SUPERUSER_ID, api, models
 from odoo.http import request
 
 from ..exceptions import (
-    CompositeJwtError,
-    UnauthorizedConfigurationError,
+    ConfigurationError,
+    Unauthorized,
+    UnauthorizedCompositeJwtError,
     UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
     UnauthorizedMissingCookie,
@@ -61,7 +62,7 @@ class IrHttpJwt(models.AbstractModel):
         secret = request.env["ir.config_parameter"].sudo().get_param("database.secret")
         if not secret:
             _logger.error("database.secret system parameter is not set.")
-            raise UnauthorizedConfigurationError()
+            raise ConfigurationError()
         return secret
 
     @classmethod
@@ -94,19 +95,19 @@ class IrHttpJwt(models.AbstractModel):
             try:
                 payload = cls._get_jwt_payload(validator)
                 break
-            except Exception as e:
+            except Unauthorized as e:
                 exceptions[validator.name] = e
                 validator = validator.next_validator_id
 
         if not payload:
             if len(exceptions) == 1:
                 raise list(exceptions.values())[0]
-            raise CompositeJwtError(exceptions)
+            raise UnauthorizedCompositeJwtError(exceptions)
 
         if validator.cookie_enabled:
             if not validator.cookie_name:
                 _logger.info("Cookie name not set for validator %s", validator.name)
-                raise UnauthorizedConfigurationError()
+                raise ConfigurationError()
             request.future_response.set_cookie(
                 key=validator.cookie_name,
                 value=validator._encode(
