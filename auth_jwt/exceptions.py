@@ -36,7 +36,7 @@ class UnauthorizedPartnerNotFound(Unauthorized):
     pass
 
 
-class CompositeJwtError(Unauthorized):
+class UnauthorizedCompositeJwtError(Unauthorized):
     """Indicate that multiple errors occurred during JWT chain validation."""
 
     def __init__(self, errors):
@@ -50,5 +50,5 @@ class CompositeJwtError(Unauthorized):
         )
 
 
-class UnauthorizedConfigurationError(Unauthorized):
+class ConfigurationError(InternalServerError):
     pass
