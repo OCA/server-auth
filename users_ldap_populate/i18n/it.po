@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-06-26 20:39+0000\n"
-"PO-Revision-Date: 2023-04-10 16:37+0000\n"
+"PO-Revision-Date: 2023-06-08 12:12+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: users_ldap_populate
 #: model_terms:ir.ui.view,arch_db:users_ldap_populate.populate_wizard_view
@@ -73,7 +73,7 @@ msgstr "Ultimo aggiornamento di"
 #. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__write_date
 msgid "Last Updated on"
-msgstr "Last Updated on"
+msgstr "Ultimo aggiornamento il"
 
 #. module: users_ldap_populate
 #: model:ir.model.fields,help:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
