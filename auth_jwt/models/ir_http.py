@@ -118,7 +118,13 @@ class IrHttpJwt(models.AbstractModel):
     @classmethod
     def _auth_method_public_or_jwt(cls, validator_name=None):
         if "HTTP_AUTHORIZATION" not in request.httprequest.environ:
-            return cls._auth_method_public()
+            env = api.Environment(request.cr, SUPERUSER_ID, {})
+            validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
+            assert len(validator) == 1
+            if not validator.cookie_enabled or not request.httprequest.cookies.get(
+                validator.cookie_name
+            ):
+                return cls._auth_method_public()
         return cls._auth_method_jwt(validator_name)
 
     @classmethod
