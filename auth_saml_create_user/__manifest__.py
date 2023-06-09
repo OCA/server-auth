@@ -14,9 +14,8 @@
     "version": "14.0.1.0.0",
     "depends": ["auth_saml"],
     "data": [
-        "data/auth_saml_create_user.xml",
+        # "data/auth_saml_create_user.xml",
         "views/auth_saml.xml",
-        "security/ir.model.access.csv",
     ],
     "development_status": "Beta",
 }
