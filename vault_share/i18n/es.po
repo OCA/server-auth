@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 07:44+0000\n"
-"PO-Revision-Date: 2022-06-06 09:54+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2023-06-13 11:09+0000\n"
+"Last-Translator: Víctor Martínez <victor.martinez@tecnativa.com>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__accesses
@@ -214,7 +214,7 @@ msgstr "Secreto compartido:"
 #: model:ir.actions.act_window,name:vault_share.action_vault_share
 #: model:ir.ui.menu,name:vault_share.menu_vault_share
 msgid "Shares"
-msgstr "Recursos comparidos"
+msgstr "Recursos compartidos"
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__expiration
