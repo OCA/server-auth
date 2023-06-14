@@ -6,7 +6,7 @@
 import * as utils from "vault.utils";
 import {_t} from "web.core";
 import ajax from "web.ajax";
-import {session} from "web.session";
+import {session} from "@web/session";
 
 // Database name on the browser
 const Database = "vault";
