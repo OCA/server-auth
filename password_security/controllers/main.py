@@ -27,6 +27,8 @@ class PasswordSecurityHome(AuthSignupHome):
         response = super(PasswordSecurityHome, self).web_login(*args, **kw)
         if not request.params.get("login_success"):
             return response
+        if not request.env.user:
+            return response
         # Now, I'm an authenticated user
         if not request.env.user._password_has_expired():
             return response
