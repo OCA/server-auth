@@ -126,6 +126,18 @@ class AuthJwtValidator(models.Model):
                         )
                     )
 
+    @api.constrains("cookie_enabled", "cookie_name")
+    def _check_cookie_name(self):
+        for rec in self:
+            if rec.cookie_enabled and not rec.cookie_name:
+                raise ValidationError(
+                    _(
+                        "A cookie name must be provided on JWT validator %s "
+                        "because it has cookie mode enabled."
+                    )
+                    % (rec.name,)
+                )
+
     @api.model
     def _get_validator_by_name_domain(self, validator_name):
         if validator_name:
