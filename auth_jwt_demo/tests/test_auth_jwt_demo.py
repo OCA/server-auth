@@ -15,6 +15,9 @@ class TestRegisterHook(tests.HttpCase):
         self.assertEqual(len(validator), 1)
         self.assertTrue(hasattr(self.env["ir.http"].__class__, "_auth_method_jwt_demo"))
 
+
+@tests.tagged("post_install", "-at_install")
+class TestEndToEnd(tests.HttpCase):
     def _get_token(self, aud=None, email=None):
         validator = self.env["auth.jwt.validator"].search([("name", "=", "demo")])
         payload = {
@@ -102,7 +105,8 @@ class TestRegisterHook(tests.HttpCase):
         partner = self.env["res.users"].search([("email", "!=", False)], limit=1)
         token = self._get_token(email=partner.email)
         resp = self.url_open(
-            "/auth_jwt_demo_cookie/whoami-public-or-jwt", headers={"Authorization": token}
+            "/auth_jwt_demo_cookie/whoami-public-or-jwt",
+            headers={"Authorization": token},
         )
         resp.raise_for_status()
         whoami = resp.json()
