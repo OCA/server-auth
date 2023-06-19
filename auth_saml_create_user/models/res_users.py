@@ -38,5 +38,11 @@ class ResUsers(models.Model):
                 "company_id": self.env["res.company"].sudo().browse(1).id,
             }
         )
-        new_user.write({"saml_ids": [6, 0, [provider]]})
+        vals = {
+            "saml_provider_id": provider,
+            "saml_uid" : saml_uid,
+            "user_id" : new_user
+        }
+        saml =self.env["res.users.saml"].create(vals)
+        new_user.write({"saml_ids": [0, 0, saml]})
         # new_user.write({"saml_uid": saml_uid})
