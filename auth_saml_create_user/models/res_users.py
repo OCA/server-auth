@@ -16,7 +16,7 @@ class ResUsers(models.Model):
 
     def _auth_saml_signin(self, provider: int, validation: dict, saml_response) -> str:
         saml_uid = validation["user_id"]
-        user_ids = self.search(
+        user_ids = self.env["res.users.saml"].search(
             [
                 ("saml_uid", "=", saml_uid),
                 ("saml_provider_id", "=", provider)
