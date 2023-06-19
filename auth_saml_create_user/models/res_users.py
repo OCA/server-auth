@@ -33,9 +33,10 @@ class ResUsers(models.Model):
             {
                 "name": saml_uid,
                 "login": saml_uid,
-                "saml_provider_id": provider,
+                #"saml_ids": [0,0,provider,
                 "password": "".join(random.sample(s, passlen)),
                 "company_id": self.env["res.company"].sudo().browse(1).id,
             }
         )
-        new_user.write({"saml_uid": saml_uid})
+        new_user.write({"saml_ids": [6,0, [provider]]})
+        #new_user.write({"saml_uid": saml_uid})
