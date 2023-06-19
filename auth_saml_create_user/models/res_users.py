@@ -14,10 +14,13 @@ passlen = 16
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    def _auth_saml_signin(self, provider, validation, saml_response):
+    def _auth_saml_signin(self, provider: int, validation: dict, saml_response) -> str:
         saml_uid = validation["user_id"]
         user_ids = self.search(
-            [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)]
+            [
+                ("saml_uid", "=", saml_uid),
+                ("saml_provider_id", "=", provider)
+            ]
         )
         if self.check_if_create_user(provider) and not user_ids:
             self.create_user(saml_uid, provider)
