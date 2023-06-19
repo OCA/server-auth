@@ -17,10 +17,7 @@ class ResUsers(models.Model):
     def _auth_saml_signin(self, provider: int, validation: dict, saml_response) -> str:
         saml_uid = validation["user_id"]
         user_ids = self.env["res.users.saml"].search(
-            [
-                ("saml_uid", "=", saml_uid),
-                ("saml_provider_id", "=", provider)
-            ]
+            [("saml_uid", "=", saml_uid), ("saml_provider_id", "=", provider)]
         )
         if self.check_if_create_user(provider) and not user_ids:
             self.create_user(saml_uid, provider)
@@ -36,10 +33,10 @@ class ResUsers(models.Model):
             {
                 "name": saml_uid,
                 "login": saml_uid,
-                #"saml_ids": [0,0,provider,
+                # "saml_ids": [0,0,provider,
                 "password": "".join(random.sample(s, passlen)),
                 "company_id": self.env["res.company"].sudo().browse(1).id,
             }
         )
-        new_user.write({"saml_ids": [6,0, [provider]]})
-        #new_user.write({"saml_uid": saml_uid})
+        new_user.write({"saml_ids": [6, 0, [provider]]})
+        # new_user.write({"saml_uid": saml_uid})
