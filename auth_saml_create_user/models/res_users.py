@@ -50,7 +50,7 @@ class ResUsers(models.Model):
             "saml_uid": saml_uid,
             "user_id": new_user.id,
         }
-        self.env["res.users.saml"].create(vals)
+        sml = self.env["res.users.saml"].create(vals)
 
         # Note: we need to commit to database because otherwise in phase of the first login
         # the user obtain: "You do not have access to this database. Please contact support."
