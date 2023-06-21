@@ -40,17 +40,16 @@ class ResUsers(models.Model):
         vals = {
             "saml_provider_id": provider,
             "saml_uid" : saml_uid,
-            "user_id" : new_user
+            "user_id" : new_user.id
         }
-        saml =self.env["res.users.saml"].create(vals)
-        # new_user.write({"saml_ids": [0, 0, saml]})
-        _logger.debug('Odoo user  "%s" created' % saml_uid)
-        vals = {
-            "saml_provider_id": provider,
-            "saml_uid": saml_uid,
-            "user_id": new_user.id,
-        }
-        sml = self.env["res.users.saml"].create(vals)
+        self.env["res.users.saml"].create(vals)
+        #new_user.write({"saml_ids": [6, 0, [saml]]})
+        #vals = {
+        #    "saml_provider_id": provider,
+        #    "saml_uid": saml_uid,
+        #    "user_id": new_user.id,
+        #}
+        #sml = self.env["res.users.saml"].create(vals)
 
         # Note: we need to commit to database because otherwise in phase of the first login
         # the user obtain: "You do not have access to this database. Please contact support."
