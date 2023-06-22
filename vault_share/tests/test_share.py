@@ -59,7 +59,7 @@ class TestShare(TransactionCase):
             return context
 
         with MockRequest(self.env) as request_mock:
-            request_mock.render.side_effect = return_context
+            request_mock.render = return_context
             controller = main.Controller()
 
             response = controller.vault_share("")
