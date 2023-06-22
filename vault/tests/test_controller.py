@@ -55,7 +55,7 @@ class TestController(TransactionCase):
             return context
 
         with MockRequest(self.env) as request_mock:
-            request_mock.render.side_effect = return_context
+            request_mock.render = return_context
             response = self.controller.vault_inbox("")
             self.assertIn("error", response)
 
