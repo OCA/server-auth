@@ -8,6 +8,10 @@ class UnauthorizedMissingAuthorizationHeader(Unauthorized):
     pass
 
 
+class UnauthorizedMissingCookie(Unauthorized):
+    pass
+
+
 class UnauthorizedMalformedAuthorizationHeader(Unauthorized):
     pass
 
@@ -32,7 +36,7 @@ class UnauthorizedPartnerNotFound(Unauthorized):
     pass
 
 
-class CompositeJwtError(Unauthorized):
+class UnauthorizedCompositeJwtError(Unauthorized):
     """Indicate that multiple errors occurred during JWT chain validation."""
 
     def __init__(self, errors):
@@ -44,3 +48,7 @@ class CompositeJwtError(Unauthorized):
                 for validator_name, error in self.errors.items()
             )
         )
+
+
+class ConfigurationError(InternalServerError):
+    pass

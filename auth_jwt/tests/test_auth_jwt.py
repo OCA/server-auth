@@ -15,8 +15,8 @@ from odoo.tools.misc import DotDict
 
 from ..exceptions import (
     AmbiguousJwtValidator,
-    CompositeJwtError,
     JwtValidatorNotFound,
+    UnauthorizedCompositeJwtError,
     UnauthorizedInvalidToken,
     UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
@@ -90,11 +90,13 @@ class TestAuthMethod(TransactionCase):
         )
 
     def test_missing_authorization_header(self):
+        self._create_validator("validator")
         with self._mock_request(authorization=None):
             with self.assertRaises(UnauthorizedMissingAuthorizationHeader):
-                self.env["ir.http"]._auth_method_jwt()
+                self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_malformed_authorization_header(self):
+        self._create_validator("validator")
         for authorization in (
             "a",
             "Bearer",
@@ -105,7 +107,7 @@ class TestAuthMethod(TransactionCase):
         ):
             with self._mock_request(authorization=authorization):
                 with self.assertRaises(UnauthorizedMalformedAuthorizationHeader):
-                    self.env["ir.http"]._auth_method_jwt()
+                    self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_auth_method_valid_token(self):
         self._create_validator("validator")
@@ -194,7 +196,7 @@ class TestAuthMethod(TransactionCase):
 
         authorization = "Bearer " + self._create_token()
         with self._mock_request(authorization=authorization):
-            with self.assertRaises(CompositeJwtError) as composite_error:
+            with self.assertRaises(UnauthorizedCompositeJwtError) as composite_error:
                 self.env["ir.http"]._auth_method_jwt_validator()
             self.assertEqual(
                 str(composite_error.exception),
