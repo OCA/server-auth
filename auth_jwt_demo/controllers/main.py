@@ -20,7 +20,7 @@ class JWTTestController(Controller):
         data = {}
         if getattr(request, "jwt_partner_id", None):
             partner = request.env["res.partner"].browse(request.jwt_partner_id)
-            data.update(name=partner.name, email=partner.email)
+            data.update(name=partner.name, email=partner.email, uid=request.env.uid)
         return Response(json.dumps(data), content_type="application/json", status=200)
 
     @route(

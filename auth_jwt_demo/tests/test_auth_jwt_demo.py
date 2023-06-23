@@ -41,6 +41,7 @@ class TestEndToEnd(tests.HttpCase):
         whoami = resp.json()
         self.assertEqual(whoami.get("name"), partner.name)
         self.assertEqual(whoami.get("email"), partner.email)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
         # Try again in a user session, it will be rejected because auth_jwt
         # is not designed to work in user session.
         self.authenticate("demo", "demo")

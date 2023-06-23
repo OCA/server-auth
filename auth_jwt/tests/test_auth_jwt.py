@@ -72,6 +72,7 @@ class TestAuthMethod(TransactionCase):
         issuer="http://the.issuer",
         secret_key="thesecret",
         partner_id_required=False,
+        static_user_id=1,
     ):
         return self.env["auth.jwt.validator"].create(
             dict(
@@ -82,6 +83,7 @@ class TestAuthMethod(TransactionCase):
                 audience=audience,
                 issuer=issuer,
                 user_id_strategy="static",
+                static_user_id=static_user_id,
                 partner_id_strategy="email",
                 partner_id_required=partner_id_required,
             )
