@@ -5,7 +5,7 @@
     "name": "Auth JWT Test",
     "summary": """
         Test/demo module for auth_jwt.""",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.1.0",
     "license": "LGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "maintainers": ["sbidoul"],
