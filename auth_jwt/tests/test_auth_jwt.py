@@ -401,6 +401,7 @@ class TestAuthMethod(TransactionCase):
             self._create_validator(name="not an identifier")
 
     def test_public_or_jwt_no_token(self):
+        self._create_validator("validator")
         with self._mock_request(authorization=None) as request:
             self.env["ir.http"]._auth_method_public_or_jwt()
             assert request.uid == self.env.ref("base.public_user").id
