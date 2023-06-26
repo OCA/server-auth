@@ -6,7 +6,7 @@
         <field name="name">auth.api.key.form (in auth_api_key)</field>
         <field name="model">auth.api.key</field>
         <field name="arch" type="xml">
-            <form create="false" edit="false">
+            <form>
                 <sheet>
                     <label for="name" class="oe_edit_only" />
                     <h1>
@@ -14,7 +14,7 @@
                     </h1>
                     <group name="config" colspan="4" col="4">
                         <field name="user_id" colspan="4" />
-                        <field name="key" colspan="4" />
+                        <field name="key" colspan="4" password="True" />
                     </group>
                 </sheet>
             </form>
