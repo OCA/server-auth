@@ -27,7 +27,7 @@ class ResUsers(models.Model):
     @api.depends("keys", "keys.current")
     def _compute_active_key(self):
         for rec in self:
-            keys = rec.keys.filtered("current")
+            keys = rec.sudo().keys.filtered("current")
             rec.active_key = keys[0] if keys else None
 
     @api.depends("inbox_token")
