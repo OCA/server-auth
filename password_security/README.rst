@@ -94,6 +94,7 @@ Authors
 ~~~~~~~
 
 * LasLabs
+* Onestein
 * Kaushal Prajapati
 * Tecnativa
 * initOS GmbH
