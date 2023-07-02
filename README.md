@@ -27,7 +27,7 @@ addon | version | maintainers | summary
 [auth_jwt_demo](auth_jwt_demo/) | 16.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
 [auth_ldaps](auth_ldaps/) | 16.0.1.0.0 |  | Allows to use LDAP over SSL authentication
 [auth_oidc](auth_oidc/) | 16.0.1.0.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
-[auth_saml](auth_saml/) | 16.0.1.0.0 |  | SAML2 Authentication
+[auth_saml](auth_saml/) | 16.0.1.0.1 |  | SAML2 Authentication
 
 [//]: # (end addons)
 
