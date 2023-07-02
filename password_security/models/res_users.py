@@ -185,18 +185,20 @@ class ResUsers(models.Model):
         :raises: UserError on reused password
         """
         crypt = self._crypt_context()
-        for rec_id in self:
-            recent_passes = rec_id.company_id.password_history
-            if recent_passes < 0:
-                recent_passes = rec_id.password_history_ids
+        for user in self:
+            password_history = user.company_id.password_history
+            if not password_history:  # disabled
+                recent_passes = self.env["res.users.pass.history"].browse()
+            elif password_history < 0:  # unlimited
+                recent_passes = user.password_history_ids
             else:
-                recent_passes = rec_id.password_history_ids[0 : recent_passes - 1]
+                recent_passes = user.password_history_ids[:password_history]
             if recent_passes.filtered(
                 lambda r: crypt.verify(password, r.password_crypt)
             ):
                 raise UserError(
                     _("Cannot use the most recent %d passwords")
-                    % rec_id.company_id.password_history
+                    % user.company_id.password_history
                 )
 
     def _set_encrypted_password(self, uid, pw):
