@@ -20,18 +20,21 @@ msgstr ""
 "2:1));\n"
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Another user is already registered using this email address."
 msgstr ""
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Check your email to activate your account!"
 msgstr "Ati primit un email pentru activarea acestui cont!"
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Something went wrong, please try again later or contact us."
@@ -39,6 +42,7 @@ msgstr ""
 "Sa produs o eroare, va rugam sa incercati mai tarziu sau contacteaza-ne."
 
 #. module: auth_signup_verify_email
+#. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "That does not seem to be an email address."
