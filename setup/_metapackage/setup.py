@@ -15,6 +15,7 @@ setuptools.setup(
         'odoo-addon-auth_ldaps>=16.0dev,<16.1dev',
         'odoo-addon-auth_oidc>=16.0dev,<16.1dev',
         'odoo-addon-auth_saml>=16.0dev,<16.1dev',
+        'odoo-addon-auth_signup_verify_email>=16.0dev,<16.1dev',
         'odoo-addon-base_user_show_email>=16.0dev,<16.1dev',
     ],
     classifiers=[
