@@ -115,6 +115,9 @@ Contributors
     * Chandresh Thakkar <cthakkar@opensourceintegrators.com>
     * Daniel Reis <dreis@opensourceintegrators.com>
 
+* `Onestein <https://www.onestein.nl>`_:
+    * Andrea Stirpe <a.stirpe@onestein.nl>
+
 Maintainers
 ~~~~~~~~~~~
 
