@@ -7,4 +7,5 @@ from . import (
     test_password_security_session,
     test_res_config_settings,
     test_res_users,
+    test_reset_password,
 )

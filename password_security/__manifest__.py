@@ -7,6 +7,7 @@
     "summary": "Allow admin to set password security requirements.",
     "version": "15.0.1.1.3",
     "author": "LasLabs, "
+    "Onestein, "
     "Kaushal Prajapati, "
     "Tecnativa, "
     "initOS GmbH, "

@@ -164,11 +164,11 @@ class ResUsers(models.Model):
         :raises: UserError on invalidated pass reset attempt
         :return: True on allowed reset
         """
-        for rec_id in self:
-            pass_min = rec_id.company_id.password_minimum
+        for user in self:
+            pass_min = user.company_id.password_minimum
             if pass_min <= 0:
-                pass
-            write_date = rec_id.password_write_date
+                continue
+            write_date = user.password_write_date
             delta = timedelta(hours=pass_min)
             if write_date + delta > datetime.now():
                 raise UserError(
@@ -207,3 +207,13 @@ class ResUsers(models.Model):
 
         self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
         return res
+
+    def action_reset_password(self):
+        """Disallow password resets inside of Minimum Hours"""
+        if not self.env.context.get("install_mode") and not self.env.context.get(
+            "create_user"
+        ):
+            if not self.env.user._is_admin():
+                users = self.filtered(lambda user: user.active)
+                users._validate_pass_reset()
+        return super().action_reset_password()

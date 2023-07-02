@@ -58,29 +58,3 @@ class PasswordSecurityHome(AuthSignupHome):
             qcontext = self.get_auth_signup_qcontext()
             qcontext["error"] = str(e)
             return request.render("auth_signup.signup", qcontext)
-
-    @http.route()
-    def web_auth_reset_password(self, *args, **kw):
-        """It provides hook to disallow front-facing resets inside of min
-        Unfortuantely had to reimplement some core logic here because of
-        nested logic in parent
-        """
-        qcontext = self.get_auth_signup_qcontext()
-        if (
-            request.httprequest.method == "POST"
-            and qcontext.get("login")
-            and "error" not in qcontext
-            and "token" not in qcontext
-        ):
-            login = qcontext.get("login")
-            user_ids = request.env.sudo().search(
-                [("login", "=", login)],
-                limit=1,
-            )
-            if not user_ids:
-                user_ids = request.env.sudo().search(
-                    [("email", "=", login)],
-                    limit=1,
-                )
-            user_ids._validate_pass_reset()
-        return super(PasswordSecurityHome, self).web_auth_reset_password(*args, **kw)
