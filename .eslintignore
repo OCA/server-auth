@@ -1,0 +1,2 @@
+# ignore demo js code
+auth_jwt_demo/tests/spa/js/*.js
