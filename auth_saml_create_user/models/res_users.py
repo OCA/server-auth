@@ -39,8 +39,8 @@ class ResUsers(models.Model):
         )
         vals = {
             "saml_provider_id": provider,
-            "saml_uid" : saml_uid,
-            "user_id" : new_user.id
+            "saml_uid": saml_uid,
+            "user_id": new_user.id,
         }
         self.env["res.users.saml"].create(vals)
 
