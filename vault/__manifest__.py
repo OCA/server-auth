@@ -5,7 +5,7 @@
     "name": "Vault",
     "summary": "Password vault integration in Odoo",
     "license": "AGPL-3",
-    "version": "15.0.1.6.4",
+    "version": "16.0.1.0.0",
     "website": "https://github.com/OCA/server-auth",
     "application": True,
     "author": "initOS GmbH, Odoo Community Association (OCA)",
@@ -34,6 +34,7 @@
         "vault.assets_frontend": [
             "vault/static/src/common/*.js",
             "vault/static/src/frontend/*.js",
+            
         ],
         "web.assets_backend": [
             "vault/static/lib/**/*.min.js",
@@ -41,10 +42,8 @@
             "vault/static/src/backend/*.scss",
             "vault/static/src/backend/*.js",
             "vault/static/src/legacy/vault_controller.js",
-            "vault/static/src/legacy/vault_widget.js",
-        ],
-        "web.assets_qweb": [
-            "vault/static/src/**/*.xml",
+            "vault/static/src/backend/*.xml",
+            # "vault/static/src/legacy/vault_widget.js",
         ],
         "web.tests_assets": [
             "vault/static/tests/**/*.js",

@@ -11,32 +11,37 @@
         </t>
     </t>
 
-    <t t-name="vault.buttons">
+    <t t-name="vault.buttons" owl="1">
         <button
-            class="btn fa fa-eye o_vault_show"
-            t-if="show"
+            class="btn fa fa-eye"
+            t-if="state.show"
             title="Show"
             aria-label="Show"
+            t-on-click="_onShowValue"
         />
         <button
-            class="btn fa fa-eye-slash o_vault_show"
+            class="btn fa fa-eye-slash"
             t-else=""
             title="Hide"
             aria-label="Hide"
+            t-on-click="_onShowValue"
         />
         <button
-            class="btn fa fa-clipboard o_vault_clipboard"
+            class="btn fa fa-clipboard"
             title="Copy to clipboard"
             aria-label="Copy to clipboard"
+            t-on-click="_onCopyValue"
         />
         <button
-            class="btn fa fa-share-alt o_vault_send"
+            class="btn fa fa-share-alt"
             title="Send the secret to an user"
             aria-label="Send the secret to an user"
+            t-on-click="_onSendValue"
         />
     </t>
 
-    <div t-name="vault.askpass" class="o_form_view">
+    <t t-name="vault.askpass">
+        <div class="o_form_view">
         <label for="password" class="col-lg-auto col-form-label">
             Please enter your password or upload a keyfile:
         </label>
@@ -82,9 +87,11 @@
                 </td>
             </tr>
         </table>
-    </div>
+        </div>
+    </t>
 
-    <div t-name="vault.generate_pass" class="o_form_view">
+    <t t-name="vault.generate_pass">
+        <div class="o_form_view">
         <label for="password" class="col-lg-auto col-form-label">
             Generate a new secret:
         </label>
@@ -132,28 +139,33 @@
                 </td>
             </tr>
         </table>
-    </div>
-
-    <t t-name="FieldVault">
-        <div class="o_vault o_vault_error" t-if="!widget.supported()">
-            <span>*******</span>
-        </div>
-        <div class="o_vault" t-elif="widget.mode == 'edit'">
-            <button
-                class="btn fa fa-lock o_vault_generate"
-                title="Generate"
-                aria-label="Generate"
-            />
-            <input class="o_vault_value" t-esc="value" />
-        </div>
-        <div class="o_vault" t-else="">
-            <t t-call="vault.buttons" />
-            <span class="o_vault_value" t-esc="value" />
         </div>
     </t>
 
-    <t t-name="FieldVaultInbox">
-        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+    <t t-name="vault.VaultField" owl="1">
+        <t class="o_vault o_vault_error" t-if="!supported">
+            <span>*******</span>
+        </t>
+        <t t-elif="!props.readonly">
+            <input 
+                class="o_input" 
+                t-ref="input" 
+                type="text"
+                t-on-change="(ev) => this.onChange(ev.target.value)" 
+                t-att-id="props.id"
+            />
+            <span class="o_field_translate btn btn-link" t-on-click.prevent="_onGenerateValue">
+                <i class="fa fa-lock" />
+            </span>
+        </t>
+        <div class="o_vault" t-else="">
+            <t t-call="vault.buttons" />
+            <span class="o_vault_value" t-esc="formmatedValue" />
+        </div>
+    </t>
+
+    <t t-name="vault.VaultInboxField" owl="1">
+        <div class="o_vault o_vault_error" t-if="!supported">
             <span>*******</span>
         </div>
         <div class="o_vault" t-else="">
@@ -168,8 +180,8 @@
         </div>
     </t>
 
-    <t t-name="FileVaultInbox">
-        <div class="o_vault o_vault_error" t-if="!widget.supported()">
+    <t t-name="vault.VaultInboxFile" owl="1">
+        <div class="o_vault o_vault_error" t-if="!supported">
             <span>*******</span>
         </div>
         <div class="o_vault" t-else="">

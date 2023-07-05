@@ -400,29 +400,36 @@ async function sym_encrypt(key, data, iv) {
  */
 async function sym_decrypt(key, crypted, iv) {
     if (!crypted) return crypted;
+    console.log(key);
+    console.log(fromBase64(crypted));
+    console.log(fromBase64(iv));
+    // try {
+    const dec = new TextDecoder();
+    console.log(dec);
+    const message = dec.decode(
+        await CryptoAPI.decrypt(
+            {name: SymmetricName, iv: fromBase64(iv), tagLength: 128},
+            key,
+            fromBase64(crypted)
+        )
+    );
 
-    try {
-        const dec = new TextDecoder();
-        const message = dec.decode(
-            await CryptoAPI.decrypt(
-                {name: SymmetricName, iv: fromBase64(iv), tagLength: 128},
-                key,
-                fromBase64(crypted)
-            )
-        );
+    console.log(message);
 
-        const data = message.slice(HashLength);
-        const hash = await digest(data);
-        // Compare the hash and return if integer
-        if (hash.slice(0, HashLength) === message.slice(0, HashLength)) return data;
+    const data = message.slice(HashLength);
+    console.log(data);
+    const hash = await digest(data);
+    console.log(hash);
+    // Compare the hash and return if integer
+    if (hash.slice(0, HashLength) === message.slice(0, HashLength)) return data;
 
-        console.error("Invalid data hash");
-        // Wrong hash
-        return null;
-    } catch (err) {
-        console.error(err);
-        return null;
-    }
+    console.error("Invalid data hash");
+    // Wrong hash
+    return null;
+    // } catch (err) {
+    //     console.error(err);
+    //     return null;
+    // }
 }
 
 /**

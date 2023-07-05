@@ -1,7 +1,12 @@
 .o_vault button {
-    padding: 0;
+    padding-right: 0;
 }
 
 .o_vault_inbox {
     white-space: pre-wrap;
+}
+
+
+.o_vault .o_vault_value {
+    margin-left: 1rem;
 }
