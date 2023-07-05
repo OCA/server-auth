@@ -48,3 +48,5 @@ class ResUsers(models.Model):
         # the user obtain: "You do not have access to this database. Please contact support."
         # However the account was created successfully
         self.env.cr.commit()
+        
+        return new_user
