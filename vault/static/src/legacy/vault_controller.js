@@ -300,6 +300,11 @@ odoo.define("vault.controller", function (require) {
                     ),
                     {
                         confirm_callback: async function () {
+                            const buttons = this.buttons;
+                            _.each(buttons, function (buttonToDisable) {
+                                buttonToDisable.disabled = true;
+                            });
+                            this.set_buttons(buttons);
                             await self._deleteVaultRight(
                                 record,
                                 changes.right_ids,

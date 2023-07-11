@@ -418,10 +418,10 @@ async function sym_decrypt(key, crypted, iv) {
 
         console.error("Invalid data hash");
         // Wrong hash
-        return null;
+        return "";
     } catch (err) {
         console.error(err);
-        return null;
+        return "";
     }
 }
 
