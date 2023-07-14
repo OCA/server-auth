@@ -21,6 +21,19 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
+#: code:addons/vault/static/src/legacy/vault_controller.js:0
+#, python-format
+msgid "%s '%s' of entry '%s'"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/models/vault_entry.py:0
+#, python-format
+msgid "%s (copy)"
+msgstr ""
+
+#. module: vault
+#. openerp-web
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "A-Z"
@@ -190,7 +203,10 @@ msgid "Close"
 msgstr ""
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__entry_name
 #: model:ir.model.fields,field_description:vault.field_vault_entry__complete_name
+#: model:ir.model.fields,field_description:vault.field_vault_field__entry_name
+#: model:ir.model.fields,field_description:vault.field_vault_file__entry_name
 msgid "Complete Name"
 msgstr ""
 
@@ -945,6 +961,16 @@ msgid "Public Key"
 msgstr ""
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_form
+msgid "Re-encrypt"
+msgstr ""
+
+#. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault__reencrypt_required
+msgid "Reencrypt Required"
+msgstr ""
+
+#. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_right
 #: model:ir.model.fields,field_description:vault.field_vault__right_ids
 #: model:ir.ui.menu,name:vault.menu_vault_right
@@ -1102,6 +1128,13 @@ msgstr ""
 
 #. module: vault
 #. openerp-web
+#: code:addons/vault/static/src/legacy/vault_controller.js:0
+#, python-format
+msgid "The following entries are broken:"
+msgstr ""
+
+#. module: vault
+#. openerp-web
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "The passwords aren't matching"
@@ -1126,13 +1159,6 @@ msgstr ""
 #: model:ir.model.constraint,message:vault.constraint_vault_right_user_uniq
 #, python-format
 msgid "The user must be unique"
-msgstr ""
-
-#. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_controller.js:0
-#, python-format
-msgid "This will re-encrypt everything in the vault. Do you want to proceed?"
 msgstr ""
 
 #. module: vault
@@ -1257,6 +1283,11 @@ msgstr ""
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Vaults"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_form
+msgid "Verify"
 msgstr ""
 
 #. module: vault

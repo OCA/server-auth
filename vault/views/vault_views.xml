@@ -49,6 +49,23 @@
                         name="action_open_export_wizard"
                         string="Export to file"
                     />
+                    <button
+                        type="object"
+                        name="action_open_export_wizard"
+                        string="Export to file"
+                    />
+                    <button name="vault_verify" string="Verify" />
+                    <button
+                        name="vault_reencrypt"
+                        string="Re-encrypt"
+                        attrs="{'invisible': [('reencrypt_required', '=', True)]}"
+                    />
+                    <button
+                        name="vault_reencrypt"
+                        string="Re-encrypt"
+                        class="oe_highlight"
+                        attrs="{'invisible': [('reencrypt_required', '=', False)]}"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -62,6 +79,7 @@
                     </div>
 
                     <group>
+                        <field name="reencrypt_required" invisible="1" />
                         <field name="allowed_share" invisible="1" />
                         <field name="allowed_write" invisible="1" />
                         <field name="allowed_create" invisible="1" />
