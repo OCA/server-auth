@@ -162,3 +162,12 @@ class Vault(models.Model):
             "target": "new",
             "context": {"default_vault_id": self.id},
         }
+
+    @api.model
+    def vault_store_related_changes(self, changes):
+        """Save changes related to some change on vault. Example: Remove some
+        vault_right from a specific vault.
+        """
+        for change in changes:
+            record = self.env[change["model"]].sudo().browse(change["id"])
+            record.write(change["changes"])

@@ -10,6 +10,7 @@ odoo.define("vault.controller", function (require) {
     var Importer = require("vault.import");
     var utils = require("vault.utils");
     var vault = require("vault");
+    var framework = require("web.framework");
 
     var _t = core._t;
 
@@ -378,22 +379,34 @@ odoo.define("vault.controller", function (require) {
          * @param {String} recordID
          * @param {Object} options
          */
-        saveRecord: async function (recordID, options) {
+        saveRecord: async function () {
             const res = await this._super(...arguments);
             if (this.modelName !== "vault") return res;
 
             if (!this._vault_changes) return res;
 
-            const opts = _.defaults(options || {}, {savePoint: false});
+            framework.blockUI();
 
             // Apply the changes to rights, fields, and files
-            const changes = this._vault_changes.slice();
+            const dataPointIDChanges = this._vault_changes.slice();
+            const changes = [];
             this._vault_changes = [];
-            for (const rec_id of changes)
-                await this.model.save(rec_id, {
-                    reload: false,
-                    savePoint: opts.savePoint,
+            for (const rec_id of dataPointIDChanges) {
+                const record = this.model.localData[rec_id];
+                const changeDic = {};
+                changeDic.model = record.model;
+                changeDic.id = record.res_id;
+                changeDic.changes = await this.model._generateChanges(record, {
+                    changesOnly: true,
                 });
+                changes.push(changeDic);
+            }
+            await this._rpc({
+                model: "vault",
+                method: "vault_store_related_changes",
+                args: [changes],
+            });
+            framework.unblockUI();
             return res;
         },
 
