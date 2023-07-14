@@ -13,6 +13,7 @@ class AbstractVaultField(models.AbstractModel):
     _description = _("Abstract model to implement basic fields for encryption")
 
     entry_id = fields.Many2one("vault.entry", ondelete="cascade", required=True)
+    entry_name = fields.Char(related="entry_id.complete_name")
     vault_id = fields.Many2one(related="entry_id.vault_id")
     master_key = fields.Char(compute="_compute_master_key", store=False)
 
@@ -33,6 +34,9 @@ class AbstractVaultField(models.AbstractModel):
 
     def log_change(self, action):
         self.ensure_one()
+        if self.env.context.get("vault_skip_log"):
+            return
+
         self.entry_id.log_info(
             f"{action} value {self.name} of {self.entry_id.complete_name} "
             f"by {self.env.user.display_name}"
