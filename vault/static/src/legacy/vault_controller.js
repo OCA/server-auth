@@ -7,6 +7,7 @@ odoo.define("vault.controller", function (require) {
     var core = require("web.core");
     var Dialog = require("web.Dialog");
     var FormController = require("web.FormController");
+    var framework = require("web.framework");
     var Importer = require("vault.import");
     var utils = require("vault.utils");
     var vault = require("vault");
@@ -196,7 +197,7 @@ odoo.define("vault.controller", function (require) {
          * @param {Object} changes
          * @param {Object} options
          */
-        _deleteVaultRight: async function (record, changes, options) {
+        _deleteVaultRight: async function (record, changes) {
             const self = this;
             const master_key = await utils.generate_key();
             const current_key = await vault.unwrap(record.data.master_key);
@@ -231,9 +232,12 @@ odoo.define("vault.controller", function (require) {
                         right.data.public_key
                     );
 
-                    await this._applyChanges(right.id, {key: key}, options);
+                    this._vault_changes.push({
+                        id: right.res_id,
+                        model: "vault.right",
+                        key: key,
+                    });
                 }
-                this._vault_changes.push(right.id);
             }
 
             async function reencrypt(model) {
@@ -256,12 +260,12 @@ odoo.define("vault.controller", function (require) {
                     const iv = utils.generate_iv_base64();
                     const encrypted = await utils.sym_encrypt(master_key, val, iv);
 
-                    await self._applyChanges(
-                        rec.id,
-                        {value: encrypted, iv: iv},
-                        options
-                    );
-                    self._vault_changes.push(rec.id);
+                    self._vault_changes.push({
+                        id: rec.res_id,
+                        model: model,
+                        value: encrypted,
+                        iv: iv,
+                    });
                 }
             }
 
@@ -300,11 +304,16 @@ odoo.define("vault.controller", function (require) {
                     ),
                     {
                         confirm_callback: async function () {
-                            await self._deleteVaultRight(
-                                record,
-                                changes.right_ids,
-                                options
-                            );
+                            try {
+                                framework.blockUI();
+                                await self._deleteVaultRight(
+                                    record,
+                                    changes.right_ids,
+                                    options
+                                );
+                            } finally {
+                                framework.unblockUI();
+                            }
                         },
                     }
                 );
@@ -373,22 +382,18 @@ odoo.define("vault.controller", function (require) {
          * @param {String} recordID
          * @param {Object} options
          */
-        saveRecord: async function (recordID, options) {
+        saveRecord: async function () {
             const res = await this._super(...arguments);
-            if (this.modelName !== "vault") return res;
 
-            if (!this._vault_changes) return res;
-
-            const opts = _.defaults(options || {}, {savePoint: false});
-
-            // Apply the changes to rights, fields, and files
-            const changes = this._vault_changes.slice();
-            this._vault_changes = [];
-            for (const rec_id of changes)
-                await this.model.save(rec_id, {
-                    reload: false,
-                    savePoint: opts.savePoint,
+            if (this._vault_changes && this.modelName === "vault") {
+                await this._rpc({
+                    route: "/vault/replace",
+                    params: {data: this._vault_changes},
                 });
+
+                this._vault_changes = [];
+            }
+
             return res;
         },
 

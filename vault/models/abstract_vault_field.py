@@ -33,6 +33,9 @@ class AbstractVaultField(models.AbstractModel):
 
     def log_change(self, action):
         self.ensure_one()
+        if self.env.context.get("vault_skip_log"):
+            return
+
         self.entry_id.log_info(
             f"{action} value {self.name} of {self.entry_id.complete_name} "
             f"by {self.env.user.display_name}"
