@@ -24,6 +24,19 @@ class TestAccessRights(TransactionCase):
         )
         self.vault.right_ids.write({"key": "Owner"})
 
+    def test_vault_reencrypt(self):
+        right = self.env["vault.right"].create(
+            {
+                "vault_id": self.vault.id,
+                "user_id": self.user.id,
+                "perm_create": False,
+            }
+        )
+
+        assert not self.vault.reencrypt_required
+        right.unlink()
+        assert self.vault.reencrypt_required
+
     def test_public_key(self):
         key = self.env["res.users.key"].create(
             {

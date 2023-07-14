@@ -106,5 +106,6 @@ class VaultRight(models.Model):
     def unlink(self):
         for rec in self:
             rec.vault_id.log_info(f"Removed user {self.user_id.display_name}")
+            rec.vault_id.reencrypt_required = True
 
         return super().unlink()
