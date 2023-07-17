@@ -7,6 +7,7 @@ odoo.define("vault.controller", function (require) {
     var core = require("web.core");
     var Dialog = require("web.Dialog");
     var FormController = require("web.FormController");
+    var framework = require("web.framework");
     var Importer = require("vault.import");
     var utils = require("vault.utils");
     var vault = require("vault");
@@ -298,11 +299,19 @@ odoo.define("vault.controller", function (require) {
                     ),
                     {
                         confirm_callback: async function () {
-                            await self._deleteVaultRight(
-                                record,
-                                changes.right_ids,
-                                options
-                            );
+                            // Ensure that the keys are decrypted
+                            await vault._ensure_keys();
+
+                            try {
+                                framework.blockUI();
+                                await self._deleteVaultRight(
+                                    record,
+                                    changes.right_ids,
+                                    options
+                                );
+                            } finally {
+                                framework.unblockUI();
+                            }
                         },
                     }
                 );
