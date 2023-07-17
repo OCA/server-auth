@@ -304,6 +304,9 @@ odoo.define("vault.controller", function (require) {
                     ),
                     {
                         confirm_callback: async function () {
+                            // Ensure that the keys are decrypted
+                            await vault._ensure_keys();
+
                             try {
                                 framework.blockUI();
                                 await self._deleteVaultRight(
