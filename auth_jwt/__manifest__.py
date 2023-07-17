@@ -5,7 +5,7 @@
     "name": "Auth JWT",
     "summary": """
         JWT bearer token authentication.""",
-    "version": "14.0.2.0.0",
+    "version": "14.0.2.1.0",
     "license": "LGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "maintainers": ["sbidoul"],
