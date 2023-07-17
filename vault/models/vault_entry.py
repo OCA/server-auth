@@ -45,7 +45,7 @@ class VaultEntry(models.Model):
         store=True,
         readonly=True,
     )
-    uuid = fields.Char(default=lambda self: uuid4(), required=True)
+    uuid = fields.Char(default=lambda self: uuid4(), required=True, copy=False)
     name = fields.Char(required=True)
     url = fields.Char()
     note = fields.Text()
@@ -98,6 +98,25 @@ class VaultEntry(models.Model):
             domain=domain, fields=fields, offset=offset, limit=limit, order=order
         )
         return res
+
+    def copy_data(self, default=None):
+        self.ensure_one()
+
+        if default is None:
+            default = {}
+
+        if "name" not in default:
+            default["name"] = _("%s (copy)", self.name)
+
+        if "field_ids" not in default:
+            default["field_ids"] = [
+                (0, 0, field.copy_data()[0]) for field in self.field_ids
+            ]
+        if "file_ids" not in default:
+            default["file_ids"] = [
+                (0, 0, field.copy_data()[0]) for field in self.file_ids
+            ]
+        return super().copy_data(default)
 
     @api.depends("name", "complete_name")
     def _compute_display_name(self):
