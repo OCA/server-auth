@@ -32,6 +32,7 @@ class Vault(models.Model):
     field_ids = fields.One2many("vault.field", "vault_id", "Fields")
     file_ids = fields.One2many("vault.file", "vault_id", "Files")
     log_ids = fields.One2many("vault.log", "vault_id", "Log", readonly=True)
+    reencrypt_required = fields.Boolean(default=False)
 
     # Access control
     perm_user = fields.Many2one("res.users", compute="_compute_access", store=False)
