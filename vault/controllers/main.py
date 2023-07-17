@@ -144,3 +144,5 @@ class Controller(http.Controller):
 
         for v in vault:
             v._log_entry("Replaced the keys", "info")
+
+        vault.sudo().write({"reencrypt_required": False})

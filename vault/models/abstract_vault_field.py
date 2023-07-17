@@ -13,6 +13,7 @@ class AbstractVaultField(models.AbstractModel):
     _description = _("Abstract model to implement basic fields for encryption")
 
     entry_id = fields.Many2one("vault.entry", ondelete="cascade", required=True)
+    entry_name = fields.Char(related="entry_id.complete_name")
     vault_id = fields.Many2one(related="entry_id.vault_id")
     master_key = fields.Char(compute="_compute_master_key", store=False)
 
