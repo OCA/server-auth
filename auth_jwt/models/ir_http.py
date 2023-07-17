@@ -2,22 +2,20 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
 import logging
-import re
 
 from odoo import SUPERUSER_ID, api, models
 from odoo.http import request
 
 from ..exceptions import (
-    CompositeJwtError,
-    UnauthorizedMalformedAuthorizationHeader,
+    ConfigurationError,
+    Unauthorized,
+    UnauthorizedCompositeJwtError,
     UnauthorizedMissingAuthorizationHeader,
+    UnauthorizedMissingCookie,
     UnauthorizedSessionMismatch,
 )
 
 _logger = logging.getLogger(__name__)
-
-
-AUTHORIZATION_RE = re.compile(r"^Bearer ([^ ]+)$")
 
 
 class IrHttpJwt(models.AbstractModel):
@@ -55,11 +53,24 @@ class IrHttpJwt(models.AbstractModel):
         return super()._authenticate(endpoint)
 
     @classmethod
+    def _get_jwt_payload(cls, validator):
+        """Obtain and validate the JWT payload from the request authorization header or
+        cookie."""
+        try:
+            token = cls._get_bearer_token()
+            assert token
+            return validator._decode(token)
+        except UnauthorizedMissingAuthorizationHeader:
+            if not validator.cookie_enabled:
+                raise
+            token = cls._get_cookie_token(validator.cookie_name)
+            assert token
+            return validator._decode(token, secret=validator._get_jwt_cookie_secret())
+
+    @classmethod
     def _auth_method_jwt(cls, validator_name=None):
         assert not request.uid
         assert not request.session.uid
-        token = cls._get_bearer_token()
-        assert token
         # # Use request cursor to allow partner creation strategy in validator
         env = api.Environment(request.cr, SUPERUSER_ID, {})
         validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
@@ -69,16 +80,33 @@ class IrHttpJwt(models.AbstractModel):
         exceptions = {}
         while validator:
             try:
-                payload = validator._decode(token)
+                payload = cls._get_jwt_payload(validator)
                 break
-            except Exception as e:
+            except Unauthorized as e:
                 exceptions[validator.name] = e
                 validator = validator.next_validator_id
 
         if not payload:
             if len(exceptions) == 1:
                 raise list(exceptions.values())[0]
-            raise CompositeJwtError(exceptions)
+            raise UnauthorizedCompositeJwtError(exceptions)
+
+        if validator.cookie_enabled:
+            if not validator.cookie_name:
+                _logger.info("Cookie name not set for validator %s", validator.name)
+                raise ConfigurationError()
+            request.future_response.set_cookie(
+                key=validator.cookie_name,
+                value=validator._encode(
+                    payload,
+                    secret=validator._get_jwt_cookie_secret(),
+                    expire=validator.cookie_max_age,
+                ),
+                max_age=validator.cookie_max_age,
+                path=validator.cookie_path or "/",
+                secure=validator.cookie_secure,
+                httponly=True,
+            )
 
         uid = validator._get_and_check_uid(payload)
         assert uid
@@ -90,19 +118,27 @@ class IrHttpJwt(models.AbstractModel):
     @classmethod
     def _auth_method_public_or_jwt(cls, validator_name=None):
         if "HTTP_AUTHORIZATION" not in request.httprequest.environ:
-            return cls._auth_method_public()
+            env = api.Environment(request.cr, SUPERUSER_ID, {})
+            validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
+            assert len(validator) == 1
+            if not validator.cookie_enabled or not request.httprequest.cookies.get(
+                validator.cookie_name
+            ):
+                return cls._auth_method_public()
         return cls._auth_method_jwt(validator_name)
 
     @classmethod
     def _get_bearer_token(cls):
         # https://tools.ietf.org/html/rfc2617#section-3.2.2
         authorization = request.httprequest.environ.get("HTTP_AUTHORIZATION")
-        if not authorization:
-            _logger.info("Missing Authorization header.")
-            raise UnauthorizedMissingAuthorizationHeader()
-        # https://tools.ietf.org/html/rfc6750#section-2.1
-        mo = AUTHORIZATION_RE.match(authorization)
-        if not mo:
-            _logger.info("Malformed Authorization header.")
-            raise UnauthorizedMalformedAuthorizationHeader()
-        return mo.group(1)
+        return request.env["auth.jwt.validator"]._parse_bearer_authorization(
+            authorization
+        )
+
+    @classmethod
+    def _get_cookie_token(cls, cookie_name):
+        token = request.httprequest.cookies.get(cookie_name)
+        if not token:
+            _logger.info("Missing cookie %s.", cookie_name)
+            raise UnauthorizedMissingCookie()
+        return token

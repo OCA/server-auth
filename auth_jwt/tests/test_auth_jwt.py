@@ -15,8 +15,8 @@ from odoo.tools.misc import DotDict
 
 from ..exceptions import (
     AmbiguousJwtValidator,
-    CompositeJwtError,
     JwtValidatorNotFound,
+    UnauthorizedCompositeJwtError,
     UnauthorizedInvalidToken,
     UnauthorizedMalformedAuthorizationHeader,
     UnauthorizedMissingAuthorizationHeader,
@@ -72,6 +72,7 @@ class TestAuthMethod(TransactionCase):
         issuer="http://the.issuer",
         secret_key="thesecret",
         partner_id_required=False,
+        static_user_id=1,
     ):
         return self.env["auth.jwt.validator"].create(
             dict(
@@ -82,17 +83,20 @@ class TestAuthMethod(TransactionCase):
                 audience=audience,
                 issuer=issuer,
                 user_id_strategy="static",
+                static_user_id=static_user_id,
                 partner_id_strategy="email",
                 partner_id_required=partner_id_required,
             )
         )
 
     def test_missing_authorization_header(self):
+        self._create_validator("validator")
         with self._mock_request(authorization=None):
             with self.assertRaises(UnauthorizedMissingAuthorizationHeader):
-                self.env["ir.http"]._auth_method_jwt()
+                self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_malformed_authorization_header(self):
+        self._create_validator("validator")
         for authorization in (
             "a",
             "Bearer",
@@ -103,7 +107,7 @@ class TestAuthMethod(TransactionCase):
         ):
             with self._mock_request(authorization=authorization):
                 with self.assertRaises(UnauthorizedMalformedAuthorizationHeader):
-                    self.env["ir.http"]._auth_method_jwt()
+                    self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_auth_method_valid_token(self):
         self._create_validator("validator")
@@ -192,7 +196,7 @@ class TestAuthMethod(TransactionCase):
 
         authorization = "Bearer " + self._create_token()
         with self._mock_request(authorization=authorization):
-            with self.assertRaises(CompositeJwtError) as composite_error:
+            with self.assertRaises(UnauthorizedCompositeJwtError) as composite_error:
                 self.env["ir.http"]._auth_method_jwt_validator()
             self.assertEqual(
                 str(composite_error.exception),
@@ -397,6 +401,7 @@ class TestAuthMethod(TransactionCase):
             self._create_validator(name="not an identifier")
 
     def test_public_or_jwt_no_token(self):
+        self._create_validator("validator")
         with self._mock_request(authorization=None) as request:
             self.env["ir.http"]._auth_method_public_or_jwt()
             assert request.uid == self.env.ref("base.public_user").id

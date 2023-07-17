@@ -1,7 +1,10 @@
 # Copyright 2021 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import datetime
 import logging
+import re
+from calendar import timegm
 from functools import partial
 
 import jwt  # pylint: disable=missing-manifest-dependency
@@ -13,12 +16,17 @@ from odoo.exceptions import ValidationError
 
 from ..exceptions import (
     AmbiguousJwtValidator,
+    ConfigurationError,
     JwtValidatorNotFound,
     UnauthorizedInvalidToken,
+    UnauthorizedMalformedAuthorizationHeader,
+    UnauthorizedMissingAuthorizationHeader,
     UnauthorizedPartnerNotFound,
 )
 
 _logger = logging.getLogger(__name__)
+
+AUTHORIZATION_RE = re.compile(r"^Bearer ([^ ]+)$")
 
 
 class AuthJwtValidator(models.Model):
@@ -73,6 +81,23 @@ class AuthJwtValidator(models.Model):
         help="Next validator to try if this one fails",
     )
 
+    cookie_enabled = fields.Boolean(
+        help=(
+            "Convert the JWT token into an HttpOnly Secure cookie. "
+            "When both an Authorization header and the cookie are present "
+            "in the request, the cookie is ignored."
+        )
+    )
+    cookie_name = fields.Char(default="authorization")
+    cookie_path = fields.Char(default="/")
+    cookie_max_age = fields.Integer(
+        default=86400 * 365,
+        help="Number of seconds until the cookie expires (Max-Age).",
+    )
+    cookie_secure = fields.Boolean(
+        default=True, help="Set to false only for development without https."
+    )
+
     _sql_constraints = [
         ("name_uniq", "unique(name)", "JWT validator names must be unique !"),
     ]
@@ -101,6 +126,18 @@ class AuthJwtValidator(models.Model):
                         )
                     )
 
+    @api.constrains("cookie_enabled", "cookie_name")
+    def _check_cookie_name(self):
+        for rec in self:
+            if rec.cookie_enabled and not rec.cookie_name:
+                raise ValidationError(
+                    _(
+                        "A cookie name must be provided on JWT validator %s "
+                        "because it has cookie mode enabled."
+                    )
+                    % (rec.name,)
+                )
+
     @api.model
     def _get_validator_by_name_domain(self, validator_name):
         if validator_name:
@@ -126,9 +163,27 @@ class AuthJwtValidator(models.Model):
         jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
         return jwks_client.get_signing_key(kid).key
 
-    def _decode(self, token):
+    def _encode(self, payload, secret, expire):
+        """Encode and sign a JWT payload so it can be decoded and validated with
+        _decode().
+
+        The aud and iss claims are set to this validator's values.
+        The exp claim is set according to the expire parameter.
+        """
+        payload = dict(
+            payload,
+            exp=timegm(datetime.datetime.utcnow().utctimetuple()) + expire,
+            aud=self.audience,
+            iss=self.issuer,
+        )
+        return jwt.encode(payload, key=secret, algorithm="HS256")
+
+    def _decode(self, token, secret=None):
         """Validate and decode a JWT token, return the payload."""
-        if self.signature_type == "secret":
+        if secret:
+            key = secret
+            algorithm = "HS256"
+        elif self.signature_type == "secret":
             key = self.secret_key
             algorithm = self.secret_algorithm
         else:
@@ -136,7 +191,7 @@ class AuthJwtValidator(models.Model):
                 header = jwt.get_unverified_header(token)
             except Exception as e:
                 _logger.info("Invalid token: %s", e)
-                raise UnauthorizedInvalidToken()
+                raise UnauthorizedInvalidToken() from e
             key = self._get_key(header.get("kid"))
             algorithm = self.public_key_algorithm
         try:
@@ -155,7 +210,7 @@ class AuthJwtValidator(models.Model):
             )
         except Exception as e:
             _logger.info("Invalid token: %s", e)
-            raise UnauthorizedInvalidToken()
+            raise UnauthorizedInvalidToken() from e
         return payload
 
     def _get_uid(self, payload):
@@ -216,7 +271,7 @@ class AuthJwtValidator(models.Model):
             try:
                 delattr(IrHttp.__class__, f"_auth_method_jwt_{rec.name}")
                 delattr(IrHttp.__class__, f"_auth_method_public_or_jwt_{rec.name}")
-            except AttributeError:
+            except AttributeError:  # pylint: disable=except-pass
                 pass
 
     @api.model_create_multi
@@ -235,3 +290,27 @@ class AuthJwtValidator(models.Model):
     def unlink(self):
         self._unregister_auth_method()
         return super().unlink()
+
+    def _get_jwt_cookie_secret(self):
+        secret = self.env["ir.config_parameter"].sudo().get_param("database.secret")
+        if not secret:
+            _logger.error("database.secret system parameter is not set.")
+            raise ConfigurationError()
+        return secret
+
+    @api.model
+    def _parse_bearer_authorization(self, authorization):
+        """Parse a Bearer token authorization header and return the token.
+
+        Raises UnauthorizedMissingAuthorizationHeader if authorization is falsy.
+        Raises UnauthorizedMalformedAuthorizationHeader if invalid.
+        """
+        if not authorization:
+            _logger.info("Missing Authorization header.")
+            raise UnauthorizedMissingAuthorizationHeader()
+        # https://tools.ietf.org/html/rfc6750#section-2.1
+        mo = AUTHORIZATION_RE.match(authorization)
+        if not mo:
+            _logger.info("Malformed Authorization header.")
+            raise UnauthorizedMalformedAuthorizationHeader()
+        return mo.group(1)
