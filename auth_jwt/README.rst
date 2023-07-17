@@ -66,7 +66,8 @@ The JWT validator can be configured with the following properties:
 In addition, the ``exp`` claim is validated to reject expired tokens.
 
 If the ``Authorization`` HTTP header is missing, malformed, or contains
-an invalid token, the request is rejected with a 401 (Unauthorized) code.
+an invalid token, the request is rejected with a 401 (Unauthorized) code,
+unless the cookie mode is enabled (see below).
 
 If the token is valid, the request executes with the configured user id. By
 default the user id selection strategy is ``static`` (i.e. the same for all
@@ -95,6 +96,14 @@ endpoints that need to work for anonymous users, but can be enhanced when an
 authenticated user is know. A typical use case is a "add to cart" endpoint that can work
 for anonymous users, but can be enhanced by binding the cart to a known customer when
 the authenticated user is known.
+
+You can enable a cookie mode on JWT validators. In this case, the JWT payload obtained
+from the ``Authorization`` header is returned as a Http-Only cookie. This mode is
+sometimes simpler for front-end applications which do not then need to store and protect
+the JWT token across requests and can simply rely on the cookie management mechanisms of
+browsers. When both the ``Authorization`` header and a cookie are provided, the cookie
+is ignored in order to let clients authenticate with a different user by providing a new
+JWT token.
 
 Bug Tracker
 ===========
