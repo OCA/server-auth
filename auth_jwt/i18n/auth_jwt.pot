@@ -14,6 +14,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: auth_jwt
+#: code:addons/auth_jwt/models/auth_jwt_validator.py:0
+#, python-format
+msgid ""
+"A cookie name must be provided on JWT validator %s because it has cookie "
+"mode enabled."
+msgstr ""
+
+#. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
 msgid "Algorithm"
 msgstr ""
@@ -26,6 +34,44 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__audience
 msgid "Comma separated list of audiences, to validate aud."
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_enabled
+msgid ""
+"Convert the JWT token into an HttpOnly Secure cookie. When both an "
+"Authorization header and the cookie are present in the request, the cookie "
+"is ignored."
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Cookie"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_enabled
+msgid "Cookie Enabled"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_max_age
+msgid "Cookie Max Age"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_name
+msgid "Cookie Name"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_path
+msgid "Cookie Path"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_secure
+msgid "Cookie Secure"
 msgstr ""
 
 #. module: auth_jwt
@@ -67,6 +113,11 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__partner_id_strategy__email
 msgid "From email claim"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "General"
 msgstr ""
 
 #. module: auth_jwt
@@ -164,6 +215,11 @@ msgid "Next validator to try if this one fails"
 msgstr ""
 
 #. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_max_age
+msgid "Number of seconds until the cookie expires (Max-Age)."
+msgstr ""
+
+#. module: auth_jwt
 #: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__ps256
 msgid "PS256 - RSASSA-PSS using SHA-256 and MGF1 padding with SHA-256"
 msgstr ""
@@ -176,6 +232,11 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__ps512
 msgid "PS512 - RSASSA-PSS using SHA-512 and MGF1 padding with SHA-512"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Partner"
 msgstr ""
 
 #. module: auth_jwt
@@ -234,6 +295,11 @@ msgid "Secret Key"
 msgstr ""
 
 #. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_secure
+msgid "Set to false only for development without https."
+msgstr ""
+
+#. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__signature_type
 msgid "Signature Type"
 msgstr ""
@@ -251,6 +317,16 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__issuer
 msgid "To validate iss."
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Token validation"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "User"
 msgstr ""
 
 #. module: auth_jwt
