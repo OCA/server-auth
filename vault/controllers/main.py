@@ -126,3 +126,23 @@ class Controller(http.Controller):
 
             if isinstance(master_key, str):
                 right.sudo().key = master_key
+
+    @http.route("/vault/replace", auth="user", type="json")
+    def vault_replace(self, data):
+        """Replace the master keys and values within a single transaction"""
+        if not isinstance(data, list):
+            return
+
+        vault = request.env["vault"].with_context(vault_skip_log=True)
+        for changes in data:
+            record = vault.env[changes["model"]].browse(changes["id"])
+            vault |= record.vault_id
+            if record._name in ("vault.field", "vault.file"):
+                record.write({k: v for k, v in changes.items() if k in ["iv", "value"]})
+            elif record._name == "vault.right":
+                record.write({k: v for k, v in changes.items() if k in ["key"]})
+
+        for v in vault:
+            v._log_entry("Replaced the keys", "info")
+
+        vault.sudo().write({"reencrypt_required": False})
