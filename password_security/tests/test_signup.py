@@ -140,6 +140,8 @@ class TestPasswordSecuritySignup(HttpCase):
                 "/web/signup",
                 data={
                     "login": "test@test.com",
+                    "password": "!asdQWE12345_7",
+                    "confirm_password": "!asdQWE12345_7",
                     "csrf_token": http.Request.csrf_token(self),
                 },
             )
@@ -150,4 +152,11 @@ class TestPasswordSecuritySignup(HttpCase):
         self.assertIn(
             "Signup: no name or partner given for new user",
             response.text,
+        )
+        self.assertIn("X-Frame-Options", response.headers)
+        self.assertEqual(response.headers["X-Frame-Options"], "SAMEORIGIN")
+
+        self.assertIn("Content-Security-Policy", response.headers)
+        self.assertEqual(
+            response.headers["Content-Security-Policy"], "frame-ancestors 'self'"
         )
