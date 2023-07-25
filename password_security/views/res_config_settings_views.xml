@@ -12,83 +12,99 @@
             ref="auth_password_policy.res_config_settings_view_form"
         />
         <field name="arch" type="xml">
-            <!-- We hide Odoo's minlength sections so it does not create confusion -->
-            <xpath expr="//label[@for='minlength']/../.." position="attributes">
+            <!-- Hide label for uniform styling -->
+            <xpath expr="//label[@for='minlength']" position="attributes">
                 <attribute name="invisible">1</attribute>
             </xpath>
-            <!-- Add our password policy fields -->
+
+            <!-- Add an id for easier lookup -->
+            <xpath
+                expr="//field[@name='minlength']/ancestor::div[hasclass('o_setting_box')]"
+                position="attributes"
+            >
+                <attribute name="id">password_policy</attribute>
+            </xpath>
+
+            <!-- Move the settings box to desired location -->
             <xpath expr="//div[@id='enable_password_reset']" position="after">
-                <div class="col-12 col-lg-6 o_setting_box" title="Password Policy">
-                    <div class="o_setting_left_pane" />
-                    <div class="o_setting_right_pane">
-                        <label string="Password Policy" for="password_expiration" />
-                        <div class="content-group">
-                            <div class="mt16">
-                                <span>
-                                    Password expires in
-                                    <field
-                                        name="password_expiration"
-                                        class="oe_inline"
-                                    />
-                                    days.
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    User can change password in
-                                    <field name="password_minimum" class="oe_inline" />
-                                    hours again.
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Disallow reuse of
-                                    <field name="password_history" class="oe_inline" />
-                                    previous passwords.
-                                </span>
-                                <div class="text-muted">
-                                    Use negative number for infinite, or 0 to disable
-                                </div>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Minimum number of characters
-                                    <field name="minlength" class="oe_inline" />
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Minimum number of lowercase characters
-                                    <field name="password_lower" class="oe_inline" />
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Minimum number of uppercase characters
-                                    <field name="password_upper" class="oe_inline" />
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Minimum number of numeric characters
-                                    <field name="password_numeric" class="oe_inline" />
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Minimum number of special characters
-                                    <field name="password_special" class="oe_inline" />
-                                </span>
-                            </div>
-                            <div class="mt16">
-                                <span>
-                                    Minimum number of strength estimation
-                                    <field name="password_estimate" class="oe_inline" />
-                                </span>
-                            </div>
+                <xpath expr="//div[@id='password_policy']" position="move" />
+            </xpath>
+
+            <!-- Ensure our settings will come after any former customization -->
+            <xpath
+                expr="//div[@id='password_policy']//div[hasclass('o_setting_right_pane')]/*"
+                position="after"
+            >
+                <label string="Password Policy" for="password_expiration" />
+                <div class="content-group">
+                    <div class="mt16">
+                        <span>
+                            Password expires in
+                            <field name="password_expiration" class="oe_inline" />
+                            days.
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            User can change password in
+                            <field name="password_minimum" class="oe_inline" />
+                            hours again.
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            Disallow reuse of
+                            <field name="password_history" class="oe_inline" />
+                            previous passwords.
+                        </span>
+                        <div class="text-muted">
+                            Use negative number for infinite, or 0 to disable
                         </div>
                     </div>
+                    <div class="mt16">
+                        <span>
+                            Minimum number of lowercase characters
+                            <field name="password_lower" class="oe_inline" />
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            Minimum number of uppercase characters
+                            <field name="password_upper" class="oe_inline" />
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            Minimum number of numeric characters
+                            <field name="password_numeric" class="oe_inline" />
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            Minimum number of special characters
+                            <field name="password_special" class="oe_inline" />
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            Minimum number of strength estimation
+                            <field name="password_estimate" class="oe_inline" />
+                        </span>
+                    </div>
                 </div>
+                <span id="minlength">
+                     Minimum number of characters
+                </span>
+            </xpath>
+
+            <!-- Add oe_inline attribute to minlength -->
+            <xpath expr="//field[@name='minlength']" position="attributes">
+              <attribute name="class">oe_inline</attribute>
+            </xpath>
+
+            <!-- Move the minlength field to desired location -->
+            <xpath expr="//span[@id='minlength']" position="inside">
+                <xpath expr="//field[@name='minlength']" position="move" />
             </xpath>
         </field>
     </record>
