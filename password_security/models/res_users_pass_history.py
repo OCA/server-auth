@@ -8,7 +8,7 @@ class ResUsersPassHistory(models.Model):
     _name = "res.users.pass.history"
     _description = "Res Users Password History"
 
-    _order = "user_id, date desc"
+    _order = "user_id, date desc, id desc"
 
     user_id = fields.Many2one(
         string="User",
