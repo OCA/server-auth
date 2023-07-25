@@ -139,7 +139,7 @@ class TestPasswordSecuritySignup(HttpCase):
             response = self.url_open(
                 "/web/signup",
                 data={
-                    "login": "test",
+                    "login": "test@test.com",
                     "csrf_token": http.Request.csrf_token(self),
                 },
             )
