@@ -19,9 +19,6 @@
         "auth_password_policy_signup",
     ],
     "website": "https://github.com/OCA/server-auth",
-    "external_dependencies": {
-        "python": ["zxcvbn"],
-    },
     "license": "LGPL-3",
     "data": [
         "views/res_config_settings_views.xml",
