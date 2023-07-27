@@ -36,7 +36,6 @@ It contains features such as
 * Password minimum number of uppercase letters
 * Password minimum number of numbers
 * Password minimum number of special characters
-* Password strength estimation
 
 **Table of contents**
 
@@ -68,7 +67,6 @@ These are defined at the company level:
  password_special      0         Minimum number of unique special character in password
  password_history      30        Disallow reuse of this many previous passwords
  password_minimum      24        Amount of hours that must pass until another reset
- password_estimate     3         Required score for the strength estimation.
 =====================  =======   ===================================================
 
 Usage
