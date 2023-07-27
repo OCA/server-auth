@@ -23,6 +23,3 @@ class ResConfigSettings(models.TransientModel):
     password_special = fields.Integer(
         related="company_id.password_special", readonly=False
     )
-    password_estimate = fields.Integer(
-        related="company_id.password_estimate", readonly=False
-    )
