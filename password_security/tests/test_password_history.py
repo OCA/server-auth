@@ -12,7 +12,6 @@ class TestPasswordHistory(TransactionCase):
         user = self.env.ref("base.user_admin")
         user.company_id.update(
             {
-                "password_estimate": 0,
                 "password_lower": 0,
                 "password_history": 1,
                 "password_numeric": 0,
