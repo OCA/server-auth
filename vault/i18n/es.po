@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2023-08-02 11:09+0000\n"
+"Last-Translator: Carlos Roca Zaragoza <carlos.roca@tecnativa.com>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
@@ -28,13 +28,13 @@ msgstr ""
 #: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "%s '%s' of entry '%s'"
-msgstr ""
+msgstr "%s '%s' del registro '%s'"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (copia)"
 
 #. module: vault
 #. openerp-web
@@ -241,7 +241,7 @@ msgstr "Copiar al portapapeles"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_create
 msgid "Create"
-msgstr "Creat"
+msgstr "Crear"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__create_uid
@@ -342,7 +342,7 @@ msgstr "Nombre a mostrar"
 #: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "Do you really want to create a new key pair and set it active?"
-msgstr "¿Realmente quieres crear un nuevo par de claves y activarlo?"
+msgstr "¿Realmente quiere crear un nuevo par de claves y activarlo?"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__content
@@ -361,7 +361,7 @@ msgstr "Ingrese a"
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Enter your password:"
-msgstr "Ingresa tu contraseña:"
+msgstr "Ingrese su contraseña:"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_open_entries
@@ -631,12 +631,12 @@ msgstr "Token inválido"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid "Invalidate private key"
-msgstr ""
+msgstr "Invalidar clave privada"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
 msgid "Iterations"
-msgstr "Iterations"
+msgstr "Iteraciones"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iv
@@ -963,12 +963,12 @@ msgstr "Clave pública"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Re-encrypt"
-msgstr ""
+msgstr "Reencriptar"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__reencrypt_required
 msgid "Reencrypt Required"
-msgstr ""
+msgstr "Necesita reencriptarse"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_right
@@ -1124,7 +1124,7 @@ msgstr "Los archivos deben terminar en uno de los tipos de archivo admitidos:"
 #: code:addons/vault/static/src/legacy/vault_controller.js:0
 #, python-format
 msgid "The following entries are broken:"
-msgstr ""
+msgstr "Los siguientes registros están rotos:"
 
 #. module: vault
 #. openerp-web
@@ -1347,6 +1347,8 @@ msgstr ""
 msgid ""
 "You will loose access to all vaults and your inbox. Do you want to continue?"
 msgstr ""
+"Perderá el acceso a todos sus vaults y a su bandeja de entrada. ¿Desea "
+"continuar?"
 
 #. module: vault
 #. openerp-web
