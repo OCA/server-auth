@@ -306,6 +306,7 @@ odoo.define("vault.controller", function(require) {
                         route: "/vault/replace",
                         params: {data: changes},
                     });
+                    this.reload();
                 }
             } finally {
                 framework.unblockUI();
