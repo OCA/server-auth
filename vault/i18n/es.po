@@ -18,6 +18,19 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 
 #. module: vault
+#. openerp-web
+#: code:addons/vault/static/src/js/vault_controller.js:0
+#, python-format
+msgid "%s '%s' of entry '%s'"
+msgstr ""
+
+#. module: vault
+#: code:addons/vault/models/vault_entry.py:0
+#, python-format
+msgid "%s (copy)"
+msgstr ""
+
+#. module: vault
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%s entry %s by %s"
@@ -194,7 +207,10 @@ msgid "Close"
 msgstr "Cerrar"
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault_abstract_field__entry_name
 #: model:ir.model.fields,field_description:vault.field_vault_entry__complete_name
+#: model:ir.model.fields,field_description:vault.field_vault_field__entry_name
+#: model:ir.model.fields,field_description:vault.field_vault_file__entry_name
 msgid "Complete Name"
 msgstr "Nombre completo"
 
@@ -956,6 +972,16 @@ msgid "Public Key"
 msgstr "Clave pública"
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_form
+msgid "Re-encrypt"
+msgstr ""
+
+#. module: vault
+#: model:ir.model.fields,field_description:vault.field_vault__reencrypt_required
+msgid "Reencrypt Required"
+msgstr ""
+
+#. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_right
 #: model:ir.model.fields,field_description:vault.field_vault__right_ids
 #: model:ir.ui.menu,name:vault.menu_vault_right
@@ -1106,6 +1132,13 @@ msgstr "Los archivos deben terminar en uno de los tipos de archivo admitidos:"
 
 #. module: vault
 #. openerp-web
+#: code:addons/vault/static/src/js/vault_controller.js:0
+#, python-format
+msgid "The following entries are broken:"
+msgstr ""
+
+#. module: vault
+#. openerp-web
 #: code:addons/vault/static/src/js/vault_utils.js:0
 #, python-format
 msgid "The passwords aren't matching"
@@ -1133,13 +1166,6 @@ msgstr "¡La etiqueta debe ser única!"
 #, python-format
 msgid "The user must be unique"
 msgstr "El usuario debe ser único"
-
-#. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/js/vault_controller.js:0
-#, python-format
-msgid "This will re-encrypt everything in the vault. Do you want to proceed?"
-msgstr "Esto volverá a encriptar todo en el vault. ¿Quieres proceder?"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__token
@@ -1269,6 +1295,11 @@ msgid "Vaults"
 msgstr ""
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_form
+msgid "Verify"
+msgstr ""
+
+#. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__version
 msgid "Version"
 msgstr ""
@@ -1341,3 +1372,8 @@ msgstr "a-z"
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 msgid "or"
 msgstr "o"
+
+#, python-format
+#~ msgid ""
+#~ "This will re-encrypt everything in the vault. Do you want to proceed?"
+#~ msgstr "Esto volverá a encriptar todo en el vault. ¿Quieres proceder?"
