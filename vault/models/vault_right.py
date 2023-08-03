@@ -66,7 +66,7 @@ class VaultRight(models.Model):
     @api.depends("user_id")
     def _compute_public_key(self):
         for rec in self:
-            rec.public_key = rec.user_id.active_key.public
+            rec.public_key = rec.sudo().user_id.active_key.public
 
     def log_access(self):
         self.ensure_one()
@@ -106,5 +106,6 @@ class VaultRight(models.Model):
     def unlink(self):
         for rec in self:
             rec.vault_id.log_info(f"Removed user {self.user_id.display_name}")
+            rec.vault_id.reencrypt_required = True
 
         return super().unlink()

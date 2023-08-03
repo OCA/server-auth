@@ -7,6 +7,7 @@ odoo.define("vault.controller", function (require) {
     var core = require("web.core");
     var Dialog = require("web.Dialog");
     var FormController = require("web.FormController");
+    var framework = require("web.framework");
     var Importer = require("vault.import");
     var utils = require("vault.utils");
     var vault = require("vault");
@@ -14,6 +15,11 @@ odoo.define("vault.controller", function (require) {
     var _t = core._t;
 
     FormController.include({
+        events: _.extend({}, FormController.prototype.events, {
+            "click [name='vault_reencrypt']": "_clickReencryptVault",
+            "click [name='vault_verify']": "_clickVerifyVault",
+        }),
+
         /**
          * Re-encrypt the key if the user is getting selected
          *
@@ -186,62 +192,42 @@ odoo.define("vault.controller", function (require) {
             }
         },
 
+        _clickReencryptVault: async function () {
+            await this._reencryptVault(false, true);
+        },
+
+        _clickVerifyVault: async function () {
+            await this._reencryptVault(true, false);
+        },
+
         /**
          * Handle the deletion of a vault.right field in the vault view properly by
          * generating a new master key and re-encrypting everything in the vault to
          * deny any future access to the vault.
          *
          * @private
-         * @param {Object} record
-         * @param {Object} changes
-         * @param {Object} options
+         * @param {Boolean} verify
+         * @param {Boolean} force
          */
-        _deleteVaultRight: async function (record, changes, options) {
+        _reencryptVault: async function (verify = false, force = false) {
+            const record = this.model.get(this.handle);
+
+            await vault._ensure_keys();
+
             const self = this;
             const master_key = await utils.generate_key();
             const current_key = await vault.unwrap(record.data.master_key);
 
-            // We only need to re-encrypt once per iteration
-            if (this._vault_changes) return;
-
             // This stores the additional changes made to rights, fields, and files
-            this._vault_changes = [];
+            const changes = [];
+            const problems = [];
 
-            // Convert the datapoint IDs to database IDs because we are loading
-            const deleted = [];
-            for (const right_id of changes.ids) {
-                const rec = await this.model.get(right_id, {raw: true});
-                deleted.push(rec.res_id);
-            }
-
-            // Update the rights. Load without limit
-            const right_handle = await this.model.load({
-                domain: [["vault_id", "=", record.res_id]],
-                fields: ["key"],
-                modelName: "vault.right",
-                limit: 0,
-                type: "list",
-            });
-
-            const rights = await this.model.get(right_handle, {raw: true});
-            for (const right of rights.data) {
-                if (deleted.indexOf(right.res_id) < 0) {
-                    const key = await vault.wrap_with(
-                        master_key,
-                        right.data.public_key
-                    );
-
-                    await this._applyChanges(right.id, {key: key}, options);
-                }
-                this._vault_changes.push(right.id);
-            }
-
-            async function reencrypt(model) {
+            async function reencrypt(model, type) {
                 // Load the entire data from the database
                 const handle = await self.model.load({
                     context: {vault_reencrypt: true},
                     domain: [["vault_id", "=", record.res_id]],
-                    fields: ["iv", "value"],
+                    fields: ["iv", "value", "name", "entry_name"],
                     modelName: model,
                     limit: 0,
                     type: "list",
@@ -253,21 +239,78 @@ odoo.define("vault.controller", function (require) {
 
                     const d = rec.data;
                     const val = await utils.sym_decrypt(current_key, d.value, d.iv);
+                    if (val === null) {
+                        problems.push(
+                            _.str.sprintf(
+                                _t("%s '%s' of entry '%s'"),
+                                type,
+                                d.name,
+                                d.entry_name
+                            )
+                        );
+                        continue;
+                    }
+
                     const iv = utils.generate_iv_base64();
                     const encrypted = await utils.sym_encrypt(master_key, val, iv);
 
-                    await self._applyChanges(
-                        rec.id,
-                        {value: encrypted, iv: iv},
-                        options
-                    );
-                    self._vault_changes.push(rec.id);
+                    changes.push({
+                        id: rec.res_id,
+                        model: model,
+                        value: encrypted,
+                        iv: iv,
+                    });
                 }
             }
 
-            // Re-encrypt vault.field and vault.file
-            await reencrypt("vault.field");
-            await reencrypt("vault.file");
+            framework.blockUI();
+            try {
+                // Update the rights. Load without limit
+                const right_handle = await this.model.load({
+                    domain: [["vault_id", "=", record.res_id]],
+                    fields: ["key"],
+                    modelName: "vault.right",
+                    limit: 0,
+                    type: "list",
+                });
+
+                const rights = await this.model.get(right_handle, {raw: true});
+                for (const right of rights.data) {
+                    const key = await vault.wrap_with(
+                        master_key,
+                        right.data.public_key
+                    );
+
+                    changes.push({
+                        id: right.res_id,
+                        model: "vault.right",
+                        key: key,
+                    });
+                }
+
+                // Re-encrypt vault.field and vault.file
+                await reencrypt("vault.field", "Field");
+                await reencrypt("vault.file", "File");
+
+                if (problems.length && !force) {
+                    framework.unblockUI();
+
+                    Dialog.alert(self, "", {
+                        title: _t("The following entries are broken:"),
+                        $content: $("<div/>").html(problems.join("<br>\n")),
+                    });
+                }
+
+                if (!verify) {
+                    await this._rpc({
+                        route: "/vault/replace",
+                        params: {data: changes},
+                    });
+                    this.reload();
+                }
+            } finally {
+                framework.unblockUI();
+            }
         },
 
         /**
@@ -287,26 +330,6 @@ odoo.define("vault.controller", function (require) {
 
             if (changes.right_ids && changes.right_ids.operation === "UPDATE")
                 await this._changedVaultRightUser(record, changes.right_ids, options);
-
-            if (changes.right_ids && changes.right_ids.operation === "DELETE") {
-                const self = this;
-
-                Dialog.confirm(
-                    self,
-                    _t(
-                        "This will re-encrypt everything in the vault. Do you want to proceed?"
-                    ),
-                    {
-                        confirm_callback: async function () {
-                            await self._deleteVaultRight(
-                                record,
-                                changes.right_ids,
-                                options
-                            );
-                        },
-                    }
-                );
-            }
         },
 
         /**
@@ -361,46 +384,6 @@ odoo.define("vault.controller", function (require) {
                 await this._applyChangesImportWizard(record, changes, options);
 
             return result;
-        },
-
-        /**
-         * Check if there are additional changes made which needs to be pushed to
-         * the database
-         *
-         * @override
-         * @param {String} recordID
-         * @param {Object} options
-         */
-        saveRecord: async function (recordID, options) {
-            const res = await this._super(...arguments);
-            if (this.modelName !== "vault") return res;
-
-            if (!this._vault_changes) return res;
-
-            const opts = _.defaults(options || {}, {savePoint: false});
-
-            // Apply the changes to rights, fields, and files
-            const changes = this._vault_changes.slice();
-            this._vault_changes = [];
-            for (const rec_id of changes)
-                await this.model.save(rec_id, {
-                    reload: false,
-                    savePoint: opts.savePoint,
-                });
-            return res;
-        },
-
-        /**
-         * Invalidate the additional vault changes
-         *
-         * @override
-         */
-        _discardChanges: async function () {
-            const res = await this._super(...arguments);
-            if (this.modelName !== "vault") return res;
-
-            this._vault_changes = [];
-            return res;
         },
     });
 });
