@@ -5,7 +5,7 @@
     "name": "Vault",
     "summary": "Password vault integration in Odoo",
     "license": "AGPL-3",
-    "version": "13.0.1.3.0",
+    "version": "13.0.1.4.0",
     "website": "https://github.com/OCA/server-auth",
     "application": True,
     "author": "initOS GmbH, Odoo Community Association (OCA)",
