@@ -40,7 +40,7 @@ addon | version | maintainers | summary
 [users_ldap_groups](users_ldap_groups/) | 14.0.1.0.0 |  | Adds user accounts to groups based on rules defined by the administrator.
 [users_ldap_mail](users_ldap_mail/) | 14.0.1.0.1 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP mapping for user name and e-mail
 [users_ldap_populate](users_ldap_populate/) | 14.0.1.0.0 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP Populate
-[vault](vault/) | 14.0.1.8.0 |  | Password vault integration in Odoo
+[vault](vault/) | 14.0.1.9.0 |  | Password vault integration in Odoo
 [vault_share](vault_share/) | 14.0.1.2.1 |  | Implementation of a mechanism to share secrets
 
 [//]: # (end addons)
