@@ -138,6 +138,39 @@ class TestController(TransactionCase):
             self.env["res.users.key"]._revert_method("store")
 
     @mute_logger("odoo.sql_db")
+    def test_vault_replace(self, request_mock):
+        request_mock.env = self.env
+        vault = self.env["vault"].create({"name": "Vault"})
+        right = vault.right_ids[:1]
+        entry = self.env["vault.entry"].create(
+            {"name": "Test Entry", "vault_id": vault.id}
+        )
+        field = self.env["vault.field"].create(
+            {"entry_id": entry.id, "name": "Test", "value": "hello"}
+        )
+        file = self.env["vault.file"].create(
+            {"entry_id": entry.id, "name": "Test", "value": b"hello"}
+        )
+        right.write({"key": "invalid"})
+
+        self.controller.vault_replace(None)
+        self.assertEqual(field.value, "hello")
+        self.assertEqual(file.value, b"hello")
+
+        vault.reencrypt_required = True
+        self.controller.vault_replace(
+            [
+                {"model": field._name, "id": field.id, "value": "test"},
+                {"model": file._name, "id": file.id, "value": "test"},
+                {"model": right._name, "id": right.id, "key": "changed"},
+            ]
+        )
+        self.assertEqual(field.value, "test")
+        self.assertEqual(file.value, b"test")
+        self.assertEqual(right.key, "changed")
+        self.assertFalse(vault.reencrypt_required)
+
+    @mute_logger("odoo.sql_db")
     def test_vault_keys_get(self, request_mock):
         request_mock.env = self.env
         mock = MagicMock()
