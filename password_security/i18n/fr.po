@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-06-22 01:12+0000\n"
-"PO-Revision-Date: 2023-08-16 17:10+0000\n"
+"PO-Revision-Date: 2023-08-17 09:11+0000\n"
 "Last-Translator: Logan Gônet <logan.gonet@horanet.com>\n"
 "Language-Team: French (https://www.transifex.com/oca/teams/23907/fr/)\n"
 "Language: fr\n"
@@ -21,33 +21,33 @@ msgstr ""
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:53
-#, fuzzy, python-format
+#, python-format
 msgid "* %d lowercase characters."
-msgstr "Caractère spécial"
+msgstr "* %d caractères minuscules."
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:61
 #, python-format
 msgid "* %d numbers."
-msgstr ""
+msgstr "* %d chiffres."
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:65
-#, fuzzy, python-format
+#, python-format
 msgid "* %d special characters."
-msgstr "Caractère spécial"
+msgstr "* %d caractères spéciaux."
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:57
-#, fuzzy, python-format
+#, python-format
 msgid "* %d uppercase characters."
-msgstr "Caractère spécial"
+msgstr "* %d caractères majuscules."
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:69
 #, python-format
 msgid "* A length of at least %d characters."
-msgstr ""
+msgstr "* Une longueur d'au moins %d caractères."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_minimum
@@ -199,25 +199,21 @@ msgstr ""
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_lower
-#, fuzzy
 msgid "Require number of lowercase letters"
 msgstr "Doit contenir des caractères minuscules"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_numeric
-#, fuzzy
 msgid "Require number of numeric digits"
 msgstr "Doit contenir des chiffres"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_special
-#, fuzzy
 msgid "Require number of unique special characters"
 msgstr "Doit contenir des caractères spéciaux"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company_password_upper
-#, fuzzy
 msgid "Require number of uppercase letters"
 msgstr "Doit contenir des lettres majuscules"
 
