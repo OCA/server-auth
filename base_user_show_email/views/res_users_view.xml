@@ -8,7 +8,9 @@
             <xpath expr="//label[@for='login']" position="attributes">
                 <attribute name="string">Login</attribute>
             </xpath>
-            <field name="email" position="replace" />
+            <field name="email" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
             <field name="login" position="after">
                 <label for="email" class="oe_edit_only" string="Email Address" />
                 <h2>
