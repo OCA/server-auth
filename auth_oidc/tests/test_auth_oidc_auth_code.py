@@ -51,3 +51,9 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             self.assertTrue(params["nonce"])
             self.assertTrue(params["state"])
             self.assertEqual(params["redirect_uri"], [BASE_URL + "/auth_oauth/signin"])
+
+    def test_group_expression(self):
+        """Test that group expressions evaluate correctly"""
+        group_line = self.env.ref('auth_oidc.local_keycloak').group_line_ids[:1]
+        group_line.expression = 'token["test"]["test"] == 1'
+        self.assertFalse(group_line._eval_expression(self.env.user, {}))

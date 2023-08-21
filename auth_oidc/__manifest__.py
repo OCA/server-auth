@@ -16,6 +16,9 @@
     "summary": "Allow users to login through OpenID Connect Provider",
     "external_dependencies": {"python": ["python-jose"]},
     "depends": ["auth_oauth"],
-    "data": ["views/auth_oauth_provider.xml"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/auth_oauth_provider.xml",
+    ],
     "demo": ["demo/local_keycloak.xml"],
 }
