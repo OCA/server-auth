@@ -34,6 +34,12 @@ msgid "JWKS URL"
 msgstr ""
 
 #. module: auth_oidc
+#: model:auth.oauth.provider,body:auth_oidc.provider_azuread_multi
+#: model:auth.oauth.provider,body:auth_oidc.provider_azuread_single
+msgid "Log in with Microsoft"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__access_token
 msgid "OAuth2"
 msgstr ""
