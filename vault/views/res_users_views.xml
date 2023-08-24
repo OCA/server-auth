@@ -26,7 +26,7 @@
     <record id="view_users_form_keys_modif" model="ir.ui.view">
         <field name="model">res.users</field>
         <field name="arch" type="xml">
-            <form>
+            <form js_class="vault_form_view">
                 <sheet>
                     <group>
                         <field name="inbox_link" widget="url" />

@@ -41,7 +41,7 @@
             "vault/static/src/common/*.js",
             "vault/static/src/backend/*.scss",
             "vault/static/src/backend/*.js",
-            "vault/static/src/legacy/vault_controller.js",
+            # "vault/static/src/legacy/vault_controller.js",
             "vault/static/src/backend/*.xml",
             # "vault/static/src/legacy/vault_widget.js",
         ],

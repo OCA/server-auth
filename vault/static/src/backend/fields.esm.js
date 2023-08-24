@@ -335,7 +335,7 @@ class VaultInboxField extends VaultField {
 
         const key = await vault.unwrap(wrapped_key);
         return await sym_decrypt(key, data, iv);
-    },
+    }
 }
 
 VaultInboxField.template = "vault.VaultInboxField";
@@ -358,7 +358,7 @@ class VaultInboxFile extends VaultFile {
 
         const key = await vault.unwrap(wrapped_key);
         return btoa(await sym_decrypt(key, data, iv));
-    },
+    }
 }
 
 VaultInboxFile.template = "vault.VaultInboxFile";
