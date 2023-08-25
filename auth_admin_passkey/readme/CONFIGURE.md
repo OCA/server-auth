@@ -15,6 +15,8 @@ following keys in your `odoo.cfg` configuration file.
 - `auth_admin_passkey_sysadmin_lang`. the language (exemple en_US), used
   for the mail sent to the System Administrator. If not set, the
   language of the SUPERUSER_ID user will be used.
+- `auth_admin_passkey_ignore_totp` (default False), if enabled, then 2FA
+  will be ignored.
 
 **typical Dev / Test configuration section**
 
