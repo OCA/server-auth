@@ -6,13 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2023-09-02 18:12+0000\n"
+"Last-Translator: Riccardo Bellanova <bellanova@webmonks.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: auth_jwt
 #: code:addons/auth_jwt/models/auth_jwt_validator.py:0
@@ -21,11 +23,13 @@ msgid ""
 "A cookie name must be provided on JWT validator %s because it has cookie "
 "mode enabled."
 msgstr ""
+"È necessario fornire un nome cookie sul validatore JWT %s perché ha la "
+"modalità cookie abilitata."
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
 msgid "Algorithm"
-msgstr ""
+msgstr "Algoritmo"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__audience
@@ -35,7 +39,7 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__audience
 msgid "Comma separated list of audiences, to validate aud."
-msgstr ""
+msgstr "Lista di audience separati da virgole, per validare l'aud."
 
 #. module: auth_jwt
 #: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_enabled
@@ -44,6 +48,9 @@ msgid ""
 "Authorization header and the cookie are present in the request, the cookie "
 "is ignored."
 msgstr ""
+"Converti il token JWT in un cookie HttpOnly Secure. Quando nella richiesta "
+"sono presenti sia un Authorization header che il cookie, il cookie viene "
+"ignorato."
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
@@ -53,22 +60,22 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_enabled
 msgid "Cookie Enabled"
-msgstr ""
+msgstr "Cookie abilitato"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_max_age
 msgid "Cookie Max Age"
-msgstr ""
+msgstr "Durata massima cookie"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_name
 msgid "Cookie Name"
-msgstr ""
+msgstr "Nome del cookie"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_path
 msgid "Cookie Path"
-msgstr ""
+msgstr "Path del cookie"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_secure
@@ -78,18 +85,18 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__display_name
 #: model:ir.model.fields,field_description:auth_jwt.field_ir_http__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: auth_jwt
 #: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__es256
@@ -160,18 +167,18 @@ msgstr ""
 #. module: auth_jwt
 #: model:ir.model,name:auth_jwt.model_auth_jwt_validator
 msgid "JWT Validator Configuration"
-msgstr ""
+msgstr "Configurazione del validatore JWT"
 
 #. module: auth_jwt
 #: model:ir.actions.act_window,name:auth_jwt.action_auth_jwt_validator
 #: model:ir.ui.menu,name:auth_jwt.menu_auth_jwt_validator
 msgid "JWT Validators"
-msgstr ""
+msgstr "Validatori JWT"
 
 #. module: auth_jwt
 #: model:ir.model.constraint,message:auth_jwt.constraint_auth_jwt_validator_name_uniq
 msgid "JWT validator names must be unique !"
-msgstr ""
+msgstr "I nomi dei validatori JWT devono essere univoci!"
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
@@ -182,22 +189,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator____last_update
 #: model:ir.model.fields,field_description:auth_jwt.field_ir_http____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento da"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: auth_jwt
 #: code:addons/auth_jwt/models/auth_jwt_validator.py:0
