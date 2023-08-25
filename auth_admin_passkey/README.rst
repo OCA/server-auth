@@ -51,6 +51,8 @@ following keys in your ``odoo.cfg`` configuration file.
 * ``auth_admin_passkey_password``. The password that allows user to logging in
   with any login. If not set, the feature is disabled.
 
+* ``auth_admin_passkey_ignore_totp`` (default False), if enabled, then 2FA will be ignored.
+
 * ``auth_admin_passkey_password_sha512_encrypted`` (default False), if enabled,
   auth_admin_passkey_password should be the password encrypted with sha512.
   On linux, this can be done using this command:
