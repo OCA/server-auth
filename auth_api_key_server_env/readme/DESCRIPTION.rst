@@ -6,5 +6,5 @@ section to your configuration file according to the following convention:
 
 .. code-block:: ini
 
-    [api_key_<Record Name>]
+    [api_key_<record.tech_name>]
     key=my_api_key

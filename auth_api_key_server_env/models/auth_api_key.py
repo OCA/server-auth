@@ -10,20 +10,17 @@ from odoo import models
 class AuthApiKey(models.Model):
 
     _name = "auth.api.key"
-    _inherit = ["auth.api.key", "server.env.mixin"]
+    _inherit = ["auth.api.key", "server.env.techname.mixin", "server.env.mixin"]
 
     def _server_env_section_name(self):
         """Name of the section in the configuration files
-
         We override the default implementation to keep the compatibility
         with the previous implementation of auth_api_key. The section name
         into the configuration file must be formatted as
-
             'api_key_{name}'
-
         """
         self.ensure_one()
-        return "api_key_{}".format(self.name)
+        return "api_key_{}".format(getattr(self, self._server_env_section_name_field))
 
     @property
     def _server_env_fields(self):
