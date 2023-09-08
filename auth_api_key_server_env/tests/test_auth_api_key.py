@@ -15,11 +15,16 @@ class TestAuthApiKey(TransactionCase):
         cls.AuthApiKey = cls.env["auth.api.key"]
         cls.demo_user = cls.env.ref("base.user_demo")
         cls.api_key_from_env = cls.AuthApiKey.create(
-            {"name": "from_env", "key": "dummy", "user_id": cls.demo_user.id}
+            {
+                "name": "From Env",
+                "key": "dummy",
+                "user_id": cls.demo_user.id,
+                "tech_name": "test_env",
+            }
         )
         cls.api_key_from_env.refresh()
-        serv_config.add_section("api_key_from_env")
-        serv_config.set("api_key_from_env", "key", "api_key_from_env")
+        serv_config.add_section("api_key_test_env")
+        serv_config.set("api_key_test_env", "key", "api_key_from_env")
 
     def test_lookup_key_from_env(self):
         self.assertEqual(
