@@ -9,42 +9,43 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-18 02:29+0000\n"
-"PO-Revision-Date: 2017-02-18 02:29+0000\n"
-"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2016\n"
+"PO-Revision-Date: 2023-09-20 09:40+0000\n"
+"Last-Translator: Hans Henrik Gabelgaard <hhg@gabelgaard.org>\n"
 "Language-Team: Danish (https://www.transifex.com/oca/teams/23907/da/)\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_minimum
 msgid "Amount of hours until a user may change password again"
-msgstr ""
+msgstr "Antal timer inden en bruger kan skifte adgangskode igen"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:200
 #, python-format
 msgid "Cannot use the most recent %d passwords"
-msgstr ""
+msgstr "Kan ikke bruge de seneste %d adgangskoder"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_length
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_length
 msgid "Characters"
-msgstr ""
+msgstr "Tegn"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Virksomheder"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Konfigurations opsætning"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__create_uid
@@ -59,18 +60,18 @@ msgstr "Oprettet den"
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__date
 msgid "Date"
-msgstr ""
+msgstr "Dato"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_expiration
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_expiration
 msgid "Days"
-msgstr ""
+msgstr "Dage"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Disallow reuse of"
-msgstr ""
+msgstr "Afvis genbrug af"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_history
@@ -79,6 +80,8 @@ msgid ""
 "Disallow reuse of this many previous passwords - use negative number for "
 "infinite, or 0 to disable"
 msgstr ""
+"Afvis genbrug af dette antal foregående adgangskoder - ethvert negativt "
+"antal afviser alle tidligere koder, nul tillader alle tidligere koder"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__display_name
@@ -88,25 +91,25 @@ msgstr "Vist navn"
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__password_crypt
 msgid "Encrypted Password"
-msgstr ""
+msgstr "Krypteret adgangskode"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_estimate
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_estimate
 msgid "Estimation"
-msgstr ""
+msgstr "Estimering"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_history
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_history
 msgid "History"
-msgstr ""
+msgstr "Historik"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_expiration
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_expiration
 msgid "How many days until passwords expire"
-msgstr ""
+msgstr "Antal dage inden adgangskoder udløber"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__id
@@ -131,73 +134,73 @@ msgstr "Sidst opdateret den"
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users__password_write_date
 msgid "Last password update"
-msgstr ""
+msgstr "Seneste opdatering af adgangskode"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_lower
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_lower
 msgid "Lowercase"
-msgstr ""
+msgstr "Små bogstaver"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_minimum
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_minimum
 msgid "Minimum Hours"
-msgstr ""
+msgstr "Mindste antal timer"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_length
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_length
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of characters"
-msgstr ""
+msgstr "Mindste antal tegn"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of lowercase characters"
-msgstr ""
+msgstr "Mindste antal små bogstaver"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of numeric characters"
-msgstr ""
+msgstr "Mindste antal numeriske tegn"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of special characters"
-msgstr ""
+msgstr "Mindste antal specialtegn"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of strength estimation"
-msgstr ""
+msgstr "Mindste værdi for estimeret styrke"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of uppercase characters"
-msgstr ""
+msgstr "Mindste antal store bogstaver"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:107
 #, python-format
 msgid "Must contain the following:"
-msgstr ""
+msgstr "Skal indeholde følgende:"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_numeric
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_numeric
 msgid "Numeric"
-msgstr ""
+msgstr "Numerisk"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users__password_history_ids
 msgid "Password History"
-msgstr ""
+msgstr "Adgangskodehistorik"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Password Policy"
-msgstr ""
+msgstr "Adgangskodepolitik"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
