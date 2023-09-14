@@ -96,11 +96,6 @@ msgid ""
 msgstr ""
 
 #. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__body
-msgid "Button Description"
-msgstr ""
-
-#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__css_class
 msgid "Button Icon CSS class"
 msgstr ""
@@ -258,6 +253,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__write_date
 #: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__body
+msgid "Link text in Login Dialog"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__body
+msgid "Login button label"
 msgstr ""
 
 #. module: auth_saml
