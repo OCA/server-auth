@@ -11,7 +11,7 @@
                     t-foreach="saml_providers"
                     t-as="p"
                     class="list-group-item list-group-item-action py-2"
-                    t-att-href="'/auth_saml/get_auth_request?pid=%s'%p['id']"
+                    t-att-href="p['auth_link']"
                 >
                     <i t-att-class="p['css_class']" />
                     <t t-esc="p['body']" />
