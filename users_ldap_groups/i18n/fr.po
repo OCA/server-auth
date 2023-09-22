@@ -46,7 +46,6 @@ msgstr "Définition des opérations LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__display_name
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
 
@@ -57,7 +56,6 @@ msgstr "Tableau de conversion des groupes"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__id
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator__id
 msgid "ID"
 msgstr "ID"
 
@@ -89,7 +87,6 @@ msgstr "Serveur LDAP"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping____last_update
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator____last_update
 msgid "Last Modified on"
 msgstr "Dernière mise à jour le"
 
@@ -138,6 +135,15 @@ msgid "The Odoo group to assign"
 msgstr "Groupe Odoo à assigner"
 
 #. module: users_ldap_groups
+#. odoo-python
+#: code:addons/users_ldap_groups/models/res_company_ldap.py:0
+#, python-format
+msgid ""
+"The created user needs to have one (and only one) of the 'User types /' "
+"groups defined."
+msgstr ""
+
+#. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping__operator
 msgid ""
 "The operator to check the attribute against the value\n"
@@ -157,13 +163,16 @@ msgstr ""
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_users
-msgid "Users"
-msgstr "Utilisateurs"
+msgid "User"
+msgstr ""
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__value
 msgid "Value"
 msgstr "Valeur"
+
+#~ msgid "Users"
+#~ msgstr "Utilisateurs"
 
 #~ msgid "res.company.ldap"
 #~ msgstr "res.company.ldap"

@@ -130,6 +130,7 @@ msgid "The Odoo group to assign"
 msgstr ""
 
 #. module: users_ldap_groups
+#. odoo-python
 #: code:addons/users_ldap_groups/models/res_company_ldap.py:0
 #, python-format
 msgid ""
@@ -153,7 +154,7 @@ msgstr ""
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_users
-msgid "Users"
+msgid "User"
 msgstr ""
 
 #. module: users_ldap_groups

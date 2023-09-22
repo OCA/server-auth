@@ -6,4 +6,5 @@
 * Tecnativa <https://www.tecnativa.com>
 
   * João Marques
+  * Carolina Fernandez
 * Dhara Solanki <dhara.solanki@initos.com>

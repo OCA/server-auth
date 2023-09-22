@@ -1,10 +1,11 @@
 # Copyright 2012-2018 Therp BV <https://therp.nl>
 # Copyright 2018 Brainbean Apps <https://brainbeanapps.com>
 # Copyright 2021 Tecnativa - João Marques
+# Copyright 2023 Tecnativa - Carolina Fernandez
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
     "name": "LDAP groups assignment",
-    "version": "15.0.1.0.0",
+    "version": "16.0.1.0.0",
     "depends": ["auth_ldap"],
     "author": "Therp BV, " "Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
