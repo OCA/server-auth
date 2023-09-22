@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-18 02:29+0000\n"
-"PO-Revision-Date: 2023-09-20 09:40+0000\n"
+"PO-Revision-Date: 2023-09-22 14:38+0000\n"
 "Last-Translator: Hans Henrik Gabelgaard <hhg@gabelgaard.org>\n"
 "Language-Team: Danish (https://www.transifex.com/oca/teams/23907/da/)\n"
 "Language: da\n"
@@ -205,7 +205,7 @@ msgstr "Adgangskodepolitik"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Password expires in"
-msgstr ""
+msgstr "Adgangskoden udløber om"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:177
@@ -214,74 +214,77 @@ msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
 "administrator for assistance."
 msgstr ""
+"Adgangskoder kan kun nulstilles med %d time(r)s mellemrum. Kontakt en "
+"administrator for hjælp."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_lower
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_lower
 msgid "Require number of lowercase letters"
-msgstr ""
+msgstr "Kræv et antal små bogstaver"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_numeric
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_numeric
 msgid "Require number of numeric digits"
-msgstr ""
+msgstr "Kræv et antal numeriske tegn"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_special
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_special
 msgid "Require number of unique special characters"
-msgstr ""
+msgstr "Kræv et antal specialtegn"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_upper
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_upper
 msgid "Require number of uppercase letters"
-msgstr ""
+msgstr "Kræv et antal store bogstaver"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_estimate
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_estimate
 msgid "Required score for the strength estimation. Between 0 and 4"
-msgstr ""
+msgstr "Kræv en mindsteværdi for estimeret styrke. Mellem 0 og 4"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users_pass_history
 msgid "Res Users Password History"
-msgstr ""
+msgstr "Brugere - Adgangskodehistorik"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_special
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
 msgid "Special"
-msgstr ""
+msgstr "Speciel"
 
 #. module: password_security
 #: code:addons/password_security/models/res_company.py:62
 #, python-format
 msgid "The estimation must be between 0 and 4."
-msgstr ""
+msgstr "Estimeringen skal være mellem 0 og 4."
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_upper
 msgid "Uppercase"
-msgstr ""
+msgstr "Store bogstaver"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Use negative number for infinite, or 0 to disable"
 msgstr ""
+"Brug et negativt antal for uendeligt eller 0 for at slå funktionaliteten fra"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__user_id
 msgid "User"
-msgstr ""
+msgstr "Bruger"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "User can change password in"
-msgstr ""
+msgstr "Brugeren kan skifte adgangskode om"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users
@@ -293,47 +296,47 @@ msgstr "Brugere"
 #: code:addons/password_security/static/src/js/password_gauge.js:40
 #, python-format
 msgid "at least %d characters"
-msgstr ""
+msgstr "mindst %d tegn"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:49
 #, python-format
 msgid "at least %d lower case characters"
-msgstr ""
+msgstr "mindst %d små bogstaver"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:67
 #, python-format
 msgid "at least %d numeric characters"
-msgstr ""
+msgstr "mindst %d numeriske tegn"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:76
 #, python-format
 msgid "at least %d special characters"
-msgstr ""
+msgstr "mindst %d specialtegn"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:58
 #, python-format
 msgid "at least %d upper case characters"
-msgstr ""
+msgstr "mindst %d store bogstaver"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "days."
-msgstr ""
+msgstr "dage."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "hours again."
-msgstr ""
+msgstr "timer igen."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "previous passwords."
-msgstr ""
+msgstr "tidligere adgangskoder."
