@@ -10,6 +10,7 @@ from odoo.tests.common import HttpCase, Opener, get_db_name, new_test_user, tagg
 class TestPasswordSecurityReset(HttpCase):
     def setUp(self):
         super().setUp()
+        self.env.company.password_policy_enabled = True
 
         # Create user with strong password: no error raised
         new_test_user(self.env, "jackoneill", password="!asdQWE12345_3")

@@ -18,11 +18,23 @@
             </xpath>
             <!-- Add our password policy fields -->
             <xpath expr="//div[@id='access_rights']" position="before">
-                <div class="col-12 col-lg-6 o_setting_box" title="Password Policy">
-                    <div class="o_setting_left_pane" />
+                <div
+                    class="col-12 col-lg-6 o_setting_box"
+                    id="password_policy"
+                    title="Password Policy"
+                >
+                    <div class="o_setting_left_pane">
+                        <field name="password_policy_enabled" />
+                    </div>
                     <div class="o_setting_right_pane">
-                        <label string="Password Policy" for="password_expiration" />
-                        <div class="content-group">
+                        <label string="Password Policy" for="password_policy_enabled" />
+                        <div class="text-muted">
+                            Set password security requirements
+                        </div>
+                        <div
+                            class="content-group"
+                            attrs="{'invisible': [('password_policy_enabled','=', False)]}"
+                        >
                             <div class="mt16">
                                 <span>
                                     Password expires in
