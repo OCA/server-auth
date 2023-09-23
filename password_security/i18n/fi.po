@@ -20,13 +20,45 @@ msgstr ""
 "X-Generator: Weblate 4.3.2\n"
 
 #. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Lowercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Numeric digit (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Special character (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Uppercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_minimum
 msgid "Amount of hours until a user may change password again"
 msgstr "Kuinka monen tunnin välein käyttäjä voi vaihtaa salasanan"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:200
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Et voi käyttää viimeisimpiä %d salasanaa"
@@ -181,7 +213,7 @@ msgid "Minimum number of uppercase characters"
 msgstr "Vähimmäismäärä isoja kirjaimia"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:107
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Must contain the following:"
 msgstr "Täytyy sisältää seuraavat:"
@@ -203,12 +235,24 @@ msgid "Password Policy"
 msgstr "Salasanapolitiikka"
 
 #. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_policy_enabled
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_policy_enabled
+msgid "Password Policy Enabled"
+msgstr ""
+
+#. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Password expires in"
 msgstr "Salasana vanhenee"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:177
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Password must be %d characters or more."
+msgstr ""
+
+#. module: password_security
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -253,13 +297,18 @@ msgid "Res Users Password History"
 msgstr "Käyttäjien salasanahistoria"
 
 #. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Set password security requirements"
+msgstr ""
+
+#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_special
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
 msgid "Special"
 msgstr "Erikoismerkki"
 
 #. module: password_security
-#: code:addons/password_security/models/res_company.py:62
+#: code:addons/password_security/models/res_company.py:0
 #, python-format
 msgid "The estimation must be between 0 and 4."
 msgstr "Vahvuusarvion on oltava väliltä 0 ja 4."
@@ -292,35 +341,35 @@ msgstr "Käyttäjät"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:40
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d characters"
 msgstr "vähintään %d merkkiä"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:49
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d lower case characters"
 msgstr "vähintään %d pientä kirjainta"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:67
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d numeric characters"
 msgstr "vähintään %d numeroa"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:76
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d special characters"
 msgstr "vähintään %d erikoismerkkiä"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:58
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d upper case characters"
 msgstr "vähintään %d isoa kirjainta"
