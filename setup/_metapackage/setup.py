@@ -21,6 +21,7 @@ setuptools.setup(
         'odoo-addon-auth_user_case_insensitive>=16.0dev,<16.1dev',
         'odoo-addon-base_user_show_email>=16.0dev,<16.1dev',
         'odoo-addon-user_log_view>=16.0dev,<16.1dev',
+        'odoo-addon-users_ldap_groups>=16.0dev,<16.1dev',
         'odoo-addon-users_ldap_mail>=16.0dev,<16.1dev',
     ],
     classifiers=[
