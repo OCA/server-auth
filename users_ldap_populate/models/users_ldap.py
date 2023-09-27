@@ -71,7 +71,7 @@ class CompanyLDAP(models.Model):
                     user_id = self.with_context(
                         no_reset_password=True
                     )._get_or_create_user(conf, login, result)
-                except AccessDenied:
+                except AccessDenied as e:
                     # this happens if the user exists but is active = False
                     # -> fetch the user again and reactivate it
                     self.env.cr.execute(
@@ -85,7 +85,7 @@ class CompanyLDAP(models.Model):
                         )
                         user_id = res[0]
                     else:
-                        raise UserError(
+                        raise UserError from e(
                             _("Unable to process user with login %s") % login
                         )
                 finally:
