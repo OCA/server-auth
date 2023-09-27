@@ -4,3 +4,4 @@
   * Alexandre Díaz
   * João Marques
   * Carlos Roca
+  * Carolina Fernandez
