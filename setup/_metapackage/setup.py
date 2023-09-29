@@ -23,6 +23,7 @@ setuptools.setup(
         'odoo-addon-user_log_view>=16.0dev,<16.1dev',
         'odoo-addon-users_ldap_groups>=16.0dev,<16.1dev',
         'odoo-addon-users_ldap_mail>=16.0dev,<16.1dev',
+        'odoo-addon-users_ldap_populate>=16.0dev,<16.1dev',
     ],
     classifiers=[
         'Programming Language :: Python',
