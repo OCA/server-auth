@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-18 02:29+0000\n"
-"PO-Revision-Date: 2023-09-22 14:38+0000\n"
+"PO-Revision-Date: 2023-09-30 16:25+0000\n"
 "Last-Translator: Hans Henrik Gabelgaard <hhg@gabelgaard.org>\n"
 "Language-Team: Danish (https://www.transifex.com/oca/teams/23907/da/)\n"
 "Language: da\n"
@@ -26,6 +26,8 @@ msgid ""
 "\n"
 "* Lowercase letter (at least %s characters)"
 msgstr ""
+"\n"
+"* Små bogstaver (mindst %s tegn)"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
@@ -34,6 +36,8 @@ msgid ""
 "\n"
 "* Numeric digit (at least %s characters)"
 msgstr ""
+"\n"
+"* Numeriske cifre (mindst %s tegn)"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
@@ -42,6 +46,8 @@ msgid ""
 "\n"
 "* Special character (at least %s characters)"
 msgstr ""
+"\n"
+"* Special tegn (mindst %s tegn)"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
@@ -50,6 +56,8 @@ msgid ""
 "\n"
 "* Uppercase letter (at least %s characters)"
 msgstr ""
+"\n"
+"* Store bogstaver (mindst %s tegn)"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
@@ -238,7 +246,7 @@ msgstr "Adgangskodepolitik"
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_policy_enabled
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_policy_enabled
 msgid "Password Policy Enabled"
-msgstr ""
+msgstr "Password politik slået til"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -249,7 +257,7 @@ msgstr "Adgangskoden udløber om"
 #: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Password must be %d characters or more."
-msgstr ""
+msgstr "Password skal være mindst %d tegn."
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
@@ -299,7 +307,7 @@ msgstr "Brugere - Adgangskodehistorik"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Set password security requirements"
-msgstr ""
+msgstr "Indstil adgangskodesikkerhedskrav"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_special
