@@ -43,16 +43,13 @@
                         type="object"
                         name="action_open_import_wizard"
                         string="Import from file"
+                        groups="vault.group_vault_import"
                     />
                     <button
                         type="object"
                         name="action_open_export_wizard"
                         string="Export to file"
-                    />
-                    <button
-                        type="object"
-                        name="action_open_export_wizard"
-                        string="Export to file"
+                        groups="vault.group_vault_export"
                     />
                     <button name="vault_verify" string="Verify" />
                     <button

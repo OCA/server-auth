@@ -74,6 +74,16 @@ msgstr "Alle invoeren"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
+msgid "Allow all users to export vaults accessible to them"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
+msgid "Allow all users to import vaults accessible to them"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow the usage to share secrets with external users"
 msgstr ""
 
@@ -85,6 +95,16 @@ msgstr ""
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_delete
 msgid "Allow to delete a vault"
+msgstr ""
+
+#. module: vault
+#: model:res.groups,name:vault.group_vault_export
+msgid "Allow to export vaults"
+msgstr ""
+
+#. module: vault
+#: model:res.groups,name:vault.group_vault_import
+msgid "Allow to import vaults"
 msgstr ""
 
 #. module: vault
@@ -409,6 +429,11 @@ msgid "Expires on"
 msgstr "Verloopt op"
 
 #. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_export
+msgid "Export Vaults"
+msgstr ""
+
+#. module: vault
 #: code:addons/vault/models/vault.py:0
 #: code:addons/vault/models/vault_entry.py:0
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
@@ -546,6 +571,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 msgid "Import"
 msgstr "Import"
+
+#. module: vault
+#: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_import
+msgid "Import Vaults"
+msgstr ""
 
 #. module: vault
 #: code:addons/vault/models/vault.py:0
