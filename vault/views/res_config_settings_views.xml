@@ -19,6 +19,28 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="vault_share">
+                        <div class="o_setting_left_pane">
+                            <field name="group_vault_import" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_vault_import" />
+                            <div class="text-muted">
+                                Allow all users to import vaults accessible to them
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 o_setting_box" id="vault_share">
+                        <div class="o_setting_left_pane">
+                            <field name="group_vault_export" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="group_vault_export" />
+                            <div class="text-muted">
+                                Allow all users to export vaults accessible to them
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </field>

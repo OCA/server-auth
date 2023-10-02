@@ -14,6 +14,7 @@
     "data": [
         "security/ir.model.access.csv",
         "security/ir_rule.xml",
+        "security/vault_security.xml",
         "views/res_config_settings_views.xml",
         "views/res_users_views.xml",
         "views/vault_entry_views.xml",
