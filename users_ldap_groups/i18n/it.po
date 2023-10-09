@@ -42,10 +42,7 @@ msgid "Definition op LDAP operations"
 msgstr "Definizione delle operazioni LDAP"
 
 #. module: users_ldap_groups
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap__display_name
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__display_name
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator__display_name
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_users__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -55,10 +52,7 @@ msgid "Group mappings"
 msgstr "Mappature gruppi"
 
 #. module: users_ldap_groups
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap__id
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__id
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator__id
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_users__id
 msgid "ID"
 msgstr "ID"
 
@@ -89,10 +83,7 @@ msgid "LDAP server"
 msgstr "Server LDAP"
 
 #. module: users_ldap_groups
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap____last_update
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping____last_update
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator____last_update
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_users____last_update
 msgid "Last Modified on"
 msgstr "Ultima modifica il"
 

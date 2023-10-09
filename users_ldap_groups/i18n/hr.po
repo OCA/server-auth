@@ -44,7 +44,6 @@ msgstr "Definicija LDAP operacija"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__display_name
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator__display_name
 msgid "Display Name"
 msgstr "Naziv"
 
@@ -55,7 +54,6 @@ msgstr "Mapiranje grupa"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__id
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator__id
 #, fuzzy
 msgid "ID"
 msgstr "ID"
@@ -85,7 +83,6 @@ msgstr "LDAP server"
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping____last_update
-#: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_operator____last_update
 msgid "Last Modified on"
 msgstr "Zadnje modificirano"
 
@@ -129,6 +126,14 @@ msgstr ""
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping__group_id
 msgid "The Odoo group to assign"
+msgstr ""
+
+#. module: users_ldap_groups
+#: code:addons/users_ldap_groups/models/res_company_ldap.py:0
+#, python-format
+msgid ""
+"The created user needs to have one (and only one) of the 'User types /' "
+"groups defined."
 msgstr ""
 
 #. module: users_ldap_groups
