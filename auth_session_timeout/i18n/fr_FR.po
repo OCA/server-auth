@@ -31,5 +31,8 @@ msgstr ""
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_res_users
-msgid "Users"
-msgstr "Utilsateurs"
+msgid "User"
+msgstr ""
+
+#~ msgid "Users"
+#~ msgstr "Utilsateurs"
