@@ -26,6 +26,21 @@ msgid "Conflicting user logins exist for `%s`"
 msgstr " Exista un conflict  de registru pentru `%s`"
 
 #. module: auth_user_case_insensitive
+#: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__id
+msgid "ID"
+msgstr ""
+
+#. module: auth_user_case_insensitive
+#: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_user_case_insensitive
 #: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__login
 msgid "Login"
 msgstr ""
