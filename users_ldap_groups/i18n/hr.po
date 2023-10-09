@@ -39,8 +39,8 @@ msgstr "Definiraj kako su Odoo grupe dodijeljene LDAP korisnicima"
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_company_ldap_operator
-msgid "Definition op LDAP operations"
-msgstr "Definicija LDAP operacija"
+msgid "Definition of LDAP operations"
+msgstr ""
 
 #. module: users_ldap_groups
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__display_name
@@ -132,6 +132,14 @@ msgid "The Odoo group to assign"
 msgstr ""
 
 #. module: users_ldap_groups
+#: code:addons/users_ldap_groups/models/res_company_ldap.py:0
+#, python-format
+msgid ""
+"The created user needs to have one (and only one) of the 'User types /' "
+"groups defined."
+msgstr ""
+
+#. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping__operator
 msgid ""
 "The operator to check the attribute against the value\n"
@@ -154,3 +162,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:users_ldap_groups.field_res_company_ldap_group_mapping__value
 msgid "Value"
 msgstr ""
+
+#~ msgid "Definition op LDAP operations"
+#~ msgstr "Definicija LDAP operacija"

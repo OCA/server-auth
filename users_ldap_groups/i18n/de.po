@@ -40,7 +40,7 @@ msgstr ""
 
 #. module: users_ldap_groups
 #: model:ir.model,name:users_ldap_groups.model_res_company_ldap_operator
-msgid "Definition op LDAP operations"
+msgid "Definition of LDAP operations"
 msgstr ""
 
 #. module: users_ldap_groups
@@ -130,6 +130,14 @@ msgstr ""
 #. module: users_ldap_groups
 #: model:ir.model.fields,help:users_ldap_groups.field_res_company_ldap_group_mapping__group_id
 msgid "The Odoo group to assign"
+msgstr ""
+
+#. module: users_ldap_groups
+#: code:addons/users_ldap_groups/models/res_company_ldap.py:0
+#, python-format
+msgid ""
+"The created user needs to have one (and only one) of the 'User types /' "
+"groups defined."
 msgstr ""
 
 #. module: users_ldap_groups
