@@ -34,36 +34,57 @@ msgid "Access Groups"
 msgstr "Berechtigungsgruppen"
 
 #. module: auth_dynamic_groups
-#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups_dynamic_group_condition
-#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users_role_dynamic_group_condition
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__dynamic_group_condition
 msgid "Condition"
 msgstr "Bedingung"
 
 #. module: auth_dynamic_groups
-#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups_is_dynamic
-#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users_role_is_dynamic
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__display_name
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_dynamic_groups
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__is_dynamic
 msgid "Dynamic"
 msgstr "Dynamisch"
 
 #. module: auth_dynamic_groups
-#: model:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
+#: model_terms:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
 msgid "Evaluate"
 msgstr "Auswerten"
 
 #. module: auth_dynamic_groups
-#: model:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
+#: model_terms:ir.ui.view,arch_db:auth_dynamic_groups.view_groups_form
 msgid "Fill in your condition..."
 msgstr "Tragen Sie Ihre Bedingung ein..."
 
 #. module: auth_dynamic_groups
-#: code:addons/auth_dynamic_groups/models/res_groups.py:38
+#: code:addons/auth_dynamic_groups/models/res_groups.py:0
+#, python-format
+msgid "Format: %s"
+msgstr ""
+
+#. module: auth_dynamic_groups
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__id
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users__id
+msgid "ID"
+msgstr ""
+
+#. module: auth_dynamic_groups
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups____last_update
+#: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users____last_update
+msgid "Last Modified on"
+msgstr ""
+
+#. module: auth_dynamic_groups
+#: code:addons/auth_dynamic_groups/models/res_groups.py:0
 #, python-format
 msgid "The condition doesn't evaluate correctly!"
 msgstr "Die Bedingung wird nicht korrekt ausgewertet."
 
 #. module: auth_dynamic_groups
-#: model:ir.model.fields,help:auth_dynamic_groups.field_res_groups_dynamic_group_condition
-#: model:ir.model.fields,help:auth_dynamic_groups.field_res_users_role_dynamic_group_condition
+#: model:ir.model.fields,help:auth_dynamic_groups.field_res_groups__dynamic_group_condition
 msgid ""
 "The condition to be met for a user to be a member of this group. It is "
 "evaluated as python code at login time, you get `user` passed as a browse "
