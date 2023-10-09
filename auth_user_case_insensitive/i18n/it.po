@@ -33,7 +33,8 @@ msgstr "Login"
 #. module: auth_user_case_insensitive
 #: model:ir.model.fields,help:auth_user_case_insensitive.field_res_users__login
 msgid "Used to log into the system. Case insensitive."
-msgstr "Utilizzato per l'accesso al sistema. Insensibile a maiuscole/minuscole."
+msgstr ""
+"Utilizzato per l'accesso al sistema. Insensibile a maiuscole/minuscole."
 
 #. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
