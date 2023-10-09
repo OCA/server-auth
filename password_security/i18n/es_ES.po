@@ -26,7 +26,7 @@ msgid "Amount of hours until a user may change password again"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:200
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr ""
@@ -179,7 +179,7 @@ msgid "Minimum number of uppercase characters"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:107
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Must contain the following:"
 msgstr ""
@@ -206,7 +206,7 @@ msgid "Password expires in"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:177
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -255,7 +255,7 @@ msgid "Special"
 msgstr ""
 
 #. module: password_security
-#: code:addons/password_security/models/res_company.py:62
+#: code:addons/password_security/models/res_company.py:0
 #, python-format
 msgid "The estimation must be between 0 and 4."
 msgstr ""
@@ -288,35 +288,35 @@ msgstr "Usuarios"
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:40
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d characters"
 msgstr ""
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:49
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d lower case characters"
 msgstr ""
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:67
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d numeric characters"
 msgstr ""
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:76
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d special characters"
 msgstr ""
 
 #. module: password_security
 #. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:58
+#: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d upper case characters"
 msgstr ""
