@@ -80,7 +80,8 @@ msgid ""
 "Disallow reuse of this many previous passwords - use negative number for "
 "infinite, or 0 to disable"
 msgstr ""
-"指定した回数分だけ過去に利用したパスワードを設定不可能にします。負の値は過去全てのパスワードを不許可とし、0の場合はいかなる過去のパスワードも許可します"
+"指定した回数分だけ過去に利用したパスワードを設定不可能にします。負の値は過去"
+"全てのパスワードを不許可とし、0の場合はいかなる過去のパスワードも許可します"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__display_name
@@ -212,7 +213,9 @@ msgstr "パスワードの消失まで"
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
 "administrator for assistance."
-msgstr "パスワードの再設定は %d 時間ごとにしか実施できません。詳しくは管理者にお尋ねください。"
+msgstr ""
+"パスワードの再設定は %d 時間ごとにしか実施できません。詳しくは管理者にお尋ね"
+"ください。"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_lower
