@@ -44,11 +44,13 @@ msgid "Deactivate unknown users"
 msgstr ""
 
 #. module: users_ldap_populate
+#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__display_name
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__display_name
 msgid "Display Name"
 msgstr "نام نمایشی"
 
 #. module: users_ldap_populate
+#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__id
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__id
 msgid "ID"
 msgstr "شناسه"
@@ -59,6 +61,7 @@ msgid "LDAP Configuration"
 msgstr ""
 
 #. module: users_ldap_populate
+#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap____last_update
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard____last_update
 msgid "Last Modified on"
 msgstr "تاریخ آخرین به‌روزرسانی"
@@ -84,7 +87,7 @@ msgid "Name"
 msgstr "نام"
 
 #. module: users_ldap_populate
-#: code:addons/users_ldap_populate/models/users_ldap.py:62
+#: code:addons/users_ldap_populate/models/users_ldap.py:0
 #, python-format
 msgid ""
 "No login attribute found: Could not extract login attribute from filter %s"
@@ -121,7 +124,7 @@ msgid "Populate users from LDAP"
 msgstr ""
 
 #. module: users_ldap_populate
-#: code:addons/users_ldap_populate/models/users_ldap.py:89
+#: code:addons/users_ldap_populate/models/users_ldap.py:0
 #, python-format
 msgid "Unable to process user with login %s"
 msgstr ""

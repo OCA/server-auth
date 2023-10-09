@@ -45,11 +45,13 @@ msgid "Deactivate unknown users"
 msgstr "Desactivar usuarios desconocidos"
 
 #. module: users_ldap_populate
+#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__display_name
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__display_name
 msgid "Display Name"
 msgstr "Nombre a mostrar"
 
 #. module: users_ldap_populate
+#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__id
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__id
 msgid "ID"
 msgstr "ID"
@@ -60,6 +62,7 @@ msgid "LDAP Configuration"
 msgstr "Configuración LDAP"
 
 #. module: users_ldap_populate
+#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap____last_update
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard____last_update
 msgid "Last Modified on"
 msgstr "Última actualización por"
@@ -77,7 +80,9 @@ msgstr "Última actualización el"
 #. module: users_ldap_populate
 #: model:ir.model.fields,help:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
 msgid "List users who never should be deactivated by the deactivation wizard"
-msgstr "Listar usuarios que nunca deben ser desactivados por el asistente de desactivación"
+msgstr ""
+"Listar usuarios que nunca deben ser desactivados por el asistente de "
+"desactivación"
 
 #. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__name
@@ -85,10 +90,13 @@ msgid "Name"
 msgstr "Nombre"
 
 #. module: users_ldap_populate
-#: code:addons/users_ldap_populate/models/users_ldap.py:62
+#: code:addons/users_ldap_populate/models/users_ldap.py:0
 #, python-format
-msgid "No login attribute found: Could not extract login attribute from filter %s"
-msgstr "No se ha encontrado el atributo de login: no se puede extraer el atributo de login del filtro %s"
+msgid ""
+"No login attribute found: Could not extract login attribute from filter %s"
+msgstr ""
+"No se ha encontrado el atributo de login: no se puede extraer el atributo de "
+"login del filtro %s"
 
 #. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__users_created
@@ -121,7 +129,7 @@ msgid "Populate users from LDAP"
 msgstr "Poblar usuarios desde LDAP"
 
 #. module: users_ldap_populate
-#: code:addons/users_ldap_populate/models/users_ldap.py:89
+#: code:addons/users_ldap_populate/models/users_ldap.py:0
 #, python-format
 msgid "Unable to process user with login %s"
 msgstr "Imposible procesar usuario con el login %s"
