@@ -35,19 +35,37 @@ msgid "Company LDAP configuration"
 msgstr ""
 
 #. module: users_ldap_mail
+#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: users_ldap_mail
 #: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__mail_attribute
 msgid "E-mail attribute"
 msgstr "Atribut e-mail"
 
 #. module: users_ldap_mail
+#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__id
+msgid "ID"
+msgstr ""
+
+#. module: users_ldap_mail
 #: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap__mail_attribute
-msgid "LDAP attribute to use to retrieve em-mail address."
-msgstr "LDAP atribut za dohvat email adresa."
+msgid "LDAP attribute to use to retrieve e-mail address."
+msgstr ""
+
+#. module: users_ldap_mail
+#: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap____last_update
+msgid "Last Modified on"
+msgstr ""
 
 #. module: users_ldap_mail
 #: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__name_attribute
 msgid "Name Attribute"
 msgstr "Atribut naziva"
+
+#~ msgid "LDAP attribute to use to retrieve em-mail address."
+#~ msgstr "LDAP atribut za dohvat email adresa."
 
 #~ msgid "res.company.ldap"
 #~ msgstr "res.company.ldap"
