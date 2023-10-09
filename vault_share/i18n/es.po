@@ -220,15 +220,15 @@ msgstr "Recursos compartidos"
 #: model:ir.model.fields,help:vault_share.field_vault_share__expiration
 msgid "Specifies how long a share can be accessed until deletion."
 msgstr ""
-"Especifica el tiempo que se puede acceder a un recurso compartido hasta "
-"su eliminación."
+"Especifica el tiempo que se puede acceder a un recurso compartido hasta su "
+"eliminación."
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__accesses
 msgid "Specifies how often a share can be accessed before deletion."
 msgstr ""
-"Especifica la frecuencia con la que se puede acceder a un recurso "
-"compartido antes de eliminarlo."
+"Especifica la frecuencia con la que se puede acceder a un recurso compartido "
+"antes de eliminarlo."
 
 #. module: vault_share
 #: model:ir.model.fields,help:vault_share.field_vault_share__pin
