@@ -20,22 +20,61 @@ msgstr ""
 "X-Generator: Weblate 4.3.2\n"
 
 #. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Lowercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Numeric digit (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Special character (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Uppercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid ""
+"<span id=\"minlength\">\n"
+"                               Minimum number of characters\n"
+"                          </span>"
+msgstr ""
+
+#. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_minimum
 msgid "Amount of hours until a user may change password again"
 msgstr "Kuinka monen tunnin välein käyttäjä voi vaihtaa salasanan"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:200
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Cannot use the most recent %d passwords"
 msgstr "Et voi käyttää viimeisimpiä %d salasanaa"
-
-#. module: password_security
-#: model:ir.model.fields,field_description:password_security.field_res_company__password_length
-#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_length
-msgid "Characters"
-msgstr "Merkit"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_company
@@ -94,12 +133,6 @@ msgid "Encrypted Password"
 msgstr "Salattu salasana"
 
 #. module: password_security
-#: model:ir.model.fields,field_description:password_security.field_res_company__password_estimate
-#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_estimate
-msgid "Estimation"
-msgstr "Arvio"
-
-#. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_history
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_history
 msgid "History"
@@ -149,13 +182,6 @@ msgid "Minimum Hours"
 msgstr "Vähimmäismäärä tunteja"
 
 #. module: password_security
-#: model:ir.model.fields,help:password_security.field_res_company__password_length
-#: model:ir.model.fields,help:password_security.field_res_config_settings__password_length
-#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
-msgid "Minimum number of characters"
-msgstr "Vähimmäismäärä merkkejä"
-
-#. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of lowercase characters"
 msgstr "Vähimmäismäärä pieniä kirjaimia"
@@ -172,16 +198,12 @@ msgstr "Vähimmäismäärä erikoismerkkejä"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
-msgid "Minimum number of strength estimation"
-msgstr "Vahvuusarvion vähimmäisluku"
-
-#. module: password_security
-#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of uppercase characters"
 msgstr "Vähimmäismäärä isoja kirjaimia"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:107
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Must contain the following:"
 msgstr "Täytyy sisältää seuraavat:"
@@ -208,7 +230,15 @@ msgid "Password expires in"
 msgstr "Salasana vanhenee"
 
 #. module: password_security
-#: code:addons/password_security/models/res_users.py:177
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Password must be %d characters or more."
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
@@ -242,12 +272,6 @@ msgid "Require number of uppercase letters"
 msgstr "Vaadittu määrä suuria kirjaimia"
 
 #. module: password_security
-#: model:ir.model.fields,help:password_security.field_res_company__password_estimate
-#: model:ir.model.fields,help:password_security.field_res_config_settings__password_estimate
-msgid "Required score for the strength estimation. Between 0 and 4"
-msgstr "Vaadittu vahvuusarvion arvo. Välillä 0-4"
-
-#. module: password_security
 #: model:ir.model,name:password_security.model_res_users_pass_history
 msgid "Res Users Password History"
 msgstr "Käyttäjien salasanahistoria"
@@ -257,12 +281,6 @@ msgstr "Käyttäjien salasanahistoria"
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
 msgid "Special"
 msgstr "Erikoismerkki"
-
-#. module: password_security
-#: code:addons/password_security/models/res_company.py:62
-#, python-format
-msgid "The estimation must be between 0 and 4."
-msgstr "Vahvuusarvion on oltava väliltä 0 ja 4."
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
@@ -276,6 +294,7 @@ msgid "Use negative number for infinite, or 0 to disable"
 msgstr "Käytä negatiivista arvoa äärettömään, tai 0 poistaaksesi käytöstä"
 
 #. module: password_security
+#: model:ir.model,name:password_security.model_res_users
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__user_id
 msgid "User"
 msgstr "Käyttäjä"
@@ -284,46 +303,6 @@ msgstr "Käyttäjä"
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "User can change password in"
 msgstr "Käyttäjä voi vaihtaa salasanan"
-
-#. module: password_security
-#: model:ir.model,name:password_security.model_res_users
-msgid "Users"
-msgstr "Käyttäjät"
-
-#. module: password_security
-#. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:40
-#, python-format
-msgid "at least %d characters"
-msgstr "vähintään %d merkkiä"
-
-#. module: password_security
-#. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:49
-#, python-format
-msgid "at least %d lower case characters"
-msgstr "vähintään %d pientä kirjainta"
-
-#. module: password_security
-#. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:67
-#, python-format
-msgid "at least %d numeric characters"
-msgstr "vähintään %d numeroa"
-
-#. module: password_security
-#. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:76
-#, python-format
-msgid "at least %d special characters"
-msgstr "vähintään %d erikoismerkkiä"
-
-#. module: password_security
-#. openerp-web
-#: code:addons/password_security/static/src/js/password_gauge.js:58
-#, python-format
-msgid "at least %d upper case characters"
-msgstr "vähintään %d isoa kirjainta"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -339,3 +318,45 @@ msgstr "tuntia."
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "previous passwords."
 msgstr "edellistä salasanaa."
+
+#~ msgid "Characters"
+#~ msgstr "Merkit"
+
+#~ msgid "Estimation"
+#~ msgstr "Arvio"
+
+#~ msgid "Minimum number of characters"
+#~ msgstr "Vähimmäismäärä merkkejä"
+
+#~ msgid "Minimum number of strength estimation"
+#~ msgstr "Vahvuusarvion vähimmäisluku"
+
+#~ msgid "Required score for the strength estimation. Between 0 and 4"
+#~ msgstr "Vaadittu vahvuusarvion arvo. Välillä 0-4"
+
+#, python-format
+#~ msgid "The estimation must be between 0 and 4."
+#~ msgstr "Vahvuusarvion on oltava väliltä 0 ja 4."
+
+#~ msgid "Users"
+#~ msgstr "Käyttäjät"
+
+#, python-format
+#~ msgid "at least %d characters"
+#~ msgstr "vähintään %d merkkiä"
+
+#, python-format
+#~ msgid "at least %d lower case characters"
+#~ msgstr "vähintään %d pientä kirjainta"
+
+#, python-format
+#~ msgid "at least %d numeric characters"
+#~ msgstr "vähintään %d numeroa"
+
+#, python-format
+#~ msgid "at least %d special characters"
+#~ msgstr "vähintään %d erikoismerkkiä"
+
+#, python-format
+#~ msgid "at least %d upper case characters"
+#~ msgstr "vähintään %d isoa kirjainta"
