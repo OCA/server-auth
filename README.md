@@ -34,6 +34,7 @@ addon | version | maintainers | summary
 [auth_signup_verify_email](auth_signup_verify_email/) | 16.0.1.0.0 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 16.0.1.0.0 |  | Makes the user login field case insensitive
 [base_user_show_email](base_user_show_email/) | 16.0.1.0.0 |  | Untangle user login and email
+[password_security](password_security/) | 16.0.1.0.0 |  | Allow admin to set password security requirements.
 [user_log_view](user_log_view/) | 16.0.1.0.0 | [![trojikman](https://github.com/trojikman.png?size=30px)](https://github.com/trojikman) | Allow to see user's actions log
 [users_ldap_groups](users_ldap_groups/) | 16.0.1.0.0 |  | Adds user accounts to groups based on rules defined by the administrator.
 [users_ldap_mail](users_ldap_mail/) | 16.0.1.0.0 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP mapping for user name and e-mail
