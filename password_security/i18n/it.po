@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-23 02:01+0000\n"
 "PO-Revision-Date: 2023-10-13 12:44+0000\n"
-"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Last-Translator: Francesco Foresti <francesco.foresti@ooops404.com>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -156,7 +156,7 @@ msgstr "Ultima modifica il"
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__write_uid
 msgid "Last Updated by"
-msgstr "Ultimo aggiornamento da"
+msgstr "Ultimo aggiornamento di"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__write_date
