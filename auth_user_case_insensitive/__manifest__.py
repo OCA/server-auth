@@ -4,7 +4,7 @@
 {
     "name": "Case Insensitive Logins",
     "summary": "Makes the user login field case insensitive",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "category": "Authentication",
     "website": "https://github.com/OCA/server-auth",
     "author": "LasLabs, Odoo Community Association (OCA)",
