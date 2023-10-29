@@ -342,6 +342,5 @@ msgstr ""
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
-#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_tree
 msgid "arch"
 msgstr ""
