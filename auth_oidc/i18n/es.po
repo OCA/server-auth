@@ -6,63 +6,65 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2023-10-31 20:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: none\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__flow
 msgid "Auth Flow"
-msgstr ""
+msgstr "Flujo de Autenticación"
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret
 msgid "Client Secret"
-msgstr ""
+msgstr "Secreto del Cliente"
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__code_verifier
 msgid "Code Verifier"
-msgstr ""
+msgstr "Verificador del Código"
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
 msgid "JWKS URL"
-msgstr ""
+msgstr "URL JWKS"
 
 #. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__access_token
 msgid "OAuth2"
-msgstr ""
+msgstr "OAuth2"
 
 #. module: auth_oidc
 #: model:ir.model,name:auth_oidc.model_auth_oauth_provider
 msgid "OAuth2 provider"
-msgstr ""
+msgstr "Proveedor OAuth2"
 
 #. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token_code
 msgid "OpenID Connect (authorization code flow)"
-msgstr ""
+msgstr "OpenID Connect (flujo de código de autorización)"
 
 #. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token
 msgid "OpenID Connect (implicit flow, not recommended)"
-msgstr ""
+msgstr "Conexión OpenID (flujo implícito, no recomendado)"
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_endpoint
 msgid "Required for OpenID Connect authorization code flow."
-msgstr ""
+msgstr "Necesario para el flujo de código de autorización de OpenID Connect."
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__jwks_uri
 msgid "Required for OpenID Connect."
-msgstr ""
+msgstr "Requerido para OpenID Connect."
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
@@ -71,44 +73,50 @@ msgid ""
 "  It is important to ensure user_id and email at least are mapped. For "
 "OpenID Connect user_id is the sub key in the standard."
 msgstr ""
+"Algunos proveedores de Oauth no asignan las claves en sus respuestas "
+"exactamente como se requiere.  Es importante asegurarse de que al menos "
+"user_id y correo electrónico están asignados. Para OpenID Connect user_id es "
+"la subclave en el estándar."
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_map
 msgid "Token Map"
-msgstr ""
+msgstr "Mapa de Símbolos"
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_endpoint
 msgid "Token URL"
-msgstr ""
+msgstr "URL del Símbolo"
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__code_verifier
 msgid "Used for PKCE."
-msgstr ""
+msgstr "Utilizado para PKCE."
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__client_secret
 msgid ""
 "Used in OpenID Connect authorization code flow for confidential clients."
 msgstr ""
+"Se utiliza en el flujo de código de autorización de OpenID Connect para "
+"clientes confidenciales."
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__validation_endpoint
 msgid "UserInfo URL"
-msgstr ""
+msgstr "URL de información del usuario"
 
 #. module: auth_oidc
 #: model:ir.model,name:auth_oidc.model_res_users
 msgid "Users"
-msgstr ""
+msgstr "Usuarios"
 
 #. module: auth_oidc
 #: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
 msgid "e.g from:to upn:email sub:user_id"
-msgstr ""
+msgstr "e.g from:to upn:email sub:user_id"
 
 #. module: auth_oidc
 #: model:auth.oauth.provider,body:auth_oidc.local_keycloak
 msgid "keycloak:8080 on localhost"
-msgstr ""
+msgstr "keycloak:8080 en el servidor local"
