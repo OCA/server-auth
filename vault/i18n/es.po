@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: 2023-08-02 11:09+0000\n"
-"Last-Translator: Carlos Roca Zaragoza <carlos.roca@tecnativa.com>\n"
+"PO-Revision-Date: 2023-10-31 20:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%(action)s entry %(name)s by %(user)s"
-msgstr ""
+msgstr "%(action)s entrada %(name)s por %(user)s"
 
 #. module: vault
 #. openerp-web
@@ -76,12 +76,12 @@ msgstr "Todos los registros"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow all users to export vaults accessible to them"
-msgstr ""
+msgstr "Permitir que todos los usuarios exporten bóvedas accesibles para ellos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow all users to import vaults accessible to them"
-msgstr ""
+msgstr "Permitir que todos los usuarios importen bóvedas accesibles para ellos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
@@ -101,12 +101,12 @@ msgstr "Permitir borrar un vault"
 #. module: vault
 #: model:res.groups,name:vault.group_vault_export
 msgid "Allow to export vaults"
-msgstr ""
+msgstr "Permitir exportar bóvedas"
 
 #. module: vault
 #: model:res.groups,name:vault.group_vault_import
 msgid "Allow to import vaults"
-msgstr ""
+msgstr "Permitir importar bóvedas"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_share
@@ -286,7 +286,7 @@ msgstr "Creado por"
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
 msgid "Created by %(name)s via %(ip)s"
-msgstr ""
+msgstr "Creado por %(name)s a través de %(ip)s"
 
 #. module: vault
 #: code:addons/vault/wizards/vault_send_wizard.py:0
@@ -433,7 +433,7 @@ msgstr "Expira en"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_export
 msgid "Export Vaults"
-msgstr ""
+msgstr "Exportar bóvedas"
 
 #. module: vault
 #: code:addons/vault/models/vault.py:0
@@ -580,7 +580,7 @@ msgstr "Importar"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_import
 msgid "Import Vaults"
-msgstr ""
+msgstr "Importar bóvedas"
 
 #. module: vault
 #: code:addons/vault/models/vault.py:0
@@ -1011,7 +1011,7 @@ msgstr "Derechos"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__salt
 msgid "Salt"
-msgstr ""
+msgstr "Sal"
 
 #. module: vault
 #. openerp-web
@@ -1268,7 +1268,7 @@ msgstr "Valor"
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 #, python-format
 msgid "Vault"
-msgstr "Vault"
+msgstr "Bóveda"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__vault_right_ids
@@ -1311,17 +1311,17 @@ msgstr "Etiqueta de vault"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Vaults"
-msgstr ""
+msgstr "Bóvedas"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Verify"
-msgstr ""
+msgstr "Verificar"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__version
 msgid "Version"
-msgstr ""
+msgstr "Versión"
 
 #. module: vault
 #: code:addons/vault/models/vault_log.py:0
@@ -1352,7 +1352,7 @@ msgstr "Escribir"
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
 msgid "Written by %(name)s via %(ip)s"
-msgstr ""
+msgstr "Escrito por %(name)s vía %(ip)s"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
