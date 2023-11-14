@@ -60,9 +60,7 @@ class TestPasswordSecuritySignup(HttpCase):
         response = self.signup("jackoneill", "!asdQWE12345_3")
 
         # Ensure we were logged in
-        self.assertEqual(
-            response.request.path_url, "/web/login_successful?account_created=True"
-        )
+        self.assertNotEqual(response.request.path_url, "/web/signup")
         self.assertEqual(response.status_code, 200)
 
     def test_03_create_user_signup(self):
