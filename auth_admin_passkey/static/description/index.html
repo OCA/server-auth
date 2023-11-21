@@ -369,13 +369,14 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:5747081959f948bc3969ac96543ca8e56a01418bff23687907352ae112298d85
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/16.0/auth_admin_passkey"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_admin_passkey"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
-<p>This module extends the functionality of users module to support loging in
-with an extra system administrator password in other user accounts.</p>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/17.0/auth_admin_passkey"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-auth_admin_passkey"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=17.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p>This module extends the functionality of users module to support loging
+in with an extra system administrator password in other user accounts.</p>
 <ul class="simple">
-<li>System Administrator has now the possibility to login in with any login</li>
-<li>According to the configuration, Odoo will send a mail to user and admin to
-indicate them</li>
+<li>System Administrator has now the possibility to login in with any
+login</li>
+<li>According to the configuration, Odoo will send a mail to user and
+admin to indicate them</li>
 <li>According to the configuration, password can be stored encrypted in
 configuration file</li>
 </ul>
@@ -397,20 +398,20 @@ configuration file</li>
 <p>To enable this feature, once the module installed, you have to add the
 following keys in your <tt class="docutils literal">odoo.cfg</tt> configuration file.</p>
 <ul class="simple">
-<li><tt class="docutils literal">auth_admin_passkey_password</tt>. The password that allows user to logging in
-with any login. If not set, the feature is disabled.</li>
-<li><tt class="docutils literal">auth_admin_passkey_password_sha512_encrypted</tt> (default False), if enabled,
-auth_admin_passkey_password should be the password encrypted with sha512.
-On linux, this can be done using this command:
+<li><tt class="docutils literal">auth_admin_passkey_password</tt>. The password that allows user to
+logging in with any login. If not set, the feature is disabled.</li>
+<li><tt class="docutils literal">auth_admin_passkey_password_sha512_encrypted</tt> (default False), if
+enabled, auth_admin_passkey_password should be the password encrypted
+with sha512. On linux, this can be done using this command:
 <tt class="docutils literal">echo <span class="pre">-n</span> YOUR_PASSWORD_AUTH_ADMIN_PASSKEY | sha512sum</tt></li>
-<li><tt class="docutils literal">auth_admin_passkey_send_to_user</tt> (default True), if enabled, an email
-will be send to the user, if his account has been used by the
+<li><tt class="docutils literal">auth_admin_passkey_send_to_user</tt> (default True), if enabled, an
+email will be send to the user, if his account has been used by the
 System Administrator.</li>
-<li><tt class="docutils literal">auth_admin_passkey_sysadmin_email</tt>. If set, an email will be sent to this
-mail.</li>
-<li><tt class="docutils literal">auth_admin_passkey_sysadmin_lang</tt>. the language (exemple en_US), used for
-the mail sent to the System Administrator. If not set, the language of the
-SUPERUSER_ID user will be used.</li>
+<li><tt class="docutils literal">auth_admin_passkey_sysadmin_email</tt>. If set, an email will be sent
+to this mail.</li>
+<li><tt class="docutils literal">auth_admin_passkey_sysadmin_lang</tt>. the language (exemple en_US),
+used for the mail sent to the System Administrator. If not set, the
+language of the SUPERUSER_ID user will be used.</li>
 </ul>
 <p><strong>typical Dev / Test configuration section</strong></p>
 <p>No keys to add.</p>
@@ -428,7 +429,7 @@ SUPERUSER_ID user will be used.</li>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/server-auth/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_admin_passkey%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_admin_passkey%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -456,7 +457,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/16.0/auth_admin_passkey">OCA/server-auth</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/17.0/auth_admin_passkey">OCA/server-auth</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>
