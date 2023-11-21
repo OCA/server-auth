@@ -56,7 +56,7 @@ class ResUsers(models.Model):
 
     def _check_credentials(self, password, env):
         try:
-            return super(ResUsers, self)._check_credentials(password, env)
+            return super()._check_credentials(password, env)
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
