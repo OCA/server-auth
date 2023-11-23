@@ -2,12 +2,16 @@
 
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo.tests import common
+import logging
+
+from odoo.tests.common import TransactionCase
+
+logger = logging.getLogger()
 
 
-class TestIrConfigParameter(common.TransactionCase):
+class TestIrConfigParameter(TransactionCase):
     def setUp(self):
-        super(TestIrConfigParameter, self).setUp()
+        super().setUp()
         self.db = self.env.cr.dbname
         self.param_obj = self.env["ir.config_parameter"]
         self.data_obj = self.env["ir.model.data"]
@@ -25,24 +29,27 @@ class TestIrConfigParameter(common.TransactionCase):
         self.assertIsInstance(urls, list)
 
 
-class TestIrConfigParameterCaching(common.TransactionCase):
-    def setUp(self):
-        super(TestIrConfigParameterCaching, self).setUp()
-        self.db = self.env.cr.dbname
-        self.param_obj = self.env["ir.config_parameter"]
-        self.get_param_called = False
-        test = self
+class TestIrConfigParameterCaching(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.db = cls.env.cr.dbname
+        cls.param_obj = cls.env["ir.config_parameter"]
+        cls.get_param_called = False
+        test = cls
 
         def get_param(*args, **kwargs):
+            logger.info("hola")
             test.get_param_called = True
             return orig_get_param(*args[1:], **kwargs)
 
-        orig_get_param = self.param_obj.get_param
-        self.param_obj._patch_method("get_param", get_param)
+        orig_get_param = cls.param_obj.get_param
+        cls.param_obj.get_param("get_param", get_param)
+        logger.info("func", dir(cls.param_obj))
 
     def tearDown(self):
-        super(TestIrConfigParameterCaching, self).tearDown()
-        self.param_obj._revert_method("get_param")
+        super().tearDown()
+        self.param_obj.set_param("get_param", "")
 
     def test_auth_timeout_get_parameter_delay_cache(self):
         """It should cache the parameter call."""

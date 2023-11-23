@@ -4,12 +4,11 @@ from odoo.http import request
 
 
 class IrHttp(models.AbstractModel):
-
     _inherit = "ir.http"
 
     @classmethod
     def _authenticate(cls, endpoint):
-        res = super(IrHttp, cls)._authenticate(endpoint=endpoint)
+        res = super()._authenticate(endpoint=endpoint)
         if (
             request
             and request.session
