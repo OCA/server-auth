@@ -10,14 +10,13 @@ logger = logging.getLogger()
 
 
 class TestIrConfigParameter(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.db = self.env.cr.dbname
-        self.param_obj = self.env["ir.config_parameter"]
-        self.data_obj = self.env["ir.model.data"]
-        self.delay = self.env.ref(
-            "auth_session_timeout.inactive_session_time_out_delay"
-        )
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.db = cls.env.cr.dbname
+        cls.param_obj = cls.env["ir.config_parameter"]
+        cls.data_obj = cls.env["ir.model.data"]
+        cls.delay = cls.env.ref("auth_session_timeout.inactive_session_time_out_delay")
 
     def test_check_session_param_delay(self):
         delay = self.param_obj._auth_timeout_get_parameter_delay()
@@ -39,17 +38,11 @@ class TestIrConfigParameterCaching(TransactionCase):
         test = cls
 
         def get_param(*args, **kwargs):
-            logger.info("hola")
             test.get_param_called = True
             return orig_get_param(*args[1:], **kwargs)
 
         orig_get_param = cls.param_obj.get_param
-        cls.param_obj.get_param("get_param", get_param)
-        logger.info("func", dir(cls.param_obj))
-
-    def tearDown(self):
-        super().tearDown()
-        self.param_obj.set_param("get_param", "")
+        cls.patch(type(cls.param_obj), "get_param", get_param)
 
     def test_auth_timeout_get_parameter_delay_cache(self):
         """It should cache the parameter call."""
