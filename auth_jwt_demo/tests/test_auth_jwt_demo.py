@@ -85,6 +85,18 @@ class TestEndToEnd(tests.HttpCase):
         resp = self.url_open("/auth_jwt_demo/whoami-public-or-jwt")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json()["uid"], self.ref("base.public_user"))
+        # try with a token for an non-existing partner, auth works
+        # but we don't get any partner info
+        token = self._get_token(email="not-a-partner@example.com")
+        resp = self.url_open(
+            "/auth_jwt_demo/whoami-public-or-jwt", headers={"Authorization": token}
+        )
+        self.assertEqual(resp.status_code, 200)
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertTrue("name" not in whoami)
+        self.assertTrue("email" not in whoami)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
         # now try with a token
         partner = self.env["res.users"].search([("email", "!=", False)], limit=1)
         token = self._get_token(email=partner.email)
@@ -102,6 +114,22 @@ class TestEndToEnd(tests.HttpCase):
         resp = self.url_open("/auth_jwt_demo_cookie/whoami-public-or-jwt")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json()["uid"], self.ref("base.public_user"))
+        cookie = resp.cookies.get("demo_auth")
+        self.assertFalse(cookie)
+        # try with a token for an non-existing partner, auth works
+        # but we don't get any partner info
+        token = self._get_token(email="not-a-partner@example.com")
+        resp = self.url_open(
+            "/auth_jwt_demo_cookie/whoami-public-or-jwt",
+            headers={"Authorization": token},
+        )
+        resp.raise_for_status()
+        whoami = resp.json()
+        self.assertTrue("name" not in whoami)
+        self.assertTrue("email" not in whoami)
+        self.assertEqual(whoami.get("uid"), self.env.ref("base.user_demo").id)
+        cookie = resp.cookies.get("demo_auth")
+        self.assertTrue(cookie)
         # now try with a token
         partner = self.env["res.users"].search([("email", "!=", False)], limit=1)
         token = self._get_token(email=partner.email)
