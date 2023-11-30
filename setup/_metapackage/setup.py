@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo-addon-auth_api_key_server_env>=16.0dev,<16.1dev',
         'odoo-addon-auth_jwt>=16.0dev,<16.1dev',
         'odoo-addon-auth_jwt_demo>=16.0dev,<16.1dev',
+        'odoo-addon-auth_jwt_server_env>=16.0dev,<16.1dev',
         'odoo-addon-auth_ldaps>=16.0dev,<16.1dev',
         'odoo-addon-auth_oidc>=16.0dev,<16.1dev',
         'odoo-addon-auth_oidc_environment>=16.0dev,<16.1dev',
