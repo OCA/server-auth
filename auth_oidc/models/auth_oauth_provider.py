@@ -11,6 +11,7 @@ from odoo import fields, models, tools
 
 try:
     from jose import jwt
+    from jose.exceptions import JWSError, JWTError
 except ImportError:
     logging.getLogger(__name__).debug("jose library not installed")
 
@@ -47,14 +48,18 @@ class AuthOauthProvider(models.Model):
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
 
     @tools.ormcache("self.jwks_uri", "kid")
-    def _get_key(self, kid):
+    def _get_keys(self, kid):
         r = requests.get(self.jwks_uri)
         r.raise_for_status()
         response = r.json()
-        for key in response["keys"]:
-            if key["kid"] == kid:
-                return key
-        return {}
+        # the keys returned here should follow
+        # JWS Notes on Key Selection
+        # https://datatracker.ietf.org/doc/html/draft-ietf-jose-json-web-signature#appendix-D
+        return [
+            key
+            for key in response["keys"]
+            if kid is None or key.get("kid", None) == kid
+        ]
 
     def _map_token_values(self, res):
         if self.token_map:
@@ -68,15 +73,34 @@ class AuthOauthProvider(models.Model):
         self.ensure_one()
         res = {}
         header = jwt.get_unverified_header(id_token)
-        res.update(
-            jwt.decode(
-                id_token,
-                self._get_key(header.get("kid")),
-                algorithms=["RS256"],
-                audience=self.client_id,
-                access_token=access_token,
-            )
-        )
-
+        res.update(self._decode_id_token(access_token, id_token, header.get("kid")))
         res.update(self._map_token_values(res))
         return res
+
+    def _decode_id_token(self, access_token, id_token, kid):
+        keys = self._get_keys(kid)
+        if len(keys) > 1 and kid is None:
+            # https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.10.1
+            # If there are multiple keys in the referenced JWK Set document, a kid
+            # value MUST be provided in the JOSE Header.
+            raise JWTError(
+                "OpenID Connect requires kid to be set if there is more"
+                " than one key in the JWKS"
+            )
+        error = None
+        # we accept multiple keys with the same kid in case a key gets rotated.
+        for key in keys:
+            try:
+                values = jwt.decode(
+                    id_token,
+                    key,
+                    algorithms=["RS256"],
+                    audience=self.client_id,
+                    access_token=access_token,
+                )
+                return values
+            except (JWTError, JWSError) as e:
+                error = e
+        if error:
+            raise error
+        return {}
