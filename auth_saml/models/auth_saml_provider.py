@@ -301,8 +301,7 @@ class AuthSamlProvider(models.Model):
 
             if not matching_value:
                 raise Exception(
-                    "Matching attribute %s not found in user attrs: %s"
-                    % (self.matching_attribute, attrs)
+                    f"Matching attribute {self.matching_attribute} not found in user attrs: {attrs}"
                 )
 
         if matching_value and isinstance(matching_value, list):
