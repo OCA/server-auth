@@ -196,7 +196,7 @@ class AuthSAMLController(http.Controller):
         """
         saml_response = kw.get("SAMLResponse")
 
-        if kw.get("RelayState") is None:
+        if not kw.get("RelayState"):
             # here we are in front of a client that went through
             # some routes that "lost" its relaystate... this can happen
             # if the client visited his IDP and successfully logged in
