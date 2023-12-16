@@ -46,8 +46,7 @@ class AuthApiKey(models.Model):
         return self._retrieve_api_key(key).user_id.id
 
     def _clear_key_cache(self):
-        self._retrieve_api_key_id.clear_cache(self.env[self._name])
-        self._retrieve_uid_from_api_key.clear_cache(self.env[self._name])
+        self.env.registry.clear_cache()
 
     @api.model_create_multi
     def create(self, vals_list):
