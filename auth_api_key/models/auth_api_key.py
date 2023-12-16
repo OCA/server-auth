@@ -51,13 +51,13 @@ class AuthApiKey(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        records = super(AuthApiKey, self).create(vals_list)
+        records = super().create(vals_list)
         if any(["key" in vals or "user_id" in vals for vals in vals_list]):
             self._clear_key_cache()
         return records
 
     def write(self, vals):
-        super(AuthApiKey, self).write(vals)
+        super().write(vals)
         if "key" in vals or "user_id" in vals:
             self._clear_key_cache()
         return True
