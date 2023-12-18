@@ -6,7 +6,7 @@ from lxml.html import document_fromstring
 try:
     from unittest.mock import patch
 except ImportError:
-    from mock import patch
+    from unittest.mock import patch
 
 from odoo.tests.common import HttpCase
 from odoo.tools.misc import mute_logger
