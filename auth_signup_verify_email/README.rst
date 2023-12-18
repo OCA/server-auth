@@ -30,9 +30,13 @@ Verify email at signup
 
 This module extends the functionality of public sign up to force users
 to provide a valid email address.
+When sign up the module send an invitation email ("reset password" mail template)
+to the new user with a unique access link which allows the new user to create the password.
 
 To achieve this, users are not required to provide a password at sign
-up: they are asked for only at first login attempt.
+up (the module hides the fields "password" and "confirm password"):
+they are asked for only at first login attempt.
+The password would be set for the very first time when user clicks on the unique access link recieved by email.
 
 **Table of contents**
 
