@@ -17,22 +17,22 @@ Verify email at signup
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/16.0/auth_signup_verify_email
+    :target: https://github.com/OCA/server-auth/tree/17.0/auth_signup_verify_email
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_signup_verify_email
+    :target: https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-auth_signup_verify_email
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=16.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-This module extends the functionality of public sign up to force users to
-provide a valid email address.
+This module extends the functionality of public sign up to force users
+to provide a valid email address.
 
-To achieve this, users are not required to provide a password at
-sign up: they are asked for only at first login attempt.
+To achieve this, users are not required to provide a password at sign
+up: they are asked for only at first login attempt.
 
 **Table of contents**
 
@@ -42,26 +42,27 @@ sign up: they are asked for only at first login attempt.
 Installation
 ============
 
-* Install `email_validator <https://pypi.org/project/email-validator/>`_
-  with ``pip install email_validator`` or equivalent.
+-  Install
+   `email_validator <https://pypi.org/project/email-validator/>`__ with
+   ``pip install email_validator`` or equivalent.
 
 Configuration
 =============
 
 To configure this module, you need to:
 
-* `Properly configure your outgoing email server(s)
-  <https://www.odoo.com/forum/help-1/question/how-to-configure-email-gateway-282#answer_290>`_.
-* Go to *Settings > General Settings -> General settings*, search for
-  the *Users* section and enable *Free sign up* in *Customer account*.
+-  `Properly configure your outgoing email
+   server(s) <https://www.odoo.com/forum/help-1/question/how-to-configure-email-gateway-282#answer_290>`__.
+-  Go to *Settings > General Settings -> General settings*, search for
+   the *Users* section and enable *Free sign up* in *Customer account*.
 
 Usage
 =====
 
 To use this module, you need to:
 
-* Log out.
-* `Sign up </web/signup>`_ with a valid email.
+-  Log out.
+-  `Sign up </web/signup>`__ with a valid email.
 
 Bug Tracker
 ===========
@@ -69,7 +70,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_signup_verify_email%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_signup_verify_email%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -77,22 +78,22 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Antiun Ingeniería S.L.
 * Tecnativa
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Rafael Blasco <rafaelbn@antiun.com>
-* Jairo Llopis <yajo.sk8@gmail.com>
-* Simone Orsi <simone.orsi@camptocamp.com>
-* Alexandre Díaz <alexandre.diaz@tecnativa.com>
-* Eugene Molotov <molotov@it-projects.info>
+-  Rafael Blasco <rafaelbn@antiun.com>
+-  Jairo Llopis <yajo.sk8@gmail.com>
+-  Simone Orsi <simone.orsi@camptocamp.com>
+-  Alexandre Díaz <alexandre.diaz@tecnativa.com>
+-  Eugene Molotov <molotov@it-projects.info>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -104,6 +105,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/16.0/auth_signup_verify_email>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/17.0/auth_signup_verify_email>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
