@@ -28,11 +28,11 @@ Verify email at signup
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-This module extends the functionality of public sign up to force users to
-provide a valid email address.
+This module extends the functionality of public sign up to force users
+to provide a valid email address.
 
-To achieve this, users are not required to provide a password at
-sign up: they are asked for only at first login attempt.
+To achieve this, users are not required to provide a password at sign
+up: they are asked for only at first login attempt.
 
 **Table of contents**
 
@@ -42,26 +42,27 @@ sign up: they are asked for only at first login attempt.
 Installation
 ============
 
-* Install `email_validator <https://pypi.org/project/email-validator/>`_
-  with ``pip install email_validator`` or equivalent.
+-  Install
+   `email_validator <https://pypi.org/project/email-validator/>`__ with
+   ``pip install email_validator`` or equivalent.
 
 Configuration
 =============
 
 To configure this module, you need to:
 
-* `Properly configure your outgoing email server(s)
-  <https://www.odoo.com/forum/help-1/question/how-to-configure-email-gateway-282#answer_290>`_.
-* Go to *Settings > General Settings -> General settings*, search for
-  the *Users* section and enable *Free sign up* in *Customer account*.
+-  `Properly configure your outgoing email
+   server(s) <https://www.odoo.com/forum/help-1/question/how-to-configure-email-gateway-282#answer_290>`__.
+-  Go to *Settings > General Settings -> General settings*, search for
+   the *Users* section and enable *Free sign up* in *Customer account*.
 
 Usage
 =====
 
 To use this module, you need to:
 
-* Log out.
-* `Sign up </web/signup>`_ with a valid email.
+-  Log out.
+-  `Sign up </web/signup>`__ with a valid email.
 
 Bug Tracker
 ===========
@@ -77,22 +78,22 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Antiun Ingeniería S.L.
 * Tecnativa
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Rafael Blasco <rafaelbn@antiun.com>
-* Jairo Llopis <yajo.sk8@gmail.com>
-* Simone Orsi <simone.orsi@camptocamp.com>
-* Alexandre Díaz <alexandre.diaz@tecnativa.com>
-* Eugene Molotov <molotov@it-projects.info>
+-  Rafael Blasco <rafaelbn@antiun.com>
+-  Jairo Llopis <yajo.sk8@gmail.com>
+-  Simone Orsi <simone.orsi@camptocamp.com>
+-  Alexandre Díaz <alexandre.diaz@tecnativa.com>
+-  Eugene Molotov <molotov@it-projects.info>
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
