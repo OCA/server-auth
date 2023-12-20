@@ -13,3 +13,4 @@
   - Karl Southern
 - [TAKOBI](https://takobi.online/):
   - Lorenzo Battistini
+- Torvald Baade Bringsvor \<<torvald@flytconsulting.no\>
