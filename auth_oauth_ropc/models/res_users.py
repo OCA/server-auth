@@ -17,7 +17,9 @@ class ResUsers(models.Model):
                 env["interactive"] or not self.env.user._rpc_api_keys_only()
             )
             if passwd_allowed and self.env.user.active:
-                if ropc_provider := self.env["oauth.ropc.provider"].sudo().search([]):
-                    if ropc_provider._authenticate(self.env.user.login, password):
-                        return
+                ropc_provider = self.env["oauth.ropc.provider"].sudo().search([])
+                if ropc_provider and ropc_provider._authenticate(
+                    self.env.user.login, password
+                ):
+                    return
             raise
