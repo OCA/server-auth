@@ -57,6 +57,7 @@ In Odoo, create a new Oauth Provider with the following parameters:
 - Provider name: Keycloak (or any name you like that identify your
   keycloak provider)
 - Auth Flow: OpenID Connect (authorization code flow)
+- Token Map : `preferred_username:user_id`
 - Client ID: the same Client ID you entered when configuring the client
   in Keycloak
 - Client Secret: found in keycloak on the client Credentials tab
