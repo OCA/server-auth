@@ -32,10 +32,21 @@ class ResCompanyLdapOperator(models.AbstractModel):
 
     def query(self, ldap_entry, mapping):
         query_string = Template(mapping.value).safe_substitute(
-            {attr: ldap_entry[1][attr][0].decode() for attr in ldap_entry[1]}
+            {
+                attr: self.safe_ldap_decode(ldap_entry[1][attr][0])
+                for attr in ldap_entry[1]
+            }
         )
 
         results = mapping.ldap_id._query(mapping.ldap_id.read()[0], query_string)
         _logger.debug('Performed LDAP query "%s" results: %s', query_string, results)
 
         return bool(results)
+
+    def safe_ldap_decode(self, attr):
+        import base64
+
+        try:
+            return attr.decode()
+        except UnicodeDecodeError:
+            return base64.b64encode(attr)
