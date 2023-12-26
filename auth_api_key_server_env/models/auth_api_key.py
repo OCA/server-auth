@@ -8,7 +8,6 @@ from odoo import models
 
 
 class AuthApiKey(models.Model):
-
     _name = "auth.api.key"
     _inherit = ["auth.api.key", "server.env.techname.mixin", "server.env.mixin"]
 
@@ -20,7 +19,7 @@ class AuthApiKey(models.Model):
             'api_key_{name}'
         """
         self.ensure_one()
-        return "api_key_{}".format(getattr(self, self._server_env_section_name_field))
+        return f"api_key_{getattr(self, self._server_env_section_name_field)}"
 
     @property
     def _server_env_fields(self):
