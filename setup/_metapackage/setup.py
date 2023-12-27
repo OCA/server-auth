@@ -21,6 +21,7 @@ setuptools.setup(
         'odoo-addon-auth_signup_verify_email>=15.0dev,<15.1dev',
         'odoo-addon-auth_user_case_insensitive>=15.0dev,<15.1dev',
         'odoo-addon-password_security>=15.0dev,<15.1dev',
+        'odoo-addon-user_log_view>=15.0dev,<15.1dev',
         'odoo-addon-users_ldap_groups>=15.0dev,<15.1dev',
         'odoo-addon-vault>=15.0dev,<15.1dev',
         'odoo-addon-vault_share>=15.0dev,<15.1dev',
