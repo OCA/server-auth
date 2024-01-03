@@ -6,13 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2024-01-03 14:33+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: users_ldap_mail
 #: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap__name_attribute
@@ -20,23 +22,25 @@ msgid ""
 "By default 'cn' is used. For ActiveDirectory you might use 'displayName' "
 "instead."
 msgstr ""
+"In modo predefinito viene usato \"cn\". Per ActiveDirectory potrebbe invece "
+"essere utilizzato \"displayName\"."
 
 #. module: users_ldap_mail
 #: model:ir.model,name:users_ldap_mail.model_res_company_ldap
 msgid "Company LDAP configuration"
-msgstr ""
+msgstr "Configurazione LDAP azienda"
 
 #. module: users_ldap_mail
 #: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__mail_attribute
 msgid "E-mail attribute"
-msgstr ""
+msgstr "Attributo email"
 
 #. module: users_ldap_mail
 #: model:ir.model.fields,help:users_ldap_mail.field_res_company_ldap__mail_attribute
 msgid "LDAP attribute to use to retrieve e-mail address."
-msgstr ""
+msgstr "Attributo LDAP da utilizzare per il recupero degli indirizzi e-mail."
 
 #. module: users_ldap_mail
 #: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__name_attribute
 msgid "Name Attribute"
-msgstr ""
+msgstr "Attributo del nome"
