@@ -27,3 +27,13 @@ class IrConfigParameter(models.Model):
         if self.filtered(lambda param: param.key == ALLOW_SAML_UID_AND_PASSWORD):
             self.env["res.users"].allow_saml_and_password_changed()
         return result
+
+    def unlink(self):
+        """Redefined to update users when our parameter is deleted."""
+        param_saml = self.filtered(
+            lambda param: param.key == ALLOW_SAML_UID_AND_PASSWORD
+        )
+        result = super().unlink()
+        if result and param_saml:
+            self.env["res.users"].allow_saml_and_password_changed()
+        return result
