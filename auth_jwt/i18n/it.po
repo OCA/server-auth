@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-12-15 13:34+0000\n"
-"Last-Translator: Riccardo Bellanova <bellanova@webmonks.it>\n"
+"PO-Revision-Date: 2024-01-03 14:33+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
@@ -80,9 +80,8 @@ msgstr "Path cookie"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_secure
-#, fuzzy
 msgid "Cookie Secure"
-msgstr "Cookie Secure"
+msgstr "Cookie secure"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__create_uid
@@ -121,9 +120,8 @@ msgstr "ES512 - ECDSA usando SHA-512"
 
 #. module: auth_jwt
 #: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__partner_id_strategy__email
-#, fuzzy
 msgid "From email claim"
-msgstr "Dalla richiesta email"
+msgstr "Da richiesta e-mail"
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
@@ -152,21 +150,18 @@ msgstr "Instradamento HTTP"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__id
-#, fuzzy
 msgid "ID"
 msgstr "ID"
 
 #. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__issuer
-#, fuzzy
 msgid "Issuer"
-msgstr "Issuer"
+msgstr "Segnalatore"
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
-#, fuzzy
 msgid "JWK URI"
-msgstr "JWK URI"
+msgstr "URI JWK"
 
 #. module: auth_jwt
 #: model:ir.model,name:auth_jwt.model_auth_jwt_validator
@@ -248,7 +243,6 @@ msgstr "PS512 - RSASSA-PSS usando SHA-512 e padding MGF1 con SHA-512"
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
-#, fuzzy
 msgid "Partner"
 msgstr "Partner"
 
@@ -356,6 +350,5 @@ msgstr "I validatori non devono creare una catena chiusa: {}."
 
 #. module: auth_jwt
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
-#, fuzzy
 msgid "arch"
 msgstr "arch"
