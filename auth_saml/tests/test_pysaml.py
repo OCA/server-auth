@@ -198,7 +198,7 @@ class TestPySaml(HttpCase):
         # User should now be able to log in with the token
         self.authenticate(user="test@example.com", password=token)
 
-    def test_disallow_user_password_when_changing_setting(self):
+    def test_disallow_user_password_when_changing_ir_config_parameter(self):
         """Test that disabling users from having both a password and SAML ids remove
         users password."""
         # change the option
@@ -336,3 +336,26 @@ class TestPySaml(HttpCase):
             self.base_url()
             + "/web#action=37&model=ir.module.module&view_type=kanban&menu_id=5",
         )
+
+    def test_disallow_user_password_when_changing_settings(self):
+        """Test that disabling the setting will remove passwords from related users"""
+        # We activate the settings to allow password login
+        self.env["res.config.settings"].create(
+            {
+                "allow_saml_uid_and_internal_password": True,
+            }
+        ).execute()
+
+        # Test the user can login with the password
+        self.authenticate(user="user@example.com", password="NesTNSte9340D720te>/-A")
+
+        self.env["res.config.settings"].create(
+            {
+                "allow_saml_uid_and_internal_password": False,
+            }
+        ).execute()
+
+        with self.assertRaises(AccessDenied):
+            self.authenticate(
+                user="user@example.com", password="NesTNSte9340D720te>/-A"
+            )
