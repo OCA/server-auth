@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-04 17:34+0000\n"
+"PO-Revision-Date: 2024-01-05 10:34+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -50,7 +50,7 @@ msgstr "OAuth2"
 #. module: auth_oidc
 #: model:ir.model,name:auth_oidc.model_auth_oauth_provider
 msgid "OAuth2 provider"
-msgstr "Fornitore OAuth2"
+msgstr "Provider OAuth2"
 
 #. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token_code
@@ -79,7 +79,7 @@ msgid ""
 "  It is important to ensure user_id and email at least are mapped. For "
 "OpenID Connect user_id is the sub key in the standard."
 msgstr ""
-"Alcuni fornitori Oauth non mappano le chiavi nelle loro risposte esattamente "
+"Alcuni Provider Oauth non mappano le chiavi nelle loro risposte esattamente "
 "come richiesto.   È importante assicurare che almeno user_id ed e-mail siano "
 "mappati. Per OpenID Connect user_id è la sotto-chiave nello standard."
 
