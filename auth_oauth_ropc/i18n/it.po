@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-04 17:34+0000\n"
+"PO-Revision-Date: 2024-01-05 10:34+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -79,7 +79,7 @@ msgstr "Nome"
 #. module: auth_oauth_ropc
 #: model:ir.model,name:auth_oauth_ropc.model_oauth_ropc_provider
 msgid "OAuth ROPC Provider"
-msgstr "Fornitore ROPC OAuth"
+msgstr "Provider ROPC OAuth"
 
 #. module: auth_oauth_ropc
 #: model:ir.model.fields,field_description:auth_oauth_ropc.field_oauth_ropc_provider__resource
@@ -101,10 +101,10 @@ msgstr "Utente"
 #: code:addons/auth_oauth_ropc/models/oauth_ropc_provider.py:0
 #, python-format
 msgid "You can define only one active provider"
-msgstr "Si può definire attivo un solo fornitore"
+msgstr "Si può definire attivo un solo provider"
 
 #. module: auth_oauth_ropc
 #: model:ir.actions.act_window,name:auth_oauth_ropc.oauth_ropc_provider_act_window
 #: model:ir.ui.menu,name:auth_oauth_ropc.oauth_ropc_provider_menu
 msgid "oauth ROPC Providers"
-msgstr "Fornitori ROPC OAuth"
+msgstr "Provider ROPC OAuth"
