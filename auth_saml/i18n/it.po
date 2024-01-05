@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-04 17:34+0000\n"
+"PO-Revision-Date: 2024-01-05 10:34+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -78,7 +78,7 @@ msgid ""
 "Provider). You may use the special case \"subject.nameId\" to match against "
 "the nameId in the IDP response."
 msgstr ""
-"Attributo per corrispondere l'utente in Odoo con quello dell'IDP (fornitore "
+"Attributo per corrispondere l'utente in Odoo con quello dell'IDP (provider "
 "di identità). Si può utilizzare l'opzione speciale \"subject.nameId\" per "
 "corrispondere al nameId nella risposta IDP."
 
@@ -126,7 +126,7 @@ msgid ""
 "Configuration for this Identity Provider. Supplied by the provider, in XML "
 "format."
 msgstr ""
-"Configurazine per questo frnitore di identità. Fornito dal fornitore, in "
+"Configurazione per questo provider di identità. Fornito dal provider, in "
 "formato XML."
 
 #. module: auth_saml
@@ -208,17 +208,17 @@ msgstr "Attributo risposta IDP"
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata
 msgid "Identity Provider Metadata"
-msgstr "Metadati fornitore identità"
+msgstr "Metadati provider identità"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Identity Provider Settings"
-msgstr "Impostazioni fornitore identità"
+msgstr "Impostazioni provider identità"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__matching_attribute
 msgid "Identity Provider matching attribute"
-msgstr "Attributo corrsipondenza fornitore identità"
+msgstr "Attributo corrsipondenza provider identità"
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__authn_requests_signed
@@ -245,7 +245,7 @@ msgstr ""
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__want_response_signed
 msgid "Indicates that Authentication Responses to this SP must be signed."
 msgstr ""
-"Indica che le risposte di autenticazine a questo SP devono essere firmate."
+"Indica che le risposte di autenticazione a questo SP devono essere firmate."
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__want_assertions_or_response_signed
@@ -358,7 +358,7 @@ msgstr "Impostazioni Odoo"
 msgid ""
 "Only the provider with the higher priority will be automatically redirected"
 msgstr ""
-"Solo il fornitore con la priorità maggiore verrà inoltrato automaticamente"
+"Solo il provider con la priorità maggiore verrà inoltrato automaticamente"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_baseurl
@@ -368,18 +368,18 @@ msgstr "Ignora URL base"
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__provider_id
 msgid "Provider"
-msgstr "Fornitore"
+msgstr "Provider"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__name
 msgid "Provider Name"
-msgstr "Nome fornitore"
+msgstr "Nome provider"
 
 #. module: auth_saml
 #: model:ir.actions.act_window,name:auth_saml.action_saml_provider
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_provider_view_search
 msgid "Providers"
-msgstr "Fornitori"
+msgstr "Provider"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_users_form
@@ -395,27 +395,27 @@ msgstr "Richiesta straordinaria SAML"
 #: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__saml_provider_id
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "SAML Provider"
-msgstr "Fornitore SAML"
+msgstr "Provider SAML"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__saml_provider_id
 msgid "SAML Provider that issued the token"
-msgstr "Fornitore SAML che ha emesso il token"
+msgstr "Provider SAML che ha emesso il token"
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_res_users_saml__saml_uid
 msgid "SAML Provider user_id"
-msgstr "user_id fornitore SAML"
+msgstr "user_id provider SAML"
 
 #. module: auth_saml
 #: model:ir.ui.menu,name:auth_saml.menu_saml_providers
 msgid "SAML Providers"
-msgstr "Fornitori SAML"
+msgstr "Provider SAML"
 
 #. module: auth_saml
 #: model:ir.model.constraint,message:auth_saml.constraint_res_users_saml_uniq_users_saml_provider_saml_uid
 msgid "SAML UID must be unique per provider"
-msgstr "UID SAML deve essere univoco per fornitore"
+msgstr "UID SAML deve essere univoco per provider"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__saml_uid
@@ -425,7 +425,7 @@ msgstr "ID utente SAML"
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_auth_saml_provider
 msgid "SAML2 Provider"
-msgstr "Fornitore SAML2"
+msgstr "Provider SAML2"
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_auth_saml_attribute_mapping
@@ -494,13 +494,15 @@ msgid ""
 "This database disallows users to have both passwords and SAML IDs. Error for"
 " logins %s"
 msgstr ""
+"Questo database nn consente agli utenti di avere sia password che ID SAML. "
+"Errore per accessi %s"
 
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "Unknown provider"
-msgstr ""
+msgstr "Provider sconosciuto"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
@@ -508,56 +510,58 @@ msgid ""
 "Used to sign requests sent to the IDP. You can use openssl to generate a "
 "certificate and key."
 msgstr ""
+"Usato per firmare le richieste inviate all'IDP. Si può utilizzare OpenSSL "
+"per generare un certificato e una chiave."
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_res_users
 #: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__user_id
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_res_users_saml
 msgid "User to SAML Provider Mapping"
-msgstr ""
+msgstr "Mappatura tra utente e provider SAML"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_assertions_or_response_signed
 msgid "Want Assertions Or Response Signed"
-msgstr ""
+msgstr "Richiede conferma o risposta firmate"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_assertions_signed
 msgid "Want Assertions Signed"
-msgstr ""
+msgstr "Richiede conferme firmate"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_response_signed
 msgid "Want Response Signed"
-msgstr ""
+msgstr "Richiede risposta firmata"
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__sign_metadata
 msgid "Whether metadata should be signed or not"
-msgstr ""
+msgstr "Se i metadata devno essere firmati o meno"
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__sign_authenticate_requests
 msgid "Whether the request should be signed or not"
-msgstr ""
+msgstr "Se la richiesta deve essere firmata o meno"
 
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
 #, python-format
 msgid "You do not have access to this database. Please contact support."
-msgstr ""
+msgstr "Non si ha accesso a questo database. Contattare il supporto."
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Your ACS url will be base_url + /auth_saml/signin"
-msgstr ""
+msgstr "Il suo URL ACS sarà base_url + /auth_saml/signin"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Your provider will give you this XML once configured."
-msgstr ""
+msgstr "Il suo provider fornirà questo XML una volta configurato."
