@@ -116,8 +116,9 @@ class DummyResponse:
 
 
 class FakeIDP(Server):
-    def __init__(self, metadatas=None):
-        settings = CONFIG
+    def __init__(self, metadatas=None, settings=None):
+        if settings is None:
+            settings = CONFIG
         if metadatas:
             settings.update({"metadata": {"inline": metadatas}})
 
@@ -172,3 +173,13 @@ class FakeIDP(Server):
         )
 
         return DummyResponse(**_dict)
+
+
+class UnsignedFakeIDP(FakeIDP):
+    def create_authn_response(
+        self,
+        *args,
+        **kwargs,
+    ):
+        kwargs["sign_assertion"] = False
+        return super().create_authn_response(*args, **kwargs)

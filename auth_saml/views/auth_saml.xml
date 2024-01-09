@@ -76,6 +76,21 @@
                     </div>
                     <group name="idp_settings">
                         <group string="Identity Provider Settings">
+                            <span>
+                                <label for="idp_metadata_url" />
+                                <div>
+                                    <field name="idp_metadata_url" />
+                                    <p
+                                        class="help small"
+                                    >The metadata may be automatically redownloaded from that URL. If that's okay for you and you provider gives you a URL, use this field preferably. Otherwise use the next one </p>
+                                </div>
+                                <button
+                                    type="object"
+                                    string="Refresh"
+                                    name="action_refresh_metadata_from_url"
+                                    invisible="not idp_metadata_url"
+                                />
+                            </span>
                             <label for="idp_metadata" />
                             <div>
                                 <field
