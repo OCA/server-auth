@@ -82,6 +82,10 @@ query parameter ``disable_autoredirect``, as in
 also displayed if there is an error with SAML login, in order to display
 any error message.
 
+If you are using Office365 as identity provider, set up the federation
+metadata document rather than the document itself. This will allow the
+module to refresh the document when needed.
+
 Usage
 =====
 
