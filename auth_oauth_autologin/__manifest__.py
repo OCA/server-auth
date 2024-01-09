@@ -5,7 +5,7 @@
     "name": "Auth Oauth Autologin",
     "summary": """
         Automatically redirect to the OAuth provider for login""",
-    "version": "13.0.1.0.2",
+    "version": "14.0.1.0.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "maintainers": ["sbidoul"],
