@@ -2,15 +2,21 @@
 import base64
 import html
 import os
+import os.path as osp
 import urllib
+from copy import deepcopy
 from unittest.mock import patch
+
+import responses
+from saml2.sigver import SignatureError
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
+from odoo.tools import mute_logger
 
 from odoo.addons.auth_saml.controllers.main import fragment_to_query_string
 
-from .fake_idp import DummyResponse, FakeIDP
+from .fake_idp import CONFIG, DummyResponse, FakeIDP, UnsignedFakeIDP
 
 
 @tagged("saml", "post_install", "-at_install")
@@ -696,3 +702,125 @@ class TestPySaml(HttpCase):
             response.url,
             self.base_url() + "/odoo#menu_id=12",
         )
+
+    @responses.activate
+    def test_download_metadata(self):
+        expected_metadata = self.idp.get_metadata()
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=expected_metadata,
+        )
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = ""
+        self.saml_provider.action_refresh_metadata_from_url()
+        self.assertEqual(self.saml_provider.idp_metadata, expected_metadata)
+
+    @responses.activate
+    def test_download_metadata_no_provider(self):
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = ""
+        self.saml_provider.active = False
+        self.saml_provider.action_refresh_metadata_from_url()
+        self.assertFalse(self.saml_provider.idp_metadata)
+
+    @responses.activate
+    def test_download_metadata_error(self):
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=500,
+            content_type="text/xml",
+        )
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = ""
+        with self.assertRaises(UserError):
+            self.saml_provider.action_refresh_metadata_from_url()
+        self.assertFalse(self.saml_provider.idp_metadata)
+
+    @responses.activate
+    def test_download_metadata_no_update(self):
+        expected_metadata = self.idp.get_metadata()
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=expected_metadata,
+        )
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = expected_metadata
+        self.saml_provider.action_refresh_metadata_from_url()
+        self.assertEqual(self.saml_provider.idp_metadata, expected_metadata)
+
+    @responses.activate
+    def test_login_with_saml_metadata_empty(self):
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = ""
+        expected_metadata = self.idp.get_metadata()
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=expected_metadata,
+        )
+        self.test_login_with_saml()
+        self.assertEqual(self.saml_provider.idp_metadata, expected_metadata)
+
+    @responses.activate
+    def test_login_with_saml_metadata_key_changed(self):
+        settings = deepcopy(CONFIG)
+        settings["key_file"] = osp.join(
+            osp.dirname(__file__), "data", "key_idp_expired.pem"
+        )
+        settings["cert"] = osp.join(
+            osp.dirname(__file__), "data", "key_idp_expired.pem"
+        )
+        expired_idp = FakeIDP(settings=settings)
+        self.saml_provider.idp_metadata = expired_idp.get_metadata()
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        up_to_date_metadata = self.idp.get_metadata()
+        self.assertNotEqual(self.saml_provider.idp_metadata, up_to_date_metadata)
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=up_to_date_metadata,
+        )
+        self.test_login_with_saml()
+
+    @responses.activate
+    def test_login_with_saml_unsigned_response(self):
+        self.add_provider_to_user()
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        unsigned_idp = UnsignedFakeIDP([self.saml_provider._metadata_string()])
+        redirect_url = self.saml_provider._get_auth_request()
+        self.assertIn("http://localhost:8000/sso/redirect?SAMLRequest=", redirect_url)
+
+        response = unsigned_idp.fake_login(redirect_url)
+        self.assertEqual(200, response.status_code)
+        unpacked_response = response._unpack()
+
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=self.saml_provider.idp_metadata,
+        )
+        with (
+            self.assertRaises(SignatureError),
+            mute_logger("saml2.entity"),
+            mute_logger("saml2.client_base"),
+        ):
+            (database, login, token) = (
+                self.env["res.users"]
+                .sudo()
+                .auth_saml(
+                    self.saml_provider.id, unpacked_response.get("SAMLResponse"), None
+                )
+            )
