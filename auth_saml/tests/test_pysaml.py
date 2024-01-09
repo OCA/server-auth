@@ -2,12 +2,16 @@
 import base64
 import html
 import os
+import os.path as osp
+from copy import deepcopy
 from unittest.mock import patch
+
+import responses
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
 
-from .fake_idp import FakeIDP
+from .fake_idp import CONFIG, FakeIDP
 
 
 @tagged("saml", "post_install", "-at_install")
@@ -359,3 +363,56 @@ class TestPySaml(HttpCase):
             self.authenticate(
                 user="user@example.com", password="NesTNSte9340D720te>/-A"
             )
+
+    @responses.activate
+    def test_download_metadata(self):
+        expected_metadata = self.idp.get_metadata()
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=expected_metadata,
+        )
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = ""
+        self.saml_provider.action_refresh_metadata_from_url()
+        self.assertEqual(self.saml_provider.idp_metadata, expected_metadata)
+
+    @responses.activate
+    def test_login_with_saml_metadata_empty(self):
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        self.saml_provider.idp_metadata = ""
+        expected_metadata = self.idp.get_metadata()
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=expected_metadata,
+        )
+        self.test_login_with_saml()
+        self.assertEqual(self.saml_provider.idp_metadata, expected_metadata)
+
+    @responses.activate
+    def test_login_with_saml_metadata_key_changed(self):
+        settings = deepcopy(CONFIG)
+        settings["key_file"] = osp.join(
+            osp.dirname(__file__), "data", "key_idp_expired.pem"
+        )
+        settings["cert"] = osp.join(
+            osp.dirname(__file__), "data", "key_idp_expired.pem"
+        )
+        expired_idp = FakeIDP(settings=settings)
+        self.saml_provider.idp_metadata = expired_idp.get_metadata()
+        self.saml_provider.idp_metadata_url = "http://localhost:8000/metadata"
+        up_to_date_metadata = self.idp.get_metadata()
+        self.assertNotEqual(self.saml_provider.idp_metadata, up_to_date_metadata)
+        responses.add(
+            responses.GET,
+            "http://localhost:8000/metadata",
+            status=200,
+            content_type="text/xml",
+            body=up_to_date_metadata,
+        )
+        self.test_login_with_saml()
