@@ -15,3 +15,7 @@ with the highest priority. It is still possible to access the login without redi
 by using the query parameter ``disable_autoredirect``, as in
 ``https://example.com/web/login?disable_autoredirect=`` The login is also displayed if
 there is an error with SAML login, in order to display any error message.
+
+If you are using Office365 as identity provider, set up the federation metadata document
+rather than the document itself. This will allow the module to refresh the document when
+needed. 
