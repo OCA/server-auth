@@ -1,12 +1,11 @@
 /** @odoo-module alias=vault **/
-// © 2021-2022 Florian Kantelberg - initOS GmbH
+// © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-// web.dom_ready
-import * as utils from "vault.utils";
 import {_t} from "web.core";
 import ajax from "web.ajax";
 import {session} from "@web/session";
+import utils from "vault.utils";
 
 // Database name on the browser
 const Database = "vault";
@@ -48,7 +47,7 @@ class Vault {
      * @override
      */
     constructor() {
-        var self = this;
+        const self = this;
 
         function waitAndCheck() {
             if (!utils.supported()) return null;
@@ -93,6 +92,8 @@ class Vault {
      */
     async _check_key_migration(password = null) {
         if (!this.version) await this._export_to_database(password);
+        if (this.iterations < utils.Derive.iterations)
+            await this._export_to_database(password);
     }
 
     /**
@@ -131,9 +132,12 @@ class Vault {
      * @private
      */
     async _ensure_keys() {
+        // If the object store has the keys it's done
+        if (this.uuid && !this.time) await this._import_from_store();
+
         // Check if the keys expired
         const now = new Date();
-        if (now - this.time <= Expiration) return;
+        if (!this.time || now - this.time <= Expiration) return;
 
         // Keys expired means that we have to get them again
         this.keys = this.time = null;
@@ -290,7 +294,7 @@ class Vault {
     async _export_to_database(password = null) {
         // Generate salt for the user key
         this.salt = utils.generate_bytes(utils.SaltLength).buffer;
-        this.iterations = 4000;
+        this.iterations = utils.Derive.iterations;
         this.version = 1;
 
         // Wrap the private key with the master key of the user

@@ -1,5 +1,5 @@
-/** @odoo-modules alias=vault.inbox **/
-// © 2021-2022 Florian Kantelberg - initOS GmbH
+/** @odoo-module alias=vault.inbox **/
+// © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import utils from "vault.utils";
@@ -72,10 +72,23 @@ document.getElementById("secret_file").onchange = async function () {
     if (!this.files.length) return;
 
     const file = this.files[0];
-    const value = await file.text();
-    if (!value) return;
+    const reader = new FileReader();
+    let content = null;
 
-    const required = await encrypt_and_store(value, "encrypted_file");
+    const promise = new Promise((resolve) => {
+        reader.onload = () => {
+            if (reader.result.indexOf(",") >= 0) content = reader.result.split(",")[1];
+            resolve();
+        };
+    });
+
+    reader.readAsDataURL(file);
+
+    await promise;
+
+    if (!content) return;
+
+    const required = await encrypt_and_store(content, "encrypted_file");
     toggle_required(data.secret, !required);
     toggle_required(data.secret_file, required);
     data.filename.value = file.name;

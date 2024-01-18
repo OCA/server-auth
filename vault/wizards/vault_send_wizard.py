@@ -4,6 +4,7 @@
 import logging
 
 from odoo import _, fields, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ class VaultSendWizard(models.TransientModel):
     iv = fields.Char(required=True)
     key_user = fields.Char(required=True)
     key = fields.Char(required=True)
-    secret = fields.Char(required=True)
+    secret = fields.Char()
     secret_file = fields.Char()
     filename = fields.Char()
 
@@ -36,6 +37,9 @@ class VaultSendWizard(models.TransientModel):
     ]
 
     def action_send(self):
+        if not self.secret and not self.secret_file:
+            raise ValidationError(_("Neither a secret nor file was given"))
+
         self.ensure_one()
         self.env["vault.inbox"].sudo().create(
             {

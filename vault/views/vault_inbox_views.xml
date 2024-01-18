@@ -13,7 +13,7 @@
     <record id="view_vault_inbox_form" model="ir.ui.view">
         <field name="model">vault.inbox</field>
         <field name="arch" type="xml">
-            <form>
+            <form create="false">
                 <sheet>
                     <field name="user_id" invisible="1" />
                     <field name="iv" invisible="1" />
@@ -26,14 +26,14 @@
                         <field name="expiration" />
                         <field
                             name="secret"
-                            widget="vault_inbox"
+                            widget="vault_inbox_field"
                             attrs="{'invisible': [('secret', '=', False)]}"
                         />
                         <field
                             name="secret_file"
                             filename="filename"
                             widget="vault_inbox_file"
-                            attrs="{'invisible': [('secret', '=', False)]}"
+                            attrs="{'invisible': [('secret_file', '=', False)]}"
                         />
                     </group>
 

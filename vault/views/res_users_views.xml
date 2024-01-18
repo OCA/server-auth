@@ -37,7 +37,7 @@
                 </sheet>
                 <footer>
                     <button
-                        name="action_generate_key"
+                        name="vault_generate_key"
                         string="New private key"
                         class="btn-primary"
                     />

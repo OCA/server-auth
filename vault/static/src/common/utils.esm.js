@@ -1,5 +1,5 @@
 /** @odoo-module alias=vault.utils **/
-// © 2021-2022 Florian Kantelberg - initOS GmbH
+// © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import {_t, qweb} from "web.core";
@@ -8,22 +8,24 @@ import Dialog from "web.Dialog";
 const CryptoAPI = window.crypto.subtle;
 
 // Some basic constants used for the entire vaults
-const AsymmetricName = "RSA-OAEP";
 const Hash = "SHA-512";
-const SymmetricName = "AES-GCM";
 
 const HashLength = 10;
 const IVLength = 12;
 const SaltLength = 32;
 
 const Asymmetric = {
-    name: AsymmetricName,
+    name: "RSA-OAEP",
     modulusLength: 4096,
     publicExponent: new Uint8Array([1, 0, 1]),
     hash: Hash,
 };
+const Derive = {
+    name: "PBKDF2",
+    iterations: 600001,
+};
 const Symmetric = {
-    name: SymmetricName,
+    name: "AES-GCM",
     length: 256,
 };
 
@@ -313,14 +315,14 @@ async function derive_key(data, salt, iterations) {
     const material = await CryptoAPI.importKey(
         "raw",
         enc.encode(data),
-        "PBKDF2",
+        Derive.name,
         false,
         ["deriveBits", "deriveKey"]
     );
 
     return await CryptoAPI.deriveKey(
         {
-            name: "PBKDF2",
+            name: Derive.name,
             salt: salt,
             iterations: iterations,
             hash: Hash,
@@ -344,7 +346,7 @@ async function asym_encrypt(public_key, data) {
 
     const enc = new TextEncoder();
     return toBase64(
-        await CryptoAPI.encrypt({name: AsymmetricName}, public_key, enc.encode(data))
+        await CryptoAPI.encrypt({name: Asymmetric.name}, public_key, enc.encode(data))
     );
 }
 
@@ -361,7 +363,7 @@ async function asym_decrypt(private_key, crypted) {
     const dec = new TextDecoder();
     return dec.decode(
         await CryptoAPI.decrypt(
-            {name: AsymmetricName},
+            {name: Asymmetric.name},
             private_key,
             fromBase64(crypted)
         )
@@ -383,7 +385,7 @@ async function sym_encrypt(key, data, iv) {
     const enc = new TextEncoder();
     return toBase64(
         await CryptoAPI.encrypt(
-            {name: SymmetricName, iv: fromBase64(iv), tagLength: 128},
+            {name: Symmetric.name, iv: fromBase64(iv), tagLength: 128},
             key,
             enc.encode(hash.slice(0, HashLength) + data)
         )
@@ -405,7 +407,7 @@ async function sym_decrypt(key, crypted, iv) {
         const dec = new TextDecoder();
         const message = dec.decode(
             await CryptoAPI.decrypt(
-                {name: SymmetricName, iv: fromBase64(iv), tagLength: 128},
+                {name: Symmetric.name, iv: fromBase64(iv), tagLength: 128},
                 key,
                 fromBase64(crypted)
             )
@@ -451,7 +453,7 @@ async function load_private_key(private_key, key, iv) {
         "pkcs8",
         fromBase64(private_key),
         key,
-        {name: SymmetricName, iv: fromBase64(iv), tagLength: 128},
+        {name: Symmetric.name, iv: fromBase64(iv), tagLength: 128},
         Asymmetric,
         true,
         ["unwrapKey", "decrypt"]
@@ -479,7 +481,7 @@ async function export_public_key(public_key) {
 async function export_private_key(private_key, key, iv) {
     return toBase64(
         await CryptoAPI.wrapKey("pkcs8", private_key, key, {
-            name: SymmetricName,
+            name: Symmetric.name,
             iv: iv,
             tagLength: 128,
         })
@@ -531,13 +533,12 @@ function capitalize(s) {
 export default {
     // Constants
     Asymmetric: Asymmetric,
-    AsymmetricName: AsymmetricName,
+    Derive: Derive,
     Hash: Hash,
     HashLength: HashLength,
     IVLength: IVLength,
     SaltLength: SaltLength,
     Symmetric: Symmetric,
-    SymmetricName: SymmetricName,
 
     // Crypto utility functions
     askpass: askpass,
