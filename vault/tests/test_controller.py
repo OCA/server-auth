@@ -1,6 +1,7 @@
 # © 2021 Florian Kantelberg - initOS GmbH
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
 import logging
 from unittest.mock import MagicMock
 
@@ -15,19 +16,20 @@ _logger = logging.getLogger(__name__)
 
 
 class TestController(TransactionCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.controller = main.Controller()
+        cls.controller = main.Controller()
 
-        self.user = self.env["res.users"].create(
+        cls.user = cls.env["res.users"].create(
             {"login": "test", "email": "test@test", "name": "test"}
         )
-        self.user.inbox_token = "42"
-        self.user.keys.current = False
-        self.key = self.env["res.users.key"].create(
+        cls.user.inbox_token = "42"
+        cls.user.keys.current = False
+        cls.key = cls.env["res.users.key"].create(
             {
-                "user_id": self.user.id,
+                "user_id": cls.user.id,
                 "public": "a public key",
                 "salt": "42",
                 "iv": "2424",
@@ -36,9 +38,9 @@ class TestController(TransactionCase):
                 "current": True,
             }
         )
-        self.inbox = self.env["vault.inbox"].create(
+        cls.inbox = cls.env["vault.inbox"].create(
             {
-                "user_id": self.user.id,
+                "user_id": cls.user.id,
                 "name": "Inbox",
                 "key": "4",
                 "iv": "1",
@@ -52,35 +54,38 @@ class TestController(TransactionCase):
     def test_vault_inbox(self):
         def return_context(template, context):
             self.assertEqual(template, "vault.inbox")
-            return context
+            return json.dumps(context)
+
+        def load(response):
+            return json.loads(response.data)
 
         with MockRequest(self.env) as request_mock:
             request_mock.render = return_context
-            response = self.controller.vault_inbox("")
+            response = load(self.controller.vault_inbox(""))
             self.assertIn("error", response)
 
-            response = self.controller.vault_inbox(self.user.inbox_token)
+            response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertNotIn("error", response)
             self.assertEqual(response["public"], self.user.active_key.public)
 
             # Try to eliminate each error step by step
             request_mock.httprequest.method = "POST"
             request_mock.params = {}
-            response = self.controller.vault_inbox(self.user.inbox_token)
+            response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertIn("error", response)
 
             request_mock.params["name"] = "test"
-            response = self.controller.vault_inbox(self.user.inbox_token)
+            response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertIn("error", response)
 
             request_mock.params.update(
                 {"encrypted": "secret", "encrypted_file": "file"}
             )
-            response = self.controller.vault_inbox(self.user.inbox_token)
+            response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertIn("error", response)
 
             request_mock.params["filename"] = "filename"
-            response = self.controller.vault_inbox(self.user.inbox_token)
+            response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertIn("error", response)
 
             self.assertEqual(self.inbox.secret, "old secret")
@@ -88,14 +93,14 @@ class TestController(TransactionCase):
 
             # Store something successfully
             request_mock.params.update({"iv": "iv", "key": "key"})
-            response = self.controller.vault_inbox(self.inbox.token)
+            response = load(self.controller.vault_inbox(self.inbox.token))
             self.assertNotIn("error", response)
             self.assertEqual(self.inbox.secret, "secret")
             self.assertEqual(self.inbox.secret_file, b"file")
 
             # Test a duplicate inbox
             self.inbox.copy().token = self.inbox.token
-            response = self.controller.vault_inbox(self.inbox.token)
+            response = load(self.controller.vault_inbox(self.inbox.token))
             self.assertIn("error", response)
 
             def raise_error(*args, **kwargs):
@@ -105,7 +110,7 @@ class TestController(TransactionCase):
             try:
                 request_mock.httprequest.remote_addr = "127.0.0.1"
                 self.env["vault.inbox"]._patch_method("store_in_inbox", raise_error)
-                response = self.controller.vault_inbox(self.user.inbox_token)
+                response = load(self.controller.vault_inbox(self.user.inbox_token))
             finally:
                 self.env["vault.inbox"]._revert_method("store_in_inbox")
 
