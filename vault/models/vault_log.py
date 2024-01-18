@@ -38,9 +38,9 @@ class VaultLog(models.Model):
             ("error", _("Error")),
         ]
 
-    @api.model
-    def create(self, values):
-        res = super().create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
         if not self.env.context.get("skip_log", False):
             _logger.info("Vault log: %s", res.message)
         return res

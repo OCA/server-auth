@@ -24,20 +24,27 @@ class ExportWizard(models.TransientModel):
     include_childs = fields.Boolean(default=True)
 
     @api.onchange("vault_id", "entry_id")
-    def _change_content(self):
+    def _onchange_content(self):
         for rec in self.with_context(skip_log=True):
-            if rec.entry_id:
-                entries = rec.entry_id
-            else:
-                entries = rec.vault_id.entry_ids.filtered_domain(
-                    [("parent_id", "=", False)]
-                )
-
-            data = [rec._export_entry(x) for x in entries]
-            rec.content = json.dumps(data)
+            rec.content = self._export_content(
+                rec.vault_id,
+                rec.entry_id,
+                rec.include_childs,
+            )
 
     def _default_name(self):
         return datetime.now().strftime("database-%Y%m%d-%H%M.json")
+
+    def _export_content(self, vault=None, entry=None, include_childs=False):
+        if entry:
+            entries = entry
+        elif vault:
+            entries = vault.entry_ids.filtered_domain([("parent_id", "=", False)])
+        else:
+            return json.dumps([])
+
+        data = [self._export_entry(x, include_childs) for x in entries]
+        return json.dumps(data)
 
     @api.model
     def _export_field(self, rec):
@@ -46,9 +53,10 @@ class ExportWizard(models.TransientModel):
 
         return {f: ensure_string(rec[f]) for f in ["name", "iv", "value"]}
 
-    def _export_entry(self, entry):
-        if self.include_childs:
-            childs = [self._export_entry(x) for x in entry.child_ids]
+    @api.model
+    def _export_entry(self, entry, include_childs=False):
+        if include_childs:
+            childs = [self._export_entry(x, include_childs) for x in entry.child_ids]
         else:
             childs = []
 

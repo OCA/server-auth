@@ -4,6 +4,7 @@
 import logging
 
 from odoo import _, http
+from odoo.exceptions import AccessDenied
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
@@ -136,6 +137,9 @@ class Controller(http.Controller):
         vault = request.env["vault"].with_context(vault_skip_log=True)
         for changes in data:
             record = vault.env[changes["model"]].browse(changes["id"])
+            if not record.vault_id.allowed_write:
+                raise AccessDenied()
+
             vault |= record.vault_id
             if record._name in ("vault.field", "vault.file"):
                 record.write({k: v for k, v in changes.items() if k in ["iv", "value"]})

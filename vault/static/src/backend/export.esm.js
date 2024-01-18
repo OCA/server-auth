@@ -1,8 +1,8 @@
 /** @odoo-module alias=vault.export **/
-// © 2021-2022 Florian Kantelberg - initOS GmbH
+// © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {_t} from "web.core";
+import {_lt} from "@web/core/l10n/translation";
 import utils from "vault.utils";
 
 // This class handles the export to different formats by using a standardize
@@ -86,7 +86,7 @@ export default class VaultExporter {
     async _export_json(master_key, data) {
         // Get the password for the exported file from the user
         const askpass = await utils.askpass(
-            _t("Please enter the password for the database")
+            _lt("Please enter the password for the database")
         );
         let password = askpass.password || "";
         if (askpass.keyfile)
@@ -94,7 +94,7 @@ export default class VaultExporter {
 
         const iv = utils.generate_iv_base64();
         const salt = utils.generate_bytes(utils.SaltLength).buffer;
-        const iterations = 4000;
+        const iterations = utils.Derive.iterations;
         const key = await utils.derive_key(password, salt, iterations);
 
         // Unwrap the master key and decrypt the entries

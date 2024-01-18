@@ -133,7 +133,7 @@ class TestWidgets(TransactionCase):
         wiz = self.env["vault.export.wizard"].create({"vault_id": self.vault.id})
 
         # Export without entry should export entire vault
-        wiz._change_content()
+        wiz._onchange_content()
         entries = json.loads(wiz.content)
         self.assertEqual({e["uuid"] for e in entries}, {second.uuid, self.entry.uuid})
         self.assertEqual(len(entries), 2)
@@ -141,7 +141,7 @@ class TestWidgets(TransactionCase):
         wiz.entry_id = self.entry
 
         # Export the entire tree
-        wiz._change_content()
+        wiz._onchange_content()
         entries = json.loads(wiz.content)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]["uuid"], self.entry.uuid)
@@ -149,7 +149,7 @@ class TestWidgets(TransactionCase):
 
         # Skip exporting childs
         wiz.include_childs = False
-        wiz._change_content()
+        wiz._onchange_content()
         entries = json.loads(wiz.content)
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]["uuid"], self.entry.uuid)
