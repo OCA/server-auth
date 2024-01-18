@@ -140,28 +140,27 @@ class VaultEntry(models.Model):
         return ["|", ("expire_date", ">=", datetime.now()), ("expire_date", "=", False)]
 
     def log_change(self, action):
-        self.ensure_one()
         if self.env.context.get("vault_skip_log"):
             return
 
-        self.log_info(
-            _("%(action)s entry %(name)s by %(user)s")
-            % {
-                "action": action,
-                "name": self.complete_name,
-                "user": self.env.user.display_name,
-            }
-        )
+        for rec in self:
+            rec.log_info(
+                _("%(action)s entry %(name)s by %(user)s")
+                % {
+                    "action": action,
+                    "name": rec.complete_name,
+                    "user": rec.env.user.display_name,
+                }
+            )
 
-    @api.model_create_single
-    def create(self, values):
-        res = super().create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
         res.log_change("Created")
         return res
 
     def unlink(self):
-        for rec in self:
-            rec.log_change("Deleted")
+        self.log_change("Deleted")
 
         return super().unlink()
 

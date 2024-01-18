@@ -88,7 +88,7 @@
                                     <field name="name" />
                                     <field
                                         name="value"
-                                        widget="vault"
+                                        widget="vault_field"
                                         type="field_type"
                                     />
                                     <field name="write_date" />

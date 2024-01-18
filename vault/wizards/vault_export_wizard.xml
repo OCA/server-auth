@@ -13,7 +13,7 @@
                     <group>
                         <field
                             name="content"
-                            widget="vault_export"
+                            widget="vault_export_file"
                             filename="name"
                             readonly="1"
                         />

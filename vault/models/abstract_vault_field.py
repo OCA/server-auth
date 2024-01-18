@@ -33,29 +33,25 @@ class AbstractVaultField(models.AbstractModel):
             rec.master_key = rec.vault_id.master_key
 
     def log_change(self, action):
-        self.ensure_one()
         if self.env.context.get("vault_skip_log"):
             return
 
-        self.entry_id.log_info(
-            f"{action} value {self.name} of {self.entry_id.complete_name} "
-            f"by {self.env.user.display_name}"
-        )
+        for rec in self:
+            rec.entry_id.log_info(
+                f"{action} value {rec.name} of {rec.entry_id.complete_name} "
+                f"by {self.env.user.display_name}"
+            )
 
-    @api.model_create_single
-    def create(self, values):
-        res = super().create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
         res.log_change("Created")
         return res
 
     def unlink(self):
-        for rec in self:
-            rec.log_change("Deleted")
-
+        self.log_change("Deleted")
         return super().unlink()
 
     def write(self, values):
-        for rec in self:
-            rec.log_change("Changed")
-
+        self.log_change("Changed")
         return super().write(values)

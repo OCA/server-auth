@@ -69,25 +69,25 @@ class VaultRight(models.Model):
             rec.public_key = rec.user_id.active_key.public
 
     def log_access(self):
-        self.ensure_one()
-        rights = ", ".join(
-            sorted(
-                ["read"]
-                + [
-                    right
-                    for right in ["create", "write", "share", "delete"]
-                    if getattr(self, f"perm_{right}", False)
-                ]
+        for rec in self:
+            rights = ", ".join(
+                sorted(
+                    ["read"]
+                    + [
+                        right
+                        for right in ["create", "write", "share", "delete"]
+                        if getattr(rec, f"perm_{right}", False)
+                    ]
+                )
             )
-        )
 
-        self.vault_id.log_info(
-            f"Grant access to user {self.user_id.display_name}: {rights}"
-        )
+            rec.vault_id.log_info(
+                f"Grant access to user {rec.user_id.display_name}: {rights}"
+            )
 
-    @api.model
-    def create(self, values):
-        res = super().create(values)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
         if not res.allowed_share and not res.env.su:
             self.raise_access_error()
 
@@ -98,8 +98,7 @@ class VaultRight(models.Model):
         res = super().write(values)
         perms = ["perm_write", "perm_delete", "perm_share", "perm_create"]
         if any(x in values for x in perms):
-            for rec in self:
-                rec.log_access()
+            self.log_access()
 
         return res
 
