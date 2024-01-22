@@ -369,30 +369,26 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:a154418165dd6b27836d16898940982533193930d361069ee0087ed1b09d544b
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/16.0/base_user_show_email"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-base_user_show_email"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
-<p>In recent Odoo versions, the login field is tightly linked to the email field
-(the field is displayed with an “Email” label, and it will populate the email of the user if it contains an “&#64;” character).</p>
-<p>Yet for the users who uses a distinct login and email, this is confusing.</p>
-<p>The goal of this module is to untangle (a bit) these two fields. Here are the changes:</p>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/17.0/base_user_show_email"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-base_user_show_email"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=17.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p>In recent Odoo versions, the login field is tightly linked to the email
+field (the field is displayed with an “Email” label, and it will
+populate the email of the user if it contains an “&#64;” character).</p>
+<p>Yet for the users who uses a distinct login and email, this is
+confusing.</p>
+<p>The goal of this module is to untangle (a bit) these two fields. Here
+are the changes:</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>In the <cite>res.users</cite> form view:</dt>
-<dd><ul class="first last">
-<li>Display a “Login” label instead of “Email” on the <cite>login</cite> field</li>
-<li>Show the currently invisible <cite>email</cite> field and its label</li>
+<li>In the res.users form view:<ul>
+<li>Display a “Login” label instead of “Email” on the login field</li>
+<li>Show the currently invisible email field and its label</li>
 </ul>
-</dd>
-</dl>
 </li>
-<li><dl class="first docutils">
-<dt>In the <cite>res.users</cite> tree view:</dt>
-<dd><ul class="first last">
-<li>Display the <cite>email</cite> field next to the <cite>login</cite> field</li>
+<li>In the res.users tree view:<ul>
+<li>Display the email field next to the login field</li>
 </ul>
-</dd>
-</dl>
 </li>
-<li>Change the login layout to prompt for a “Login” instead of an “Email” (compatible with the web_enterprise layout)</li>
+<li>Change the login layout to prompt for a “Login” instead of an “Email”
+(compatible with the web_enterprise layout)</li>
 </ul>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
@@ -411,7 +407,7 @@ ul.auto-toc {
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/server-auth/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20base_user_show_email%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20base_user_show_email%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -435,7 +431,7 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/16.0/base_user_show_email">OCA/server-auth</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/17.0/base_user_show_email">OCA/server-auth</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>
