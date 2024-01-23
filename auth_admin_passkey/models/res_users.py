@@ -3,6 +3,7 @@
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 import logging
+import os
 from datetime import datetime
 
 from odoo import SUPERUSER_ID, _, api, exceptions, models
@@ -22,12 +23,24 @@ class ResUsers(models.Model):
 
         admin_user = self.with_user(SUPERUSER_ID).browse(SUPERUSER_ID)
 
-        send_to_user = config.get("auth_admin_passkey_send_to_user", True)
-        sysadmin_email = config.get("auth_admin_passkey_sysadmin_email", False)
+        send_to_user = (
+            config.get("auth_admin_passkey_send_to_user")
+            or os.environ.get("AUTH_ADMIN_PASSKEY_SEND_TO_USER")
+            or True
+        )
+        sysadmin_email = (
+            config.get("auth_admin_passkey_sysadmin_email")
+            or os.environ.get("AUTH_ADMIN_PASSKEY_SYSADMIN_EMAIL")
+            or False
+        )
 
         mails = []
         if sysadmin_email:
-            lang = config.get("auth_admin_passkey_sysadmin_lang", admin_user.lang)
+            lang = (
+                config.get("auth_admin_passkey_sysadmin_lang")
+                or os.environ.get("AUTH_ADMIN_PASSKEY_SYSADMIN_LANG")
+                or admin_user.lang
+            )
             mails.append({"email": sysadmin_email, "lang": lang})
         if send_to_user and login_user.email:
             mails.append({"email": login_user.email, "lang": login_user.lang})
@@ -63,7 +76,11 @@ class ResUsers(models.Model):
             if not users:
                 raise
 
-            file_password = config.get("auth_admin_passkey_password", False)
+            file_password = (
+                config.get("auth_admin_passkey_password")
+                or os.environ.get("AUTH_ADMIN_PASSKEY_PASSWORD")
+                or False
+            )
             if password and file_password == password:
                 self._send_email_passkey(users[0])
             else:
