@@ -17,38 +17,45 @@
 # 02110-1301 USA
 
 import json
+
 import werkzeug.utils
 
 from odoo import http
-from odoo.addons.web.controllers.main import Home
-from odoo.http import request
 from odoo.exceptions import AccessDenied
+from odoo.http import request
+
+from odoo.addons.web.controllers.main import Home
+
 from ..models.http import U2FAuthenticationError
 
 
 class AuthU2FController(Home):
-    @http.route('/web/u2f/login', type='http', auth='none', sitemap=False)
+    @http.route("/web/u2f/login", type="http", auth="none", sitemap=False)
     def u2f_login(self, u2f_token_response=None, redirect=None, **kw):
-        user = request.env['res.users'].browse(request.session.uid)
+        user = request.env["res.users"].browse(request.session.uid)
         user = user.sudo(request.session.uid)
 
         if not user or not user._u2f_get_device():
             raise AccessDenied()
 
-        if request.httprequest.method == 'POST':
+        if request.httprequest.method == "POST":
             request.session.u2f_token_response = u2f_token_response
-            return http.redirect_with_hash(self._login_redirect(
-                user.id, redirect=redirect))
+            return http.redirect_with_hash(
+                self._login_redirect(user.id, redirect=redirect)
+            )
         else:
             login_challenge = user._u2f_get_login_challenge()
             if not login_challenge:
                 raise AccessDenied()
 
             request.session.u2f_last_challenge = login_challenge.json
-            return request.render('auth_u2f.login', {
-                'login_data': json.dumps(login_challenge.data_for_client),
-                'redirect': redirect,
-            })
+            return request.render(
+                "auth_u2f.login",
+                {
+                    "login_data": json.dumps(login_challenge.data_for_client),
+                    "redirect": redirect,
+                },
+            )
 
 
 class U2FLogin(Home):
@@ -58,8 +65,8 @@ class U2FLogin(Home):
         response = super(U2FLogin, self).web_client(s_action=s_action, **kw)
 
         try:
-            request.env['ir.http']._authenticate()
+            request.env["ir.http"]._authenticate()
         except U2FAuthenticationError:
-            return werkzeug.utils.redirect('/web/u2f/login', 303)
+            return werkzeug.utils.redirect("/web/u2f/login", 303)
 
         return response

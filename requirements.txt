@@ -5,4 +5,5 @@ lxml
 pysaml2
 python-jose
 python-ldap
+u2flib_server
 zxcvbn

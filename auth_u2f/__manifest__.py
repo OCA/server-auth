@@ -17,24 +17,22 @@
 # 02110-1301 USA
 
 {
-    'name': '2nd factor authentication via U2F',
-    'version': '11.0.1.0.0',
-    'author': "Joren Van Onder, "
-              "initOS GmbH, "
-              "Odoo Community Association (OCA)",
+    "name": "2nd factor authentication via U2F",
+    "version": "11.0.1.0.0",
+    "author": "Joren Van Onder, " "initOS GmbH, " "Odoo Community Association (OCA)",
     "summary": "2nd factor authentication via U2F devices",
-    'category': 'Extra Tools',
-    'license': 'LGPL-3',
-    'depends': ['base', 'web'],
-    'data': [
-        'views/u2f_device.xml',
-        'views/u2f_templates.xml',
-        'views/res_users.xml',
-        'security/ir.model.access.csv',
-        'security/auth_u2f_security.xml',
+    "category": "Extra Tools",
+    "license": "LGPL-3",
+    "depends": ["base", "web"],
+    "data": [
+        "views/u2f_device.xml",
+        "views/u2f_templates.xml",
+        "views/res_users.xml",
+        "security/ir.model.access.csv",
+        "security/auth_u2f_security.xml",
     ],
-    'external_dependencies': {
-        'python': ['u2flib_server'],
+    "external_dependencies": {
+        "python": ["u2flib_server"],
     },
-    'installable': True,
+    "installable": True,
 }

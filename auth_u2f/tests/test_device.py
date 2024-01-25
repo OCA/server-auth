@@ -21,36 +21,35 @@ from unittest.mock import MagicMock, patch
 
 from odoo.tests.common import TransactionCase
 
-from .test_main import REQUEST_DATA, RESPONSE_DATA, DEVICE_DATA, BASE_URL
-
+from .test_main import BASE_URL, DEVICE_DATA, REQUEST_DATA, RESPONSE_DATA
 
 _logger = logging.getLogger(__name__)
 
 
 TEST_VALUE = "U2F Test Token"
-MODEL_PATH = 'odoo.addons.auth_u2f.models.u2f_device'
+MODEL_PATH = "odoo.addons.auth_u2f.models.u2f_device"
 
 
 class TestDevice(TransactionCase):
-
     def setUp(self):
         super(TestDevice, self).setUp()
 
-        self.env['ir.config_parameter'].sudo().set_param(
-            'web.base.url', BASE_URL)
+        self.env["ir.config_parameter"].sudo().set_param("web.base.url", BASE_URL)
 
-        self.test_user = self.env.ref('base.user_root')
+        self.test_user = self.env.ref("base.user_root")
 
-    @patch(MODEL_PATH + '.request')
+    @patch(MODEL_PATH + ".request")
     def test_create_device(self, request_mock):
         request_mock.session.u2f_last_registration_challenge = REQUEST_DATA
 
-        device = self.env['u2f.device'].create({
-            'name': 'Test Authenticator',
-            'json': json.dumps(RESPONSE_DATA),
-            'user_id': self.test_user.id,
-            'default': True,
-        })
+        device = self.env["u2f.device"].create(
+            {
+                "name": "Test Authenticator",
+                "json": json.dumps(RESPONSE_DATA),
+                "user_id": self.test_user.id,
+                "default": True,
+            }
+        )
 
         self.assertTrue(device)
         data = json.loads(device.json)
@@ -58,30 +57,35 @@ class TestDevice(TransactionCase):
         for key, value in DEVICE_DATA.items():
             self.assertEqual(data[key], value, key)
 
-    @patch(MODEL_PATH + '.u2f')
-    @patch(MODEL_PATH + '.request')
+    @patch(MODEL_PATH + ".u2f")
+    @patch(MODEL_PATH + ".request")
     def test_make_default(self, request_mock, u2f_mock):
         m = MagicMock(json=TEST_VALUE)
         u2f_mock.complete_registration.return_value = m, True
         request_mock.session.u2f_last_registration_challenge = TEST_VALUE
 
         data = json.dumps(RESPONSE_DATA)
-        device_a = self.env['u2f.device'].create({
-            'name': 'Test Authenticator',
-            'json': data,
-            'user_id': self.test_user.id,
-            'default': True,
-        })
+        device_a = self.env["u2f.device"].create(
+            {
+                "name": "Test Authenticator",
+                "json": data,
+                "user_id": self.test_user.id,
+                "default": True,
+            }
+        )
 
         u2f_mock.complete_registration.assert_called_once_with(
-            TEST_VALUE, data, [BASE_URL])
+            TEST_VALUE, data, [BASE_URL]
+        )
 
-        device_b = self.env['u2f.device'].create({
-            'name': 'Test Authenticator',
-            'json': json.dumps(RESPONSE_DATA),
-            'user_id': self.test_user.id,
-            'default': True,
-        })
+        device_b = self.env["u2f.device"].create(
+            {
+                "name": "Test Authenticator",
+                "json": json.dumps(RESPONSE_DATA),
+                "user_id": self.test_user.id,
+                "default": True,
+            }
+        )
 
         self.assertFalse(device_a.default)
         self.assertTrue(device_b.default)

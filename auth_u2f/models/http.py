@@ -37,38 +37,41 @@ def __handle_exception(self, exception):
     except U2FAuthenticationError:
         redirect = None
         req = request.httprequest
-        if req.method == 'POST':
+        if req.method == "POST":
             request.session.save_request_data()
-            redirect = '/web/proxy/post{r.full_path}'.format(r=req)
-        elif not request.params.get('noredirect'):
+            redirect = "/web/proxy/post{r.full_path}".format(r=req)
+        elif not request.params.get("noredirect"):
             redirect = req.url
         if redirect:
-            query = werkzeug.urls.url_encode({
-                'redirect': redirect,
-            })
-        return werkzeug.utils.redirect('/web/u2f/login?%s' % query)
+            query = werkzeug.urls.url_encode(
+                {
+                    "redirect": redirect,
+                }
+            )
+        return werkzeug.utils.redirect("/web/u2f/login?%s" % query)
 
 
 HttpRequest._handle_exception = __handle_exception
 
 
 class IrHttp(models.AbstractModel):
-    _inherit = 'ir.http'
+    _inherit = "ir.http"
 
     @classmethod
-    def _authenticate(cls, auth_method='user'):
+    def _authenticate(cls, auth_method="user"):
         # super should raise if 1st factor fails
         res = super(IrHttp, cls)._authenticate(auth_method=auth_method)
 
-        if auth_method == 'user':
+        if auth_method == "user":
             cr = cls.pool.cursor()
             try:
                 env = api.Environment(cr, request.session.uid, {})
-                user = env['res.users'].browse(request.session.uid)
+                user = env["res.users"].browse(request.session.uid)
                 if user._u2f_get_device():
                     user.u2f_check_credentials(
                         request.session.u2f_last_challenge,
-                        request.session.u2f_token_response)
+                        request.session.u2f_token_response,
+                    )
             finally:
                 cr.close()
 

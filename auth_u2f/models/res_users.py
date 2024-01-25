@@ -16,10 +16,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301 USA
 
+import logging
+
 from odoo import api, fields, models
 from odoo.http import request
 
-import logging
 from .http import U2FAuthenticationError
 
 _logger = logging.getLogger(__name__)
@@ -31,25 +32,23 @@ except ImportError as err:
 
 
 class ResUsers(models.Model):
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
-    u2f_device_ids = fields.One2many(
-        'u2f.device', 'user_id', string='U2F devices')
+    u2f_device_ids = fields.One2many("u2f.device", "user_id", string="U2F devices")
 
     @api.multi
     def _u2f_get_device(self):
         self.ensure_one()
-        default_devices = self.u2f_device_ids.filtered('default')
+        default_devices = self.u2f_device_ids.filtered("default")
         return default_devices[0] if default_devices else False
 
     @api.model
     def u2f_get_registration_challenge(self):
         user = self.env.user
-        icp = self.env['ir.config_parameter'].sudo()
-        baseurl = icp.get_param('web.base.url')
-        already_registered_u2f_devices = user.u2f_device_ids.mapped('json')
-        challenge = u2f.begin_registration(
-            baseurl, already_registered_u2f_devices)
+        icp = self.env["ir.config_parameter"].sudo()
+        baseurl = icp.get_param("web.base.url")
+        already_registered_u2f_devices = user.u2f_device_ids.mapped("json")
+        challenge = u2f.begin_registration(baseurl, already_registered_u2f_devices)
         request.session.u2f_last_registration_challenge = challenge.json
 
         return challenge
@@ -57,8 +56,8 @@ class ResUsers(models.Model):
     @api.multi
     def _u2f_get_login_challenge(self):
         self.ensure_one()
-        icp = self.env['ir.config_parameter'].sudo()
-        baseurl = icp.get_param('web.base.url')
+        icp = self.env["ir.config_parameter"].sudo()
+        baseurl = icp.get_param("web.base.url")
         devices = self._u2f_get_device()
         if devices:
             challenge = u2f.begin_authentication(baseurl, [devices.json])
@@ -69,18 +68,18 @@ class ResUsers(models.Model):
     def u2f_check_credentials(self, last_challenge, last_response):
         self.ensure_one()
         if self._u2f_get_device():
-            icp = self.env['ir.config_parameter'].sudo()
-            baseurl = icp.get_param('web.base.url')
+            icp = self.env["ir.config_parameter"].sudo()
+            baseurl = icp.get_param("web.base.url")
             try:
                 if last_challenge and last_response:
                     device, c, t = u2f.complete_authentication(
-                        last_challenge, last_response, [baseurl])
+                        last_challenge, last_response, [baseurl]
+                    )
                 else:
                     raise U2FAuthenticationError()
             except Exception:
-                _logger.info(
-                    'Exception during U2F authentication.', exc_info=True)
+                _logger.info("Exception during U2F authentication.", exc_info=True)
                 raise U2FAuthenticationError()
 
-            _logger.debug('Successful U2F auth with: %s, %s, %s', device, c, t)
+            _logger.debug("Successful U2F auth with: %s, %s, %s", device, c, t)
         return True

@@ -30,18 +30,18 @@ except ImportError as err:
 
 
 class U2FDevice(models.Model):
-    _name = 'u2f.device'
+    _name = "u2f.device"
 
     name = fields.Char(required=True)
     json = fields.Char(
-        string='Scan', required=True,
-        help='Technical data returned by u2flib or the browser'
+        string="Scan",
+        required=True,
+        help="Technical data returned by u2flib or the browser",
     )
     user_id = fields.Many2one(
-        'res.users', required=True, readonly=True,
-        default=lambda self: self.env.uid
+        "res.users", required=True, readonly=True, default=lambda self: self.env.uid
     )
-    default = fields.Boolean(help='Device used during login.', readonly=True)
+    default = fields.Boolean(help="Device used during login.", readonly=True)
 
     @api.model
     def create(self, vals):
@@ -52,22 +52,21 @@ class U2FDevice(models.Model):
 
     @api.multi
     def _register_device(self):
-        icp = self.env['ir.config_parameter'].sudo()
-        baseurl = icp.get_param('web.base.url')
+        icp = self.env["ir.config_parameter"].sudo()
+        baseurl = icp.get_param("web.base.url")
         for device in self:
             registration_data, cert = u2f.complete_registration(
-                request.session.u2f_last_registration_challenge,
-                device.json,
-                [baseurl])
+                request.session.u2f_last_registration_challenge, device.json, [baseurl]
+            )
             device.json = registration_data.json
-            del request.session['u2f_last_registration_challenge']
+            del request.session["u2f_last_registration_challenge"]
 
         return True
 
     @api.multi
     def action_make_default(self):
         self.ensure_one()
-        self.user_id.u2f_device_ids.write({'default': False})
+        self.user_id.u2f_device_ids.write({"default": False})
         self.default = True
 
         return True
