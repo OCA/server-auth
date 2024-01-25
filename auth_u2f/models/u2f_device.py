@@ -50,7 +50,7 @@ class U2FDevice(models.Model):
         res.action_make_default()
         return res
 
-    @api.multi
+
     def _register_device(self):
         icp = self.env["ir.config_parameter"].sudo()
         baseurl = icp.get_param("web.base.url")
@@ -63,7 +63,7 @@ class U2FDevice(models.Model):
 
         return True
 
-    @api.multi
+
     def action_make_default(self):
         self.ensure_one()
         self.user_id.u2f_device_ids.write({"default": False})

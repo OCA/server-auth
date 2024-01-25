@@ -18,7 +18,7 @@
 
 {
     "name": "2nd factor authentication via U2F",
-    "version": "11.0.1.0.0",
+    "version": "15.0.1.0.0",
     "author": "Joren Van Onder, " "initOS GmbH, " "Odoo Community Association (OCA)",
     "summary": "2nd factor authentication via U2F devices",
     "category": "Extra Tools",

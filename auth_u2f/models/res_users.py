@@ -36,7 +36,7 @@ class ResUsers(models.Model):
 
     u2f_device_ids = fields.One2many("u2f.device", "user_id", string="U2F devices")
 
-    @api.multi
+
     def _u2f_get_device(self):
         self.ensure_one()
         default_devices = self.u2f_device_ids.filtered("default")
@@ -53,7 +53,7 @@ class ResUsers(models.Model):
 
         return challenge
 
-    @api.multi
+
     def _u2f_get_login_challenge(self):
         self.ensure_one()
         icp = self.env["ir.config_parameter"].sudo()
@@ -64,7 +64,7 @@ class ResUsers(models.Model):
             return challenge
         return False
 
-    @api.multi
+
     def u2f_check_credentials(self, last_challenge, last_response):
         self.ensure_one()
         if self._u2f_get_device():
