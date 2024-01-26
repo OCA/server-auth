@@ -18,18 +18,15 @@ class AuthJwtValidator(models.Model):
         if self.user_id_strategy == "login":
             timestamp_expiration_date = payload["exp"]
             if timestamp_expiration_date:
-                timestamp_now = int(time.time() * 1000.0)
+                timestamp_now = int(time.time())
                 if (timestamp_expiration_date - timestamp_now) < 0:
                     raise werkzeug.exceptions.Forbidden(_("Token not valid."))
-            if "username" in payload and "password" in payload:
+            if "username" in payload:
                 user = self.env["res.users"].search(
                     [("login", "=", payload["username"])]
                 )
                 if not user:
                     raise ValidationError
-                user.with_user(user)._check_credentials(
-                    payload["password"], {"interactive": True}
-                )
                 return user.id
             else:
                 raise ValidationError
