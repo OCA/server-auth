@@ -6,16 +6,16 @@ from odoo import _
 from odoo.exceptions import ValidationError
 
 
-def pre_init_hook_login_check(cr):
+def pre_init_hook_login_check(env):
     """This hook will look to see if any conflicting logins exist before
     the module is installed
-    :param openerp.sql_db.Cursor cr:
-        Database cursor.
+    :param env:
+        Environment.
     """
-    with cr.savepoint():
+    with env.cr.savepoint():
         users = []
-        cr.execute("SELECT login FROM res_users")
-        for user in cr.fetchall():
+        env.cr.execute("SELECT login FROM res_users")
+        for user in env.cr.fetchall():
             login = user[0].lower()
             if login not in users:
                 users.append(login)
@@ -25,12 +25,10 @@ def pre_init_hook_login_check(cr):
                 )
 
 
-def post_init_hook_login_convert(cr, registry):
+def post_init_hook_login_convert(env):
     """After the module is installed, set all logins to lowercase
-    :param openerp.sql_db.Cursor cr:
-        Database cursor.
-    :param openerp.modules.registry.RegistryManager registry:
-        Database registry, using v7 api.
+    :param env:
+        Environment.
     """
-    with cr.savepoint():
-        cr.execute("UPDATE res_users SET login=lower(login)")
+    with env.cr.savepoint():
+        env.cr.execute("UPDATE res_users SET login=lower(login)")
