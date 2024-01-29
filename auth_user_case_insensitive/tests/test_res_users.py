@@ -7,7 +7,7 @@ from odoo.tests.common import TransactionCase
 
 class TestResUsers(TransactionCase):
     def setUp(self):
-        super(TestResUsers, self).setUp()
+        super().setUp()
         self.login = "LasLabs@ExAmPlE.CoM"
         self.partner_vals = {
             "name": "Partner",
