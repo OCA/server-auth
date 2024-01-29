@@ -6,7 +6,6 @@ from odoo import api, fields, models
 
 
 class ResUsers(models.Model):
-
     _inherit = "res.users"
 
     login = fields.Char(help="Used to log into the system. Case insensitive.")
