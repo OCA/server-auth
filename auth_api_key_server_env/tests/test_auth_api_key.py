@@ -22,7 +22,7 @@ class TestAuthApiKey(TransactionCase):
                 "tech_name": "test_env",
             }
         )
-        cls.api_key_from_env.refresh()
+        cls.api_key_from_env.invalidate_recordset()
         serv_config.add_section("api_key_test_env")
         serv_config.set("api_key_test_env", "key", "api_key_from_env")
 
