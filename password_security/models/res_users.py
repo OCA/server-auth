@@ -215,7 +215,7 @@ class ResUsers(models.Model):
         res = super(ResUsers, self)._set_encrypted_password(uid, pw)
         if not self.env.user.company_id.password_policy_enabled:
             return res
-        self.write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
+        self.sudo().write({"password_history_ids": [(0, 0, {"password_crypt": pw})]})
         return res
 
     def action_reset_password(self):
