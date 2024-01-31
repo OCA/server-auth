@@ -1,6 +1,8 @@
 # Copyright 2015 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
+import passlib.context
+
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 
@@ -146,3 +148,20 @@ class TestResUsers(TransactionCase):
             }
         )
         test1.unlink()
+
+    def test_update_password_on_login(self):
+        user = self.rec_id.with_user(self.rec_id)
+        self.rec_id.groups_id = [(6, 0, self.env.ref("base.group_portal").ids)]
+
+        # Prepare the case where the same password is already stored with a weaker
+        # crypt context
+        ctx = user._crypt_context()
+        cfg = ctx.to_dict()
+        cfg["pbkdf2_sha512__rounds"] -= 1
+        ctx = passlib.context.CryptContext(**cfg)
+        hash_password = ctx.hash if hasattr(ctx, "hash") else ctx.encrypt
+
+        self.rec_id._set_encrypted_password(user.id, hash_password(self.password))
+
+        # Login with the password now will update it
+        user._check_credentials(self.password, {"interactive": True})
