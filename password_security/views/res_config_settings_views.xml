@@ -12,46 +12,27 @@
             ref="auth_password_policy.res_config_settings_view_form"
         />
         <field name="arch" type="xml">
-            <!-- Hide label for uniform styling -->
-            <xpath expr="//label[@for='minlength']" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </xpath>
-
-            <!-- Add an id for easier lookup -->
-            <xpath
-                expr="//field[@name='minlength']/ancestor::div[hasclass('o_setting_box')]"
-                position="attributes"
-            >
-                <attribute name="id">password_policy</attribute>
-            </xpath>
-
-            <!-- Move the settings box to desired location -->
-            <xpath expr="//div[@id='enable_password_reset']" position="after">
-                <xpath expr="//div[@id='password_policy']" position="move" />
-            </xpath>
-
             <!-- Ensure our settings will come after any former customization -->
-            <xpath
-                expr="//div[@id='password_policy']//div[hasclass('o_setting_right_pane')]/*"
-                position="after"
-            >
-                <label string="Password Policy" for="password_expiration" />
-                <div class="content-group">
-                    <div class="mt16">
+            <xpath expr="//block[@id='user_default_rights']" position="after">
+                <block title="Password Policy" id="password_policy">
+                    <setting>
                         <span>
-                            Password expires in
-                            <field name="password_expiration" class="oe_inline" />
-                            days.
+                            Password expires in <field
+                                name="password_expiration"
+                                class="oe_inline"
+                            /> days.
                         </span>
-                    </div>
-                    <div class="mt16">
+                    </setting>
+                    <setting>
                         <span>
-                            User can change password in
-                            <field name="password_minimum" class="oe_inline" />
-                            hours again.
+                            User can change password in <field
+                                name="password_minimum"
+                                class="oe_inline"
+                            /> hours again.
                         </span>
-                    </div>
-                    <div class="mt16">
+                    </setting>
+
+                    <setting>
                         <span>
                             Disallow reuse of
                             <field name="password_history" class="oe_inline" />
@@ -60,47 +41,41 @@
                         <div class="text-muted">
                             Use negative number for infinite, or 0 to disable
                         </div>
-                    </div>
-                    <div class="mt16">
+                    </setting>
+                    <setting>
                         <span>
                             Minimum number of lowercase characters
-                            <field name="password_lower" class="oe_inline" />
+                            <field name="password_lower" />
                         </span>
-                    </div>
-                    <div class="mt16">
+                    </setting>
+                    <setting>
                         <span>
                             Minimum number of uppercase characters
-                            <field name="password_upper" class="oe_inline" />
+                            <field name="password_upper" />
                         </span>
-                    </div>
-                    <div class="mt16">
+                    </setting>
+                    <setting>
                         <span>
                             Minimum number of numeric characters
-                            <field name="password_numeric" class="oe_inline" />
+                            <field name="password_numeric" />
                         </span>
-                    </div>
-                    <div class="mt16">
+                    </setting>
+                    <setting>
                         <span>
                             Minimum number of special characters
-                            <field name="password_special" class="oe_inline" />
+                            <field name="password_special" />
                         </span>
-                    </div>
-                      <div class="mt16">
-                          <span id="minlength">
-                               Minimum number of characters
-                          </span>
-                      </div>
-                  </div>
-            </xpath>
-
-            <!-- Add oe_inline attribute to minlength -->
-            <xpath expr="//field[@name='minlength']" position="attributes">
-              <attribute name="class">oe_inline</attribute>
+                    </setting>
+                </block>
             </xpath>
 
             <!-- Move the minlength field to desired location -->
-            <xpath expr="//span[@id='minlength']" position="inside">
-                <xpath expr="//field[@name='minlength']" position="move" />
+            <xpath expr="//block[@id='password_policy']" position="inside">
+                <xpath expr="//field[@name='minlength']/.." position="move" />
+                <xpath
+                    expr="//field[@name='auth_signup_reset_password']/.."
+                    position="move"
+                />
             </xpath>
         </field>
     </record>
