@@ -19,12 +19,12 @@ class PasswordSecurityHome(AuthSignupHome):
         password = qcontext.get("password")
         user = request.env.user
         user._check_password(password)
-        return super(PasswordSecurityHome, self).do_signup(qcontext)
+        return super().do_signup(qcontext)
 
     @http.route()
     def web_login(self, *args, **kw):
         ensure_db()
-        response = super(PasswordSecurityHome, self).web_login(*args, **kw)
+        response = super().web_login(*args, **kw)
         if not request.params.get("login_success"):
             return response
         if not request.env.user:
@@ -50,7 +50,7 @@ class PasswordSecurityHome(AuthSignupHome):
             raise BadRequest from None  # HTTPError: 400 Client Error: BAD REQUEST
 
         try:
-            return super(PasswordSecurityHome, self).web_auth_signup(*args, **kw)
+            return super().web_auth_signup(*args, **kw)
         except Exception as e:
             # Here we catch any generic exception since UserError is already
             # handled in parent method web_auth_signup()
