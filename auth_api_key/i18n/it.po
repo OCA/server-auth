@@ -63,11 +63,6 @@ msgid "Key"
 msgstr "Chiave"
 
 #. module: auth_api_key
-#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
@@ -118,6 +113,9 @@ msgstr "Utente"
 #, python-format
 msgid "User is not allowed"
 msgstr "Utente non autorizzato"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
 
 #~ msgid "Server Env Defaults"
 #~ msgstr "Variabili ambiente predefinite del server"
