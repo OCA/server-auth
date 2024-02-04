@@ -6,30 +6,32 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2024-02-04 22:36+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: auth_api_key_server_env
 #: model:ir.model,name:auth_api_key_server_env.model_auth_api_key
 msgid "API Key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__server_env_defaults
 msgid "Server Env Defaults"
-msgstr ""
+msgstr "Server ambiente predefinito"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__tech_name
 msgid "Tech Name"
-msgstr ""
+msgstr "Nome tecnico"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,help:auth_api_key_server_env.field_auth_api_key__tech_name
 msgid "Unique name for technical purposes. Eg: server env keys."
-msgstr ""
+msgstr "Nome univoco per motivi tecnici. Es: chiavi server ambiente."
