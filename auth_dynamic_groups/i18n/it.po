@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: server-tools (8.0)\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-17 15:36+0000\n"
-"PO-Revision-Date: 2023-10-11 10:38+0000\n"
+"PO-Revision-Date: 2024-02-05 09:34+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (http://www.transifex.com/oca/OCA-server-tools-8-0/"
 "language/it/)\n"
@@ -34,7 +34,7 @@ msgstr "Condizione"
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__display_name
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__is_dynamic
@@ -55,19 +55,19 @@ msgstr "Inserisci la condizione..."
 #: code:addons/auth_dynamic_groups/models/res_groups.py:0
 #, python-format
 msgid "Format: %s"
-msgstr ""
+msgstr "Formato: %s"
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups__id
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_dynamic_groups
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_groups____last_update
 #: model:ir.model.fields,field_description:auth_dynamic_groups.field_res_users____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: auth_dynamic_groups
 #: code:addons/auth_dynamic_groups/models/res_groups.py:0
