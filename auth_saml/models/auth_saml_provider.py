@@ -9,13 +9,17 @@ import os
 import tempfile
 import urllib.parse
 
+import requests
+
 # dependency name is pysaml2 # pylint: disable=W7936
 import saml2
 import saml2.xmldsig as ds
 from saml2.client import Saml2Client
 from saml2.config import Config as Saml2Config
+from saml2.sigver import SignatureError
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -41,6 +45,13 @@ class AuthSamlProvider(models.Model):
             " provider, in XML format."
         ),
         required=True,
+    )
+    idp_metadata_url = fields.Char(
+        string="Identity Provider Metadata URL",
+        help="Some SAML providers, notably Office365 can have a metadata "
+        "document which changes over time, and they provide a URL to the "
+        "document instead. When this field is set, the metadata can be "
+        "fetched from the provided URL.",
     )
     sp_baseurl = fields.Text(
         string="Override Base URL",
@@ -229,10 +240,19 @@ class AuthSamlProvider(models.Model):
             "cert_file": self._get_cert_key_path("sp_pem_public"),
             "key_file": self._get_cert_key_path("sp_pem_private"),
         }
-        sp_config = Saml2Config()
-        sp_config.load(settings)
-        sp_config.allow_unknown_attributes = True
-        return sp_config
+        try:
+            sp_config = Saml2Config()
+            sp_config.load(settings)
+            sp_config.allow_unknown_attributes = True
+            return sp_config
+        except saml2.SAMLError:
+            if self.env.context.get("saml2_retry_after_refresh_metadata", False):
+                raise
+            # Retry after refresh metadata
+            self.action_refresh_metadata_from_url()
+            return self.with_context(
+                saml2_retry_after_refresh_metatata=1
+            )._get_config_for_provider(base_url)
 
     def _get_client_for_provider(self, base_url: str = None):
         sp_config = self._get_config_for_provider(base_url)
@@ -278,12 +298,26 @@ class AuthSamlProvider(models.Model):
         """return the validation data corresponding to the access token"""
         self.ensure_one()
 
-        client = self._get_client_for_provider(base_url)
-        response = client.parse_authn_request_response(
-            token,
-            saml2.entity.BINDING_HTTP_POST,
-            self._get_outstanding_requests_dict(),
-        )
+        try:
+            client = self._get_client_for_provider(base_url)
+            response = client.parse_authn_request_response(
+                token,
+                saml2.entity.BINDING_HTTP_POST,
+                self._get_outstanding_requests_dict(),
+            )
+        except SignatureError:
+            # we have a metadata url: try to refresh the metadata document
+            if self.idp_metadata_url:
+                self.action_refresh_metadata_from_url()
+                # retry: if it fails again, we let the exception flow
+                client = self._get_client_for_provider(base_url)
+                response = client.parse_authn_request_response(
+                    token,
+                    saml2.entity.BINDING_HTTP_POST,
+                    self._get_outstanding_requests_dict(),
+                )
+            else:
+                raise
         matching_value = None
 
         if self.matching_attribute == "subject.nameId":
@@ -367,3 +401,28 @@ class AuthSamlProvider(models.Model):
             vals[attribute.field_name] = attribute_value
 
         return {"mapped_attrs": vals}
+
+    def action_refresh_metadata_from_url(self):
+        providers = self.search(
+            [("idp_metadata_url", "ilike", "http%"), ("id", "in", self.ids)]
+        )
+        if not providers:
+            return False
+        # lock the records we might update, so that multiple simultaneous login
+        # attempts will not cause concurrent updates
+        self.env.cr.execute(
+            "SELECT id FROM auth_saml_provider WHERE id in %s FOR UPDATE",
+            (tuple(providers.ids),),
+        )
+        updated = False
+        for provider in providers:
+            document = requests.get(provider.idp_metadata_url)
+            if document.status_code != 200:
+                raise UserError(
+                    f"Unable to download the metadata for {provider.name}: {document.reason}"
+                )
+            if document.text != provider.idp_metadata:
+                provider.idp_metadata = document.text
+                _logger.info("Updated provider metadata for %s", provider.name)
+                updated = True
+        return updated
