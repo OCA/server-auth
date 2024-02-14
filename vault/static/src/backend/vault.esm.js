@@ -137,7 +137,7 @@ class Vault {
 
         // Check if the keys expired
         const now = new Date();
-        if (!this.time || now - this.time <= Expiration) return;
+        if (this.time && now - this.time <= Expiration) return;
 
         // Keys expired means that we have to get them again
         this.keys = this.time = null;
