@@ -10,7 +10,11 @@ class IrHttp(models.AbstractModel):
     @classmethod
     def _authenticate(cls, endpoint):
         res = super(IrHttp, cls)._authenticate(endpoint=endpoint)
-        auth_method = endpoint.routing["auth"]
-        if auth_method == "user" and request and request.env and request.env.user:
+        if (
+            request
+            and request.session
+            and request.session.uid
+            and not request.env["res.users"].browse(request.session.uid)._is_public()
+        ):
             request.env.user._auth_timeout_check()
         return res
