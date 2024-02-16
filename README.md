@@ -32,7 +32,7 @@ addon | version | maintainers | summary
 [auth_oauth_multi_token](auth_oauth_multi_token/) | 14.0.1.0.0 |  | Allow multiple connection with the same OAuth account
 [auth_oidc](auth_oidc/) | 14.0.1.1.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 14.0.1.1.2 |  | SAML2 Authentication
-[auth_session_timeout](auth_session_timeout/) | 14.0.1.0.1 |  | This module disable all inactive sessions since a given delay
+[auth_session_timeout](auth_session_timeout/) | 14.0.1.0.2 |  | This module disable all inactive sessions since a given delay
 [auth_signup_verify_email](auth_signup_verify_email/) | 14.0.1.0.1 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 14.0.1.0.1 |  | Makes the user login field case insensitive
 [base_user_show_email](base_user_show_email/) | 14.0.1.0.0 |  | Untangle user login and email
