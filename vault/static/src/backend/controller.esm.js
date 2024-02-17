@@ -250,7 +250,7 @@ patch(FormController.prototype, "vault", {
      * @param {Object} right
      */
     async _vaultEnsureRightKey(root, right) {
-        if (!root.data.master_key || right.data.master_key) return;
+        if (!root.data.master_key || right.data.key) return;
 
         const params = {user_id: right.data.user_id[0]};
         const user = await this.rpc("/vault/public", params);
