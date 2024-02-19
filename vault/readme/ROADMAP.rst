@@ -1,7 +1,5 @@
 * Field and file history for restoration
 
-* Send secrets directly to an inbox within Odoo
-
 * Import improvement
 
  * Support challenge-response/FIDO2
@@ -12,3 +10,5 @@
   is defined.
 
   If you want to move entries between vaults you can use the export -> import option.
+
+* HTTPS or localhost (secure browser context) is required for the client side encryption

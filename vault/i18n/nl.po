@@ -17,32 +17,44 @@ msgstr ""
 "X-Generator: Weblate 4.14.1\n"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%(action)s entry %(name)s by %(user)s"
 msgstr "%(action)s toegang %(name)s door %(user)s"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_controller.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "%s '%s' of entry '%s'"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%s (copy)"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
+#, python-format
+msgid ""
+"A secure browser context is required. Please switch to https or contact your "
+"administrator"
+msgstr ""
+
+#. module: vault
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "A-Z"
 msgstr "A-Z"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/abstract_vault_field.py:0
 #: model:ir.model,name:vault.model_vault_abstract_field
 #, python-format
@@ -50,6 +62,7 @@ msgid "Abstract model to implement basic fields for encryption"
 msgstr "Abstract model om basisvelden voor encryptie te implementeren"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/abstract_vault.py:0
 #: model:ir.model,name:vault.model_vault_abstract
 #, python-format
@@ -168,6 +181,7 @@ msgid "Allowed Write"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "An error occured. Please contact the user or administrator"
@@ -185,7 +199,7 @@ msgid "By vault"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
@@ -196,14 +210,14 @@ msgid "Cancel"
 msgstr "Annuleer"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Cancelled"
 msgstr "Geannuleerd"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Characters:"
@@ -238,7 +252,7 @@ msgid "Config Settings"
 msgstr "Configuratie-instellingen"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Confirm your password:"
@@ -250,8 +264,8 @@ msgid "Content"
 msgstr "Inhoud"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Copy to clipboard"
 msgstr "Kopiëren naar klembord"
@@ -281,12 +295,14 @@ msgid "Created by"
 msgstr "Aangemaakt door"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
 msgid "Created by %(name)s via %(ip)s"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #, python-format
 msgid "Created by %s"
@@ -356,8 +372,8 @@ msgid "Display Name"
 msgstr "Schermnaam"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_controller.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "Do you really want to create a new key pair and set it active?"
 msgstr "Wilt u echt een nieuw sleutelpaar aanmaken en activeren?"
@@ -368,14 +384,14 @@ msgid "Download"
 msgstr "Download"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Enter"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Enter your password:"
@@ -400,6 +416,7 @@ msgid "Entry"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #: model:ir.model,name:vault.model_vault_entry
 #, python-format
@@ -407,6 +424,7 @@ msgid "Entry inside a vault"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Error"
@@ -434,6 +452,7 @@ msgid "Export Vaults"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault.py:0
 #: code:addons/vault/models/vault_entry.py:0
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
@@ -443,6 +462,7 @@ msgid "Export to file"
 msgstr "Export naar bestand"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_export_wizard.py:0
 #: model:ir.model,name:vault.model_vault_export_wizard
 #, python-format
@@ -450,27 +470,28 @@ msgid "Export wizard for vaults"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export keys to object store"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export the keys to the database"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to import keys from database"
 msgstr "Kan geen sleutels uit database importeren"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_field.py:0
 #: model:ir.model,name:vault.model_vault_field
 #, python-format
@@ -484,6 +505,7 @@ msgid "Fields"
 msgstr "Velden"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_file.py:0
 #: model:ir.model,name:vault.model_vault_file
 #, python-format
@@ -513,14 +535,14 @@ msgid "Fingerprint"
 msgstr "Fingerprint"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Generate"
 msgstr "Genereer"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Generate a new secret:"
@@ -532,8 +554,8 @@ msgid "Grouped"
 msgstr "Gegroepeerd"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Hide"
 msgstr "Verbergen"
@@ -578,6 +600,7 @@ msgid "Import Vaults"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault.py:0
 #: code:addons/vault/models/vault_entry.py:0
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
@@ -587,6 +610,7 @@ msgid "Import from file"
 msgstr "Importeren uit bestand"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_import_wizard.py:0
 #: model:ir.model,name:vault.model_vault_import_wizard
 #, python-format
@@ -594,6 +618,7 @@ msgid "Import wizard for vaults"
 msgstr "Wizard voor het importeren van kluizen"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_import_wizard.py:0
 #: model:ir.model,name:vault.model_vault_import_wizard_path
 #, python-format
@@ -630,24 +655,28 @@ msgid "Include Childs"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Information"
 msgstr "Informatie"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_import_wizard.py:0
 #, python-format
 msgid "Invalid file to import from"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/res_users_key.py:0
 #, python-format
 msgid "Invalid parameter"
 msgstr "Ongeldige parameter"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Invalid token"
@@ -688,8 +717,7 @@ msgid "Key"
 msgstr "Sleutel"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/user_menu.esm.js:0
 #, python-format
 msgid "Key Management"
@@ -701,7 +729,7 @@ msgid "Key User"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Keyfile:"
@@ -770,7 +798,7 @@ msgid "Last Updated on"
 msgstr "Laatst bijgewerkt op"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Length:"
@@ -786,6 +814,7 @@ msgid "Log"
 msgstr "Log"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #: model:ir.model,name:vault.model_vault_log
 #, python-format
@@ -815,13 +844,14 @@ msgid "Message"
 msgstr "Bericht"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Missing filename"
 msgstr "Ontbrekende bestandsnaam"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Missing password"
@@ -860,6 +890,13 @@ msgid "Name of your secret:"
 msgstr ""
 
 #. module: vault
+#. odoo-python
+#: code:addons/vault/wizards/vault_send_wizard.py:0
+#, python-format
+msgid "Neither a secret nor file was given"
+msgstr ""
+
+#. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid "New inbox link"
 msgstr ""
@@ -870,12 +907,14 @@ msgid "New private key"
 msgstr "Nieuwe privésleutel"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "No secret found"
 msgstr "Geen geheim gevonden"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_inbox.py:0
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #: model:ir.model.constraint,message:vault.constraint_vault_inbox_value_check
@@ -913,7 +952,7 @@ msgid "Parent Entry"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Password:"
@@ -935,7 +974,7 @@ msgid "Perm User"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/export.esm.js:0
 #: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
@@ -943,27 +982,28 @@ msgid "Please enter the password for the database"
 msgstr "Voer het wachtwoord van de database in"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the keepass database"
 msgstr "Voer het wachtwoord van de keepass database in"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Please enter the password for your private key"
 msgstr "Voer het wachtwoord voor uw privésleutel in"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Please enter your password or upload a keyfile:"
 msgstr "Voer uw wachtwoord in of upload een keyfile:"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Please specify a name"
@@ -1009,15 +1049,16 @@ msgid "Salt"
 msgstr ""
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_widget.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_export_file.esm.js:0
+#: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
 #, python-format
 msgid "Save As..."
 msgstr "Opslaan als..."
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Save in a vault"
 msgstr "Opslaan in een kluis"
@@ -1052,15 +1093,15 @@ msgid "Send"
 msgstr "Verzenden"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Send the secret to an user"
 msgstr "Verzend het geheim naar een gebruiker"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_widget.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_mixin.esm.js:0
 #, python-format
 msgid "Send the secret to another user"
 msgstr "Verzend het geheim naar een andere gebruiker"
@@ -1071,20 +1112,21 @@ msgid "Share"
 msgstr "Delen"
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Show"
 msgstr "Toon"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Something went wrong with the encryption"
 msgstr "Er ging iets mis met de encryptie"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Special"
@@ -1101,8 +1143,8 @@ msgid "Store"
 msgstr ""
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_widget.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_inbox_mixin.esm.js:0
 #, python-format
 msgid "Store the secret in a vault"
 msgstr ""
@@ -1113,6 +1155,7 @@ msgid "Submit secret"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Successfully stored"
@@ -1124,6 +1167,7 @@ msgid "Tags"
 msgstr "Labels"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault.py:0
 #: code:addons/vault/models/vault_entry.py:0
 #: model:ir.model.constraint,message:vault.constraint_vault_entry_vault_uuid_uniq
@@ -1133,8 +1177,9 @@ msgid "The UUID must be unique."
 msgstr "De UUID moet uniek zijn."
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_widget.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_export_file.esm.js:0
+#: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
 #, python-format
 msgid "The field is empty, there's nothing to save!"
 msgstr ""
@@ -1145,20 +1190,21 @@ msgid "The files must end on one of the supported file type:"
 msgstr ""
 
 #. module: vault
-#. openerp-web
-#: code:addons/vault/static/src/legacy/vault_controller.js:0
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "The following entries are broken:"
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "The passwords aren't matching"
 msgstr "De wachtwoorden komen niet overeen"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/abstract_vault.py:0
 #, python-format
 msgid ""
@@ -1166,6 +1212,7 @@ msgid ""
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_tag.py:0
 #: model:ir.model.constraint,message:vault.constraint_vault_tag_name_uniq
 #, python-format
@@ -1173,6 +1220,7 @@ msgid "The tag must be unique!"
 msgstr "Het label moet uniek zijn!"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_right.py:0
 #: model:ir.model.constraint,message:vault.constraint_vault_right_user_uniq
 #, python-format
@@ -1185,7 +1233,7 @@ msgid "Token"
 msgstr "Token"
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Unsupported file to import"
@@ -1197,6 +1245,7 @@ msgid "Url"
 msgstr "Url"
 
 #. module: vault
+#: model:ir.model,name:vault.model_res_users
 #: model:ir.model.fields,field_description:vault.field_res_users_key__user_id
 #: model:ir.model.fields,field_description:vault.field_vault_log__user_id
 #: model:ir.model.fields,field_description:vault.field_vault_right__user_id
@@ -1205,16 +1254,12 @@ msgid "User"
 msgstr "Gebruiker"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/res_users_key.py:0
 #: model:ir.model,name:vault.model_res_users_key
 #, python-format
 msgid "User data of a vault"
 msgstr ""
-
-#. module: vault
-#: model:ir.model,name:vault.model_res_users
-msgid "Users"
-msgstr "Gebruikers"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__inbox_link
@@ -1240,6 +1285,7 @@ msgid "Value"
 msgstr "Waarde"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault.py:0
 #: model:ir.actions.act_window,name:vault.action_vault
 #: model:ir.model,name:vault.model_vault
@@ -1261,6 +1307,34 @@ msgid "Vault"
 msgstr ""
 
 #. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_field.esm.js:0
+#, python-format
+msgid "Vault Field"
+msgstr ""
+
+#. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
+#, python-format
+msgid "Vault File"
+msgstr ""
+
+#. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_inbox_field.esm.js:0
+#, python-format
+msgid "Vault Inbox Field"
+msgstr ""
+
+#. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/fields/vault_inbox_file.esm.js:0
+#, python-format
+msgid "Vault Inbox File"
+msgstr ""
+
+#. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__vault_right_ids
 msgid "Vault Right"
 msgstr ""
@@ -1271,6 +1345,7 @@ msgid "Vault Share"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_inbox_log.py:0
 #: model:ir.model,name:vault.model_vault_inbox_log
 #, python-format
@@ -1278,6 +1353,14 @@ msgid "Vault inbox log"
 msgstr ""
 
 #. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
+#, python-format
+msgid "Vault is not supported"
+msgstr ""
+
+#. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_right.py:0
 #: model:ir.model,name:vault.model_vault_right
 #, python-format
@@ -1285,6 +1368,7 @@ msgid "Vault rights"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_inbox.py:0
 #: model:ir.model,name:vault.model_vault_inbox
 #, python-format
@@ -1292,6 +1376,7 @@ msgid "Vault share incoming secrets"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_tag.py:0
 #: model:ir.model,name:vault.model_vault_tag
 #, python-format
@@ -1314,12 +1399,14 @@ msgid "Version"
 msgstr "Versie"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Warning"
 msgstr "Waarschuwing"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_store_wizard.py:0
 #: model:ir.model,name:vault.model_vault_store_wizard
 #, python-format
@@ -1327,6 +1414,7 @@ msgid "Wizard store a shared secret in a vault"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #: model:ir.model,name:vault.model_vault_send_wizard
 #, python-format
@@ -1339,12 +1427,14 @@ msgid "Write"
 msgstr ""
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
 msgid "Written by %(name)s via %(ip)s"
 msgstr "Geschreven door %(name)s via %(ip)s"
 
 #. module: vault
+#. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "You can not create recursive entries."
@@ -1365,7 +1455,7 @@ msgid ""
 msgstr ""
 
 #. module: vault
-#. openerp-web
+#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "a-z"
@@ -1377,6 +1467,9 @@ msgstr "a-z"
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 msgid "or"
 msgstr "of"
+
+#~ msgid "Users"
+#~ msgstr "Gebruikers"
 
 #, python-format
 #~ msgid ""

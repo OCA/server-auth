@@ -2,6 +2,6 @@ This module implements a vault for secrets and files using end-to-end-encryption
 
 The server can never access the secrets with the information available. Only people registered in the vault can decrypt or encrypt values in a vault. The meta data isn't encrypted to be able to search/filter for entries more easily.
 
-This modules requires a secure context for the browser to work properly.
+This modules requires a secure context for the browser to work properly and therefore HTTPS support is required.
 
 The `vault-recovery <https://github.com/fkantelberg/vault-recovery>`_ project focuses on disaster recovery in case of an incident to recover secrets from old database backups or old exports.
