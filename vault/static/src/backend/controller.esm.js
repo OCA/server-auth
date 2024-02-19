@@ -2,9 +2,11 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import {AlertDialog} from "@web/core/confirmation_dialog/confirmation_dialog";
 import Dialog from "web.Dialog";
 import {FormController} from "@web/views/form/form_controller";
 import Importer from "vault.import";
+import {ListController} from "@web/views/list/list_controller";
 import {_lt} from "@web/core/l10n/translation";
 import framework from "web.framework";
 import {patch} from "@web/core/utils/patch";
@@ -288,7 +290,16 @@ patch(FormController.prototype, "vault", {
      * @param {Object} button
      */
     async _vaultAction(button) {
-        if (!utils.supported()) return false;
+        if (!utils.supported()) {
+            await this.dialogService.add(AlertDialog, {
+                title: _lt("Vault is not supported"),
+                body: _lt(
+                    "A secure browser context is required. Please switch to " +
+                        "https or contact your administrator"
+                ),
+            });
+            return false;
+        }
 
         const root = this.model.root;
         switch (root.resModel) {
@@ -331,6 +342,11 @@ patch(FormController.prototype, "vault", {
      * get/store information from/to the vault controller
      */
     setup() {
+        if (this.props.resModel === "vault" && !utils.supported()) {
+            this.props.preventCreate = true;
+            this.props.preventEdit = true;
+        }
+
         this._super(...arguments);
         this.rpc = useService("rpc");
     },
@@ -378,5 +394,13 @@ patch(FormController.prototype, "vault", {
         }
 
         return await _super(...arguments);
+    },
+});
+
+patch(ListController.prototype, "vault", {
+    setup() {
+        this._super(...arguments);
+        if (this.props.resModel === "vault" && !utils.supported())
+            this.props.showButtons = false;
     },
 });
