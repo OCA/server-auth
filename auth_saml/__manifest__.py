@@ -4,7 +4,7 @@
 
 {
     "name": "SAML2 Authentication",
-    "version": "16.0.1.0.3",
+    "version": "16.0.1.0.5",
     "category": "Tools",
     "author": "XCG Consulting, Odoo Community Association (OCA)",
     "maintainers": ["vincent-hatakeyama"],
