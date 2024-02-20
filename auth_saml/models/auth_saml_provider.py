@@ -136,6 +136,10 @@ class AuthSamlProvider(models.Model):
         default=True,
         help="Whether metadata should be signed or not",
     )
+    allow_unsolicited_req = fields.Boolean(
+        default=False,
+        help="Whether to allow unsolicited SAML requests. Usually when IDP initiated flow is required.",
+    ),
 
     @api.model
     def _sig_alg_selection(self):
@@ -219,7 +223,7 @@ class AuthSamlProvider(models.Model):
                             (acs_url, saml2.BINDING_HTTP_POST),
                         ],
                     },
-                    "allow_unsolicited": False,
+                    "allow_unsolicited": self.allow_unsolicited_req,
                     "authn_requests_signed": self.authn_requests_signed,
                     "logout_requests_signed": self.logout_requests_signed,
                     "want_assertions_signed": self.want_assertions_signed,
