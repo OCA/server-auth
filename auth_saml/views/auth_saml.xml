@@ -113,7 +113,6 @@
                                 >Your ACS url will be base_url + /auth_saml/signin</p>
                             </div>
                             <field name="sign_metadata" />
-                            <field name="allow_unsolicited_req" />
                             <label for="sp_metadata_url" />
                             <div>
                                 <field name="sp_metadata_url" widget="url" />

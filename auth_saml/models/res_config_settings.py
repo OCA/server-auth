@@ -13,3 +13,6 @@ class ResConfigSettings(models.TransientModel):
         "Allow SAML users to possess an Odoo password (warning: decreases security)",
         config_parameter=ALLOW_SAML_UID_AND_PASSWORD,
     )
+
+    allow_saml_unsolicited_req = fields.Boolean(related='company_id.allow_saml_unsolicited_req', readonly=False)
+
