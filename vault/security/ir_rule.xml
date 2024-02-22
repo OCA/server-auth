@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="vault_access_default" model="ir.rule">
+        <field name="name">vault.access.default</field>
+        <field name="model_id" ref="vault.model_vault" />
+        <field
+            name="domain_force"
+        >['|', ('user_id', '=', user.id), ('right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="vault_log_access_default" model="ir.rule">
+        <field name="name">vault.log.access.read</field>
+        <field name="model_id" ref="vault.model_vault_log" />
+        <field
+            name="domain_force"
+        >['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="vault_entry_access_default" model="ir.rule">
+        <field name="name">vault.entry.access.default</field>
+        <field name="model_id" ref="vault.model_vault_entry" />
+        <field
+            name="domain_force"
+        >['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+     <record id="vault_field_access_default" model="ir.rule">
+        <field name="name">vault.field.access.default</field>
+        <field name="model_id" ref="vault.model_vault_field" />
+        <field
+            name="domain_force"
+        >['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="vault_file_access_default" model="ir.rule">
+        <field name="name">vault.file.access.default</field>
+        <field name="model_id" ref="vault.model_vault_file" />
+        <field
+            name="domain_force"
+        >['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="res_users_key_access_default" model="ir.rule">
+        <field name="name">res.users.key.access.default</field>
+        <field name="model_id" ref="vault.model_res_users_key" />
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="vault_inbox_owner" model="ir.rule">
+        <field name="name">vault.inbox.access.owner</field>
+        <field name="model_id" ref="vault.model_vault_inbox" />
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="vault_right_access_default" model="ir.rule">
+        <field name="name">vault.right.access.default</field>
+        <field name="model_id" ref="vault.model_vault_right" />
+        <field
+            name="domain_force"
+        >[('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <record id="vault_inbox_log_owner" model="ir.rule">
+        <field name="name">vault.inbox.log.access.owner</field>
+        <field name="model_id" ref="vault.model_vault_inbox_log" />
+        <field name="domain_force">[('inbox_id.user_id', '=', user.id)]</field>
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+</odoo>
