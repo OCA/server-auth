@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="login" inherit_id="web.login">
+        <xpath
+            expr="//*[hasclass('oe_login_form')]//*[hasclass('field-login')]"
+            position="attributes"
+        >
+            <attribute name="t-if">debug</attribute>
+        </xpath>
+        <xpath
+            expr="//*[hasclass('oe_login_form')]//*[hasclass('field-password')]"
+            position="attributes"
+        >
+            <attribute name="t-if">debug</attribute>
+        </xpath>
+        <xpath
+            expr="//*[contains(@t-attf-class, 'oe_login_buttons')]/button[hasclass('btn-primary')]"
+            position="attributes"
+        >
+            <attribute name="t-if">debug</attribute>
+        </xpath>
+    </template>
+
+    <template id="login2" inherit_id="auth_signup.login">
+        <xpath expr="//a[@t-if='signup_enabled']" position="attributes">
+            <attribute name="t-if">debug</attribute>
+        </xpath>
+        <xpath expr="//a[@t-if='reset_password_enabled']" position="attributes">
+            <attribute name="t-if">debug</attribute>
+        </xpath>
+    </template>
+</odoo>
