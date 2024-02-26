@@ -64,9 +64,9 @@ class U2FLogin(Home):
     def web_client(self, s_action=None, **kw):
         response = super(U2FLogin, self).web_client(s_action=s_action, **kw)
 
-        try:
-            request.env["ir.http"]._authenticate()
-        except U2FAuthenticationError:
-            return werkzeug.utils.redirect("/web/u2f/login", 303)
+        # try:
+        #     request.env["ir.http"]._authenticate()
+        # except U2FAuthenticationError:
+        #     return werkzeug.utils.redirect("/web/u2f/login", 303)
 
         return response

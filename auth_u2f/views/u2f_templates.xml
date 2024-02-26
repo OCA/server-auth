@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-        <template
-            id="assets_frontend"
-            name="U2F Assets"
-            inherit_id="web.assets_frontend"
-        >
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/auth_u2f/static/lib/u2f-api.js" />
-                <script
-                    type="text/javascript"
-                    src="/auth_u2f/static/src/js/auth_u2f_frontend.js"
-                />
-            </xpath>
-        </template>
+<!--        <template-->
+<!--            id="assets_frontend"-->
+<!--            name="U2F Assets"-->
+<!--            inherit_id="web.assets_frontend"-->
+<!--        >-->
+<!--            <xpath expr="." position="inside">-->
+<!--                <script type="text/javascript" src="/auth_u2f/static/lib/u2f-api.js" />-->
+<!--                <script-->
+<!--                    type="text/javascript"-->
+<!--                    src="/auth_u2f/static/src/js/auth_u2f_frontend.js"-->
+<!--                />-->
+<!--            </xpath>-->
+<!--        </template>-->
 
-        <template id="assets_backend" name="U2F Assets" inherit_id="web.assets_backend">
-            <xpath expr="." position="inside">
-                <script type="text/javascript" src="/auth_u2f/static/lib/u2f-api.js" />
-                <script
-                    type="text/javascript"
-                    src="/auth_u2f/static/src/js/auth_u2f.js"
-                />
-            </xpath>
-        </template>
+<!--        <template id="assets_backend" name="U2F Assets" inherit_id="web.assets_backend">-->
+<!--            <xpath expr="." position="inside">-->
+<!--                <script type="text/javascript" src="/auth_u2f/static/lib/u2f-api.js" />-->
+<!--                <script-->
+<!--                    type="text/javascript"-->
+<!--                    src="/auth_u2f/static/src/js/auth_u2f.js"-->
+<!--                />-->
+<!--            </xpath>-->
+<!--        </template>-->
 
         <template id="login" name="Register U2F page">
             <t t-call="web.layout">

@@ -58,9 +58,11 @@ class IrHttp(models.AbstractModel):
     _inherit = "ir.http"
 
     @classmethod
-    def _authenticate(cls, auth_method="user"):
+    def _authenticate(cls, endpoint):
+        # endpoint = "user"
         # super should raise if 1st factor fails
-        res = super(IrHttp, cls)._authenticate(auth_method=auth_method)
+        res = super(IrHttp, cls)._authenticate(endpoint=endpoint)
+        auth_method = endpoint.routing["auth"]
 
         if auth_method == "user":
             cr = cls.pool.cursor()

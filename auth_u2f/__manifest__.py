@@ -34,5 +34,16 @@
     "external_dependencies": {
         "python": ["u2flib_server"],
     },
+    "assets": {
+        "web.assets_frontend": [
+            "/auth_u2f/static/src/js/auth_u2f_frontend.js",
+        ],
+        "web.assets_backend": [
+            "/auth_u2f/static/lib/u2f-api.js",
+            "/auth_u2f/static/src/js/auth_u2f.js",
+        ]
+    },
+    # "external_dependencies": {"python": ["u2flib_server"]},
+
     "installable": True,
 }
