@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_store_wizard" model="ir.ui.view">
+        <field name="model">vault.store.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="iv" invisible="1" />
+                        <field name="key" invisible="1" />
+                        <field name="master_key" invisible="1" />
+                        <field name="secret" invisible="1" />
+                        <field name="secret_temporary" invisible="1" />
+                        <field
+                            name="vault_id"
+                            options="{'no_create_edit': True, 'no_open': True, 'no_quick_create': true}"
+                        />
+                        <field
+                            name="entry_id"
+                            attrs="{'invisible': [('vault_id', '=', False)]}"
+                            options="{'no_create_edit': True, 'no_open': True, 'no_quick_create': true}"
+                        />
+                        <field name="name" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        type="object"
+                        name="action_store"
+                        string="Store"
+                        class="oe_highlight"
+                    />
+                    or
+                    <button type="special" string="Cancel" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

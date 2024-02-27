@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <div t-name="vault.askpass" class="o_form_view">
+        <label for="password" class="col-lg-auto col-form-label">
+            Please enter your password or upload a keyfile:
+        </label>
+
+        <table class="col o_group">
+            <tr>
+                <td class="o_td_label text-nowrap">
+                    <label class="o_form_label">Enter your password:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        required="required"
+                    />
+                </td>
+            </tr>
+            <tr t-if="confirm">
+                <td class="o_td_label text-nowrap">
+                    <label class="o_form_label">Confirm your password:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="password"
+                        name="confirm"
+                        id="confirm"
+                        required="required"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td class="o_td_label text-nowrap">
+                    <label class="o_form_label">Keyfile:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="file"
+                        name="keyfile"
+                        id="keyfile"
+                        required="required"
+                    />
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div t-name="vault.generate_pass" class="o_form_view">
+        <label for="password" class="col-lg-auto col-form-label">
+            Generate a new secret:
+        </label>
+
+        <table class="col o_group">
+            <tr>
+                <td class="o_td_label">
+                    <label class="o_form_label">Password:</label>
+                </td>
+                <td class="col-12">
+                    <span id="password" class="col-12 text-monospace" />
+                </td>
+            </tr>
+            <tr>
+                <td class="o_td_label">
+                    <label class="o_form_label">Length:</label>
+                </td>
+                <td class="col-12">
+                    <input
+                        type="range"
+                        id="length"
+                        min="8"
+                        max="64"
+                        value="15"
+                        class="col-12 custom-range align-middle"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <td class="o_td_label">
+                    <label class="o_form_label">Characters:</label>
+                </td>
+                <td class="col-12">
+                    <input type="checkbox" id="big_letter" checked="checked" />
+                    <label class="o_form_label">A-Z</label>
+
+                    <input type="checkbox" id="small_letter" checked="checked" />
+                    <label class="o_form_label">a-z</label>
+
+                    <input type="checkbox" id="digits" checked="checked" />
+                    <label class="o_form_label">0-9</label>
+
+                    <input type="checkbox" id="special" />
+                    <label class="o_form_label">Special</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+</templates>
