@@ -137,7 +137,9 @@ class AuthSamlProvider(models.Model):
         help="Whether metadata should be signed or not",
     )
 
-    allow_saml_unsolicited_req = fields.Boolean(compute="_compute_allow_saml_unsolicited")
+    allow_saml_unsolicited_req = fields.Boolean(
+            compute="_compute_allow_saml_unsolicited"
+    )
 
     @api.model
     def _sig_alg_selection(self):

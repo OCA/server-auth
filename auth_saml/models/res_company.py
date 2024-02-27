@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, api, fields, _
+
 class ResCompany(models.Model):
     _inherit = 'res.company'
 
