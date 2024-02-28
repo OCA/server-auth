@@ -3,7 +3,7 @@
 {
     "name": "User's Log Viewer",
     "summary": "Allow to see user's actions log",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "development_status": "Production/Stable",
     "category": "Extra Tools",
     "website": "https://github.com/OCA/server-auth",
