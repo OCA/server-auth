@@ -12,10 +12,6 @@
     "license": "LGPL-3",
     "application": False,
     "installable": True,
-    "depends": [
-        "base",
-    ],
-    "data": [
-        "views/res_users_views.xml",
-    ],
+    "depends": ["base"],
+    "data": ["views/res_users_views.xml"],
 }
