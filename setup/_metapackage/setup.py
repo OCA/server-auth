@@ -22,6 +22,7 @@ setuptools.setup(
         'odoo13-addon-auth_user_case_insensitive',
         'odoo13-addon-base_user_show_email',
         'odoo13-addon-password_security',
+        'odoo13-addon-user_log_view',
         'odoo13-addon-users_ldap_groups',
         'odoo13-addon-users_ldap_mail',
         'odoo13-addon-users_ldap_populate',
