@@ -1,6 +1,7 @@
 # © 2021 Florian Kantelberg - initOS GmbH
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
 import logging
 from datetime import datetime
 from uuid import uuid4
@@ -16,19 +17,20 @@ _logger = logging.getLogger(__name__)
 
 
 class TestShare(TransactionCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.user = self.env.user
-        self.vals = {
-            "name": f"Share {self.user.name}",
+        cls.user = cls.env.user
+        cls.vals = {
+            "name": f"Share {cls.user.name}",
             "secret": "secret",
             "salt": "sa17",
             "iv": "1v",
             "pin": "12345",
         }
 
-        self.share = self.env["vault.share"].create(self.vals)
+        cls.share = cls.env["vault.share"].create(cls.vals)
 
     @mute_logger("odoo.sql_db")
     def test_share(self):
@@ -56,18 +58,21 @@ class TestShare(TransactionCase):
     def test_vault_share(self):
         def return_context(template, context):
             self.assertEqual(template, "vault_share.share")
-            return context
+            return json.dumps(context)
+
+        def load(response):
+            return json.loads(response.data)
 
         with MockRequest(self.env) as request_mock:
             request_mock.render = return_context
             controller = main.Controller()
 
-            response = controller.vault_share("")
+            response = load(controller.vault_share(""))
             self.assertIn("error", response)
 
-            response = controller.vault_share(self.share.token)
+            response = load(controller.vault_share(self.share.token))
             self.assertEqual(response["salt"], self.share.salt)
 
             self.share.accesses = 0
-            response = controller.vault_share(self.share.token)
+            response = load(controller.vault_share(self.share.token))
             self.assertIn("error", response)

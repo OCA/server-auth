@@ -159,9 +159,6 @@ msgstr ""
 #. module: vault_share
 #. openerp-web
 #: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
 #, python-format
 msgid "Save in a vault"
 msgstr "Opslaan in een kluis"
@@ -195,7 +192,6 @@ msgstr "Deel het geheim"
 
 #. module: vault_share
 #. openerp-web
-#: code:addons/vault_share/static/src/backend/templates.xml:0
 #: code:addons/vault_share/static/src/backend/templates.xml:0
 #, python-format
 msgid "Share the secret with an external user"
