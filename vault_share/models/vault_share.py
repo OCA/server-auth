@@ -27,6 +27,7 @@ class VaultShare(models.Model):
     secret_file = fields.Char()
     filename = fields.Char()
     salt = fields.Char(required=True)
+    iterations = fields.Integer()
     iv = fields.Char(required=True)
     pin = fields.Char(required=True, help="The pin needed to decrypt the share.")
     accesses = fields.Integer(
@@ -70,12 +71,13 @@ class VaultShare(models.Model):
 
         return None
 
-    @api.model
-    def create(self, vals):
-        rec = super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super().create(vals_list)
         log = _("The share was created by %(name)s")
-        rec.log_ids = [(0, 0, {"name": log % {"name": self.env.user.name}})]
-        return rec
+        for rec in res:
+            rec.log_ids = [(0, 0, {"name": log % {"name": self.env.user.name}})]
+        return res
 
     @api.model
     def clean(self):

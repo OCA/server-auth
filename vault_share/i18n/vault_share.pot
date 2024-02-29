@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,7 +21,6 @@ msgstr ""
 #. module: vault_share
 #: model:ir.actions.server,name:vault_share.cron_share_clean_ir_actions_server
 #: model:ir.cron,cron_name:vault_share.cron_share_clean
-#: model:ir.cron,name:vault_share.cron_share_clean
 msgid "Clean outgoing share"
 msgstr ""
 
@@ -97,9 +96,15 @@ msgid "ID"
 msgstr ""
 
 #. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/controllers/main.py:0
 #, python-format
 msgid "Invalid token"
+msgstr ""
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__iterations
+msgid "Iterations"
 msgstr ""
 
 #. module: vault_share
@@ -137,6 +142,7 @@ msgid "Name"
 msgstr ""
 
 #. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/models/vault_share.py:0
 #: model:ir.model.constraint,message:vault_share.constraint_vault_share_value_check
 #, python-format
@@ -151,16 +157,6 @@ msgstr ""
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__salt
 msgid "Salt"
-msgstr ""
-
-#. module: vault_share
-#. openerp-web
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#, python-format
-msgid "Save in a vault"
 msgstr ""
 
 #. module: vault_share
@@ -184,16 +180,16 @@ msgid "Share URL"
 msgstr ""
 
 #. module: vault_share
-#. openerp-web
-#: code:addons/vault_share/static/src/legacy/vault_fields.js:0
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/vault_field.esm.js:0
 #, python-format
 msgid "Share the secret"
 msgstr ""
 
 #. module: vault_share
-#. openerp-web
-#: code:addons/vault_share/static/src/backend/templates.xml:0
-#: code:addons/vault_share/static/src/backend/templates.xml:0
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/templates.xml:0
+#: code:addons/vault_share/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Share the secret with an external user"
 msgstr ""
@@ -230,18 +226,21 @@ msgid "The pin needed to decrypt the share."
 msgstr ""
 
 #. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/controllers/main.py:0
 #, python-format
 msgid "The secret expired"
 msgstr ""
 
 #. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/models/vault_share.py:0
 #, python-format
 msgid "The share was accessed by %(name)s via %(ip)s"
 msgstr ""
 
 #. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/models/vault_share.py:0
 #, python-format
 msgid "The share was created by %(name)s"
@@ -263,11 +262,27 @@ msgid "Using this link and pin people can access the secret."
 msgstr ""
 
 #. module: vault_share
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/vault_pin_field.esm.js:0
+#, python-format
+msgid "Vault Pin Field"
+msgstr ""
+
+#. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_res_company__vault_share_delay
 msgid "Vault Share Delay"
 msgstr ""
 
 #. module: vault_share
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/vault_share_field.esm.js:0
+#: code:addons/vault_share/static/src/backend/fields/vault_share_file.esm.js:0
+#, python-format
+msgid "Vault Share Field"
+msgstr ""
+
+#. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/models/vault_share_log.py:0
 #: model:ir.model,name:vault_share.model_vault_share_log
 #, python-format
@@ -275,6 +290,7 @@ msgid "Vault share log"
 msgstr ""
 
 #. module: vault_share
+#. odoo-python
 #: code:addons/vault_share/models/vault_share.py:0
 #: model:ir.model,name:vault_share.model_vault_share
 #, python-format

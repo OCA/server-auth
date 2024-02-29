@@ -30,6 +30,7 @@ class Controller(http.Controller):
                 "iv": secret.iv,
                 "encrypted_file": secret.secret_file,
                 "filename": secret.filename,
+                "iterations": secret.iterations,
             }
         )
         return request.render("vault_share.share", ctx)
