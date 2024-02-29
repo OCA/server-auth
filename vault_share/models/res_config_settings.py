@@ -20,5 +20,5 @@ class ResConfigSettings(models.TransientModel):
     )
 
     @api.onchange("vault_share_delay")
-    def _on_change_mins(self):
+    def _onchange_vault_share_delay(self):
         self.vault_share_delay = max(0, self.vault_share_delay)
