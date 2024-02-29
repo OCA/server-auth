@@ -1,0 +1,296 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* vault_share
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-06 07:44+0000\n"
+"PO-Revision-Date: 2023-10-30 21:37+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__accesses
+msgid "Access counter"
+msgstr "Contador de acceso"
+
+#. module: vault_share
+#: model:ir.actions.server,name:vault_share.cron_share_clean_ir_actions_server
+#: model:ir.cron,cron_name:vault_share.cron_share_clean
+#: model:ir.cron,name:vault_share.cron_share_clean
+msgid "Clean outgoing share"
+msgstr "Limpiar recurso compartido externo"
+
+#. module: vault_share
+#: model:ir.model,name:vault_share.model_res_company
+msgid "Companies"
+msgstr "Compañías"
+
+#. module: vault_share
+#: model:ir.model,name:vault_share.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de Configuración"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__create_uid
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__create_date
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
+msgid "Days"
+msgstr "Días"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
+msgid "Delay the deletion of shares"
+msgstr "Retrasar el borrado de recursos compartidos"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_config_settings__vault_share_delay
+msgid "Delayed Deletion"
+msgstr "Retrasar borrado"
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_res_config_settings__vault_share_delay
+msgid ""
+"Delays the deletion of a share. After the expiration date it continues to "
+"stay inaccessible"
+msgstr ""
+"Retrasa la eliminación de un recurso compartido. Después de la fecha de "
+"caducidad sigue siendo inaccesible"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__display_name
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.share
+msgid "Enter the pin:"
+msgstr "Ingresa el pin:"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__expiration
+msgid "Expiration"
+msgstr "Expiración"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__filename
+msgid "Filename"
+msgstr "Nombre del fichero"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__id
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__id
+msgid "ID"
+msgstr "ID"
+
+#. module: vault_share
+#: code:addons/vault_share/controllers/main.py:0
+#, python-format
+msgid "Invalid token"
+msgstr "Token inválido"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__iv
+msgid "Iv"
+msgstr "Iv"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share____last_update
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__write_uid
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__write_uid
+msgid "Last Updated by"
+msgstr "Última modificación por"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__write_date
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__log_ids
+msgid "Log"
+msgstr "Registro"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__name
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share.py:0
+#: model:ir.model.constraint,message:vault_share.constraint_vault_share_value_check
+#, python-format
+msgid "No value found"
+msgstr "No se ha encontrado ningún valor"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__pin
+msgid "Pin"
+msgstr "Pin"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__salt
+msgid "Salt"
+msgstr "Sal"
+
+#. module: vault_share
+#. openerp-web
+#: code:addons/vault_share/static/src/backend/templates.xml:0
+#, python-format
+msgid "Save in a vault"
+msgstr "Guardar en un vault"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__secret
+msgid "Secret"
+msgstr "Secreto"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__secret_file
+msgid "Secret File"
+msgstr "Archivo de secretos"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__share_id
+msgid "Share"
+msgstr "Compartir"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__share_link
+msgid "Share URL"
+msgstr "Compartir url"
+
+#. module: vault_share
+#. openerp-web
+#: code:addons/vault_share/static/src/legacy/vault_fields.js:0
+#, python-format
+msgid "Share the secret"
+msgstr "Compartir el secreto"
+
+#. module: vault_share
+#. openerp-web
+#: code:addons/vault_share/static/src/backend/templates.xml:0
+#, python-format
+msgid "Share the secret with an external user"
+msgstr "Compartir el secreto con usuario externo"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.share
+msgid "Shared file:"
+msgstr "Archivo compartido:"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.share
+msgid "Shared secret:"
+msgstr "Secreto compartido:"
+
+#. module: vault_share
+#: model:ir.actions.act_window,name:vault_share.action_vault_share
+#: model:ir.ui.menu,name:vault_share.menu_vault_share
+msgid "Shares"
+msgstr "Recursos compartidos"
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__expiration
+msgid "Specifies how long a share can be accessed until deletion."
+msgstr ""
+"Especifica el tiempo que se puede acceder a un recurso compartido hasta su "
+"eliminación."
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__accesses
+msgid "Specifies how often a share can be accessed before deletion."
+msgstr ""
+"Especifica la frecuencia con la que se puede acceder a un recurso compartido "
+"antes de eliminarlo."
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__pin
+msgid "The pin needed to decrypt the share."
+msgstr "El pin necesario para descifrar el recurso compartido."
+
+#. module: vault_share
+#: code:addons/vault_share/controllers/main.py:0
+#, python-format
+msgid "The secret expired"
+msgstr "El secreto ha expirado"
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share.py:0
+#, python-format
+msgid "The share was accessed by %(name)s via %(ip)s"
+msgstr "%(name)s ha accedido a la acción a través de %(ip)s"
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share.py:0
+#, python-format
+msgid "The share was created by %(name)s"
+msgstr "La acción fue creada por %(name)s"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__token
+msgid "Token"
+msgstr "Token"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__user_id
+msgid "User"
+msgstr "Usuario"
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__share_link
+msgid "Using this link and pin people can access the secret."
+msgstr "Utilizando este enlace y el pin la gente puede acceder al secreto."
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_company__vault_share_delay
+msgid "Vault Share Delay"
+msgstr "Retraso de la Acción de la Bóveda"
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share_log.py:0
+#: model:ir.model,name:vault_share.model_vault_share_log
+#, python-format
+msgid "Vault share log"
+msgstr "Registro de compartición de la bóveda"
+
+#. module: vault_share
+#: code:addons/vault_share/models/vault_share.py:0
+#: model:ir.model,name:vault_share.model_vault_share
+#, python-format
+msgid "Vault share outgoing secrets"
+msgstr "La bóveda comparte secretos de salida"
+
+#, python-format
+#~ msgid "The share was accessed by %s via %s"
+#~ msgstr "El recurso compartido fue accedido por %s a través de %s"
+
+#, python-format
+#~ msgid "The share was created by %s"
+#~ msgstr "El recurso compartido fue creado por %s"

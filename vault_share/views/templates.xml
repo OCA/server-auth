@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="share">
+        <t t-call="web.login_layout">
+            <t
+                t-call-assets="vault_share.assets_frontend"
+                t-css="false"
+                defer_load="True"
+            />
+
+            <input type="hidden" id="encrypted" t-att-value="encrypted" />
+            <input type="hidden" id="encrypted_file" t-att-value="encrypted_file" />
+            <input type="hidden" id="filename" t-att-value="filename" />
+            <input type="hidden" id="salt" t-att-value="salt" />
+            <input type="hidden" id="iv" t-att-value="iv" />
+            <input type="hidden" id="iterations" t-att-value="iterations" />
+
+            <div class="form-group" t-if="not error">
+                <label for="pin">Enter the pin:</label>
+                <input type="text" id="pin" class="form-control col-12 alert-danger" />
+            </div>
+
+            <p class="alert alert-danger" t-if="error" role="alert" t-esc="error" />
+            <p
+                class="alert alert-success"
+                t-if="message"
+                role="status"
+                t-esc="message"
+            />
+
+            <div id="secret_group" class="form-group o_hidden" t-if="encrypted">
+                <label for="secret">Shared secret:</label>
+                <input
+                    type="text"
+                    id="secret"
+                    readonly="readonly"
+                    class="col-12 form-control"
+                />
+            </div>
+
+            <div id="file_group" class="form-group o_hidden" t-if="encrypted_file">
+                <label for="secret">Shared file:</label>
+                <div class="col-12">
+                    <a href="" id="secret_file" class="form-control" />
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
