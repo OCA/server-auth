@@ -29,6 +29,7 @@ setuptools.setup(
         'odoo-addon-users_ldap_mail>=16.0dev,<16.1dev',
         'odoo-addon-users_ldap_populate>=16.0dev,<16.1dev',
         'odoo-addon-vault>=16.0dev,<16.1dev',
+        'odoo-addon-vault_share>=16.0dev,<16.1dev',
     ],
     classifiers=[
         'Programming Language :: Python',
