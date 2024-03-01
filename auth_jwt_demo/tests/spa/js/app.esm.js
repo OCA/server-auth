@@ -1,4 +1,5 @@
-import {Oidc} from "./oidc-client.js";
+/* eslint-disable */
+import {Oidc} from "./oidc-client.esm.js";
 
 let client = null;
 
