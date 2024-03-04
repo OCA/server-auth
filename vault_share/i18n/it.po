@@ -1,0 +1,308 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* vault_share
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2024-03-08 15:34+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__accesses
+msgid "Access counter"
+msgstr "Contatore accessi"
+
+#. module: vault_share
+#: model:ir.actions.server,name:vault_share.cron_share_clean_ir_actions_server
+#: model:ir.cron,cron_name:vault_share.cron_share_clean
+msgid "Clean outgoing share"
+msgstr "Pulizia condivisione in uscita"
+
+#. module: vault_share
+#: model:ir.model,name:vault_share.model_res_company
+msgid "Companies"
+msgstr "Aziende"
+
+#. module: vault_share
+#: model:ir.model,name:vault_share.model_res_config_settings
+msgid "Config Settings"
+msgstr "Impostazioni configurazione"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__create_uid
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__create_date
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
+msgid "Days"
+msgstr "Giorni"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.res_config_settings_view_form
+msgid "Delay the deletion of shares"
+msgstr "Ritarda la cancellazione delle condivisioni"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_config_settings__vault_share_delay
+msgid "Delayed Deletion"
+msgstr "Cancellazioni ritardate"
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_res_config_settings__vault_share_delay
+msgid ""
+"Delays the deletion of a share. After the expiration date it continues to "
+"stay inaccessible"
+msgstr ""
+"Ritarda la cancellazione di una condivisione. Dopo la scadenza continua ad "
+"essere inaccessibile"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__display_name
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.share
+msgid "Enter the pin:"
+msgstr "Inserire il PIN:"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__expiration
+msgid "Expiration"
+msgstr "Scadenza"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__filename
+msgid "Filename"
+msgstr "Nome file"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__id
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__id
+msgid "ID"
+msgstr "ID"
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/controllers/main.py:0
+#, python-format
+msgid "Invalid token"
+msgstr "Token non valido"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__iterations
+msgid "Iterations"
+msgstr "Iterazioni"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__iv
+msgid "Iv"
+msgstr "Iv"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share____last_update
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log____last_update
+msgid "Last Modified on"
+msgstr "Ultima modifica il"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__write_uid
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__write_date
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__log_ids
+msgid "Log"
+msgstr "Log"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__name
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/models/vault_share.py:0
+#: model:ir.model.constraint,message:vault_share.constraint_vault_share_value_check
+#, python-format
+msgid "No value found"
+msgstr "Nessun valore trovato"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__pin
+msgid "Pin"
+msgstr "PIN"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__salt
+msgid "Salt"
+msgstr "Salt"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__secret
+msgid "Secret"
+msgstr "Segreto"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__secret_file
+msgid "Secret File"
+msgstr "File segreto"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share_log__share_id
+msgid "Share"
+msgstr "Condividi"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__share_link
+msgid "Share URL"
+msgstr "URL condivisione"
+
+#. module: vault_share
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/vault_field.esm.js:0
+#, python-format
+msgid "Share the secret"
+msgstr "Condividi il segreto"
+
+#. module: vault_share
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/templates.xml:0
+#: code:addons/vault_share/static/src/backend/fields/templates.xml:0
+#, python-format
+msgid "Share the secret with an external user"
+msgstr "Condividi il segreto con un utente esterno"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.share
+msgid "Shared file:"
+msgstr "File condiviso:"
+
+#. module: vault_share
+#: model_terms:ir.ui.view,arch_db:vault_share.share
+msgid "Shared secret:"
+msgstr "Segreto condiviso:"
+
+#. module: vault_share
+#: model:ir.actions.act_window,name:vault_share.action_vault_share
+#: model:ir.ui.menu,name:vault_share.menu_vault_share
+msgid "Shares"
+msgstr "Condivisioni"
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__expiration
+msgid "Specifies how long a share can be accessed until deletion."
+msgstr ""
+"Indica per quanto tempo si può accedere ad una condivisione prima della "
+"cancellazione."
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__accesses
+msgid "Specifies how often a share can be accessed before deletion."
+msgstr ""
+"Indica quante volte si può accedere ad una condivisione prima della "
+"cancellazione."
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__pin
+msgid "The pin needed to decrypt the share."
+msgstr "Il PIN richiesto per decriptare la condivisione."
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/controllers/main.py:0
+#, python-format
+msgid "The secret expired"
+msgstr "Il segreto è scaduto"
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/models/vault_share.py:0
+#, python-format
+msgid "The share was accessed by %(name)s via %(ip)s"
+msgstr "La codivisione è stata utilizzata da %(name)s attraverso %(ip)s"
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/models/vault_share.py:0
+#, python-format
+msgid "The share was created by %(name)s"
+msgstr "La condivisione è stata creata da %(name)s"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__token
+msgid "Token"
+msgstr "Token"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_vault_share__user_id
+msgid "User"
+msgstr "Utente"
+
+#. module: vault_share
+#: model:ir.model.fields,help:vault_share.field_vault_share__share_link
+msgid "Using this link and pin people can access the secret."
+msgstr ""
+"Utilizzando questo collegamento e PIN le persone possono accedere al segreto."
+
+#. module: vault_share
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/vault_pin_field.esm.js:0
+#, python-format
+msgid "Vault Pin Field"
+msgstr "Campo PIN deposito di sicurezza"
+
+#. module: vault_share
+#: model:ir.model.fields,field_description:vault_share.field_res_company__vault_share_delay
+msgid "Vault Share Delay"
+msgstr "Ritardo condivisione deposito di sicurezza"
+
+#. module: vault_share
+#. odoo-javascript
+#: code:addons/vault_share/static/src/backend/fields/vault_share_field.esm.js:0
+#: code:addons/vault_share/static/src/backend/fields/vault_share_file.esm.js:0
+#, python-format
+msgid "Vault Share Field"
+msgstr "Campo condivisione deposito di sicurezza"
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/models/vault_share_log.py:0
+#: model:ir.model,name:vault_share.model_vault_share_log
+#, python-format
+msgid "Vault share log"
+msgstr "Log condivisione deposito di sicurezza"
+
+#. module: vault_share
+#. odoo-python
+#: code:addons/vault_share/models/vault_share.py:0
+#: model:ir.model,name:vault_share.model_vault_share
+#, python-format
+msgid "Vault share outgoing secrets"
+msgstr "Segreti uscita condivisione deposito di sicurezza"
