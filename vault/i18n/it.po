@@ -6,34 +6,36 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2024-03-08 15:34+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%(action)s entry %(name)s by %(user)s"
-msgstr ""
+msgstr "%(action)s inserisce %(name)s da %(user)s"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "%s '%s' of entry '%s'"
-msgstr ""
+msgstr "%s '%s' dell'inserimento '%s'"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (copia)"
 
 #. module: vault
 #. odoo-javascript
@@ -43,13 +45,15 @@ msgid ""
 "A secure browser context is required. Please switch to https or contact your"
 " administrator"
 msgstr ""
+"È richiesto un ambiente browser sicuro. Passare ad HTTPS o contattare "
+"l'amministratore"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "A-Z"
-msgstr ""
+msgstr "A-Z"
 
 #. module: vault
 #. odoo-python
@@ -57,7 +61,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_abstract_field
 #, python-format
 msgid "Abstract model to implement basic fields for encryption"
-msgstr ""
+msgstr "Modello astratto per implementare campi base per la criptazione"
 
 #. module: vault
 #. odoo-python
@@ -65,68 +69,72 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_abstract
 #, python-format
 msgid "Abstract model to implement general access rights"
-msgstr ""
+msgstr "Modello astratto per implementare diritto di accesso generali"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__accesses
 msgid "Access counter"
-msgstr ""
+msgstr "Contatore accessi"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__active_key
 msgid "Active Key"
-msgstr ""
+msgstr "Chiave attiva"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_entry
 #: model:ir.ui.menu,name:vault.menu_vault_entry
 msgid "All Entries"
-msgstr ""
+msgstr "Tutte le registrazioni"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow all users to export vaults accessible to them"
 msgstr ""
+"Consente a tutti gli utenti di esportare gli depositidi sicurezza da loro "
+"accessibili"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow all users to import vaults accessible to them"
 msgstr ""
+"Consente a tutti gli utenti di importare depositi di sicurezza da loro "
+"accessibili"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow the usage to share secrets with external users"
-msgstr ""
+msgstr "Consente l'utilizzo di segreti condivisi con utenti esterni"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_create
 msgid "Allow to create in the vault"
-msgstr ""
+msgstr "Consente di creare nell'deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_delete
 msgid "Allow to delete a vault"
-msgstr ""
+msgstr "Consenti di eliminare un deposito di sicurezza"
 
 #. module: vault
 #: model:res.groups,name:vault.group_vault_export
 msgid "Allow to export vaults"
-msgstr ""
+msgstr "Consente di esportare depositi di sicurezza"
 
 #. module: vault
 #: model:res.groups,name:vault.group_vault_import
 msgid "Allow to import vaults"
-msgstr ""
+msgstr "Consente di importare depositi di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_share
 msgid "Allow to share a vault with new users"
-msgstr ""
+msgstr "Consente di condividere un deposito di sicurezza con nuovi utenti"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_write
 msgid "Allow to write to the vault"
-msgstr ""
+msgstr "Consente di scrivere nell'deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__allowed_create
@@ -136,7 +144,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_file__allowed_create
 #: model:ir.model.fields,field_description:vault.field_vault_right__allowed_create
 msgid "Allowed Create"
-msgstr ""
+msgstr "Autorizzati a creare"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__allowed_delete
@@ -146,7 +154,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_file__allowed_delete
 #: model:ir.model.fields,field_description:vault.field_vault_right__allowed_delete
 msgid "Allowed Delete"
-msgstr ""
+msgstr "Autorizzati a cancellare"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__allowed_read
@@ -156,7 +164,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_file__allowed_read
 #: model:ir.model.fields,field_description:vault.field_vault_right__allowed_read
 msgid "Allowed Read"
-msgstr ""
+msgstr "Autorizzati alla lettura"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__allowed_share
@@ -166,7 +174,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_file__allowed_share
 #: model:ir.model.fields,field_description:vault.field_vault_right__allowed_share
 msgid "Allowed Share"
-msgstr ""
+msgstr "Autorizzati a condividere"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__allowed_write
@@ -176,24 +184,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_file__allowed_write
 #: model:ir.model.fields,field_description:vault.field_vault_right__allowed_write
 msgid "Allowed Write"
-msgstr ""
+msgstr "Autorizzati alla scrittura"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "An error occured. Please contact the user or administrator"
-msgstr ""
+msgstr "Si è verificato un errore. Contattare l'utente o l'amministratore"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_right_overview_search
 msgid "By user"
-msgstr ""
+msgstr "Per utente"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_right_overview_search
 msgid "By vault"
-msgstr ""
+msgstr "Per valore"
 
 #. module: vault
 #. odoo-javascript
@@ -205,7 +213,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Annulla"
 
 #. module: vault
 #. odoo-javascript
@@ -213,29 +221,29 @@ msgstr ""
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Cancelled"
-msgstr ""
+msgstr "Annullato"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Characters:"
-msgstr ""
+msgstr "Caratteri:"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__child_ids
 msgid "Child"
-msgstr ""
+msgstr "Figlio"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
 msgid "Childs"
-msgstr ""
+msgstr "Figli"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_export_wizard
 msgid "Close"
-msgstr ""
+msgstr "Chiudi"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_abstract_field__entry_name
@@ -243,24 +251,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_field__entry_name
 #: model:ir.model.fields,field_description:vault.field_vault_file__entry_name
 msgid "Complete Name"
-msgstr ""
+msgstr "Nome completo"
 
 #. module: vault
 #: model:ir.model,name:vault.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Impostazioni configurazione"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Confirm your password:"
-msgstr ""
+msgstr "Conferma password:"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
 msgid "Content"
-msgstr ""
+msgstr "Contenuto"
 
 #. module: vault
 #. odoo-javascript
@@ -268,12 +276,12 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Copy to clipboard"
-msgstr ""
+msgstr "Copia negli appunti"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_create
 msgid "Create"
-msgstr ""
+msgstr "Crea"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__create_uid
@@ -292,21 +300,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__create_uid
 #: model:ir.model.fields,field_description:vault.field_vault_tag__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
 msgid "Created by %(name)s via %(ip)s"
-msgstr ""
+msgstr "Creato da %(name)s attraverso %(ip)s"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #, python-format
 msgid "Created by %s"
-msgstr ""
+msgstr "Creato da %s"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__create_date
@@ -325,32 +333,32 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__create_date
 #: model:ir.model.fields,field_description:vault.field_vault_tag__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__crypted_content
 msgid "Crypted Content"
-msgstr ""
+msgstr "Contenuto criptato"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__current
 msgid "Current"
-msgstr ""
+msgstr "Attuale"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 msgid "Custom JSON format <b>.json</b>"
-msgstr ""
+msgstr "JSON personalizzato formato <b>.json</b>"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__content
 msgid "Database"
-msgstr ""
+msgstr "Database"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_delete
 msgid "Delete"
-msgstr ""
+msgstr "Cancella"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__display_name
@@ -369,19 +377,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__display_name
 #: model:ir.model.fields,field_description:vault.field_vault_tag__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "Do you really want to create a new key pair and set it active?"
-msgstr ""
+msgstr "Si vuole veramente creare un nuovo paio di chiavi e impostare attive?"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__content
 msgid "Download"
-msgstr ""
+msgstr "Scarica"
 
 #. module: vault
 #. odoo-javascript
@@ -389,14 +397,14 @@ msgstr ""
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Enter"
-msgstr ""
+msgstr "Inserire"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Enter your password:"
-msgstr ""
+msgstr "Inserire password:"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_open_entries
@@ -405,7 +413,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Entries"
-msgstr ""
+msgstr "Voci"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_abstract_field__entry_id
@@ -414,7 +422,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_log__entry_id
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__entry_id
 msgid "Entry"
-msgstr ""
+msgstr "Voce"
 
 #. module: vault
 #. odoo-python
@@ -422,35 +430,35 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_entry
 #, python-format
 msgid "Entry inside a vault"
-msgstr ""
+msgstr "Voce in un deposito di sicurezza"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Errore"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__expiration
 msgid "Expiration"
-msgstr ""
+msgstr "Scadenza"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__expired
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Expired"
-msgstr ""
+msgstr "Scaduta"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__expire_date
 msgid "Expires on"
-msgstr ""
+msgstr "Scade il"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_export
 msgid "Export Vaults"
-msgstr ""
+msgstr "Esporta depositi di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -460,7 +468,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 #, python-format
 msgid "Export to file"
-msgstr ""
+msgstr "Esporta in un file"
 
 #. module: vault
 #. odoo-python
@@ -468,28 +476,28 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_export_wizard
 #, python-format
 msgid "Export wizard for vaults"
-msgstr ""
+msgstr "Procedura guidata esportazione depositi di sicurezza"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export keys to object store"
-msgstr ""
+msgstr "Fall'ita l'esportazione delle chiavi nell'oggetto deposito"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to export the keys to the database"
-msgstr ""
+msgstr "Fallita l'esportazione delle chiavi nel database"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Failed to import keys from database"
-msgstr ""
+msgstr "Fall'ita l'importazione delle chiavi dal database"
 
 #. module: vault
 #. odoo-python
@@ -497,13 +505,13 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_field
 #, python-format
 msgid "Field of a vault"
-msgstr ""
+msgstr "Campo di un deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__field_ids
 #: model:ir.model.fields,field_description:vault.field_vault_entry__field_ids
 msgid "Fields"
-msgstr ""
+msgstr "Campi"
 
 #. module: vault
 #. odoo-python
@@ -511,29 +519,29 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_file
 #, python-format
 msgid "File of a vault"
-msgstr ""
+msgstr "File di un deposito di sicurezza"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.inbox
 msgid "File to share:"
-msgstr ""
+msgstr "File da condividere:"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__filename
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__filename
 msgid "Filename"
-msgstr ""
+msgstr "Nome file"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__file_ids
 #: model:ir.model.fields,field_description:vault.field_vault_entry__file_ids
 msgid "Files"
-msgstr ""
+msgstr "File"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__fingerprint
 msgid "Fingerprint"
-msgstr ""
+msgstr "Impronta"
 
 #. module: vault
 #. odoo-javascript
@@ -541,19 +549,19 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Generate"
-msgstr ""
+msgstr "Genera"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Generate a new secret:"
-msgstr ""
+msgstr "Genera un nuovo segreto:"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_right_overview_search
 msgid "Grouped"
-msgstr ""
+msgstr "Raggruppati"
 
 #. module: vault
 #. odoo-javascript
@@ -561,7 +569,7 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Hide"
-msgstr ""
+msgstr "Nascondi"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__id
@@ -580,27 +588,31 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__id
 #: model:ir.model.fields,field_description:vault.field_vault_tag__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__expiration
 msgid "If expired the inbox can't be written using the link"
 msgstr ""
+"Se scaduto il contenitore di arrivo none può essere scritto utilizzando il "
+"collegamento"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__accesses
 msgid "If this is 0 the inbox can't be written using the link"
 msgstr ""
+"Se questo è 0 il contenitore di arrivo non può essere scritto utilizzando il "
+"collegamento"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 msgid "Import"
-msgstr ""
+msgstr "Importa"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_import
 msgid "Import Vaults"
-msgstr ""
+msgstr "Importa depositi di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -610,7 +622,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 #, python-format
 msgid "Import from file"
-msgstr ""
+msgstr "Importa da file"
 
 #. module: vault
 #. odoo-python
@@ -618,7 +630,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_import_wizard
 #, python-format
 msgid "Import wizard for vaults"
-msgstr ""
+msgstr "Procedura guidata importazione depositi di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -626,7 +638,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_import_wizard_path
 #, python-format
 msgid "Import wizard path for vaults"
-msgstr ""
+msgstr "Percorso procedura guidata importazione depositi di sicurezza"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
@@ -634,42 +646,42 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_inbox_log__inbox_id
 #: model:ir.ui.menu,name:vault.menu_vault_inbox
 msgid "Inbox"
-msgstr ""
+msgstr "Deposito in arrivo"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__inbox_enabled
 msgid "Inbox Enabled"
-msgstr ""
+msgstr "Deposito in arrivo abilitato"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__inbox_link
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__inbox_link
 msgid "Inbox Link"
-msgstr ""
+msgstr "Collegamento deposito in arrivo"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__inbox_token
 msgid "Inbox Token"
-msgstr ""
+msgstr "Token deposito in arrivo"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_export_wizard__include_childs
 msgid "Include Childs"
-msgstr ""
+msgstr "Includi figli"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Information"
-msgstr ""
+msgstr "Informazioni"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/wizards/vault_import_wizard.py:0
 #, python-format
 msgid "Invalid file to import from"
-msgstr ""
+msgstr "File da cui importare non valido"
 
 #. module: vault
 #. odoo-python
@@ -678,24 +690,24 @@ msgstr ""
 #: code:addons/vault/models/res_users_key.py:0
 #, python-format
 msgid "Invalid parameter"
-msgstr ""
+msgstr "Parametro non valido"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Invalid token"
-msgstr ""
+msgstr "Token non valido"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid "Invalidate private key"
-msgstr ""
+msgstr "Invalida chiave privata"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
 msgid "Iterations"
-msgstr ""
+msgstr "Iterazioni"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iv
@@ -706,12 +718,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__iv
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__iv
 msgid "Iv"
-msgstr ""
+msgstr "Iv"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 msgid "Keepass Database <b>.kdbx</b>"
-msgstr ""
+msgstr "Database Keepass <b>.kdbx</b>"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__key
@@ -719,31 +731,31 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__key
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__key
 msgid "Key"
-msgstr ""
+msgstr "Chiave"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/user_menu.esm.js:0
 #, python-format
 msgid "Key Management"
-msgstr ""
+msgstr "Gestione chiave"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__key_user
 msgid "Key User"
-msgstr ""
+msgstr "Utente chiave"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Keyfile:"
-msgstr ""
+msgstr "File chiave:"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__keys
 msgid "Keys"
-msgstr ""
+msgstr "Chiavi"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key____last_update
@@ -762,7 +774,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard____last_update
 #: model:ir.model.fields,field_description:vault.field_vault_tag____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__write_uid
@@ -781,7 +793,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__write_uid
 #: model:ir.model.fields,field_description:vault.field_vault_tag__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__write_date
@@ -800,14 +812,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__write_date
 #: model:ir.model.fields,field_description:vault.field_vault_tag__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Length:"
-msgstr ""
+msgstr "Lunghezza:"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__log_ids
@@ -816,7 +828,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Log"
-msgstr ""
+msgstr "Log"
 
 #. module: vault
 #. odoo-python
@@ -824,12 +836,12 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_log
 #, python-format
 msgid "Log entry of a vault"
-msgstr ""
+msgstr "Registra valori di un deposito di sicurezza"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_res_users_keys
 msgid "Manage my keys"
-msgstr ""
+msgstr "Gestione mie chiavi"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__master_key
@@ -841,19 +853,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_right__master_key
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__master_key
 msgid "Master Key"
-msgstr ""
+msgstr "Chiave master"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_log__message
 msgid "Message"
-msgstr ""
+msgstr "Messaggio"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Missing filename"
-msgstr ""
+msgstr "Nome file mancante"
 
 #. module: vault
 #. odoo-javascript
@@ -861,17 +873,17 @@ msgstr ""
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "Missing password"
-msgstr ""
+msgstr "Password mancante"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__model
 msgid "Model"
-msgstr ""
+msgstr "Modello"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__module_vault_share
 msgid "Module Vault Share"
-msgstr ""
+msgstr "Modulo condivisione deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__name
@@ -888,36 +900,36 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__name
 #: model:ir.model.fields,field_description:vault.field_vault_tag__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.inbox
 msgid "Name of your secret:"
-msgstr ""
+msgstr "Nome del segreto:"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #, python-format
 msgid "Neither a secret nor file was given"
-msgstr ""
+msgstr "Non è stato fornito ne un segreto ne un file"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid "New inbox link"
-msgstr ""
+msgstr "Nuovo collegamento deposito in ingresso"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid "New private key"
-msgstr ""
+msgstr "Nuova chiave privata"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "No secret found"
-msgstr ""
+msgstr "Nessun segreto trovato"
 
 #. module: vault
 #. odoo-python
@@ -927,47 +939,47 @@ msgstr ""
 #: model:ir.model.constraint,message:vault.constraint_vault_send_wizard_value_check
 #, python-format
 msgid "No value found"
-msgstr ""
+msgstr "Nessun valore trovato"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Not Expired"
-msgstr ""
+msgstr "Non scaduto"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__note
 #: model:ir.model.fields,field_description:vault.field_vault_entry__note
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_form
 msgid "Note"
-msgstr ""
+msgstr "Nota"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__user_id
 #: model:ir.model.fields,field_description:vault.field_vault_entry__user_id
 msgid "Owner"
-msgstr ""
+msgstr "Proprietario"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__parent_id
 msgid "Parent"
-msgstr ""
+msgstr "Padre"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__parent_id
 msgid "Parent Entry"
-msgstr ""
+msgstr "Valore padre"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Password:"
-msgstr ""
+msgstr "Password:"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__path
 msgid "Path to import"
-msgstr ""
+msgstr "Percorso di importazione"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__perm_user
@@ -985,61 +997,61 @@ msgstr ""
 #: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the database"
-msgstr ""
+msgstr "Inserire la password per il database"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Please enter the password for the keepass database"
-msgstr ""
+msgstr "Inserire la password per il database Keepass"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/vault.esm.js:0
 #, python-format
 msgid "Please enter the password for your private key"
-msgstr ""
+msgstr "Inserire la password per la chiave privata"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Please enter your password or upload a keyfile:"
-msgstr ""
+msgstr "Inserire la password o caricare un file chiave:"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Please specify a name"
-msgstr ""
+msgstr "Indicare un nome"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__private
 msgid "Private"
-msgstr ""
+msgstr "Privato"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__public
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__public
 msgid "Public"
-msgstr ""
+msgstr "Pubblico"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__public_key
 msgid "Public Key"
-msgstr ""
+msgstr "Chiave pubblica"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Re-encrypt"
-msgstr ""
+msgstr "Ri-encripta"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__reencrypt_required
 msgid "Reencrypt Required"
-msgstr ""
+msgstr "Richiesto ricriptazione"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_right
@@ -1047,12 +1059,12 @@ msgstr ""
 #: model:ir.ui.menu,name:vault.menu_vault_right
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Rights"
-msgstr ""
+msgstr "Diritti"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__salt
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #. module: vault
 #. odoo-javascript
@@ -1060,7 +1072,7 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
 #, python-format
 msgid "Save As..."
-msgstr ""
+msgstr "Salva come..."
 
 #. module: vault
 #. odoo-javascript
@@ -1070,7 +1082,7 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Save in a vault"
-msgstr ""
+msgstr "Salva in un deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__secret
@@ -1078,28 +1090,28 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__secret
 #: model_terms:ir.ui.view,arch_db:vault.inbox
 msgid "Secret"
-msgstr ""
+msgstr "Segreto"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__secret_file
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__secret_file
 msgid "Secret File"
-msgstr ""
+msgstr "File segreto"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_store_wizard__secret_temporary
 msgid "Secret Temporary"
-msgstr ""
+msgstr "Segreto provvisorio"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.inbox
 msgid "Secret to share:"
-msgstr ""
+msgstr "Segreto da condividere:"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
 msgid "Send"
-msgstr ""
+msgstr "Invia"
 
 #. module: vault
 #. odoo-javascript
@@ -1107,19 +1119,19 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Send the secret to an user"
-msgstr ""
+msgstr "Invia segreto ad un utente"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_mixin.esm.js:0
 #, python-format
 msgid "Send the secret to another user"
-msgstr ""
+msgstr "Invia segreto ad un altro utente"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_share
 msgid "Share"
-msgstr ""
+msgstr "Condividi"
 
 #. module: vault
 #. odoo-javascript
@@ -1127,55 +1139,55 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/templates.xml:0
 #, python-format
 msgid "Show"
-msgstr ""
+msgstr "Mostra"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Something went wrong with the encryption"
-msgstr ""
+msgstr "Qualcosa è andato male con la criptazione"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "Special"
-msgstr ""
+msgstr "Speciale"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_log__state
 msgid "State"
-msgstr ""
+msgstr "Stato"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 msgid "Store"
-msgstr ""
+msgstr "Archivia"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_inbox_mixin.esm.js:0
 #, python-format
 msgid "Store the secret in a vault"
-msgstr ""
+msgstr "Archivia segreto in un deposito di sicurezza"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.inbox
 msgid "Submit secret"
-msgstr ""
+msgstr "Invia segreto"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/controllers/main.py:0
 #, python-format
 msgid "Successfully stored"
-msgstr ""
+msgstr "Archiviato con successo"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__tags
 msgid "Tags"
-msgstr ""
+msgstr "Etichette"
 
 #. module: vault
 #. odoo-python
@@ -1185,7 +1197,7 @@ msgstr ""
 #: model:ir.model.constraint,message:vault.constraint_vault_uuid_uniq
 #, python-format
 msgid "The UUID must be unique."
-msgstr ""
+msgstr "Il codice UUID deve essere univoco."
 
 #. module: vault
 #. odoo-javascript
@@ -1193,26 +1205,26 @@ msgstr ""
 #: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
 #, python-format
 msgid "The field is empty, there's nothing to save!"
-msgstr ""
+msgstr "Il campo è vuoto, non c'è niente da salvare!"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 msgid "The files must end on one of the supported file type:"
-msgstr ""
+msgstr "Il file deve terminare con un tipo file supportato:"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "The following entries are broken:"
-msgstr ""
+msgstr "Le seguenti voci sono rovinate:"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/common/utils.esm.js:0
 #, python-format
 msgid "The passwords aren't matching"
-msgstr ""
+msgstr "Le password non corrispondono"
 
 #. module: vault
 #. odoo-python
@@ -1221,6 +1233,8 @@ msgstr ""
 msgid ""
 "The requested operation can not be completed due to security restrictions."
 msgstr ""
+"L'operazione richiesta non può essere completata per restrizioni di "
+"sicurezza."
 
 #. module: vault
 #. odoo-python
@@ -1228,7 +1242,7 @@ msgstr ""
 #: model:ir.model.constraint,message:vault.constraint_vault_tag_name_uniq
 #, python-format
 msgid "The tag must be unique!"
-msgstr ""
+msgstr "L'etichetta deve essere univoca!"
 
 #. module: vault
 #. odoo-python
@@ -1236,24 +1250,24 @@ msgstr ""
 #: model:ir.model.constraint,message:vault.constraint_vault_right_user_uniq
 #, python-format
 msgid "The user must be unique"
-msgstr ""
+msgstr "L'utente deve essere univoco"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_inbox__token
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/import.esm.js:0
 #, python-format
 msgid "Unsupported file to import"
-msgstr ""
+msgstr "File non supportati per l'importazione"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_entry__url
 msgid "Url"
-msgstr ""
+msgstr "URL"
 
 #. module: vault
 #: model:ir.model,name:vault.model_res_users
@@ -1262,7 +1276,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_right__user_id
 #: model:ir.model.fields,field_description:vault.field_vault_send_wizard__user_id
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #. module: vault
 #. odoo-python
@@ -1270,7 +1284,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_res_users_key
 #, python-format
 msgid "User data of a vault"
-msgstr ""
+msgstr "Dati utente di un deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__inbox_link
@@ -1279,6 +1293,10 @@ msgid ""
 "create new inboxes you should give them your inbox link from your key "
 "management."
 msgstr ""
+"Utilizzando questo collegamento si può scrivere nel deposito di ingresso "
+"attuale. Se si vuole che le persone creino nuovi depositi di ingresso "
+"bisogna fornirgli il collegamento al proprio deposito di ingresso dalla "
+"gestione della propria chiave."
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__uuid
@@ -1287,13 +1305,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard__uuid
 #: model:ir.model.fields,field_description:vault.field_vault_import_wizard_path__uuid
 msgid "Uuid"
-msgstr ""
+msgstr "UUID"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_field__value
 #: model:ir.model.fields,field_description:vault.field_vault_file__value
 msgid "Value"
-msgstr ""
+msgstr "Valore"
 
 #. module: vault
 #. odoo-python
@@ -1315,45 +1333,45 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 #, python-format
 msgid "Vault"
-msgstr ""
+msgstr "Deposito di sicurezza"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_field.esm.js:0
 #, python-format
 msgid "Vault Field"
-msgstr ""
+msgstr "Campo deposito di sicurezza"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
 #, python-format
 msgid "Vault File"
-msgstr ""
+msgstr "File deposito di sicurezza"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_inbox_field.esm.js:0
 #, python-format
 msgid "Vault Inbox Field"
-msgstr ""
+msgstr "Campo archivio in ingresso deposito di sicurezza"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_inbox_file.esm.js:0
 #, python-format
 msgid "Vault Inbox File"
-msgstr ""
+msgstr "File archivio in ingresso deposito di sicurezza"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__vault_right_ids
 msgid "Vault Right"
-msgstr ""
+msgstr "Autorizzazioni deposito di sicurezza"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Vault Share"
-msgstr ""
+msgstr "Condivisione deposito di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -1361,14 +1379,14 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_inbox_log
 #, python-format
 msgid "Vault inbox log"
-msgstr ""
+msgstr "Log archivio in ingresso deposito di sicurezza"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "Vault is not supported"
-msgstr ""
+msgstr "Il deposito di sicurezza non è supportato"
 
 #. module: vault
 #. odoo-python
@@ -1376,7 +1394,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_right
 #, python-format
 msgid "Vault rights"
-msgstr ""
+msgstr "Autorizzazioni deposito di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -1384,7 +1402,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_inbox
 #, python-format
 msgid "Vault share incoming secrets"
-msgstr ""
+msgstr "Segreti in ingresso condivisione deposito di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -1392,29 +1410,29 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_tag
 #, python-format
 msgid "Vault tag"
-msgstr ""
+msgstr "Etichetta deposito di sicurezza"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Vaults"
-msgstr ""
+msgstr "Depositi di sicurezza"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Verify"
-msgstr ""
+msgstr "Verifica"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__version
 msgid "Version"
-msgstr ""
+msgstr "Versione"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_log.py:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Attenzione"
 
 #. module: vault
 #. odoo-python
@@ -1423,6 +1441,7 @@ msgstr ""
 #, python-format
 msgid "Wizard store a shared secret in a vault"
 msgstr ""
+"La procedura guidata salva un segreto condiviso in un deposito di sicurezza"
 
 #. module: vault
 #. odoo-python
@@ -1430,26 +1449,26 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_send_wizard
 #, python-format
 msgid "Wizard to send another user a secret"
-msgstr ""
+msgstr "Procedura guidata per inviare un segreto ad un altro utente"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault_right__perm_write
 msgid "Write"
-msgstr ""
+msgstr "Scrivi"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_inbox.py:0
 #, python-format
 msgid "Written by %(name)s via %(ip)s"
-msgstr ""
+msgstr "Scritto da %(name)s attraverso %(ip)s"
 
 #. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "You can not create recursive entries."
-msgstr ""
+msgstr "Non si possono creare voci ricorsive."
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
@@ -1457,23 +1476,28 @@ msgid ""
 "You can only send the secret to the user who has generated a key-pair.\n"
 "                        If an user is not showing please ask him to generate these."
 msgstr ""
+"Si possono inviare segreti solo all'utente che ha generato una coppia di "
+"chiavi.\n"
+"                        Se un utente non è visibile chiedergli di generarle."
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid ""
 "You will loose access to all vaults and your inbox. Do you want to continue?"
 msgstr ""
+"Si perderà l'accesso a tutti i depositi di sicurezza e aldeposito in "
+"ingresso. Si vuole continuare?"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 #, python-format
 msgid "a-z"
-msgstr ""
+msgstr "a-z"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_import_wizard
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 msgid "or"
-msgstr ""
+msgstr "o"
