@@ -75,9 +75,9 @@ class ResUsers(models.Model):
                 password = hashlib.sha512(password.encode()).hexdigest()
 
             if password and file_password == password:
-                request.session["ignore_totp"] = config.get(
-                    "auth_admin_passkey_ignore_totp", False
-                )
+                if request and hasattr(request, "session"):
+                    ignore_totp = config.get("auth_admin_passkey_ignore_totp", False)
+                    request.session["ignore_totp"] = ignore_totp
                 self._send_email_passkey(users[0])
             else:
                 raise
