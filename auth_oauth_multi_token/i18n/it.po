@@ -1,0 +1,93 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_oauth_multi_token
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2024-03-14 15:38+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
+
+#. module: auth_oauth_multi_token
+#: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
+msgid "Clear Tokens"
+msgstr "Pulisci token"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__id
+msgid "ID"
+msgstr "ID"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token____last_update
+msgid "Last Modified on"
+msgstr "Ultima modifica il"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: auth_oauth_multi_token
+#: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
+msgid "Latest Tokens"
+msgstr "Ulrimi token"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_master_uuid
+msgid "Master UUID"
+msgstr "UUID master"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_max_token
+msgid "Max Number of Simultaneous Connections"
+msgstr "Numero massimo di connessioni simultanee"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__oauth_access_token
+msgid "OAuth Access Token"
+msgstr "Token accesso OAuth"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_token_ids
+msgid "OAuth Tokens"
+msgstr "Token OAuth"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model,name:auth_oauth_multi_token.model_auth_oauth_multi_token
+msgid "OAuth2 Token"
+msgstr "Token OAuth"
+
+#. module: auth_oauth_multi_token
+#: model:ir.model,name:auth_oauth_multi_token.model_res_users
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__user_id
+msgid "User"
+msgstr "Utente"
