@@ -5,7 +5,7 @@
     "name": "Auth Oidc Environment",
     "summary": """
         This module allows to use server env for OIDC configuration""",
-    "version": "14.0.1.0.0",
+    "version": "14.0.1.0.1",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",

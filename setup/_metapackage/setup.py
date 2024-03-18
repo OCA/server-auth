@@ -18,6 +18,7 @@ setuptools.setup(
         'odoo14-addon-auth_ldaps',
         'odoo14-addon-auth_oauth_multi_token',
         'odoo14-addon-auth_oidc',
+        'odoo14-addon-auth_oidc_environment',
         'odoo14-addon-auth_saml',
         'odoo14-addon-auth_session_timeout',
         'odoo14-addon-auth_signup_verify_email',
