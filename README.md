@@ -30,7 +30,7 @@ addon | version | maintainers | summary
 [auth_ldaps](auth_ldaps/) | 16.0.1.0.0 |  | Allows to use LDAP over SSL authentication
 [auth_oauth_multi_token](auth_oauth_multi_token/) | 16.0.1.0.0 |  | Allow multiple connection with the same OAuth account
 [auth_oauth_ropc](auth_oauth_ropc/) | 16.0.1.0.0 |  | Allow to login with OAuth Resource Owner Password Credentials Grant
-[auth_oidc](auth_oidc/) | 16.0.1.0.2 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
+[auth_oidc](auth_oidc/) | 16.0.1.1.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_oidc_environment](auth_oidc_environment/) | 16.0.1.0.0 |  | This module allows to use server env for OIDC configuration
 [auth_saml](auth_saml/) | 16.0.1.0.4 | [![vincent-hatakeyama](https://github.com/vincent-hatakeyama.png?size=30px)](https://github.com/vincent-hatakeyama) | SAML2 Authentication
 [auth_session_timeout](auth_session_timeout/) | 16.0.1.0.0 |  | This module disable all inactive sessions since a given delay
