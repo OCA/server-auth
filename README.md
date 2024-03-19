@@ -26,7 +26,7 @@ addon | version | maintainers | summary
 [auth_jwt](auth_jwt/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | JWT bearer token authentication.
 [auth_jwt_demo](auth_jwt_demo/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
 [auth_ldaps](auth_ldaps/) | 13.0.1.0.2 |  | Allows to use LDAP over SSL authentication
-[auth_oauth_autologin](auth_oauth_autologin/) | 13.0.1.0.2 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Automatically redirect to the OAuth provider for login
+[auth_oauth_autologin](auth_oauth_autologin/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Automatically redirect to the OAuth provider for login
 [auth_oauth_multi_token](auth_oauth_multi_token/) | 13.0.2.0.0 |  | Allow multiple connection with the same OAuth account
 [auth_oidc](auth_oidc/) | 13.0.1.1.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 13.0.1.0.2 |  | Saml2 Authentication
