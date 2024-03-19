@@ -189,10 +189,10 @@ class AuthJwtValidator(models.Model):
         else:
             try:
                 header = jwt.get_unverified_header(token)
+                key = self._get_key(header.get("kid"))  # Can raise PyJWKClientError
             except Exception as e:
                 _logger.info("Invalid token: %s", e)
                 raise UnauthorizedInvalidToken() from e
-            key = self._get_key(header.get("kid"))
             algorithm = self.public_key_algorithm
         try:
             payload = jwt.decode(
