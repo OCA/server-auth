@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 
 class OpenIDLogin(OAuthLogin):
     def list_providers(self):
-        providers = super(OpenIDLogin, self).list_providers()
+        providers = super().list_providers()
         for provider in providers:
             flow = provider.get("flow")
             if flow in ("id_token", "id_token_code"):
