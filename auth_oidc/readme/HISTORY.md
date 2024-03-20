@@ -1,3 +1,7 @@
+## 17.0.1.0.0 2024-03-20
+
+- Odoo 17 migration
+
 ## 16.0.1.1.0 2024-02-28
 
 - Forward port OpenID Connect fixes from 15.0 to 16.0
