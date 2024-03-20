@@ -56,7 +56,7 @@ class ResUsers(models.Model):
                 oauth_provider, params
             )
         else:
-            return super(ResUsers, self).auth_oauth(provider, params)
+            return super().auth_oauth(provider, params)
         if not access_token:
             _logger.error("No access_token in response.")
             raise AccessDenied()
