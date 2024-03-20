@@ -21,7 +21,9 @@ class OAuthAutoLogin(OAuthLogin):
             return providers[0].get("auth_link")
 
     @http.route(
-        "/auth/auto_login_redirect_link", type="json", auth="none",
+        "/auth/auto_login_redirect_link",
+        type="json",
+        auth="none",
     )
     def auto_login_redirect_link(self, *args, **kwargs):
         redirect = kwargs.get("redirect")

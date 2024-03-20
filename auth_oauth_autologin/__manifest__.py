@@ -5,12 +5,15 @@
     "name": "Auth Oauth Autologin",
     "summary": """
         Automatically redirect to the OAuth provider for login""",
-    "version": "13.0.1.1.0",
+    "version": "16.0.1.0.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "maintainers": ["sbidoul"],
     "website": "https://github.com/OCA/server-auth",
     "depends": ["auth_oauth"],
-    "data": ["views/assets.xml", "views/auth_oauth_provider.xml"],
+    "data": ["views/auth_oauth_provider.xml"],
     "demo": [],
+    "assets": {
+        "web.assets_frontend": ["auth_oauth_autologin/static/src/js/web_login.js"]
+    },
 }

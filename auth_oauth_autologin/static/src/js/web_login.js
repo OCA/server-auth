@@ -1,15 +1,12 @@
-odoo.define("auth_oauth_autologin.redirect", function(require) {
+odoo.define("auth_oauth_autologin.redirect", function (require) {
     "use strict";
 
-    var publicWidget = require("web.public.widget");
+    const publicWidget = require("web.public.widget");
 
-    publicWidget.registry.authOauthAutologinWidget = publicWidget.Widget.extend({
+    publicWidget.registry.login.include({
         selector: ".oe_login_form",
 
-        /**
-         * @override
-         */
-        start: function() {
+        start: function () {
             const def = this._super.apply(this, arguments);
             let url = window.location.href;
             if (url.includes("/web/login")) {
@@ -20,7 +17,7 @@ odoo.define("auth_oauth_autologin.redirect", function(require) {
                 params: {
                     redirect: url,
                 },
-            }).then(function(result) {
+            }).then(function (result) {
                 if (result) {
                     window.location = result;
                 }
