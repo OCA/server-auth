@@ -105,11 +105,11 @@ class DummyResponse:
 
 
 class FakeIDP(Server):
-    def __init__(self, metadatas=None):
-        settings = CONFIG
+    def __init__(self, metadatas=None, settings=None):
+        if settings is None:
+            settings = CONFIG
         if metadatas:
             settings.update({"metadata": {"inline": metadatas}})
-
         config = Saml2Config()
         config.load(settings)
         config.allow_unknown_attributes = True
