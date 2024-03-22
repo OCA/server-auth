@@ -36,6 +36,10 @@ class ResUsers(models.Model):
     def get_password_policy(self):
         data = super(ResUsers, self).get_password_policy()
         company_id = self.env.user.company_id
+
+        if not company_id.password_policy_enabled:
+            return data
+
         data.update(
             {
                 "password_lower": company_id.password_lower,
@@ -49,10 +53,10 @@ class ResUsers(models.Model):
     def _check_password_policy(self, passwords):
         result = super(ResUsers, self)._check_password_policy(passwords)
 
-        for password in passwords:
+        for user, password in zip(self, passwords):
             if not password:
                 continue
-            self._check_password(password)
+            user._check_password(password)
 
         return result
 
@@ -92,6 +96,8 @@ class ResUsers(models.Model):
         return "\r".join(message)
 
     def _check_password(self, password):
+        if not self.company_id.password_policy_enabled:
+            return True
         self._check_password_rules(password)
         self._check_password_history(password)
         return True
@@ -118,6 +124,9 @@ class ResUsers(models.Model):
 
     def _password_has_expired(self):
         self.ensure_one()
+        if not self.company_id.password_policy_enabled:
+            return False
+
         if not self.password_write_date:
             return True
 
@@ -140,6 +149,9 @@ class ResUsers(models.Model):
         :return: True on allowed reset
         """
         for user in self:
+            if not user.company_id.password_policy_enabled:
+                continue
+
             pass_min = user.company_id.password_minimum
             if pass_min <= 0:
                 continue
@@ -179,6 +191,9 @@ class ResUsers(models.Model):
     def _set_encrypted_password(self, uid, pw):
         """It saves password crypt history for history rules"""
         res = super(ResUsers, self)._set_encrypted_password(uid, pw)
+
+        if not self.browse(uid).company_id.password_policy_enabled:
+            return res
 
         self.env["res.users.pass.history"].create(
             {

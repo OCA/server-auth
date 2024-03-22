@@ -6,6 +6,9 @@ from odoo import fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
+    password_policy_enabled = fields.Boolean(
+        related="company_id.password_policy_enabled", readonly=False
+    )
     password_expiration = fields.Integer(
         related="company_id.password_expiration", readonly=False
     )

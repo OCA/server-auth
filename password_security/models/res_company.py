@@ -8,6 +8,11 @@ from odoo import fields, models
 class ResCompany(models.Model):
     _inherit = "res.company"
 
+    password_policy_enabled = fields.Boolean(
+        "Password Policy",
+        default=False,
+        help="Enable password security requirements",
+    )
     password_expiration = fields.Integer(
         "Days",
         default=60,

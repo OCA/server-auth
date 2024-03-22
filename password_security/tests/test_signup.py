@@ -19,6 +19,10 @@ class EndTestException(Exception):
 
 @tagged("-at_install", "post_install")
 class TestPasswordSecuritySignup(HttpCase):
+    def setUp(self):
+        super().setUp()
+        self.env.company.password_policy_enabled = True
+
     def signup(self, username, password):
         """Signup user"""
         self.session = http.root.session_store.new()

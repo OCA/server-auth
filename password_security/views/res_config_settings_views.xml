@@ -32,11 +32,23 @@
 
             <!-- Ensure our settings will come after any former customization -->
             <xpath
+                expr="//div[@id='password_policy']//div[hasclass('o_setting_left_pane')]"
+                position="inside"
+            >
+                <field name="password_policy_enabled" />
+            </xpath>
+            <xpath
                 expr="//div[@id='password_policy']//div[hasclass('o_setting_right_pane')]/*"
                 position="after"
             >
-                <label string="Password Policy" for="password_expiration" />
-                <div class="content-group">
+                <label string="Password Policy" for="password_policy_enabled" />
+                <div class="text-muted">
+                    Enable password security requirements
+                </div>
+                <div
+                    class="content-group"
+                    attrs="{'invisible': [('password_policy_enabled','=', False)]}"
+                >
                     <div class="mt16">
                         <span>
                             Password expires in
