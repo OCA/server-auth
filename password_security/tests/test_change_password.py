@@ -10,6 +10,10 @@ from odoo.tests.common import HOST, HttpCase, Opener, get_db_name, tagged
 
 @tagged("-at_install", "post_install")
 class TestPasswordSecurityChange(HttpCase):
+    def setUp(self):
+        super().setUp()
+        self.env.company.password_policy_enabled = True
+
     def login(self, username, password):
         """Log in with provided credentials."""
         self.session = http.root.session_store.new()

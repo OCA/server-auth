@@ -18,6 +18,7 @@ class TestResUsers(TransactionCase):
         }
         self.password = "asdQWE123$%^"
         self.main_comp = self.env.ref("base.main_company")
+        self.main_comp.password_policy_enabled = True
         self.vals = {
             "name": "User",
             "login": self.login,

@@ -13,3 +13,6 @@
 
 * `Onestein <https://www.onestein.nl>`_:
     * Andrea Stirpe <a.stirpe@onestein.nl>
+
+* `twio.tech <https://www.twio.tech>`_:
+    * Dawn Hwang <hwangh95@gmail.com>
