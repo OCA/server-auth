@@ -4,7 +4,7 @@
 
 {
     "name": "SAML2 Authentication",
-    "version": "14.0.1.1.2",
+    "version": "14.0.1.2.0",
     "category": "Tools",
     "author": "XCG Consulting, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
