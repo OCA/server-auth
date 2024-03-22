@@ -10,6 +10,7 @@ setuptools.setup(
     install_requires=[
         'odoo-addon-auth_admin_passkey>=16.0dev,<16.1dev',
         'odoo-addon-auth_api_key>=16.0dev,<16.1dev',
+        'odoo-addon-auth_api_key_group>=16.0dev,<16.1dev',
         'odoo-addon-auth_api_key_server_env>=16.0dev,<16.1dev',
         'odoo-addon-auth_jwt>=16.0dev,<16.1dev',
         'odoo-addon-auth_jwt_demo>=16.0dev,<16.1dev',
