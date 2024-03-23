@@ -48,7 +48,7 @@ class ResCompanyLdap(models.Model):
             _logger.debug("deleting all groups from user %d", user_id)
             groups.append((5, False, False))
         for mapping in this.group_mapping_ids:
-            operator = getattr(op_obj, mapping.operator)
+            operator = getattr(op_obj, f"_{mapping.operator}")
             _logger.debug("checking mapping %s", mapping)
             if operator(ldap_entry, mapping):
                 _logger.debug(
