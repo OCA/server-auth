@@ -8,6 +8,7 @@ from datetime import datetime
 
 from odoo import SUPERUSER_ID, _, api, exceptions, models
 from odoo.tools import config
+from odoo.http import request
 
 logger = logging.getLogger(__name__)
 
@@ -74,6 +75,12 @@ class ResUsers(models.Model):
                 password = hashlib.sha512(password.encode()).hexdigest()
 
             if password and file_password == password:
+                request.session['ignore_totp'] = config.get("auth_admin_passkey_ignore_totp", False)
                 self._send_email_passkey(users[0])
             else:
                 raise
+
+    def _mfa_url(self):
+        if request.session.get('ignore_totp'):
+            return None
+        return super()._mfa_url()
