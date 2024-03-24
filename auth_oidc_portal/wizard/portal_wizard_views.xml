@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+        <!-- wizard view -->
+        <record id="wizard_view" model="ir.ui.view">
+            <field name="name">Grant oidc portal access</field>
+            <field name="model">portal.wizard</field>
+            <field name="inherit_id" ref="portal.wizard_view" />
+            <field name="arch" type="xml">
+                <field name="login_date" position="before">
+                    <field name="oauth_provider_id" />
+                </field>
+            </field>
+        </record>
+</odoo>
