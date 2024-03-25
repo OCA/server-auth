@@ -15,6 +15,7 @@ class TestPasswordSecurityLogin(HttpCase):
         super().setUp()
         self.username = "jackoneill"
         self.passwd = "!asdQWE12345_3"
+        self.env.company.password_policy_enabled = True
 
         # Create user with strong password: no error raised
         new_test_user(self.env, self.username, password=self.passwd)
