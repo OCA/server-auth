@@ -8,4 +8,5 @@ from . import (
     res_config_settings,
     res_users,
     res_users_saml,
+    res_company,
 )

@@ -7,7 +7,6 @@ from odoo import api, models
 _logger = logging.getLogger(__name__)
 ALLOW_SAML_UID_AND_PASSWORD = "auth_saml.allow_saml_uid_and_internal_password"
 
-
 class IrConfigParameter(models.Model):
     """Redefined to update users when our parameter is changed."""
 

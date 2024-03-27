@@ -137,6 +137,10 @@ class AuthSamlProvider(models.Model):
         help="Whether metadata should be signed or not",
     )
 
+    allow_saml_unsolicited_req = fields.Boolean(
+            compute="_compute_allow_saml_unsolicited"
+    )
+
     @api.model
     def _sig_alg_selection(self):
         return [(sig[0], sig[0]) for sig in ds.SIG_ALLOWED_ALG]
@@ -219,7 +223,7 @@ class AuthSamlProvider(models.Model):
                             (acs_url, saml2.BINDING_HTTP_POST),
                         ],
                     },
-                    "allow_unsolicited": False,
+                    "allow_unsolicited": self.allow_saml_unsolicited_req,
                     "authn_requests_signed": self.authn_requests_signed,
                     "logout_requests_signed": self.logout_requests_signed,
                     "want_assertions_signed": self.want_assertions_signed,
@@ -370,3 +374,9 @@ class AuthSamlProvider(models.Model):
             vals[attribute.field_name] = attribute_value
 
         return {"mapped_attrs": vals}
+
+    def _compute_allow_saml_unsolicited(self):
+        self.ensure_one()
+        self.allow_saml_unsolicited_req = self.env.company.allow_saml_unsolicited_req
+
+

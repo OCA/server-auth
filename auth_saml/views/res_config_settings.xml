@@ -14,6 +14,12 @@
                     <div class="o_setting_right_pane">
                         <label for="allow_saml_uid_and_internal_password" />
                     </div>
+                    <div class="o_setting_left_pane">
+                        <field name="allow_saml_unsolicited_req" />
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="allow_saml_unsolicited_req" />
+                    </div>
                 </div>
             </xpath>
         </field>
