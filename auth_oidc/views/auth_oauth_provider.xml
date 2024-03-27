@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record model="ir.ui.view" id="view_oidc_provider_form">
+        <field name="name">auth.oidc.provider.form</field>
+        <field name="model">auth.oauth.provider</field>
+        <field name="inherit_id" ref="auth_oauth.view_oauth_provider_form" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="flow" />
+                <field
+                    name="token_map"
+                    placeholder="e.g from:to upn:email sub:user_id"
+                />
+            </field>
+            <field name="client_id" position="after">
+                <field name="client_secret" />
+            </field>
+            <field name="validation_endpoint" position="after">
+                <field name="token_endpoint" />
+                <field name="jwks_uri" />
+            </field>
+        </field>
+    </record>
+</odoo>
