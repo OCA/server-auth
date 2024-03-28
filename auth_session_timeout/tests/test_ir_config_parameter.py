@@ -1,0 +1,71 @@
+# (c) 2015 ACSONE SA/NV, Dhinesh D
+
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+
+import logging
+
+from odoo.tests.common import TransactionCase
+
+logger = logging.getLogger()
+
+
+class TestIrConfigParameter(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.db = cls.env.cr.dbname
+        cls.param_obj = cls.env["ir.config_parameter"]
+        cls.data_obj = cls.env["ir.model.data"]
+        cls.delay = cls.env.ref("auth_session_timeout.inactive_session_time_out_delay")
+
+    def test_check_session_param_delay(self):
+        delay = self.param_obj._auth_timeout_get_parameter_delay()
+        self.assertEqual(delay, int(self.delay.value))
+        self.assertIsInstance(delay, int)
+
+    def test_check_session_param_urls(self):
+        urls = self.param_obj._auth_timeout_get_parameter_ignored_urls()
+        self.assertIsInstance(urls, list)
+
+
+class TestIrConfigParameterCaching(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.db = cls.env.cr.dbname
+        cls.param_obj = cls.env["ir.config_parameter"]
+        cls.get_param_called = False
+        test = cls
+
+        def get_param(*args, **kwargs):
+            test.get_param_called = True
+            return orig_get_param(*args[1:], **kwargs)
+
+        orig_get_param = cls.param_obj.get_param
+        cls.patch(type(cls.param_obj), "get_param", get_param)
+
+    def test_auth_timeout_get_parameter_delay_cache(self):
+        """It should cache the parameter call."""
+        self.get_param_called = False
+        self.param_obj._auth_timeout_get_parameter_delay()
+        self.assertTrue(self.get_param_called)
+
+    def test_auth_timeout_get_parameter_ignored_urls_cache(self):
+        """It should cache the parameter call."""
+        self.get_param_called = False
+        self.param_obj._auth_timeout_get_parameter_ignored_urls()
+        self.assertTrue(self.get_param_called)
+
+    def test_check_param_writes_clear_delay_cache(self):
+        self.param_obj._auth_timeout_get_parameter_delay()
+        self.get_param_called = False
+        self.param_obj.set_param("inactive_session_time_out_delay", 7201)
+        self.param_obj._auth_timeout_get_parameter_delay()
+        self.assertTrue(self.get_param_called)
+
+    def test_check_param_writes_clear_ignore_url_cache(self):
+        self.param_obj._auth_timeout_get_parameter_ignored_urls()
+        self.get_param_called = False
+        self.param_obj.set_param("inactive_session_time_out_ignored_url", "example.com")
+        self.param_obj._auth_timeout_get_parameter_ignored_urls()
+        self.assertTrue(self.get_param_called)
