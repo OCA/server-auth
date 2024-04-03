@@ -1,7 +1,8 @@
 # generated from manifests external_dependencies
 cryptography
 email_validator
-lxml
+lxml==4.6.5 ; python_version <= '3.10'  # min version = 4.5.0 (Focal - with security backports)
+lxml==4.9.2 ; python_version > '3.10'
 pyjwt
 pysaml2
 python-jose
