@@ -35,7 +35,7 @@ addon | version | maintainers | summary
 [auth_oidc_environment](auth_oidc_environment/) | 16.0.1.0.0 |  | This module allows to use server env for OIDC configuration
 [auth_saml](auth_saml/) | 16.0.1.0.4 | [![vincent-hatakeyama](https://github.com/vincent-hatakeyama.png?size=30px)](https://github.com/vincent-hatakeyama) | SAML2 Authentication
 [auth_session_timeout](auth_session_timeout/) | 16.0.1.0.0 |  | This module disable all inactive sessions since a given delay
-[auth_signup_verify_email](auth_signup_verify_email/) | 16.0.1.0.0 |  | Force uninvited users to use a good email for signup
+[auth_signup_verify_email](auth_signup_verify_email/) | 16.0.1.0.1 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 16.0.1.0.0 |  | Makes the user login field case insensitive
 [base_user_show_email](base_user_show_email/) | 16.0.1.0.0 |  | Untangle user login and email
 [password_security](password_security/) | 16.0.1.0.0 |  | Allow admin to set password security requirements.
