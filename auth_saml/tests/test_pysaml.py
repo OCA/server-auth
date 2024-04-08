@@ -15,9 +15,6 @@ class TestPySaml(HttpCase):
     def setUp(self):
         super().setUp()
 
-        sp_pem_public = None
-        sp_pem_private = None
-
         with open(
             os.path.join(os.path.dirname(__file__), "data", "sp.pem"),
             encoding="UTF-8",
@@ -281,7 +278,8 @@ class TestPySaml(HttpCase):
             self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
 
     def test_disallow_user_admin_can_have_password(self):
-        """Test that admin can have its password set even if the disallow option is set."""
+        """Test that admin can have its password set
+        even if the disallow option is set."""
         # change the option
         self.browse_ref(
             "auth_saml.allow_saml_uid_and_internal_password"
