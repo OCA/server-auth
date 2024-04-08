@@ -11,7 +11,8 @@ from werkzeug.exceptions import BadRequest
 from werkzeug.urls import url_quote_plus
 
 import odoo
-from odoo import SUPERUSER_ID, _, api, http, models, registry as registry_get
+from odoo import SUPERUSER_ID, _, api, http, models
+from odoo import registry as registry_get
 from odoo.http import request
 
 from odoo.addons.web.controllers.home import Home, ensure_db
@@ -109,7 +110,6 @@ class SAMLLogin(Home):
             and request.session.uid
             and request.params.get("redirect")
         ):
-
             # Redirect if already logged in and redirect param is present
             return request.redirect(request.params.get("redirect"))
 
