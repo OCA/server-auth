@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from typing import Set
+from typing import Set  # noqa
 
 import passlib
 
@@ -109,7 +109,7 @@ class ResUser(models.Model):
             raise AccessDenied() from None
 
     @api.model
-    def _saml_allowed_user_ids(self) -> Set[int]:
+    def _saml_allowed_user_ids(self) -> Set[int]:  # noqa
         """Users that can have a password even if the option to disallow it is set.
 
         It includes superuser and the admin if it exists.
