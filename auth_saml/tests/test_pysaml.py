@@ -20,14 +20,12 @@ class TestPySaml(HttpCase):
 
         with open(
             os.path.join(os.path.dirname(__file__), "data", "sp.pem"),
-            "r",
             encoding="UTF-8",
         ) as file:
             sp_pem_public = file.read()
 
         with open(
             os.path.join(os.path.dirname(__file__), "data", "sp.key"),
-            "r",
             encoding="UTF-8",
         ) as file:
             sp_pem_private = file.read()
@@ -191,9 +189,7 @@ class TestPySaml(HttpCase):
 
         # We should not be able to log in with the wrong token
         with self.assertRaises(AccessDenied):
-            self.authenticate(
-                user="test@example.com", password="{}-WRONG".format(token)
-            )
+            self.authenticate(user="test@example.com", password=f"{token}-WRONG")
 
         # User should now be able to log in with the token
         self.authenticate(user="test@example.com", password=token)
