@@ -11,7 +11,6 @@
     "license": "AGPL-3",
     "category": "Tools",
     "depends": ["auth_ldap"],
-    "external_dependencies": {"python": ["python-ldap"]},
     "data": [
         "security/ir.model.access.csv",
         "wizards/populate_wizard.xml",

@@ -14,5 +14,4 @@
     "by the administrator.",
     "category": "Authentication",
     "data": ["views/res_company_ldap_views.xml", "security/ir.model.access.csv"],
-    "external_dependencies": {"python": ["python-ldap"]},
 }

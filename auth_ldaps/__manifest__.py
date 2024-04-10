@@ -15,5 +15,4 @@
     "summary": "Allows to use LDAP over SSL authentication",
     "depends": ["auth_ldap"],
     "data": ["views/res_company_ldap_views.xml"],
-    "external_dependencies": {"python": ["python-ldap"]},
 }
