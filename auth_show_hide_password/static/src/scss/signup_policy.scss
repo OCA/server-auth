@@ -1,0 +1,36 @@
+.oe_login_form,
+.oe_signup_form,
+.oe_reset_password_form {
+    input::-ms-reveal {
+        // IE and Edge has its own implementation and will
+        // display its own show/hide btn. It would result
+        // in a redundant double show/hide button.
+        // This will disable feature in the form extended
+        // by this module
+        display: none;
+    }
+
+    // PW-POLICY COMPATIBILITY
+    // Note: could make a bridge module for pw policy compatibility
+    // but the dependency doesn't seem to be required for these fixes
+    .form-group.field-password {
+        // Hotfix (there's probably a better way to do this):
+        // avoid password meter overlapping the show/hide button
+        // when "auth_password_policy_signup" is installed
+        meter.o_password_meter {
+            right: 50px;
+        }
+    }
+
+    input#password:focus {
+        // The password meter for some reason disappear while
+        // the input has the focus. This is a clumsy attempt
+        // to avoid it. Unfortunately it doesn't work.
+        // Todo - fix
+        meter.o_password_meter {
+            visibility: visible !important;
+            display: flex !important;
+            opacity: 1;
+        }
+    }
+}

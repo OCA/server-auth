@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Use input-group-append bootstrap class in order to
+        append fa-eye icon to password input. It's quite tricky
+        as it requires to inject a div with .input-group class
+        into the input parent div, move the input inside that
+        div and place the .input-group-append div after.
+        Besides this, we prefer to do it this way in order to
+        avoid using "replace" on the input -->
+
+    <template
+        id="web_login_show_hide_password"
+        inherit_id="web.login"
+        name="Web Login Show Hide Password"
+    >
+
+        <!-- Login Password input -->
+
+        <xpath expr="//div[hasclass('field-password')]//input" position="attributes">
+            <!--
+            Notes for devs: the class form-control-sm has been
+            removed from password inputs as the show/hide button
+            wasn't reaching the same dimension by adding the same
+            class. Should be restored if we find a way to match
+            button/button div dimension with class form-control-sm
+            -->
+            <attribute name="class" remove="form-control-sm" separator=" " />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-password')]//label" position="after">
+            <div class="input-group field-password-input-group" />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-password-input-group')]" position="inside">
+            <xpath expr="//div[hasclass('field-password')]//input" position="move" />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-password')]//input" position="after">
+            <div class="input-group-append show_hide_password" data-input-id="password">
+                <button class="btn btn-secondary" type="button" tabindex="-1">
+                    <i class="fa fa-eye" />
+                </button>
+            </div>
+        </xpath>
+    </template>
+
+    <template
+        id="auth_signup_fields_show_hide_password"
+        inherit_id="auth_signup.fields"
+        name="Auth Signup Login Fields Show Hide Password"
+    >
+
+        <!-- Signup Password input -->
+
+        <xpath expr="//div[hasclass('field-password')]//input" position="attributes">
+            <attribute name="class" remove="form-control-sm" separator=" " />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-password')]//label" position="after">
+            <div class="input-group field-password-input-group" />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-password-input-group')]" position="inside">
+            <xpath expr="//div[hasclass('field-password')]//input" position="move" />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-password')]//input" position="after">
+            <div class="input-group-append show_hide_password" data-input-id="password">
+                <button class="btn btn-secondary" type="button" tabindex="-1">
+                    <i class="fa fa-eye" />
+                </button>
+            </div>
+        </xpath>
+
+        <!-- Signup Password confirm input -->
+
+        <xpath
+            expr="//div[hasclass('field-confirm_password')]//input"
+            position="attributes"
+        >
+            <attribute name="class" remove="form-control-sm" separator=" " />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-confirm_password')]//label" position="after">
+            <div class="input-group field-confirm_password-input-group" />
+        </xpath>
+
+        <xpath
+            expr="//div[hasclass('field-confirm_password-input-group')]"
+            position="inside"
+        >
+            <xpath
+                expr="//div[hasclass('field-confirm_password')]//input"
+                position="move"
+            />
+        </xpath>
+
+        <xpath expr="//div[hasclass('field-confirm_password')]//input" position="after">
+            <div
+                class="input-group-append show_hide_password"
+                data-input-id="confirm_password"
+            >
+                <button class="btn btn-secondary" type="button" tabindex="-1">
+                    <i class="fa fa-eye" />
+                </button>
+            </div>
+        </xpath>
+
+    </template>
+
+</odoo>
