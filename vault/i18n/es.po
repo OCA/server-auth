@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: 2023-10-31 20:36+0000\n"
-"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
+"PO-Revision-Date: 2024-04-16 10:25+0000\n"
+"Last-Translator: Carlos Roca Zaragoza <carlos.roca@tecnativa.com>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -46,6 +46,8 @@ msgid ""
 "A secure browser context is required. Please switch to https or contact your "
 "administrator"
 msgstr ""
+"Se requiere un contexto de navegador seguro. Por favor, cambie a https o "
+"contacte a su administrador"
 
 #. module: vault
 #. odoo-javascript
@@ -89,12 +91,12 @@ msgstr "Todos los registros"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow all users to export vaults accessible to them"
-msgstr "Permitir que todos los usuarios exporten bóvedas accesibles para ellos"
+msgstr "Permitir que todos los usuarios exporten secretos accesibles para ellos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Allow all users to import vaults accessible to them"
-msgstr "Permitir que todos los usuarios importen bóvedas accesibles para ellos"
+msgstr "Permitir que todos los usuarios importen secretos accesibles para ellos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
@@ -104,32 +106,32 @@ msgstr "Permitir el uso para compartir secretos con usuarios externos"
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_create
 msgid "Allow to create in the vault"
-msgstr "Permitir crear en el vault"
+msgstr "Permitir crear en el almacén de secretos"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_delete
 msgid "Allow to delete a vault"
-msgstr "Permitir borrar un vault"
+msgstr "Permitir borrar un secreto"
 
 #. module: vault
 #: model:res.groups,name:vault.group_vault_export
 msgid "Allow to export vaults"
-msgstr "Permitir exportar bóvedas"
+msgstr "Permitir exportar secretos"
 
 #. module: vault
 #: model:res.groups,name:vault.group_vault_import
 msgid "Allow to import vaults"
-msgstr "Permitir importar bóvedas"
+msgstr "Permitir importar secretos"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_share
 msgid "Allow to share a vault with new users"
-msgstr "Permitir compartir un vault con nuevos usuarios"
+msgstr "Permitir compartir un secreto con nuevos usuarios"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_right__perm_write
 msgid "Allow to write to the vault"
-msgstr "Permitir escribir en un vault"
+msgstr "Permitir escribir en un secreto"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__allowed_create
@@ -198,7 +200,7 @@ msgstr "Por usuario"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_right_overview_search
 msgid "By vault"
-msgstr "Por vault"
+msgstr "Por secreto"
 
 #. module: vault
 #. odoo-javascript
@@ -423,7 +425,7 @@ msgstr "Registro"
 #: model:ir.model,name:vault.model_vault_entry
 #, python-format
 msgid "Entry inside a vault"
-msgstr "Entrar al interior de un vault"
+msgstr "Entrar al interior de un secreto"
 
 #. module: vault
 #. odoo-python
@@ -451,7 +453,7 @@ msgstr "Expira en"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_export
 msgid "Export Vaults"
-msgstr "Exportar bóvedas"
+msgstr "Exportar secretos"
 
 #. module: vault
 #. odoo-python
@@ -469,7 +471,7 @@ msgstr "Exportar a fichero"
 #: model:ir.model,name:vault.model_vault_export_wizard
 #, python-format
 msgid "Export wizard for vaults"
-msgstr "Asistente de exportación para vaults"
+msgstr "Asistente de exportación para secretos"
 
 #. module: vault
 #. odoo-javascript
@@ -498,7 +500,7 @@ msgstr "Fallo en la importación de claves desde la base de datos"
 #: model:ir.model,name:vault.model_vault_field
 #, python-format
 msgid "Field of a vault"
-msgstr "Campo de un vault"
+msgstr "Campo de un secreto"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__field_ids
@@ -512,7 +514,7 @@ msgstr "Campos"
 #: model:ir.model,name:vault.model_vault_file
 #, python-format
 msgid "File of a vault"
-msgstr "Fichero de un vault"
+msgstr "Fichero de un secreto"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.inbox
@@ -602,7 +604,7 @@ msgstr "Importar"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_config_settings__group_vault_import
 msgid "Import Vaults"
-msgstr "Importar bóvedas"
+msgstr "Importar secretos"
 
 #. module: vault
 #. odoo-python
@@ -620,7 +622,7 @@ msgstr "Importar desde archivo"
 #: model:ir.model,name:vault.model_vault_import_wizard
 #, python-format
 msgid "Import wizard for vaults"
-msgstr "Asistente de importación para vaults"
+msgstr "Asistente de importación para secretos"
 
 #. module: vault
 #. odoo-python
@@ -628,7 +630,7 @@ msgstr "Asistente de importación para vaults"
 #: model:ir.model,name:vault.model_vault_import_wizard_path
 #, python-format
 msgid "Import wizard path for vaults"
-msgstr "Ruta del asistente de importación para vaults"
+msgstr "Ruta del asistente de importación para secretos"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_inbox
@@ -824,7 +826,7 @@ msgstr "Registro"
 #: model:ir.model,name:vault.model_vault_log
 #, python-format
 msgid "Log entry of a vault"
-msgstr "Registro de entrada de un vault"
+msgstr "Registro de entrada de un secreto"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_res_users_keys
@@ -899,7 +901,7 @@ msgstr "Nombre de tu secreto:"
 #: code:addons/vault/wizards/vault_send_wizard.py:0
 #, python-format
 msgid "Neither a secret nor file was given"
-msgstr ""
+msgstr "No se proporcionó un secreto ni un archivo"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
@@ -1152,7 +1154,7 @@ msgstr "Tienda"
 #: code:addons/vault/static/src/backend/fields/vault_inbox_mixin.esm.js:0
 #, python-format
 msgid "Store the secret in a vault"
-msgstr "Guarda el secreto en un vault"
+msgstr "Guarda el secreto en un almacén de secretos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.inbox
@@ -1266,7 +1268,7 @@ msgstr "Usuario"
 #: model:ir.model,name:vault.model_res_users_key
 #, python-format
 msgid "User data of a vault"
-msgstr "Datos de usuario de un vault"
+msgstr "Datos de usuario de un secreto"
 
 #. module: vault
 #: model:ir.model.fields,help:vault.field_vault_inbox__inbox_link
@@ -1314,45 +1316,45 @@ msgstr "Valor"
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 #, python-format
 msgid "Vault"
-msgstr "Bóveda"
+msgstr "Secretos"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_field.esm.js:0
 #, python-format
 msgid "Vault Field"
-msgstr ""
+msgstr "Campo de secreto"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_file.esm.js:0
 #, python-format
 msgid "Vault File"
-msgstr ""
+msgstr "Fichero de secreto"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_inbox_field.esm.js:0
 #, python-format
 msgid "Vault Inbox Field"
-msgstr ""
+msgstr "Campo de bandeja de entrada de secreto"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/fields/vault_inbox_file.esm.js:0
 #, python-format
 msgid "Vault Inbox File"
-msgstr ""
+msgstr "Fichero de bandeja de entrada de secreto"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users__vault_right_ids
 msgid "Vault Right"
-msgstr "Permiso de vault"
+msgstr "Permiso de secretos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.res_config_settings_view_form
 msgid "Vault Share"
-msgstr "Compartir vault"
+msgstr "Compartir secreto"
 
 #. module: vault
 #. odoo-python
@@ -1360,14 +1362,14 @@ msgstr "Compartir vault"
 #: model:ir.model,name:vault.model_vault_inbox_log
 #, python-format
 msgid "Vault inbox log"
-msgstr "Registro de bandeja de entrada de vault"
+msgstr "Registro de bandeja de entrada de secreto"
 
 #. module: vault
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 #, python-format
 msgid "Vault is not supported"
-msgstr ""
+msgstr "Secretos no está soportado"
 
 #. module: vault
 #. odoo-python
@@ -1375,7 +1377,7 @@ msgstr ""
 #: model:ir.model,name:vault.model_vault_right
 #, python-format
 msgid "Vault rights"
-msgstr "Permisos de vault"
+msgstr "Permisos de secretos"
 
 #. module: vault
 #. odoo-python
@@ -1383,7 +1385,7 @@ msgstr "Permisos de vault"
 #: model:ir.model,name:vault.model_vault_inbox
 #, python-format
 msgid "Vault share incoming secrets"
-msgstr "Compartir los secretos de entrada de vault"
+msgstr "Compartir los secretos de entrada de almacén de secretos"
 
 #. module: vault
 #. odoo-python
@@ -1396,7 +1398,7 @@ msgstr "Etiqueta de vault"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Vaults"
-msgstr "Bóvedas"
+msgstr "Secretos"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
@@ -1421,7 +1423,7 @@ msgstr "Advertencia"
 #: model:ir.model,name:vault.model_vault_store_wizard
 #, python-format
 msgid "Wizard store a shared secret in a vault"
-msgstr "Asistente de almacenado de secreto compartido en un vault"
+msgstr "Asistente de almacenado de secreto compartido en un almacén de secretos"
 
 #. module: vault
 #. odoo-python
@@ -1448,7 +1450,7 @@ msgstr "Escrito por %(name)s vía %(ip)s"
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "You can not create recursive entries."
-msgstr "No puedes crear registros recrsivos."
+msgstr "No puedes crear registros recursivos."
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
@@ -1467,7 +1469,7 @@ msgstr ""
 msgid ""
 "You will loose access to all vaults and your inbox. Do you want to continue?"
 msgstr ""
-"Perderá el acceso a todos sus vaults y a su bandeja de entrada. ¿Desea "
+"Perderá el acceso a todos sus secretos y a su bandeja de entrada. ¿Desea "
 "continuar?"
 
 #. module: vault
