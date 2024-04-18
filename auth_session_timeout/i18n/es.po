@@ -10,45 +10,46 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-01 02:09+0000\n"
-"PO-Revision-Date: 2017-12-01 02:09+0000\n"
-"Last-Translator: Pedro M. Baeza <pedro.baeza@gmail.com>, 2017\n"
+"PO-Revision-Date: 2024-04-18 13:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: Spanish (https://www.transifex.com/oca/teams/23907/es/)\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: auth_session_timeout
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_config_parameter__display_name
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_http__display_name
 #: model:ir.model.fields,field_description:auth_session_timeout.field_res_users__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Mostrar Nombre"
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Enrutamiento HTTP"
 
 #. module: auth_session_timeout
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_config_parameter__id
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_http__id
 #: model:ir.model.fields,field_description:auth_session_timeout.field_res_users__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_session_timeout
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_config_parameter____last_update
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_http____last_update
 #: model:ir.model.fields,field_description:auth_session_timeout.field_res_users____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última Modificación el"
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_config_parameter
 msgid "System Parameter"
-msgstr ""
+msgstr "Parámetro del Sistema"
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_res_users
