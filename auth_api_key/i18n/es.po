@@ -6,70 +6,72 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2024-04-18 13:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: none\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_auth_api_key
 msgid "API Key"
-msgstr ""
+msgstr "Clave API"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__active
 msgid "Active"
-msgstr ""
+msgstr "Activo"
 
 #. module: auth_api_key
 #: model:ir.model.constraint,message:auth_api_key.constraint_auth_api_key_name_uniq
 msgid "Api Key name must be unique."
-msgstr ""
+msgstr "El nombre de la clave API debe ser único."
 
 #. module: auth_api_key
 #: model_terms:ir.ui.view,arch_db:auth_api_key.auth_api_key_form_view
 msgid "Archived"
-msgstr ""
+msgstr "Archivado"
 
 #. module: auth_api_key
 #: model:ir.actions.act_window,name:auth_api_key.auth_api_key_act_window
 #: model:ir.ui.menu,name:auth_api_key.auth_api_key_menu
 msgid "Auth Api Key"
-msgstr ""
+msgstr "Clave Auth Api"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Empresas"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Ajustes Config"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creado por"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creado el"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_res_company__archived_user_disable_auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__archived_user_disable_auth_api_key
 msgid "Disable API key for archived user"
-msgstr ""
+msgstr "Desactivar clave API para usuario archivado"
 
 #. module: auth_api_key
 #: model_terms:ir.ui.view,arch_db:auth_api_key.res_config_settings_view_form
 msgid "Disable API key when archiving user"
-msgstr ""
+msgstr "Desactivar clave API al archivar usuario"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
@@ -77,12 +79,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_api_key.field_res_company__display_name
 #: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Mostrar Nombre"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Enrutamiento HTTP"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__id
@@ -90,7 +92,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_api_key.field_res_company__id
 #: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__id
 msgid "ID"
-msgstr ""
+msgstr "ID (identificación)"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_res_company__archived_user_disable_auth_api_key
@@ -100,11 +102,14 @@ msgid ""
 "propagated to his related api key. It is not retroactive (nothing is done  "
 "when enabling/disabling this option)."
 msgstr ""
+"Si está marcada, cuando un usuario es archivado/desactivado el mismo cambio "
+"se propaga a su clave api relacionada. No es retroactivo (no se hace nada al "
+"activar/desactivar esta opción)."
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key
 msgid "Key"
-msgstr ""
+msgstr "Clave"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key____last_update
@@ -112,22 +117,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:auth_api_key.field_res_company____last_update
 #: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Última Modificación el"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Última Actualización por"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Última Actualización el"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__name
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
@@ -135,12 +140,14 @@ msgid ""
 "The API key. Enter a dummy value in this field if it is\n"
 "        obtained from the server environment configuration."
 msgstr ""
+"La clave API. Introduzca un valor ficticio en este campo si se\n"
+"        obtenido de la configuración del entorno del servidor."
 
 #. module: auth_api_key
 #: code:addons/auth_api_key/models/auth_api_key.py:0
 #, python-format
 msgid "The key %s is not allowed"
-msgstr ""
+msgstr "La clave %s no está permitida"
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__user_id
@@ -148,14 +155,16 @@ msgid ""
 "The user used to process the requests authenticated by\n"
 "        the api key"
 msgstr ""
+"El usuario utilizado para procesar las solicitudes autenticadas por\n"
+"        la clave api"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__user_id
 msgid "User"
-msgstr ""
+msgstr "Usuario"
 
 #. module: auth_api_key
 #: code:addons/auth_api_key/models/auth_api_key.py:0
 #, python-format
 msgid "User is not allowed"
-msgstr ""
+msgstr "El usuario no está autorizado"
