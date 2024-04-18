@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_users_form" model="ir.ui.view">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="before">
+                <group name="password_defined" groups="base.group_no_one">
+                    <field name="has_password" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
