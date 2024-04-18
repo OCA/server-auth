@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: Odoo Server 13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 07:44+0000\n"
-"PO-Revision-Date: 2022-06-06 09:54+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2024-04-18 13:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__accesses
@@ -163,7 +163,7 @@ msgstr "Pin"
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_vault_share__salt
 msgid "Salt"
-msgstr ""
+msgstr "Sal"
 
 #. module: vault_share
 #. openerp-web
@@ -277,18 +277,18 @@ msgstr "Utilizando este enlace y el pin la gente puede acceder al secreto."
 #. module: vault_share
 #: model:ir.model.fields,field_description:vault_share.field_res_company__vault_share_delay
 msgid "Vault Share Delay"
-msgstr ""
+msgstr "Retraso de la Acción de la Bóveda"
 
 #. module: vault_share
 #: code:addons/vault_share/models/vault_share_log.py:0
 #: model:ir.model,name:vault_share.model_vault_share_log
 #, python-format
 msgid "Vault share log"
-msgstr ""
+msgstr "Registro de compartición de la bóveda"
 
 #. module: vault_share
 #: code:addons/vault_share/models/vault_share.py:0
 #: model:ir.model,name:vault_share.model_vault_share
 #, python-format
 msgid "Vault share outgoing secrets"
-msgstr ""
+msgstr "La bóveda comparte secretos de salida"
