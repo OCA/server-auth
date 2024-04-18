@@ -7,28 +7,28 @@ msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-06 06:57+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2024-04-18 13:36+0000\n"
+"Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.3\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17\n"
 
 #. module: vault
 #. openerp-web
 #: code:addons/vault/static/src/js/vault_controller.js:0
 #, python-format
 msgid "%s '%s' of entry '%s'"
-msgstr ""
+msgstr "%s '%s' de la entrada '%s'"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s(copia)"
 
 #. module: vault
 #: code:addons/vault/models/vault_entry.py:0
@@ -639,7 +639,7 @@ msgstr "Token inválido"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_users_form_keys_modif
 msgid "Invalidate private key"
-msgstr ""
+msgstr "Invalidar clave privada"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__iterations
@@ -974,12 +974,12 @@ msgstr "Clave pública"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Re-encrypt"
-msgstr ""
+msgstr "Re-encriptar"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_vault__reencrypt_required
 msgid "Reencrypt Required"
-msgstr ""
+msgstr "Reencriptación Requerida"
 
 #. module: vault
 #: model:ir.actions.act_window,name:vault.action_vault_right
@@ -992,7 +992,7 @@ msgstr "Derechos"
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__salt
 msgid "Salt"
-msgstr ""
+msgstr "Sal"
 
 #. module: vault
 #. openerp-web
@@ -1135,7 +1135,7 @@ msgstr "Los archivos deben terminar en uno de los tipos de archivo admitidos:"
 #: code:addons/vault/static/src/js/vault_controller.js:0
 #, python-format
 msgid "The following entries are broken:"
-msgstr ""
+msgstr "Los siguientes registros están rotos:"
 
 #. module: vault
 #. openerp-web
@@ -1292,17 +1292,17 @@ msgstr "Etiqueta de vault"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Vaults"
-msgstr ""
+msgstr "Bóvedas"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_form
 msgid "Verify"
-msgstr ""
+msgstr "Verificar"
 
 #. module: vault
 #: model:ir.model.fields,field_description:vault.field_res_users_key__version
 msgid "Version"
-msgstr ""
+msgstr "Versión"
 
 #. module: vault
 #: code:addons/vault/models/vault_log.py:0
@@ -1358,6 +1358,8 @@ msgstr ""
 msgid ""
 "You will loose access to all vaults and your inbox. Do you want to continue?"
 msgstr ""
+"Perderá el acceso a todos sus secretos y a su bandeja de entrada. ¿Desea "
+"continuar?"
 
 #. module: vault
 #. openerp-web
