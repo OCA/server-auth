@@ -1,5 +1,4 @@
 # generated from manifests external_dependencies
-cryptography<37
 email_validator
 lxml
 pysaml2

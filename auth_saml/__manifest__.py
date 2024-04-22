@@ -12,14 +12,7 @@
     "license": "AGPL-3",
     "depends": ["base_setup", "web"],
     "external_dependencies": {
-        # Place an upper bound on cryptography version to be compatible with
-        # pyopenssl 19 mentioned in Odoo 15's requirements.txt. If we don't do
-        # this, installing this module will try to upgrade cryptography to the latest
-        # version because the minimum required version in pysaml2 (>=3.1) is greater than
-        # version 2.6 (from Odoo's requirement.txt). Since cryptography/pyopenssl don't
-        # declare minimum supported versions, this lead to inconsistencies.
-        # https://github.com/OCA/server-auth/issues/424
-        "python": ["pysaml2", "cryptography<37"],
+        "python": ["pysaml2"],
         "bin": ["xmlsec1"],
         # special definition used by OCA to install packages
         "deb": ["xmlsec1"],
