@@ -1,11 +1,12 @@
 [project]
 name = "odoo-addons-oca-server-auth"
-version = "17.0.20240327.0"
+version = "17.0.20240424.0"
 dependencies = [
     "odoo-addon-auth_admin_passkey>=17.0dev,<17.1dev",
     "odoo-addon-auth_api_key>=17.0dev,<17.1dev",
     "odoo-addon-auth_api_key_server_env>=17.0dev,<17.1dev",
     "odoo-addon-auth_oidc>=17.0dev,<17.1dev",
+    "odoo-addon-auth_user_case_insensitive>=17.0dev,<17.1dev",
     "odoo-addon-user_log_view>=17.0dev,<17.1dev",
 ]
 classifiers=[
