@@ -50,6 +50,19 @@ class PasswordSecurityHome(AuthSignupHome):
         redirect = request.env.user.partner_id.signup_url
         return request.redirect(redirect)
 
+    def get_auth_signup_config(self):
+        signup_config = super().get_auth_signup_config()
+        for property_name in (
+            "password_length",
+            "password_lower",
+            "password_upper",
+            "password_numeric",
+            "password_special",
+            "password_estimate",
+        ):
+            signup_config[property_name] = request.env.company[property_name]
+        return signup_config
+
     @http.route()
     def web_auth_signup(self, *args, **kw):
         try:

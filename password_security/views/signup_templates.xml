@@ -1,0 +1,16 @@
+<odoo>
+    <template
+        id="fields"
+        inherit_id="auth_signup.fields"
+        name="Password Security data for auth_signup"
+    >
+        <xpath expr="//input[@name='password']" position="attributes">
+            <attribute name="t-att-passwordlength">password_length</attribute>
+            <attribute name="t-att-passwordlower">password_lower</attribute>
+            <attribute name="t-att-passwordupper">password_upper</attribute>
+            <attribute name="t-att-passwordnumeric">password_numeric</attribute>
+            <attribute name="t-att-passwordspecial">password_special</attribute>
+            <attribute name="t-att-passwordestimate">password_estimate</attribute>
+        </xpath>
+    </template>
+</odoo>
