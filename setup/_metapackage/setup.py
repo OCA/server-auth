@@ -23,6 +23,7 @@ setuptools.setup(
         'odoo14-addon-auth_session_timeout',
         'odoo14-addon-auth_signup_verify_email',
         'odoo14-addon-auth_user_case_insensitive',
+        'odoo14-addon-base_user_empty_password',
         'odoo14-addon-base_user_show_email',
         'odoo14-addon-password_security',
         'odoo14-addon-user_log_view',
