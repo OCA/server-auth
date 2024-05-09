@@ -25,6 +25,7 @@
     "license": "LGPL-3",
     "data": [
         "views/res_config_settings_views.xml",
+        "views/signup_templates.xml",
         "security/ir.model.access.csv",
         "security/res_users_pass_history.xml",
     ],
@@ -32,6 +33,9 @@
         "web.assets_common": [
             "/password_security/static/src/js/password_gauge.js",
             "/password_security/static/lib/zxcvbn/zxcvbn.min.js",
+        ],
+        "web.assets_frontend": [
+            "/password_security/static/src/js/signup_policy.js",
         ],
         "web.qunit_suite_tests": [
             "password_security/static/tests/**/*",
