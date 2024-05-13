@@ -7,7 +7,7 @@ from odoo.tests import common
 
 class TestIrConfigParameter(common.TransactionCase):
     def setUp(self):
-        super(TestIrConfigParameter, self).setUp()
+        super().setUp()
         self.db = self.env.cr.dbname
         self.param_obj = self.env["ir.config_parameter"]
         self.data_obj = self.env["ir.model.data"]
@@ -27,7 +27,7 @@ class TestIrConfigParameter(common.TransactionCase):
 
 class TestIrConfigParameterCaching(common.TransactionCase):
     def setUp(self):
-        super(TestIrConfigParameterCaching, self).setUp()
+        super().setUp()
         self.db = self.env.cr.dbname
         self.param_obj = self.env["ir.config_parameter"]
         self.get_param_called = False
@@ -41,7 +41,7 @@ class TestIrConfigParameterCaching(common.TransactionCase):
         self.param_obj._patch_method("get_param", get_param)
 
     def tearDown(self):
-        super(TestIrConfigParameterCaching, self).tearDown()
+        super().tearDown()
         self.param_obj._revert_method("get_param")
 
     def test_auth_timeout_get_parameter_delay_cache(self):
