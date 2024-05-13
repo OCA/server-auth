@@ -38,11 +38,7 @@ class TestIrConfigParameterCaching(common.TransactionCase):
             return orig_get_param(*args[1:], **kwargs)
 
         orig_get_param = self.param_obj.get_param
-        self.param_obj._patch_method("get_param", get_param)
-
-    def tearDown(self):
-        super().tearDown()
-        self.param_obj._revert_method("get_param")
+        self.patch(type(self.param_obj), "get_param", get_param)
 
     def test_auth_timeout_get_parameter_delay_cache(self):
         """It should cache the parameter call."""
