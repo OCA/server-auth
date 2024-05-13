@@ -69,7 +69,6 @@ class ResUsers(models.Model):
         if deadline is not False:
             path = http.root.session_store.get_session_filename(session.sid)
             try:
-
                 expired = getmtime(path) < deadline
             except OSError:
                 _logger.exception(
