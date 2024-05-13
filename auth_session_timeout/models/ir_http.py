@@ -8,7 +8,7 @@ class IrHttp(models.AbstractModel):
 
     @classmethod
     def _authenticate(cls, endpoint):
-        res = super(IrHttp, cls)._authenticate(endpoint=endpoint)
+        res = super()._authenticate(endpoint=endpoint)
         if (
             request
             and request.session
