@@ -79,6 +79,7 @@ companies can use their AzureAD login without an guest account.
 -  Client ID: Application (client) id
 -  Client Secret: Client secret
 -  Allowed: yes
+-  replace {tenant_id} in urls with your Azure tenant id
 
 or
 
@@ -86,7 +87,6 @@ or
 -  Client ID: Application (client) id
 -  Client Secret: Client secret
 -  Allowed: yes
--  replace {tenant_id} in urls with your Azure tenant id
 
 |image2|
 
