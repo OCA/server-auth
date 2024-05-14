@@ -217,6 +217,11 @@ msgid "Identity Provider Metadata"
 msgstr "Métadonnées du fournisseur d’identité"
 
 #. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata_url
+msgid "Identity Provider Metadata URL"
+msgstr ""
+
+#. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Identity Provider Settings"
 msgstr "Paramètres du fournisseur d’identité"
@@ -225,6 +230,11 @@ msgstr "Paramètres du fournisseur d’identité"
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__matching_attribute
 msgid "Identity Provider matching attribute"
 msgstr "Attribut de correspondance du fournisseur d’identité"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "If you provider gives you a URL, use this field preferably"
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__authn_requests_signed
@@ -391,6 +401,11 @@ msgid "Providers"
 msgstr "Fournisseurs"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Refresh"
+msgstr ""
+
+#. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_users_form
 msgid "SAML"
 msgstr "SAML"
@@ -471,6 +486,14 @@ msgstr "L’inscription n’est pas autorisée sur cette base de donnée."
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sig_alg
 msgid "Signature Algorithm"
 msgstr "Algorithme de signature"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__idp_metadata_url
+msgid ""
+"Some SAML providers, notably Office365 can have a metadata document which "
+"changes over time, and they provide a URL to the document instead. When this "
+"field is set, the metadata can be fetched from the provided URL."
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_ir_config_parameter
