@@ -60,7 +60,7 @@ class PasswordSecurityHome(AuthSignupHome):
             "password_special",
             "password_estimate",
         ):
-            signup_config[property_name] = request.env.company[property_name]
+            signup_config[property_name] = request.env(su=True).company[property_name]
         return signup_config
 
     @http.route()
