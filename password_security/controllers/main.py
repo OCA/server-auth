@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 from odoo.http import request
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
-from odoo.addons.web.controllers.main import Session, ensure_db
+from odoo.addons.web.controllers.main import Session
 
 
 class PasswordSecuritySession(Session):
@@ -33,22 +33,18 @@ class PasswordSecurityHome(AuthSignupHome):
     def estimate(self, password):
         return request.env["res.users"].get_estimation(password)
 
-    @http.route()
-    def web_login(self, *args, **kw):
-        ensure_db()
-        response = super(PasswordSecurityHome, self).web_login(*args, **kw)
-        if not request.params.get("login_success"):
-            return response
-        # Now, I'm an authenticated user
-        if not request.env.user._password_has_expired():
-            return response
-        # My password is expired, kick me out
-        request.env.user.action_expire_password()
-        request.session.logout(keep_db=True)
-        # I was kicked out, so set login_success in request params to False
-        request.params["login_success"] = False
-        redirect = request.env.user.partner_id.signup_url
-        return request.redirect(redirect)
+    def _login_redirect(self, uid, redirect=None):
+        res = super()._login_redirect(uid, redirect=redirect)
+        if (
+            request.session.uid and request.env.user._password_has_expired()
+        ):  # fully logged but password expired
+            # My password is expired, kick me out
+            request.env.user.action_expire_password()
+            request.session.logout(keep_db=True)
+            # I was kicked out, so set login_success in request params to False
+            request.params["login_success"] = False
+            res = request.env.user.partner_id.signup_url
+        return res
 
     def get_auth_signup_config(self):
         signup_config = super().get_auth_signup_config()
