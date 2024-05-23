@@ -63,7 +63,7 @@ class ResUsers(models.Model):
         if not id_token:
             _logger.error("No id_token in response.")
             raise AccessDenied()
-        validation = oauth_provider._parse_id_token(id_token, access_token)
+        validation = oauth_provider._parse_id_token(id_token)
         # required check
         if "sub" in validation and "user_id" not in validation:
             # set user_id for auth_oauth, user_id is not an OpenID Connect standard

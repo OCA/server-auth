@@ -3,5 +3,4 @@ cryptography
 email_validator
 pyjwt
 pysaml2
-python-jose
 python-ldap

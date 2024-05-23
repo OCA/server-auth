@@ -1,16 +1,16 @@
 # Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import base64
 import contextlib
 import json
 from urllib.parse import parse_qs, urlparse
 
+import jwt
 import responses
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-from jose import jwt
-from jose.exceptions import JWTError
-from jose.utils import long_to_base64
+from jwt.exceptions import PyJWTError
 
 import odoo
 from odoo.exceptions import AccessDenied
@@ -21,6 +21,28 @@ from odoo.addons.website.tools import MockRequest as _MockRequest
 from ..controllers.main import OpenIDLogin
 
 BASE_URL = "http://localhost:%s" % odoo.tools.config["http_port"]
+
+try:
+    from cryptography.utils import int_to_bytes as _long_to_bytes
+
+    def long_to_bytes(n, blocksize=0):
+        return _long_to_bytes(n, blocksize or None)
+
+except ImportError:
+    from ecdsa.ecdsa import int_to_string as _long_to_bytes
+
+    def long_to_bytes(n, blocksize=0):
+        ret = _long_to_bytes(n)
+        if blocksize == 0:
+            return ret
+        else:
+            assert len(ret) <= blocksize
+            padding = blocksize - len(ret)
+            return b"\x00" * padding + ret
+
+
+def long_to_base64(data, size=0):
+    return base64.urlsafe_b64encode(long_to_bytes(data, size)).strip(b"=")
 
 
 @contextlib.contextmanager
@@ -211,7 +233,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
 
         with self.assertRaises(
-            JWTError,
+            PyJWTError,
             msg="OpenID Connect requires kid to be set if there is"
             " more than one key in the JWKS",
         ):
@@ -232,7 +254,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             keys=[{"kid": "other_key_id", "keys": [self.second_key_public_pem]}],
         )
 
-        with self.assertRaises(JWTError):
+        with self.assertRaises(PyJWTError):
             with MockRequest(self.env):
                 self.env["res.users"].auth_oauth(
                     self.provider_rec.id,

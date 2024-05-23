@@ -1,19 +1,11 @@
 # Copyright 2016 ICTSTUDIO <http://www.ictstudio.eu>
 # Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
-import logging
 import secrets
 
-import requests
+import jwt
 
 from odoo import fields, models, tools
-
-try:
-    from jose import jwt
-    from jose.exceptions import JWSError, JWTError
-except ImportError:
-    logging.getLogger(__name__).debug("jose library not installed")
 
 
 class AuthOauthProvider(models.Model):
@@ -50,19 +42,13 @@ class AuthOauthProvider(models.Model):
         help="Additional parameters for the auth link. For example: {'prompt':'select_account'}"
     )
 
-    @tools.ormcache("self.jwks_uri", "kid")
-    def _get_keys(self, kid):
-        r = requests.get(self.jwks_uri, timeout=10)
-        r.raise_for_status()
-        response = r.json()
-        # the keys returned here should follow
+    @tools.ormcache("id_token")
+    def _get_signing_key(self, id_token):
         # JWS Notes on Key Selection
         # https://datatracker.ietf.org/doc/html/draft-ietf-jose-json-web-signature#appendix-D
-        return [
-            key
-            for key in response["keys"]
-            if kid is None or key.get("kid", None) == kid
-        ]
+        jwks_client = jwt.PyJWKClient(self.jwks_uri, cache_jwk_set=True, lifespan=360)
+        signing_key = jwks_client.get_signing_key_from_jwt(id_token)
+        return signing_key
 
     def _map_token_values(self, res):
         if self.token_map:
@@ -72,38 +58,19 @@ class AuthOauthProvider(models.Model):
                     res[to_key] = res.get(from_key, "")
         return res
 
-    def _parse_id_token(self, id_token, access_token):
+    def _parse_id_token(self, id_token):
         self.ensure_one()
         res = {}
-        header = jwt.get_unverified_header(id_token)
-        res.update(self._decode_id_token(access_token, id_token, header.get("kid")))
+        res.update(self._decode_id_token(id_token))
         res.update(self._map_token_values(res))
         return res
 
-    def _decode_id_token(self, access_token, id_token, kid):
-        keys = self._get_keys(kid)
-        if len(keys) > 1 and kid is None:
-            # https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.10.1
-            # If there are multiple keys in the referenced JWK Set document, a kid
-            # value MUST be provided in the JOSE Header.
-            raise JWTError(
-                "OpenID Connect requires kid to be set if there is more"
-                " than one key in the JWKS"
-            )
-        error = None
-        # we accept multiple keys with the same kid in case a key gets rotated.
-        for key in keys:
-            try:
-                values = jwt.decode(
-                    id_token,
-                    key,
-                    algorithms=["RS256"],
-                    audience=self.client_id,
-                    access_token=access_token,
-                )
-                return values
-            except (JWTError, JWSError) as e:
-                error = e
-        if error:
-            raise error
-        return {}
+    def _decode_id_token(self, id_token):
+        key = self._get_signing_key(id_token)
+        values = jwt.decode(
+            id_token,
+            key,
+            algorithms=["RS256"],
+            audience=self.client_id,
+        )
+        return values
