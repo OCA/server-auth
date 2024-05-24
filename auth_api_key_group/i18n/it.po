@@ -68,11 +68,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: auth_api_key_group
-#: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key_group____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: auth_api_key_group
 #: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key_group__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
@@ -86,3 +81,6 @@ msgstr "Ultimo aggiornamento il"
 #: model:ir.model.fields,field_description:auth_api_key_group.field_auth_api_key_group__name
 msgid "Name"
 msgstr "Nome"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
