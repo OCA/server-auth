@@ -7,7 +7,6 @@ from odoo import fields, models
 
 
 class AuthApiKey(models.Model):
-
     _inherit = "auth.api.key"
 
     auth_api_key_group_ids = fields.Many2many(
