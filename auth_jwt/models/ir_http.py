@@ -19,7 +19,6 @@ _logger = logging.getLogger(__name__)
 
 
 class IrHttpJwt(models.AbstractModel):
-
     _inherit = "ir.http"
 
     @classmethod

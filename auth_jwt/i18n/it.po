@@ -185,11 +185,6 @@ msgid "Key"
 msgstr "Chiave"
 
 #. module: auth_jwt
-#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
@@ -352,3 +347,6 @@ msgstr "I validatori non devono creare una catena chiusa: {}."
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
 msgid "arch"
 msgstr "arch"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"

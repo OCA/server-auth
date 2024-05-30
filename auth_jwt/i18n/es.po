@@ -188,11 +188,6 @@ msgid "Key"
 msgstr "Clave"
 
 #. module: auth_jwt
-#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator____last_update
-msgid "Last Modified on"
-msgstr "Última Modificación el"
-
-#. module: auth_jwt
 #: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
@@ -355,3 +350,6 @@ msgstr "Los validadores no deben hacer una cadena cerrada: {}."
 #: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
 msgid "arch"
 msgstr "arch"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Última Modificación el"
