@@ -200,7 +200,7 @@ class TestAuthMethod(TransactionCase):
                 self.env["ir.http"]._auth_method_jwt_validator()
             self.assertEqual(
                 str(composite_error.exception),
-                "401 Unauthorized:"
+                "401 Unauthorized: "
                 + "Multiple errors occurred during JWT chain validation:\n"
                 "validator: 401 Unauthorized: "
                 "The server could not verify that you are authorized to "
