@@ -44,7 +44,7 @@ class UnauthorizedCompositeJwtError(Unauthorized):
         super().__init__(
             "Multiple errors occurred during JWT chain validation:\n"
             + "\n".join(
-                "{}: {}".format(validator_name, error)
+                f"{validator_name}: {error}"
                 for validator_name, error in self.errors.items()
             )
         )

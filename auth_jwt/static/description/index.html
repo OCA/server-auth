@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -9,10 +8,11 @@
 
 /*
 :Author: David Goodger (goodger@python.org)
-:Id: $Id: html4css1.css 8954 2022-01-20 10:10:25Z milde $
+:Id: $Id: html4css1.css 9511 2024-01-13 09:50:07Z milde $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
+Despite the name, some widely supported CSS2 features are used.
 
 See https://docutils.sourceforge.io/docs/howto/html-stylesheets.html for how to
 customize this style sheet.
@@ -275,7 +275,7 @@ pre.literal-block, pre.doctest-block, pre.math, pre.code {
   margin-left: 2em ;
   margin-right: 2em }
 
-pre.code .ln { color: grey; } /* line numbers */
+pre.code .ln { color: gray; } /* line numbers */
 pre.code, code { background-color: #eeeeee }
 pre.code .comment, code .comment { color: #5C6576 }
 pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
@@ -301,7 +301,7 @@ span.option {
 span.pre {
   white-space: pre }
 
-span.problematic {
+span.problematic, pre.problematic {
   color: red }
 
 span.section-subtitle {
@@ -369,7 +369,7 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:d22309ac82ef1eb8879974683b10d4be288eb330fd7e250927f1a8d602dc3988
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html"><img alt="License: LGPL-3" src="https://img.shields.io/badge/licence-LGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/16.0/auth_jwt"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_jwt"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/lgpl-3.0-standalone.html"><img alt="License: LGPL-3" src="https://img.shields.io/badge/licence-LGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/17.0/auth_jwt"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-auth_jwt"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=17.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
 <p>JWT bearer token authentication.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
@@ -391,68 +391,74 @@ ul.auto-toc {
 </div>
 <div class="section" id="usage">
 <h1><a class="toc-backref" href="#toc-entry-2">Usage</a></h1>
-<p>This module lets developpers add a new <tt class="docutils literal">jwt</tt> authentication method on Odoo
-controller routes.</p>
+<p>This module lets developpers add a new <tt class="docutils literal">jwt</tt> authentication method on
+Odoo controller routes.</p>
 <p>To use it, you must:</p>
 <ul class="simple">
-<li>Create an <tt class="docutils literal">auth.jwt.validator</tt> record to configure how the JWT token will
-be validated.</li>
-<li>Add an <tt class="docutils literal"><span class="pre">auth=&quot;jwt_{validator-name}&quot;</span></tt> or <tt class="docutils literal"><span class="pre">auth=&quot;public_or_jwt_{validator-name}&quot;</span></tt>
-attribute to the routes you want to protect where <tt class="docutils literal"><span class="pre">{validator-name}</span></tt> corresponds to
-the name attribute of the JWT validator record.</li>
+<li>Create an <tt class="docutils literal">auth.jwt.validator</tt> record to configure how the JWT
+token will be validated.</li>
+<li>Add an <tt class="docutils literal"><span class="pre">auth=&quot;jwt_{validator-name}&quot;</span></tt> or
+<tt class="docutils literal"><span class="pre">auth=&quot;public_or_jwt_{validator-name}&quot;</span></tt> attribute to the routes you
+want to protect where <tt class="docutils literal"><span class="pre">{validator-name}</span></tt> corresponds to the name
+attribute of the JWT validator record.</li>
 </ul>
 <p>The <tt class="docutils literal">auth_jwt_demo</tt> module provides examples.</p>
 <p>The JWT validator can be configured with the following properties:</p>
 <ul class="simple">
-<li><tt class="docutils literal">name</tt>: the validator name, to match the <tt class="docutils literal"><span class="pre">auth=&quot;jwt_{validator-name}&quot;</span></tt>
-route property.</li>
-<li><tt class="docutils literal">audience</tt>: a comma-separated list of allowed audiences, used to validate
-the <tt class="docutils literal">aud</tt> claim.</li>
+<li><tt class="docutils literal">name</tt>: the validator name, to match the
+<tt class="docutils literal"><span class="pre">auth=&quot;jwt_{validator-name}&quot;</span></tt> route property.</li>
+<li><tt class="docutils literal">audience</tt>: a comma-separated list of allowed audiences, used to
+validate the <tt class="docutils literal">aud</tt> claim.</li>
 <li><tt class="docutils literal">issuer</tt>: used to validate the <tt class="docutils literal">iss</tt> claim.</li>
 <li>Signature type (secret or public key), algorithm, secret and JWK URI
 are used to validate the token signature.</li>
 </ul>
 <p>In addition, the <tt class="docutils literal">exp</tt> claim is validated to reject expired tokens.</p>
 <p>If the <tt class="docutils literal">Authorization</tt> HTTP header is missing, malformed, or contains
-an invalid token, the request is rejected with a 401 (Unauthorized) code,
-unless the cookie mode is enabled (see below).</p>
-<p>If the token is valid, the request executes with the configured user id. By
-default the user id selection strategy is <tt class="docutils literal">static</tt> (i.e. the same for all
-requests) and the selected user is configured on the JWT validator. Additional
-strategies can be provided by overriding the <tt class="docutils literal">_get_uid()</tt> method and
-extending the <tt class="docutils literal">user_id_strategy</tt> selection field.</p>
-<p>The selected user is <em>not</em> stored in the session. It is only available in
-<tt class="docutils literal">request.uid</tt> (and thus it is the one used in <tt class="docutils literal">request.env</tt>). To avoid any
-confusion and mismatches between the bearer token and the session, this module
-rejects requests made with an authenticated user session.</p>
-<p>Additionally, if a <tt class="docutils literal">partner_id_strategy</tt> is configured, a partner is searched
-and if found, its id is stored in the <tt class="docutils literal">request.jwt_partner_id</tt> attribute. If
-<tt class="docutils literal">partner_id_required</tt> is set, a 401 (Unauthorized) is returned if no partner
-was found. Otherwise <tt class="docutils literal">request.jwt_partner_id</tt> is left falsy. Additional
-strategies can be provided by overriding the <tt class="docutils literal">_get_partner_id()</tt> method
-and extending the <tt class="docutils literal">partner_id_strategy</tt> selection field.</p>
+an invalid token, the request is rejected with a 401 (Unauthorized)
+code, unless the cookie mode is enabled (see below).</p>
+<p>If the token is valid, the request executes with the configured user id.
+By default the user id selection strategy is <tt class="docutils literal">static</tt> (i.e. the same
+for all requests) and the selected user is configured on the JWT
+validator. Additional strategies can be provided by overriding the
+<tt class="docutils literal">_get_uid()</tt> method and extending the <tt class="docutils literal">user_id_strategy</tt> selection
+field.</p>
+<p>The selected user is <em>not</em> stored in the session. It is only available
+in <tt class="docutils literal">request.uid</tt> (and thus it is the one used in <tt class="docutils literal">request.env</tt>). To
+avoid any confusion and mismatches between the bearer token and the
+session, this module rejects requests made with an authenticated user
+session.</p>
+<p>Additionally, if a <tt class="docutils literal">partner_id_strategy</tt> is configured, a partner is
+searched and if found, its id is stored in the
+<tt class="docutils literal">request.jwt_partner_id</tt> attribute. If <tt class="docutils literal">partner_id_required</tt> is set,
+a 401 (Unauthorized) is returned if no partner was found. Otherwise
+<tt class="docutils literal">request.jwt_partner_id</tt> is left falsy. Additional strategies can be
+provided by overriding the <tt class="docutils literal">_get_partner_id()</tt> method and extending
+the <tt class="docutils literal">partner_id_strategy</tt> selection field.</p>
 <p>The decoded JWT payload is stored in <tt class="docutils literal">request.jwt_payload</tt>.</p>
-<p>The <tt class="docutils literal">public_auth_jwt</tt> method delegates authentication to the standard Odoo <tt class="docutils literal">public</tt>
-method when the Authorization header is not set. If it is set, the regular JWT
-authentication is performed as described above. This method is useful for public
-endpoints that need to work for anonymous users, but can be enhanced when an
-authenticated user is know. A typical use case is a “add to cart” endpoint that can work
-for anonymous users, but can be enhanced by binding the cart to a known customer when
-the authenticated user is known.</p>
-<p>You can enable a cookie mode on JWT validators. In this case, the JWT payload obtained
-from the <tt class="docutils literal">Authorization</tt> header is returned as a Http-Only cookie. This mode is
-sometimes simpler for front-end applications which do not then need to store and protect
-the JWT token across requests and can simply rely on the cookie management mechanisms of
-browsers. When both the <tt class="docutils literal">Authorization</tt> header and a cookie are provided, the cookie
-is ignored in order to let clients authenticate with a different user by providing a new
-JWT token.</p>
+<p>The <tt class="docutils literal">public_auth_jwt</tt> method delegates authentication to the standard
+Odoo <tt class="docutils literal">public</tt> method when the Authorization header is not set. If it
+is set, the regular JWT authentication is performed as described above.
+This method is useful for public endpoints that need to work for
+anonymous users, but can be enhanced when an authenticated user is know.
+A typical use case is a “add to cart” endpoint that can work for
+anonymous users, but can be enhanced by binding the cart to a known
+customer when the authenticated user is known.</p>
+<p>You can enable a cookie mode on JWT validators. In this case, the JWT
+payload obtained from the <tt class="docutils literal">Authorization</tt> header is returned as a
+Http-Only cookie. This mode is sometimes simpler for front-end
+applications which do not then need to store and protect the JWT token
+across requests and can simply rely on the cookie management mechanisms
+of browsers. When both the <tt class="docutils literal">Authorization</tt> header and a cookie are
+provided, the cookie is ignored in order to let clients authenticate
+with a different user by providing a new JWT token.</p>
 </div>
 <div class="section" id="bug-tracker">
 <h1><a class="toc-backref" href="#toc-entry-3">Bug Tracker</a></h1>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/server-auth/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_jwt%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_jwt%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -472,13 +478,15 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <div class="section" id="maintainers">
 <h2><a class="toc-backref" href="#toc-entry-7">Maintainers</a></h2>
 <p>This module is maintained by the OCA.</p>
-<a class="reference external image-reference" href="https://odoo-community.org"><img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" /></a>
+<a class="reference external image-reference" href="https://odoo-community.org">
+<img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" />
+</a>
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
 <p>Current <a class="reference external" href="https://odoo-community.org/page/maintainer-role">maintainer</a>:</p>
 <p><a class="reference external image-reference" href="https://github.com/sbidoul"><img alt="sbidoul" src="https://github.com/sbidoul.png?size=40px" /></a></p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/16.0/auth_jwt">OCA/server-auth</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/17.0/auth_jwt">OCA/server-auth</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>
