@@ -19,30 +19,35 @@
                                 name="secret_key"
                                 string="Key"
                                 invisible="signature_type != 'secret'"
-                                required="signature_type == 'secret'"/>
+                                required="signature_type == 'secret'"
+                            />
                             <field
                                 name="secret_algorithm"
                                 string="Algorithm"
                                 invisible="signature_type != 'secret'"
-                                required="signature_type == 'secret'"/>
+                                required="signature_type == 'secret'"
+                            />
                             <field
                                 name="public_key_jwk_uri"
                                 string="JWK URI"
                                 invisible="signature_type != 'public_key'"
                                 required="signature_type == 'public_key'"
-                                widget="url"/>
+                                widget="url"
+                            />
                             <field
                                 name="public_key_algorithm"
                                 string="Algorithm"
                                 invisible="signature_type != 'public_key'"
-                                required="signature_type == 'public_key'"/>
+                                required="signature_type == 'public_key'"
+                            />
                         </group>
                         <group colspan="2" string="User">
                             <field name="user_id_strategy" />
                             <field
                                 name="static_user_id"
                                 invisible="user_id_strategy != 'static'"
-                                required="user_id_strategy == 'static'"/>
+                                required="user_id_strategy == 'static'"
+                            />
                         </group>
                         <group colspan="2" string="Partner">
                             <field name="partner_id_strategy" />
@@ -53,13 +58,13 @@
                             <field
                                 name="cookie_name"
                                 invisible="not cookie_enabled"
-                                required="cookie_enabled"/>
-                            <field
-                                name="cookie_path"
-                                invisible="not cookie_enabled"/>
+                                required="cookie_enabled"
+                            />
+                            <field name="cookie_path" invisible="not cookie_enabled" />
                             <field
                                 name="cookie_max_age"
-                                invisible="not cookie_enabled"/>
+                                invisible="not cookie_enabled"
+                            />
                         </group>
                     </group>
                 </sheet>

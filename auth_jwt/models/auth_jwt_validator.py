@@ -34,7 +34,9 @@ class AuthJwtValidator(models.Model):
     _description = "JWT Validator Configuration"
 
     name = fields.Char(required=True)
-    signature_type = fields.Selection([("secret", "Secret"), ("public_key", "Public key")], required=True)
+    signature_type = fields.Selection(
+        [("secret", "Secret"), ("public_key", "Public key")], required=True
+    )
     secret_key = fields.Char()
     secret_algorithm = fields.Selection(
         [
@@ -62,9 +64,13 @@ class AuthJwtValidator(models.Model):
         ],
         default="RS256",
     )
-    audience = fields.Char(required=True, help="Comma separated list of audiences, to validate aud.")
+    audience = fields.Char(
+        required=True, help="Comma separated list of audiences, to validate aud."
+    )
     issuer = fields.Char(required=True, help="To validate iss.")
-    user_id_strategy = fields.Selection([("static", "Static")], required=True, default="static")
+    user_id_strategy = fields.Selection(
+        [("static", "Static")], required=True, default="static"
+    )
     static_user_id = fields.Many2one("res.users", default=1)
     partner_id_strategy = fields.Selection([("email", "From email claim")])
     partner_id_required = fields.Boolean()
@@ -88,7 +94,9 @@ class AuthJwtValidator(models.Model):
         default=86400 * 365,
         help="Number of seconds until the cookie expires (Max-Age).",
     )
-    cookie_secure = fields.Boolean(default=True, help="Set to false only for development without https.")
+    cookie_secure = fields.Boolean(
+        default=True, help="Set to false only for development without https."
+    )
 
     _sql_constraints = [
         ("name_uniq", "unique(name)", "JWT validator names must be unique !"),
@@ -98,7 +106,9 @@ class AuthJwtValidator(models.Model):
     def _check_name(self):
         for rec in self:
             if not rec.name.isidentifier():
-                raise ValidationError(_("Name %r is not a valid python identifier.") % (rec.name,))
+                raise ValidationError(
+                    _("Name %r is not a valid python identifier.") % (rec.name,)
+                )
 
     @api.constrains("next_validator_id")
     def _check_next_validator_id(self):
@@ -110,14 +120,21 @@ class AuthJwtValidator(models.Model):
                 validator = validator.next_validator_id
                 chain.append(validator.name)
                 if rec == validator:
-                    raise ValidationError(_("Validators mustn't make a closed chain: {}.").format(" -> ".join(chain)))
+                    raise ValidationError(
+                        _("Validators mustn't make a closed chain: {}.").format(
+                            " -> ".join(chain)
+                        )
+                    )
 
     @api.constrains("cookie_enabled", "cookie_name")
     def _check_cookie_name(self):
         for rec in self:
             if rec.cookie_enabled and not rec.cookie_name:
                 raise ValidationError(
-                    _("A cookie name must be provided on JWT validator %s " "because it has cookie mode enabled.")
+                    _(
+                        "A cookie name must be provided on JWT validator %s "
+                        "because it has cookie mode enabled."
+                    )
                     % (rec.name,)
                 )
 
@@ -135,7 +152,9 @@ class AuthJwtValidator(models.Model):
             _logger.error("JWT validator not found for name %r", validator_name)
             raise JwtValidatorNotFound()
         if len(validator) != 1:
-            _logger.error("More than one JWT validator found for name %r", validator_name)
+            _logger.error(
+                "More than one JWT validator found for name %r", validator_name
+            )
             raise AmbiguousJwtValidator()
         return validator
 
@@ -241,7 +260,9 @@ class AuthJwtValidator(models.Model):
             setattr(
                 IrHttp.__class__,
                 f"_auth_method_public_or_jwt_{rec.name}",
-                partial(IrHttp.__class__._auth_method_public_or_jwt, validator_name=rec.name),
+                partial(
+                    IrHttp.__class__._auth_method_public_or_jwt, validator_name=rec.name
+                ),
             )
 
     def _unregister_auth_method(self):

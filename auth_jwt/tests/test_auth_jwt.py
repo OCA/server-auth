@@ -200,7 +200,8 @@ class TestAuthMethod(TransactionCase):
                 self.env["ir.http"]._auth_method_jwt_validator()
             self.assertEqual(
                 str(composite_error.exception),
-                "401 Unauthorized: Multiple errors occurred during JWT chain validation:\n"
+                """401 Unauthorized:
+                Multiple errors occurred during JWT chain validation:\n"""
                 "validator: 401 Unauthorized: "
                 "The server could not verify that you are authorized to "
                 "access the URL requested. You either supplied the wrong "
@@ -287,17 +288,20 @@ class TestAuthMethod(TransactionCase):
     def test_get_validator(self):
         AuthJwtValidator = self.env["auth.jwt.validator"]
         AuthJwtValidator.search([]).unlink()
-        with self.assertRaises(JwtValidatorNotFound), mute_logger(
-            "odoo.addons.auth_jwt.models.auth_jwt_validator"
+        with (
+            self.assertRaises(JwtValidatorNotFound),
+            mute_logger("odoo.addons.auth_jwt.models.auth_jwt_validator"),
         ):
             AuthJwtValidator._get_validator_by_name(None)
-        with self.assertRaises(JwtValidatorNotFound), mute_logger(
-            "odoo.addons.auth_jwt.models.auth_jwt_validator"
+        with (
+            self.assertRaises(JwtValidatorNotFound),
+            mute_logger("odoo.addons.auth_jwt.models.auth_jwt_validator"),
         ):
             AuthJwtValidator._get_validator_by_name("notavalidator")
         validator1 = self._create_validator(name="validator1")
-        with self.assertRaises(JwtValidatorNotFound), mute_logger(
-            "odoo.addons.auth_jwt.models.auth_jwt_validator"
+        with (
+            self.assertRaises(JwtValidatorNotFound),
+            mute_logger("odoo.addons.auth_jwt.models.auth_jwt_validator"),
         ):
             AuthJwtValidator._get_validator_by_name("notavalidator")
         self.assertEqual(AuthJwtValidator._get_validator_by_name(None), validator1)
@@ -306,8 +310,9 @@ class TestAuthMethod(TransactionCase):
         )
         # create a second validator
         validator2 = self._create_validator(name="validator2")
-        with self.assertRaises(AmbiguousJwtValidator), mute_logger(
-            "odoo.addons.auth_jwt.models.auth_jwt_validator"
+        with (
+            self.assertRaises(AmbiguousJwtValidator),
+            mute_logger("odoo.addons.auth_jwt.models.auth_jwt_validator"),
         ):
             AuthJwtValidator._get_validator_by_name(None)
         self.assertEqual(
