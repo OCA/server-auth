@@ -17,20 +17,21 @@ Auth Oauth Autologin
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/16.0/auth_oauth_autologin
+    :target: https://github.com/OCA/server-auth/tree/17.0/auth_oauth_autologin
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_oauth_autologin
+    :target: https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-auth_oauth_autologin
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=16.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
 This modules implements an automatic redirection to the configured OAuth
-provider login page, if there is one and only one enabled. This effectively
-makes the regular Odoo login screen invisible in normal circumstances.
+provider login page, if there is one and only one enabled. This
+effectively makes the regular Odoo login screen invisible in normal
+circumstances.
 
 **Table of contents**
 
@@ -40,32 +41,33 @@ makes the regular Odoo login screen invisible in normal circumstances.
 Configuration
 =============
 
-Configure OAuth providers in Settings > Users and Companies, and make sure
-there is one and only one that has both the enabled and automatic login flags
-set.
+Configure OAuth providers in Settings > Users and Companies, and make
+sure there is one and only one that has both the enabled and automatic
+login flags set.
 
 When this is done, users visiting the login page (/web/login), or being
-redirected to it because they are not authenticated yet, will be redirected to
-the identity provider login page instead of the regular Odoo login page.
+redirected to it because they are not authenticated yet, will be
+redirected to the identity provider login page instead of the regular
+Odoo login page.
 
-Be aware that this module does not actively prevent users from authenticating
-with an login and password stored in the Odoo database. In some unusual
-circumstances (such as identity provider errors), the regular Odoo login may
-still be displayed. Securely disabling Odoo login and password, if needed,
-should be the topic of another module.
+Be aware that this module does not actively prevent users from
+authenticating with an login and password stored in the Odoo database.
+In some unusual circumstances (such as identity provider errors), the
+regular Odoo login may still be displayed. Securely disabling Odoo login
+and password, if needed, should be the topic of another module.
 
-Also be aware that this has a possibly surprising effect on the logout menu
-item. When the user logs out of Odoo, a redirect to the login page happens. The
-login page in turn redirects to the identity provider, which, if the user is
-already authenticated there, automatically logs the user back in Odoo, in a
-fresh session.
+Also be aware that this has a possibly surprising effect on the logout
+menu item. When the user logs out of Odoo, a redirect to the login page
+happens. The login page in turn redirects to the identity provider,
+which, if the user is already authenticated there, automatically logs
+the user back in Odoo, in a fresh session.
 
 Usage
 =====
 
-When configured, the Odoo login page redirects to the OAuth identify provider
-for authentication and login in Odoo. To access the regular Odoo login page,
-visit ``/web/login?no_autologin``.
+When configured, the Odoo login page redirects to the OAuth identify
+provider for authentication and login in Odoo. To access the regular
+Odoo login page, visit ``/web/login?no_autologin``.
 
 Bug Tracker
 ===========
@@ -73,7 +75,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_oauth_autologin%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_oauth_autologin%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -81,12 +83,12 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * ACSONE SA/NV
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -106,6 +108,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-sbidoul| 
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/16.0/auth_oauth_autologin>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/17.0/auth_oauth_autologin>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
