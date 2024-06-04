@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -9,10 +8,11 @@
 
 /*
 :Author: David Goodger (goodger@python.org)
-:Id: $Id: html4css1.css 8954 2022-01-20 10:10:25Z milde $
+:Id: $Id: html4css1.css 9511 2024-01-13 09:50:07Z milde $
 :Copyright: This stylesheet has been placed in the public domain.
 
 Default cascading style sheet for the HTML output of Docutils.
+Despite the name, some widely supported CSS2 features are used.
 
 See https://docutils.sourceforge.io/docs/howto/html-stylesheets.html for how to
 customize this style sheet.
@@ -275,7 +275,7 @@ pre.literal-block, pre.doctest-block, pre.math, pre.code {
   margin-left: 2em ;
   margin-right: 2em }
 
-pre.code .ln { color: grey; } /* line numbers */
+pre.code .ln { color: gray; } /* line numbers */
 pre.code, code { background-color: #eeeeee }
 pre.code .comment, code .comment { color: #5C6576 }
 pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
@@ -301,7 +301,7 @@ span.option {
 span.pre {
   white-space: pre }
 
-span.problematic {
+span.problematic, pre.problematic {
   color: red }
 
 span.section-subtitle {
@@ -369,10 +369,11 @@ ul.auto-toc {
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !! source digest: sha256:b39eab35ecf9f611b79515461079fc6ba8a002fc432515c31009b6c70eff01c3
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/16.0/auth_oauth_autologin"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_oauth_autologin"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=16.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
+<p><a class="reference external image-reference" href="https://odoo-community.org/page/development-status"><img alt="Beta" src="https://img.shields.io/badge/maturity-Beta-yellow.png" /></a> <a class="reference external image-reference" href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"><img alt="License: AGPL-3" src="https://img.shields.io/badge/licence-AGPL--3-blue.png" /></a> <a class="reference external image-reference" href="https://github.com/OCA/server-auth/tree/17.0/auth_oauth_autologin"><img alt="OCA/server-auth" src="https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github" /></a> <a class="reference external image-reference" href="https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-auth_oauth_autologin"><img alt="Translate me on Weblate" src="https://img.shields.io/badge/weblate-Translate%20me-F47D42.png" /></a> <a class="reference external image-reference" href="https://runboat.odoo-community.org/builds?repo=OCA/server-auth&amp;target_branch=17.0"><img alt="Try me on Runboat" src="https://img.shields.io/badge/runboat-Try%20me-875A7B.png" /></a></p>
 <p>This modules implements an automatic redirection to the configured OAuth
-provider login page, if there is one and only one enabled. This effectively
-makes the regular Odoo login screen invisible in normal circumstances.</p>
+provider login page, if there is one and only one enabled. This
+effectively makes the regular Odoo login screen invisible in normal
+circumstances.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -388,35 +389,36 @@ makes the regular Odoo login screen invisible in normal circumstances.</p>
 </div>
 <div class="section" id="configuration">
 <h1><a class="toc-backref" href="#toc-entry-1">Configuration</a></h1>
-<p>Configure OAuth providers in Settings &gt; Users and Companies, and make sure
-there is one and only one that has both the enabled and automatic login flags
-set.</p>
+<p>Configure OAuth providers in Settings &gt; Users and Companies, and make
+sure there is one and only one that has both the enabled and automatic
+login flags set.</p>
 <p>When this is done, users visiting the login page (/web/login), or being
-redirected to it because they are not authenticated yet, will be redirected to
-the identity provider login page instead of the regular Odoo login page.</p>
-<p>Be aware that this module does not actively prevent users from authenticating
-with an login and password stored in the Odoo database. In some unusual
-circumstances (such as identity provider errors), the regular Odoo login may
-still be displayed. Securely disabling Odoo login and password, if needed,
-should be the topic of another module.</p>
-<p>Also be aware that this has a possibly surprising effect on the logout menu
-item. When the user logs out of Odoo, a redirect to the login page happens. The
-login page in turn redirects to the identity provider, which, if the user is
-already authenticated there, automatically logs the user back in Odoo, in a
-fresh session.</p>
+redirected to it because they are not authenticated yet, will be
+redirected to the identity provider login page instead of the regular
+Odoo login page.</p>
+<p>Be aware that this module does not actively prevent users from
+authenticating with an login and password stored in the Odoo database.
+In some unusual circumstances (such as identity provider errors), the
+regular Odoo login may still be displayed. Securely disabling Odoo login
+and password, if needed, should be the topic of another module.</p>
+<p>Also be aware that this has a possibly surprising effect on the logout
+menu item. When the user logs out of Odoo, a redirect to the login page
+happens. The login page in turn redirects to the identity provider,
+which, if the user is already authenticated there, automatically logs
+the user back in Odoo, in a fresh session.</p>
 </div>
 <div class="section" id="usage">
 <h1><a class="toc-backref" href="#toc-entry-2">Usage</a></h1>
-<p>When configured, the Odoo login page redirects to the OAuth identify provider
-for authentication and login in Odoo. To access the regular Odoo login page,
-visit <tt class="docutils literal"><span class="pre">/web/login?no_autologin</span></tt>.</p>
+<p>When configured, the Odoo login page redirects to the OAuth identify
+provider for authentication and login in Odoo. To access the regular
+Odoo login page, visit <tt class="docutils literal"><span class="pre">/web/login?no_autologin</span></tt>.</p>
 </div>
 <div class="section" id="bug-tracker">
 <h1><a class="toc-backref" href="#toc-entry-3">Bug Tracker</a></h1>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/server-auth/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_oauth_autologin%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
+<a class="reference external" href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_oauth_autologin%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**">feedback</a>.</p>
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
@@ -430,13 +432,15 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <div class="section" id="maintainers">
 <h2><a class="toc-backref" href="#toc-entry-6">Maintainers</a></h2>
 <p>This module is maintained by the OCA.</p>
-<a class="reference external image-reference" href="https://odoo-community.org"><img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" /></a>
+<a class="reference external image-reference" href="https://odoo-community.org">
+<img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" />
+</a>
 <p>OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.</p>
 <p>Current <a class="reference external" href="https://odoo-community.org/page/maintainer-role">maintainer</a>:</p>
 <p><a class="reference external image-reference" href="https://github.com/sbidoul"><img alt="sbidoul" src="https://github.com/sbidoul.png?size=40px" /></a></p>
-<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/16.0/auth_oauth_autologin">OCA/server-auth</a> project on GitHub.</p>
+<p>This module is part of the <a class="reference external" href="https://github.com/OCA/server-auth/tree/17.0/auth_oauth_autologin">OCA/server-auth</a> project on GitHub.</p>
 <p>You are welcome to contribute. To learn how please visit <a class="reference external" href="https://odoo-community.org/page/Contribute">https://odoo-community.org/page/Contribute</a>.</p>
 </div>
 </div>
