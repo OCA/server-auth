@@ -12,7 +12,7 @@ from odoo.addons.auth_oauth.controllers.main import OAuthLogin
 class OAuthAutoLogin(OAuthLogin):
     def _autologin_disabled(self, redirect):
         url = urlparse(redirect)
-        params = dict(parse_qsl(url.query))
+        params = dict(parse_qsl(url.query, keep_blank_values=True))
         return "no_autologin" in params or "oauth_error" in params or "error" in params
 
     def _autologin_link(self):
