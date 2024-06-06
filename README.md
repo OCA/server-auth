@@ -35,7 +35,7 @@ addon | version | maintainers | summary
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 15.0.1.0.0 |  | Makes the user login field case insensitive
 [password_security](password_security/) | 15.0.1.4.1 |  | Allow admin to set password security requirements.
 [user_log_view](user_log_view/) | 15.0.1.0.0 | [![trojikman](https://github.com/trojikman.png?size=30px)](https://github.com/trojikman) | Allow to see user's actions log
-[users_ldap_groups](users_ldap_groups/) | 15.0.1.0.0 |  | Adds user accounts to groups based on rules defined by the administrator.
+[users_ldap_groups](users_ldap_groups/) | 15.0.1.0.1 |  | Adds user accounts to groups based on rules defined by the administrator.
 [vault](vault/) | 15.0.2.1.0 |  | Password vault integration in Odoo
 [vault_share](vault_share/) | 15.0.1.1.1 |  | Implementation of a mechanism to share secrets
 
