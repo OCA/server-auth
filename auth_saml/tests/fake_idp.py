@@ -105,8 +105,9 @@ class DummyResponse:
 
 
 class FakeIDP(Server):
-    def __init__(self, metadatas=None):
-        settings = CONFIG
+    def __init__(self, metadatas=None, settings=None):
+        if settings is None:
+            settings = CONFIG
         if metadatas:
             settings.update({"metadata": {"inline": metadatas}})
 
