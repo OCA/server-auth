@@ -17,7 +17,7 @@ class ResCompanyLdapOperator(models.AbstractModel):
 
     @api.model
     def operators(self):
-        """Return names of function to call on this model as operator"""
+        """Return names (without '_') of function to call on this model as operator"""
         return ("contains", "equals", "query")
 
     def _contains(self, ldap_entry, mapping):
