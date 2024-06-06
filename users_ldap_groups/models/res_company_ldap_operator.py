@@ -17,20 +17,20 @@ class ResCompanyLdapOperator(models.AbstractModel):
 
     @api.model
     def operators(self):
-        """Return names of function to call on this model as operator"""
+        """Return names (without '_') of function to call on this model as operator"""
         return ("contains", "equals", "query")
 
-    def contains(self, ldap_entry, mapping):
+    def _contains(self, ldap_entry, mapping):
         return mapping.ldap_attribute in ldap_entry[1] and mapping.value in map(
             lambda x: x.decode(), ldap_entry[1][mapping.ldap_attribute]
         )
 
-    def equals(self, ldap_entry, mapping):
+    def _equals(self, ldap_entry, mapping):
         return mapping.ldap_attribute in ldap_entry[1] and mapping.value == str(
             list(map(lambda x: x.decode(), ldap_entry[1][mapping.ldap_attribute]))
         )
 
-    def query(self, ldap_entry, mapping):
+    def _query(self, ldap_entry, mapping):
         query_string = Template(mapping.value).safe_substitute(
             {attr: ldap_entry[1][attr][0].decode() for attr in ldap_entry[1]}
         )
