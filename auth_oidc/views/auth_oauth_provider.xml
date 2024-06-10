@@ -18,6 +18,7 @@
             <field name="validation_endpoint" position="after">
                 <field name="token_endpoint" />
                 <field name="jwks_uri" />
+                <field name="end_session_endpoint" />
             </field>
         </field>
     </record>
