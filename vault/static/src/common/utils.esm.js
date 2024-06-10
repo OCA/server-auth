@@ -281,7 +281,8 @@ function generate_pass(title, options = {}) {
                 {
                     text: _t("Enter"),
                     classes: "btn-primary",
-                    click: async function () {
+                    click: async function (ev) {
+                        ev.stopPropagation();
                         if (!password) throw new Error(_t("Missing password"));
 
                         dialog.close();
@@ -290,7 +291,8 @@ function generate_pass(title, options = {}) {
                 },
                 {
                     text: _t("Cancel"),
-                    click: function () {
+                    click: function (ev) {
+                        ev.stopPropagation();
                         dialog.close();
                         reject(_t("Cancelled"));
                     },
