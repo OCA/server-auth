@@ -191,7 +191,8 @@ function askpass(title, options = {}) {
                 {
                     text: _t("Enter"),
                     classes: "btn-primary",
-                    click: async function () {
+                    click: async function (ev) {
+                        ev.stopPropagation();
                         const password = this.$("#password").val();
                         const keyfile = this.$("#keyfile")[0].files[0];
 
@@ -222,7 +223,8 @@ function askpass(title, options = {}) {
                 },
                 {
                     text: _t("Cancel"),
-                    click: function () {
+                    click: function (ev) {
+                        ev.stopPropagation();
                         dialog.close();
                         reject(_t("Cancelled"));
                     },
