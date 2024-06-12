@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-23 02:01+0000\n"
-"PO-Revision-Date: 2024-06-12 13:36+0000\n"
+"PO-Revision-Date: 2024-06-12 17:37+0000\n"
 "Last-Translator: Francesco Foresti <francesco.foresti@ooops404.com>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -57,18 +57,21 @@ msgid ""
 "\n"
 "* Uppercase letter (at least %s characters)"
 msgstr ""
+"\n"
+"* Lettere maiuscole (almeno %s caratteri)"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_minimum
 msgid "Amount of hours until a user may change password again"
 msgstr ""
+"Numero di ore dopo le quali l'utente può cambiare nuovamente la password"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Cannot use the most recent %d passwords"
-msgstr ""
+msgstr "Impossibile usare le %d password più recenti"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_length
@@ -221,45 +224,45 @@ msgstr "Numero minimo di caratteri speciali"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of strength estimation"
-msgstr ""
+msgstr "Numero minimo per la stima forza"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Minimum number of uppercase characters"
-msgstr ""
+msgstr "Numero minimo di caratteri maiuscoli"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Must contain the following:"
-msgstr ""
+msgstr "Deve contenere le seguenti:"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_numeric
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_numeric
 msgid "Numeric"
-msgstr ""
+msgstr "Numerici"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users__password_history_ids
 msgid "Password History"
-msgstr ""
+msgstr "Storico password"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Password Policy"
-msgstr ""
+msgstr "Politica password"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Password expires in"
-msgstr ""
+msgstr "La password scade in"
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
 #, python-format
 msgid "Password must be %d characters or more."
-msgstr ""
+msgstr "La password deve essere di %d o più caratteri."
 
 #. module: password_security
 #: code:addons/password_security/models/res_users.py:0
@@ -268,64 +271,66 @@ msgid ""
 "Passwords can only be reset every %d hour(s). Please contact an "
 "administrator for assistance."
 msgstr ""
+"Le password possono essere reimpostate solamente ogni %d ore. Contattare un "
+"amministratore per assistenza."
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_lower
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_lower
 msgid "Require number of lowercase letters"
-msgstr ""
+msgstr "Richiede un numero di lettere minuscole"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_numeric
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_numeric
 msgid "Require number of numeric digits"
-msgstr ""
+msgstr "Richiede un numero di cifre numeriche"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_special
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_special
 msgid "Require number of unique special characters"
-msgstr ""
+msgstr "Richiede un numero di caratteri speciali unici"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_upper
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_upper
 msgid "Require number of uppercase letters"
-msgstr ""
+msgstr "Richiede un numero di lettere maiuscole"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_estimate
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_estimate
 msgid "Required score for the strength estimation. Between 0 and 4"
-msgstr ""
+msgstr "Punteggio richiesto per la stima forza password. Tra 0 e 4"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users_pass_history
 msgid "Res Users Password History"
-msgstr ""
+msgstr "Storico password utente res"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_special
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
 msgid "Special"
-msgstr ""
+msgstr "Speciali"
 
 #. module: password_security
 #: code:addons/password_security/models/res_company.py:0
 #, python-format
 msgid "The estimation must be between 0 and 4."
-msgstr ""
+msgstr "La stima deve essere tra 0 e 4."
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_upper
 msgid "Uppercase"
-msgstr ""
+msgstr "Maiuscole"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Use negative number for infinite, or 0 to disable"
-msgstr ""
+msgstr "Usare un numero negativo per infinito o 0 per disabilitare"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__user_id
@@ -335,7 +340,7 @@ msgstr "Utente"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "User can change password in"
-msgstr ""
+msgstr "L'utente puà modificare la password in"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users
@@ -347,47 +352,47 @@ msgstr "Utenti"
 #: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d characters"
-msgstr ""
+msgstr "almeno %d caratteri"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d lower case characters"
-msgstr ""
+msgstr "almeno %d caratteri minuscoli"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d numeric characters"
-msgstr ""
+msgstr "almeno %d cifre"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d special characters"
-msgstr ""
+msgstr "almeno %d caratteri speciali"
 
 #. module: password_security
 #. openerp-web
 #: code:addons/password_security/static/src/js/password_gauge.js:0
 #, python-format
 msgid "at least %d upper case characters"
-msgstr ""
+msgstr "almeno %d caratteri maiuscoli"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "days."
-msgstr ""
+msgstr "giorni."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "hours again."
-msgstr ""
+msgstr "ore nuovamente."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "previous passwords."
-msgstr ""
+msgstr "password precedenti."
