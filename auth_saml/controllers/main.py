@@ -10,13 +10,22 @@ import werkzeug.utils
 from werkzeug.exceptions import BadRequest
 from werkzeug.urls import url_quote_plus
 
-import odoo
-from odoo import SUPERUSER_ID, _, api, http, models
-from odoo import registry as registry_get
+from odoo import (
+    SUPERUSER_ID,
+    _,
+    api,
+    exceptions,
+    http,
+    models,
+)
+from odoo import (
+    registry as registry_get,
+)
 from odoo.http import request
+from odoo.tools.misc import clean_context
 
-from odoo.addons.web.controllers.home import Home, ensure_db
-from odoo.addons.web.controllers.utils import _get_login_redirect_url
+from odoo.addons.web.controllers.home import Home
+from odoo.addons.web.controllers.utils import _get_login_redirect_url, ensure_db
 
 _logger = logging.getLogger(__name__)
 
@@ -207,54 +216,50 @@ class AuthSAMLController(http.Controller):
         dbname = state["d"]
         if not http.db_filter([dbname]):
             return BadRequest()
-        context = state.get("c", {})
-        registry = registry_get(dbname)
+        ensure_db(db=dbname)
 
-        with registry.cursor() as cr:
-            try:
-                env = api.Environment(cr, SUPERUSER_ID, context)
-                credentials = (
-                    env["res.users"]
-                    .sudo()
-                    .auth_saml(
-                        provider,
-                        saml_response,
-                        request.httprequest.url_root.rstrip("/"),
-                    )
+        request.update_context(**clean_context(state.get("c", {})))
+        try:
+            credentials = (
+                request.env["res.users"]
+                .with_user(SUPERUSER_ID)
+                .auth_saml(
+                    provider,
+                    saml_response,
+                    request.httprequest.url_root.rstrip("/"),
                 )
-                action = state.get("a")
-                menu = state.get("m")
-                redirect = (
-                    werkzeug.urls.url_unquote_plus(state["r"])
-                    if state.get("r")
-                    else False
-                )
-                url = "/"
-                if redirect:
-                    url = redirect
-                elif action:
-                    url = "/#action=%s" % action
-                elif menu:
-                    url = "/#menu_id=%s" % menu
-                pre_uid = request.session.authenticate(*credentials)
-                resp = request.redirect(_get_login_redirect_url(pre_uid, url), 303)
-                resp.autocorrect_location_header = False
-                return resp
+            )
+            action = state.get("a")
+            menu = state.get("m")
+            redirect = (
+                werkzeug.urls.url_unquote_plus(state["r"]) if state.get("r") else False
+            )
+            url = "/web"
+            if redirect:
+                url = redirect
+            elif action:
+                url = "/#action=%s" % action
+            elif menu:
+                url = "/#menu_id=%s" % menu
+            pre_uid = request.session.authenticate(*credentials)
+            resp = request.redirect(_get_login_redirect_url(pre_uid, url), 303)
+            resp.autocorrect_location_header = False
+            return resp
 
-            except odoo.exceptions.AccessDenied:
-                # saml credentials not valid,
-                # user could be on a temporary session
-                _logger.info("SAML2: access denied")
+        except exceptions.AccessDenied:
+            # saml credentials not valid,
+            # user could be on a temporary session
+            _logger.info("SAML2: access denied")
 
-                url = "/web/login?saml_error=expired"
-                redirect = werkzeug.utils.redirect(url, 303)
-                redirect.autocorrect_location_header = False
-                return redirect
+            url = "/web/login?saml_error=expired"
+            redirect = werkzeug.utils.redirect(url, 303)
+            redirect.autocorrect_location_header = False
+            return redirect
 
-            except Exception as e:
-                # signup error
-                _logger.exception("SAML2: failure - %s", str(e))
-                url = "/web/login?saml_error=access-denied"
+        except Exception as e:
+            # signup error
+            _logger.exception("SAML2: failure - %s", str(e))
+            url = "/web/login?saml_error=access-denied"
 
         redirect = request.redirect(url, 303)
         redirect.autocorrect_location_header = False
