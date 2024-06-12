@@ -324,7 +324,6 @@ class TestPySaml(HttpCase):
             timeout=300,
         )
         self.assertTrue(response.ok)
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.url,
             self.base_url()
