@@ -374,6 +374,13 @@ patch(FormController.prototype, "vault", {
         return await _super(...arguments);
     },
 
+    async discard() {
+        const _super = this._super.bind(this);
+        if (this.model.root.resModel === "vault.entry")
+            this.model.env.bus.trigger("RELATIONAL_MODEL:ENCRYPT_FIELDS");
+        return await _super(...arguments);
+    },
+
     async beforeLeave() {
         const _super = this._super.bind(this);
         if (this.model.root.isDirty) await this._vaultAction();

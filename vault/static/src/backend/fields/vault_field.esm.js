@@ -65,6 +65,10 @@ export default class VaultField extends VaultMixin(Component) {
         useBus(self.env.bus, "RELATIONAL_MODEL:NEED_LOCAL_CHANGES", (ev) =>
             ev.detail.proms.push(self.commitChanges())
         );
+        useBus(self.env.bus, "RELATIONAL_MODEL:ENCRYPT_FIELDS", () => {
+            this.state.decrypted = false;
+            this.showValue();
+        });
     }
 
     /**
@@ -174,6 +178,7 @@ export default class VaultField extends VaultMixin(Component) {
             const val = this.input.el.value || false;
             if (val !== (this.state.lastSetValue || false)) {
                 this.state.lastSetValue = this.input.el.value;
+                this.state.decryptedValue = this.input.el.value;
                 await this.storeValue(val);
                 this.props.setDirty(this.state.isDirty);
             }
