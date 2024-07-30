@@ -17,20 +17,20 @@ LDAP mapping for user name and e-mail
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/16.0/users_ldap_mail
+    :target: https://github.com/OCA/server-auth/tree/17.0/users_ldap_mail
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-users_ldap_mail
+    :target: https://translation.odoo-community.org/projects/server-auth-17-0/server-auth-17-0-users_ldap_mail
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=16.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=17.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-This module extends the functionality of the auth_ldap module to support mail
-from LDAP and to allow you to get an e-mail address from LDAP accounts to Odoo
-users.
+This module extends the functionality of the auth_ldap module to support
+mail from LDAP and to allow you to get an e-mail address from LDAP
+accounts to Odoo users.
 
 **Table of contents**
 
@@ -42,21 +42,21 @@ Usage
 
 To use this module, you need to:
 
-#. Open Odoo in your browser
-#. Go to **Settings > General Settings**
-#. In the **Integrations** section click on **LDAP Server** under
-   **LDAP Authentication**. This will allow you to create your LDAP integration
+1. Open Odoo in your browser
+2. Go to **Settings > General Settings**
+3. In the **Integrations** section click on **LDAP Server** under **LDAP
+   Authentication**. This will allow you to create your LDAP integration
    settings.
-#. When creating or editing a record, under the **Process Parameter** section
-   there are two new fields: mail and name, the name of these items will
-   correspond with a new user that is created, when a user logs in via LDAP in
-   Odoo.
+4. When creating or editing a record, under the **Process Parameter**
+   section there are two new fields: mail and name, the name of these
+   items will correspond with a new user that is created, when a user
+   logs in via LDAP in Odoo.
 
 Known issues / Roadmap
 ======================
 
-
-* Add tests (use LDAP Mocking through something like https://mockldap.readthedocs.io/en/latest/overview.html)
+-  Add tests (use LDAP Mocking through something like
+   https://mockldap.readthedocs.io/en/latest/overview.html)
 
 Bug Tracker
 ===========
@@ -64,7 +64,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20users_ldap_mail%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20users_ldap_mail%0Aversion:%2017.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -72,21 +72,21 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * Daniel Reis
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Daniel Reis (https://launchpad.com/~dreis-pt),
-* `Tecnativa <https://www.tecnativa.com>`_:
+-  Daniel Reis (https://launchpad.com/~dreis-pt),
+-  `Tecnativa <https://www.tecnativa.com>`__:
 
-  * Alexandre Díaz
-  * João Marques
+   -  Alexandre Díaz
+   -  João Marques
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
 This module is maintained by the OCA.
 
@@ -106,6 +106,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-joao-p-marques| 
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/16.0/users_ldap_mail>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/17.0/users_ldap_mail>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
