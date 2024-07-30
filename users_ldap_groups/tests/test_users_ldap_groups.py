@@ -15,16 +15,16 @@ _company_ldap_class = _auth_ldap_ns + ".models.res_company_ldap.CompanyLDAP"
 def mock_cursor(cr):
     with mock.patch("odoo.sql_db.Connection.cursor") as mocked_cursor_call:
         org_close = cr.close
-        org_autocommit = cr.autocommit
+        org_autocommit = cr.connection.set_isolation_level
         try:
             cr.close = mock.Mock()
-            cr.autocommit = mock.Mock()
+            cr.connection.set_isolation_level = mock.Mock()
             cr.commit = mock.Mock()
             mocked_cursor_call.return_value = cr
             yield
         finally:
             cr.close = org_close
-    cr.autocommit = org_autocommit
+    cr.connection.set_isolation_level = org_autocommit
 
 
 class FakeLdapConnection:
