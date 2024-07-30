@@ -27,7 +27,7 @@ def mock_cursor(cr):
     cr.autocommit = org_autocommit
 
 
-class FakeLdapConnection(object):
+class FakeLdapConnection:
     def __init__(self, entries):
         self.entries = entries
 
