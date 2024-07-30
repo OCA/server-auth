@@ -10,7 +10,7 @@
                     <field name="deactivate_unknown_users" />
                     <field
                         name="no_deactivate_user_ids"
-                        attrs="{'invisible': [('deactivate_unknown_users', '=', False)]}"
+                        invisible="not deactivate_unknown_users"
                         widget="many2many_tags"
                     />
                 </group>

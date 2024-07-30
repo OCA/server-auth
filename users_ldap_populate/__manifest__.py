@@ -2,9 +2,10 @@
 # Copyright 2021 Tecnativa - João Marques
 # Copyright 2023 Tecnativa - Carolina Fernandez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/gpl.html).
+
 {
     "name": "LDAP Populate",
-    "version": "16.0.1.0.0",
+    "version": "17.0.1.0.0",
     "author": "Therp BV, Odoo Community Association (OCA)",
     "maintainers": ["joao-p-marques"],
     "website": "https://github.com/OCA/server-auth",

@@ -10,8 +10,8 @@ class CompanyLDAPPopulateWizard(models.TransientModel):
 
     name = fields.Char(size=16)
     ldap_id = fields.Many2one("res.company.ldap", "LDAP Configuration")
-    users_created = fields.Integer("Number of users created", readonly=True)
-    users_deactivated = fields.Integer("Number of users deactivated", readonly=True)
+    users_created = fields.Integer("Number of users created")
+    users_deactivated = fields.Integer("Number of users deactivated")
 
     @api.model_create_multi
     def create(self, vals_list):
