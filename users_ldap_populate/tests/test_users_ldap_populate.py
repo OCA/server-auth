@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from odoo.tests.common import TransactionCase
 
 
-class PatchLDAPConnection(object):
+class PatchLDAPConnection:
     def __init__(self, results):
         self.results = results
 
