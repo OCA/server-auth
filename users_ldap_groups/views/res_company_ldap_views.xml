@@ -18,7 +18,8 @@
                         <tree editable="bottom">
                             <field
                                 name="ldap_attribute"
-                                attrs="{'required': [('operator','not in',['query'])], 'readonly': [('operator','in',['query'])]}"
+                                required="operator != 'query'"
+                                readonly="operator == 'query'"
                             />
                             <field name="operator" />
                             <field name="value" />
