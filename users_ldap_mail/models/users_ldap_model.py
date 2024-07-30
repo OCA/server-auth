@@ -45,7 +45,7 @@ class CompanyLDAP(models.Model):
                     values[value_key] = tools.ustr(ldap_entry[1][conf[conf_name]][0])
             except KeyError:
                 _logger.warning(
-                    'No LDAP attribute "%s" found for login  "%s"'
-                    % (conf.get(conf_name), values.get("login"))
+                    f'No LDAP attribute "{conf.get(conf_name)}" found for '
+                    f'login  "{values.get("login")}"'
                 )
         return values
