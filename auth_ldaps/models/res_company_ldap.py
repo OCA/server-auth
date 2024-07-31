@@ -8,6 +8,7 @@ import logging
 import ldap
 
 from odoo import fields, models
+from odoo.tools.misc import str2bool
 
 _logger = logging.getLogger(__name__)
 
@@ -33,6 +34,9 @@ class CompanyLDAP(models.Model):
         if conf["is_ssl"]:
             uri = "ldaps://%s:%d" % (conf["ldap_server"], conf["ldap_server_port"])
             connection = ldap.initialize(uri)
+            ldap_chase_ref_disabled = self.env['ir.config_parameter'].sudo().get_param('auth_ldap.disable_chase_ref')
+            if str2bool(ldap_chase_ref_disabled):
+                connection.set_option(ldap.OPT_REFERRALS, ldap.OPT_OFF)
             if conf["skip_cert_validation"]:
                 connection.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_ALLOW)
                 # this creates a new tls context, which is required to apply
