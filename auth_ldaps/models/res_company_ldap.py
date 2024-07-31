@@ -35,7 +35,7 @@ class CompanyLDAP(models.Model):
             uri = "ldaps://%s:%d" % (conf["ldap_server"], conf["ldap_server_port"])
             connection = ldap.initialize(uri)
             ldap_chase_ref_disabled = (
-                self.env['ir.config_parameter']
+                self.env["ir.config_parameter"]
                 .sudo()
                 .get_param("auth_ldap.disable_chase_ref")
             )
