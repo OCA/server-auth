@@ -37,7 +37,7 @@ class CompanyLDAP(models.Model):
             ldap_chase_ref_disabled = (
                 self.env['ir.config_parameter']
                 .sudo()
-                .get_param('auth_ldap.disable_chase_ref')
+                .get_param("auth_ldap.disable_chase_ref")
             )
             if str2bool(ldap_chase_ref_disabled):
                 connection.set_option(ldap.OPT_REFERRALS, ldap.OPT_OFF)
