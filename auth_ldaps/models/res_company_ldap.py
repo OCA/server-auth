@@ -14,7 +14,6 @@ _logger = logging.getLogger(__name__)
 
 class CompanyLDAP(models.Model):
     _inherit = "res.company.ldap"
-    _description = "Company LDAP configuration"
 
     is_ssl = fields.Boolean(string="Use LDAPS", default=False)
     skip_cert_validation = fields.Boolean(
