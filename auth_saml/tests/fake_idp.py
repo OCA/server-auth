@@ -79,6 +79,7 @@ class DummyResponse:
         self.text = data
         self.headers = headers or []
         self.content = data
+        self._identity = {}
 
     def _unpack(self, ver="SAMLResponse"):
         """
@@ -102,6 +103,18 @@ class DummyResponse:
         rs = _str[start:end]
 
         return {ver: sr, "RelayState": rs}
+
+    def get_identity(self):
+        """
+        Return the identity attributes
+        """
+        return self._identity
+
+    def set_identity(self, identity):
+        """
+        Set the identity attributes
+        """
+        self._identity = identity
 
 
 class FakeIDP(Server):
