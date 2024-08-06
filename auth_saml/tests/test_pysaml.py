@@ -2,12 +2,13 @@
 import base64
 import html
 import os
+import urllib
 from unittest.mock import patch
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
 
-from .fake_idp import FakeIDP
+from .fake_idp import DummyResponse, FakeIDP
 
 
 @tagged("saml", "post_install", "-at_install")
@@ -97,6 +98,75 @@ class TestPySaml(HttpCase):
             ),
             response.text,
         )
+
+    def test__onchange_name(self):
+        temp = self.saml_provider.body
+        self.saml_provider.body = ""
+        r = self.saml_provider._onchange_name()
+        self.assertEqual(r, None)
+        self.assertEqual(self.saml_provider.body, self.saml_provider.name)
+        self.saml_provider.body = temp
+
+    def test__compute_sp_metadata_url__new_provider(self):
+        # Create a new unsaved record
+        new_provider = self.env["auth.saml.provider"].new(
+            {"name": "New SAML Provider", "sp_baseurl": "http://example.com"}
+        )
+        # Compute the metadata URL
+        new_provider._compute_sp_metadata_url()
+        # Assert that sp_metadata_url is False for the new record
+        self.assertFalse(new_provider.sp_metadata_url)
+        new_provider.unlink()
+
+    def test__compute_sp_metadata_url__provider_has_sp_baseurl(self):
+        # Create a new saved record with sp_baseurl set
+        temp = self.saml_provider.sp_baseurl
+        self.saml_provider.sp_baseurl = "http://example.com"
+        self.saml_provider._compute_sp_metadata_url()
+        expected_qs = urllib.parse.urlencode(
+            {"p": self.saml_provider.id, "d": self.env.cr.dbname}
+        )
+        expected_url = urllib.parse.urljoin(
+            "http://example.com", ("/auth_saml/metadata?%s" % expected_qs)
+        )
+        # Assert that sp_metadata_url is set correctly
+        self.assertEqual(self.saml_provider.sp_metadata_url, expected_url)
+        self.saml_provider.sp_baseurl = temp
+
+    def test__hook_validate_auth_response(self):
+        # Create a fake response with attributes
+        fake_response = DummyResponse(200, "fake_data")
+        fake_response.set_identity(
+            {"email": "new_user@example.com", "first_name": "New", "last_name": "User"}
+        )
+
+        # Add attribute mappings to the provider
+        self.saml_provider.attribute_mapping_ids = [
+            (0, 0, {"attribute_name": "email", "field_name": "login"}),
+            (0, 0, {"attribute_name": "first_name", "field_name": "name"}),
+            (
+                0,
+                0,
+                {"attribute_name": "nick_name", "field_name": "name"},
+            ),  # This attribute is not in attrs
+        ]
+
+        # Call the method
+        result = self.saml_provider._hook_validate_auth_response(
+            fake_response, "test@example.com"
+        )
+
+        # Check the result
+        self.assertIn("mapped_attrs", result)
+        self.assertEqual(result["mapped_attrs"]["login"], "new_user@example.com")
+        self.assertEqual(result["mapped_attrs"]["name"], "New")
+        self.assertNotIn("middle_name", result["mapped_attrs"])
+
+    def test_get_config_for_provider(self):
+        temp = self.saml_provider.sp_baseurl
+        self.saml_provider.sp_baseurl = "http://example.com"
+        self.saml_provider._get_config_for_provider(None)
+        self.saml_provider.sp_baseurl = temp
 
     def test_ensure_metadata_present(self):
         response = self.url_open(
