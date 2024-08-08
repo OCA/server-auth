@@ -421,6 +421,8 @@ class AuthSamlProvider(models.Model):
 
         if not providers_to_update:
             return False
+        # Set the local timeout to 15 sec to avoid deadlocks when all token expired
+        self.env.cr.execute("SET LOCAL lock_timeout = '15s'")
 
         # lock the records we might update, so that multiple simultaneous login
         # attempts will not cause concurrent updates
