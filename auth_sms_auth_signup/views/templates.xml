@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="reset_password" inherit_id="auth_signup.reset_password">
+        <xpath expr="//form[hasclass('oe_reset_password_form')]" position="attributes">
+            <attribute
+                name="t-if"
+            >not message and (not auth_sms_enabled or auth_sms_code_requested)</attribute>
+        </xpath>
+        <xpath expr="//form[hasclass('oe_reset_password_form')]" position="after">
+            <div
+                class="text-center"
+                t-if="not message and auth_sms_enabled and not auth_sms_code_requested"
+            >
+                Please click the button below to send an SMS with the code to your registered mobile phone
+                <p class="alert alert-danger" t-if="error">
+                    <t t-esc="error" />
+                </p>
+                <form method="post">
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        t-att-value="request.csrf_token()"
+                    />
+                    <input type="hidden" name="auth_sms_request_code" value="1" />
+                    <button type="submit" class="btn btn-primary">Request code</button>
+                </form>
+            </div>
+        </xpath>
+    </template>
+    <template id="auth_signup_fields" inherit_id="auth_signup.fields">
+        <xpath expr="./div[last()]" position="after">
+            <div class="form-group field-auth_sms_code" t-if="auth_sms_enabled">
+                <label for="auth_sms_code" class="control-label">SMS Code</label>
+                <input
+                    name="auth_sms_code"
+                    id="auth_sms_code"
+                    class="form-control"
+                    required="required"
+                />
+            </div>
+        </xpath>
+    </template>
+</odoo>
