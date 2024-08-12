@@ -7,7 +7,7 @@ import random
 from odoo import _, http
 from odoo.http import request
 
-from odoo.addons.web.controllers.main import Home
+from odoo.addons.web.controllers.home import Home
 
 from ..exceptions import (
     AccessDeniedNoSmsCode,
@@ -20,7 +20,7 @@ class AuthSms(Home):
     @http.route()
     def web_login(self, redirect=None, **kw):
         try:
-            return super(AuthSms, self).web_login(redirect=redirect, **kw)
+            return super().web_login(redirect=redirect, **kw)
         except AccessDeniedNoSmsCode as exception:
             try:
                 request.env["res.users"].sudo()._auth_sms_send(exception.user.id)

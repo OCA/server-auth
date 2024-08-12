@@ -66,7 +66,7 @@ class TestAuthSms(Common):
             self.assertTrue(response.data)
 
     def test_auth_sms_rate_limit(self):
-        # reuqest codes until we hit the rate limit
+        # request codes until we hit the rate limit
         with self._request(
             "/web/login",
             data={

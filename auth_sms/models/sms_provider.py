@@ -33,7 +33,6 @@ class SmsProvider(models.Model):
     )
     api_key = fields.Char()
 
-    @api.multi
     def action_send_test(self):
         for this in self:
             this.send_sms(self.env.user.mobile, "test")
@@ -43,7 +42,6 @@ class SmsProvider(models.Model):
         provider = self.search([], limit=1)
         if not provider:
             return False
-
         _logger.debug(
             "attempting to send SMS %s to %s via %s",
             text,
@@ -56,7 +54,6 @@ class SmsProvider(models.Model):
             lambda x: False,
         )(number, text, **kwargs)
 
-    @api.multi
     def _send_sms_messagebird(self, number, text, **kwargs):
         self.ensure_one()
         result = requests.post(

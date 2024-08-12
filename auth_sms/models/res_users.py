@@ -5,7 +5,7 @@ import random
 import string
 from datetime import datetime, timedelta
 
-from odoo import _, api, fields, http, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.http import request
 
@@ -26,10 +26,13 @@ class ResUsers(models.Model):
         help="Enable SMS authentication in addition to your password",
     )
 
-    def __init__(self, pool, cr):
-        super(ResUsers, self).__init__(pool, cr)
-        type(self).SELF_WRITEABLE_FIELDS += ["auth_sms_enabled"]
-        type(self).SELF_READABLE_FIELDS += ["auth_sms_enabled"]
+    @property
+    def SELF_WRITEABLE_FIELDS(self):
+        return super().SELF_WRITEABLE_FIELDS + ["auth_sms_enabled"]
+
+    @property
+    def SELF_READABLE_FIELDS(self):
+        return super().SELF_READABLE_FIELDS + ["auth_sms_enabled"]
 
     @api.constrains("auth_sms_enabled")
     def _check_auth_sms_enabled(self):
@@ -39,10 +42,9 @@ class ResUsers(models.Model):
                     _("User %s has no mobile phone number!") % this.login,
                 )
 
-    @api.model
-    def check_credentials(self, password):
-        super(ResUsers, self).check_credentials(password)
-        self._auth_sms_check_credentials()
+    def _check_credentials(self, password, env):
+        super()._check_credentials(password, env)
+        return self._auth_sms_check_credentials()
 
     @api.model
     def _auth_sms_check_credentials(self):
@@ -60,7 +62,7 @@ class ResUsers(models.Model):
                 ("session_id", "=", request.session.sid),
             ]
         ):
-            raise AccessDeniedWrongSmsCode(_("Wong SMS code"))
+            raise AccessDeniedWrongSmsCode(_("Wrong SMS code"))
 
     @api.model
     def _auth_sms_generate_code(self):
@@ -104,7 +106,6 @@ class ResUsers(models.Model):
         if not self.env["sms.provider"].send_sms(user.mobile, code):
             raise UserError(_("Sending SMS failed"))
 
-    @api.multi
     def _auth_sms_check_rate_limit(self):
         """return false if the user has requested an SMS code too often"""
         self.ensure_one()
@@ -139,15 +140,14 @@ class ResUsers(models.Model):
             <= rate_limit_limit
         )
 
-    @api.model_cr
-    def _register_hook(self):
-        # don't log our exceptions during RPC dispatch
-        if AccessDeniedNoSmsCode not in http.NO_POSTMORTEM:
-            http.NO_POSTMORTEM = tuple(
-                list(http.NO_POSTMORTEM)
-                + [
-                    AccessDeniedNoSmsCode,
-                    AccessDeniedWrongSmsCode,
-                ],
-            )
-        return super(ResUsers, self)._register_hook()
+    # def _register_hook(self):
+    #    # don't log our exceptions during RPC dispatch
+    #    if AccessDeniedNoSmsCode not in http.NO_POSTMORTEM:
+    #        http.NO_POSTMORTEM = tuple(
+    #            list(http.NO_POSTMORTEM)
+    #            + [
+    #                AccessDeniedNoSmsCode,
+    #                AccessDeniedWrongSmsCode,
+    #            ],
+    #        )
+    #    return super(ResUsers, self)._register_hook()

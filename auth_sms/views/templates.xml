@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
-        <template id="template_code" inherit_id="web.login" primary="True">
-            <xpath expr="//form" position="attributes">
-                <attribute name="t-attf-action">/auth_sms/code</attribute>
-            </xpath>
-            <xpath expr="//form" position="inside">
-                <input type="hidden" name="secret" t-att-value="secret" />
-                <input type="hidden" name="user_login" t-att-value="login" />
-            </xpath>
-            <xpath expr="//input[@name='login']" position="attributes">
-                <attribute name="required" />
-                <attribute name="autofocus" />
-                <attribute name="disabled">disabled</attribute>
-            </xpath>
-            <xpath expr="//label[@for='password']" position="replace">
-                <label for="password" class="control-label">Code</label>
-            </xpath>
-        </template>
-    </data>
+    <template id="template_code" inherit_id="web.login" primary="True">
+        <xpath expr="//form" position="attributes">
+            <attribute name="t-attf-action">/auth_sms/code</attribute>
+        </xpath>
+        <xpath expr="//form" position="inside">
+            <input type="hidden" name="secret" t-att-value="secret" />
+            <input type="hidden" name="user_login" t-att-value="login" />
+        </xpath>
+        <xpath expr="//input[@name='login']" position="attributes">
+            <attribute name="required" />
+            <attribute name="autofocus" />
+            <attribute name="disabled">disabled</attribute>
+        </xpath>
+        <xpath expr="//label[@for='password']" position="replace">
+            <label for="password" class="control-label">Code</label>
+        </xpath>
+    </template>
 </odoo>
