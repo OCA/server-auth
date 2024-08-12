@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 13.0\n"
+"Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -19,10 +19,25 @@ msgid "Automatic Login"
 msgstr ""
 
 #. module: auth_oauth_autologin
+#: model:ir.model.fields,field_description:auth_oauth_autologin.field_auth_oauth_provider__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_oauth_autologin
+#: model:ir.model.fields,field_description:auth_oauth_autologin.field_auth_oauth_provider__id
+msgid "ID"
+msgstr ""
+
+#. module: auth_oauth_autologin
 #: model:ir.model.fields,help:auth_oauth_autologin.field_auth_oauth_provider__autologin
 msgid ""
 "If exactly one enabled provider has this checked, the login screen redirects"
 " to the OAuth provider."
+msgstr ""
+
+#. module: auth_oauth_autologin
+#: model:ir.model.fields,field_description:auth_oauth_autologin.field_auth_oauth_provider____last_update
+msgid "Last Modified on"
 msgstr ""
 
 #. module: auth_oauth_autologin
