@@ -11,18 +11,22 @@ import vault from "vault";
 
 // Extend the widget to share
 patch(VaultField.prototype, "vault_share", {
+    get shareButton() {
+        return this.props.value;
+    },
     /**
      * Share the value for an external user
      *
      * @private
      */
-    async _onShareValue() {
+    async _onShareValue(ev) {
+        ev.stopPropagation();
         const iv = await utils.generate_iv_base64();
         const pin = sh_utils.generate_pin(sh_utils.PinSize);
         const salt = utils.generate_bytes(utils.SaltLength).buffer;
         const key = await utils.derive_key(pin, salt, utils.Derive.iterations);
         const public_key = await vault.get_public_key();
-        const value = await this._decrypt(this.value);
+        const value = await this._decrypt(this.props.value);
 
         this.action.doAction({
             type: "ir.actions.act_window",
