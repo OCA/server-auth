@@ -45,6 +45,7 @@ msgstr "Algoritmo utilizzato per firmare le richieste."
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_res_config_settings__allow_saml_uid_and_internal_password
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
 msgid ""
 "Allow SAML users to possess an Odoo password (warning: decreases security)"
 msgstr ""
@@ -176,8 +177,8 @@ msgstr "ID entità"
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid ""
-"Entity Identifier sent to the IDP. Often this would be the metadata URL, but"
-" it can be any string."
+"Entity Identifier sent to the IDP. Often this would be the metadata URL, but "
+"it can be any string."
 msgstr ""
 "Identificatore entità inviato al IDP. Spesso è l'URL dei metadati, ma può "
 "essere qualsiasi stringa."
@@ -223,8 +224,8 @@ msgstr "Attributo corrsipondenza provider identità"
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__authn_requests_signed
 msgid ""
-"Indicates if the Authentication Requests sent by this SP should be signed by"
-" default."
+"Indicates if the Authentication Requests sent by this SP should be signed by "
+"default."
 msgstr ""
 "ndica se la richiesta di atenticazione inviata da questo SP deve essere "
 "firmata in modo predefinito."
@@ -255,14 +256,6 @@ msgid ""
 msgstr ""
 "Indica che la risposta di autenticazione o le dichiarazioni contenute nelle "
 "risposte a questo SP deve essere firmata."
-
-#. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping____last_update
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider____last_update
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request____last_update
-#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__write_uid
@@ -382,6 +375,7 @@ msgid "Providers"
 msgstr "Provider"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_users_form
 msgid "SAML"
 msgstr "SAML"
@@ -491,8 +485,8 @@ msgstr "Token SAML attualmente in uso"
 #: code:addons/auth_saml/models/res_users.py:0
 #, python-format
 msgid ""
-"This database disallows users to have both passwords and SAML IDs. Error for"
-" logins %s"
+"This database disallows users to have both passwords and SAML IDs. Error for "
+"logins %s"
 msgstr ""
 "Questo database nn consente agli utenti di avere sia password che ID SAML. "
 "Errore per accessi %s"
@@ -565,3 +559,6 @@ msgstr "Il suo URL ACS sarà base_url + /auth_saml/signin"
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Your provider will give you this XML once configured."
 msgstr "Il suo provider fornirà questo XML una volta configurato."
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
