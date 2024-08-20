@@ -47,6 +47,7 @@ msgstr "Algorithme utilisé pour signer les requêtes."
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_res_config_settings__allow_saml_uid_and_internal_password
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
 msgid ""
 "Allow SAML users to possess an Odoo password (warning: decreases security)"
 msgstr ""
@@ -268,14 +269,6 @@ msgstr ""
 "dans la réponse envoyé à ce fournisseur de service doivent être signées."
 
 #. module: auth_saml
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping____last_update
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider____last_update
-#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request____last_update
-#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml____last_update
-msgid "Last Modified on"
-msgstr "Dernière modification le"
-
-#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__write_uid
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__write_uid
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__write_uid
@@ -393,6 +386,7 @@ msgid "Providers"
 msgstr "Fournisseurs"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_users_form
 msgid "SAML"
 msgstr "SAML"
@@ -579,6 +573,9 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Your provider will give you this XML once configured."
 msgstr "Votre fournisseur vous donnera ce XML une fois configuré."
+
+#~ msgid "Last Modified on"
+#~ msgstr "Dernière modification le"
 
 #~ msgid "Button Description"
 #~ msgstr "Description du bouton"
