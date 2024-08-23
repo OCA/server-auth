@@ -4,6 +4,7 @@
 
 from odoo import _, api, fields, models
 from odoo.http import request
+from odoo.tools import html_escape
 
 
 class Message(models.Model):
@@ -11,7 +12,6 @@ class Message(models.Model):
 
     impersonated_author_id = fields.Many2one(
         comodel_name="res.partner",
-        string="Impersonated Author",
         compute="_compute_impersonated_author_id",
         store=True,
     )
@@ -45,7 +45,9 @@ class Message(models.Model):
                 current_partner = (
                     self.env["res.users"].browse(request.session.uid).partner_id
                 )
-                additional_info = _(f"Logged as {current_partner.name}")
+                additional_info = _("Logged in as {}").format(
+                    html_escape(current_partner.name)
+                )
             if rec.body and additional_info:
                 rec.body = f"<b>{additional_info}</b><br/>{rec.body}"
             else:
