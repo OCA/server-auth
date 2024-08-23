@@ -12,7 +12,6 @@ class ImpersonateLog(models.Model):
 
     user_id = fields.Many2one(
         comodel_name="res.partner",
-        string="User",
     )
     impersonated_partner_id = fields.Many2one(
         comodel_name="res.partner",

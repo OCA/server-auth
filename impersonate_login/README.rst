@@ -28,23 +28,41 @@ Impersonate Login
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-This module allows to login as another user. In the chatter, the user
-who is logged as another user is displayed. The mails and messages are
-sent from the orignal user. A table diplays the impersonated logins in
-technical. The user can return to his own user by clicking on the button
-"Return to my user". This module is very useful for the support team. An
-alternative module will be auth_admin_passkey.
+This module allows one user (for example, a member of the support team)
+to log in as another user. The impersonation session can be exited by
+clicking on the button "Back to Original User".
+
+To ensure that any abuse of this feature will not go unnoticed, the
+following measures are in place:
+
+-  In the chatter, it is displayed who is the user that is logged as
+   another user.
+-  Mails and messages are sent from the original user.
+-  Impersonated logins are logged and can be consulted through the
+   Settings -> Technical menu.
+-  
+
+There is an alternative module to allow logins as another user
+(auth_admin_passkey), but it does not support these security mechanisms.
 
 **Table of contents**
 
 .. contents::
    :local:
 
+Configuration
+=============
+
+The impersonating user must belong to group "Impersonate Users".
+
 Usage
 =====
 
-1. On the top right corner, click my user and "switch login"
-2. Same place to "return to my login"
+1. In the menu that is displayed when clicking on the user avatar on the
+   top right corner, or in the res.users list, click "Switch Login" to
+   impersonate another user.
+2. On the top-right corner, the button "Back to Original User" is
+   displayed in case the current user is being impersonated.
 
 Bug Tracker
 ===========
@@ -68,6 +86,9 @@ Contributors
 ------------
 
 -  Kévin Roche <kevin.roche@akretion.com>
+-  `360ERP <https://www.360erp.com>`__:
+
+   -  Andrea Stirpe
 
 Maintainers
 -----------

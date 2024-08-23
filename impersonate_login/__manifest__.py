@@ -5,7 +5,7 @@
 {
     "name": "Impersonate Login",
     "summary": "tools",
-    "version": "14.0.1.0.0",
+    "version": "17.0.1.0.0",
     "category": "Tools",
     "website": "https://github.com/OCA/server-auth",
     "author": "Akretion, Odoo Community Association (OCA)",
@@ -18,13 +18,15 @@
         "mail",
     ],
     "data": [
-        "views/assets.xml",
-        "views/res_users.xml",
-        "views/impersonate_log.xml",
         "security/group.xml",
         "security/ir.model.access.csv",
+        "views/res_users.xml",
+        "views/impersonate_log.xml",
     ],
-    "qweb": [
-        "static/src/xml/user_menu.xml",
-    ],
+    "assets": {
+        "web.assets_backend": [
+            "impersonate_login/static/src/js/user_menu.esm.js",
+        ],
+    },
+    "pre_init_hook": "pre_init_hook",
 }
