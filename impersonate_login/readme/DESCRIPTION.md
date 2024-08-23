@@ -1,6 +1,11 @@
-This module allows to login as another user. In the chatter, the user
-who is logged as another user is displayed. The mails and messages are
-sent from the orignal user. A table diplays the impersonated logins in
-technical. The user can return to his own user by clicking on the button
-"Return to my user". This module is very useful for the support team. An
-alternative module will be auth_admin_passkey.
+This module allows one user (for example, a member of the support team) to log in as another user.
+The impersonation session can be exited by clicking on the button "Back to Original User".
+
+To ensure that any abuse of this feature will not go unnoticed, the following measures are in place:
+
+* In the chatter, it is displayed who is the user that is logged as another user.
+* Mails and messages are sent from the original user.
+* Impersonated logins are logged and can be consulted through the Settings -> Technical menu.
+* 
+There is an alternative module to allow logins as another user (auth_admin_passkey),
+but it does not support these security mechanisms.
