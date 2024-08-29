@@ -195,18 +195,16 @@ class TestImpersonateLogin(HttpCase):
         self._impersonate_user(self.demo_user)
 
         response = self.url_open(
-            "/web/dataset/call_kw/res.partner/web_save",
+            "/web/dataset/call_kw/res.partner/create",
             data=json.dumps(
                 {
                     "params": {
                         "model": "res.partner",
-                        "method": "web_save",
+                        "method": "create",
                         "args": [
-                            [],
                             {
                                 "name": "Contact123",
                             },
-                            {},
                         ],
                         "kwargs": {},
                     },
@@ -216,8 +214,7 @@ class TestImpersonateLogin(HttpCase):
         )
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        result = data["result"]
-        contact_id = result[0]["id"]
+        contact_id = data["result"]
 
         contact = self.env["res.partner"].browse(contact_id)
         self.assertEqual(contact.name, "Contact123")
@@ -236,18 +233,17 @@ class TestImpersonateLogin(HttpCase):
         self._impersonate_user(self.demo_user)
 
         response = self.url_open(
-            "/web/dataset/call_kw/res.partner/web_save",
+            "/web/dataset/call_kw/res.partner/write",
             data=json.dumps(
                 {
                     "params": {
                         "model": "res.partner",
-                        "method": "web_save",
+                        "method": "write",
                         "args": [
                             [contact.id],
                             {
                                 "ref": "abc",
                             },
-                            {},
                         ],
                         "kwargs": {},
                     },
@@ -258,8 +254,7 @@ class TestImpersonateLogin(HttpCase):
         self.assertEqual(response.status_code, 200)
         data = response.json()
         result = data["result"]
-        contact_id = result[0]["id"]
 
-        self.assertEqual(contact.id, contact_id)
+        self.assertEqual(result, True)
         self.assertEqual(contact.ref, "abc")
         self.assertEqual(contact.write_uid, self.admin_user)

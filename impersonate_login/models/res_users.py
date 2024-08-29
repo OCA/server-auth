@@ -57,7 +57,7 @@ class Users(models.Model):
                     f"Login as {self._get_partner_name(self.id)}"
                 )
                 # invalidate session token cache as we've changed the uid
-                request.env.registry.clear_cache()
+                request.env["res.users"].clear_caches()
                 request.session.session_token = security.compute_session_token(
                     request.session, request.env
                 )
@@ -100,7 +100,7 @@ class Users(models.Model):
                     }
                 )
                 # invalidate session token cache as we've changed the uid
-                request.env.registry.clear_cache()
+                request.env["res.users"].clear_caches()
                 request.session.impersonate_from_uid = False
                 request.session.impersonate_log_id = False
                 request.session.session_token = security.compute_session_token(

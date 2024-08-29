@@ -4,7 +4,7 @@
 import logging
 
 
-def pre_init_hook(env):
+def pre_init_hook(cr):
     """
     Pre-create the impersonated_author_id column in the mail_message table
     to prevent the ORM from invoking its compute method on a large volume
@@ -12,7 +12,7 @@ def pre_init_hook(env):
     """
     logger = logging.getLogger(__name__)
     logger.info("Add mail_message.impersonated_author_id column if not exists")
-    env.cr.execute(
+    cr.execute(
         "ALTER TABLE mail_message "
         "ADD COLUMN IF NOT EXISTS "
         "impersonated_author_id INTEGER"
