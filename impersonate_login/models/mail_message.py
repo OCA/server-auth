@@ -18,7 +18,9 @@ class Message(models.Model):
 
     body = fields.Html(
         compute="_compute_message_body",
+        inverse="_inverse_message_body",
         store=True,
+        readonly=False,
     )
 
     @api.depends("author_id")
@@ -51,4 +53,27 @@ class Message(models.Model):
             if rec.body and additional_info:
                 rec.body = f"<b>{additional_info}</b><br/>{rec.body}"
             else:
-                rec.body = additional_info
+                rec.body = rec.body
+
+    def _inverse_message_body(self):
+        for rec in self:
+            additional_info = ""
+            if (
+                request
+                and request.session.impersonate_from_uid
+                and rec.impersonated_author_id
+            ):
+                current_partner = (
+                    self.env["res.users"].browse(request.session.uid).partner_id
+                )
+                additional_info = _("Logged in as {}").format(
+                    html_escape(current_partner.name)
+                )
+            if additional_info:
+                start_with = f"<b>{additional_info}</b><br/>"
+                if rec.body and rec.body.startswith(start_with):
+                    rec.body = rec.body
+                else:
+                    rec.body = f"{start_with}{rec.body}"
+            else:
+                rec.body = rec.body
