@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright 2018 Modoolar <info@modoolar.com>
+    License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
+-->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form.password_security</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id"
+               ref="auth_password_policy.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block id="user_default_rights" position="after">
+                <block title="Password Extra Security" id="password_extra_security">
+                    <setting help="Minimum number of lowercase characters">
+                        <field name="password_lower"/>
+                    </setting>
+                    <setting help="Minimum number of uppercase characters">
+                        <field name="password_upper"/>
+                    </setting>
+                    <setting help="Minimum number of numeric characters">
+                        <field name="password_numeric"/>
+                    </setting>
+                    <setting help="Minimum number of special characters">
+                        <field name="password_special"/>
+                    </setting>
+                    <setting help="Password expires in X (days)">
+                        <field name="password_expiration"/>
+                    </setting>
+                    <setting help="User can reset password in (hours)">
+                        <field name="password_minimum"/>
+                    </setting>
+                    <setting help="Disallow reuse of previous X passwords">
+                        <field name="password_history"/>
+                        <div class="text-muted">
+                            Use negative number for infinite, or 0 to disable
+                        </div>
+                    </setting>
+                </block>
+            </block>
+
+        </field>
+    </record>
+</odoo>
