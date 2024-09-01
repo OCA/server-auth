@@ -11,7 +11,7 @@ class ImpersonateLog(models.Model):
     _description = "Impersonate Logs"
 
     user_id = fields.Many2one(
-        comodel_name="res.partner",
+        comodel_name="res.users",
     )
     impersonated_partner_id = fields.Many2one(
         comodel_name="res.partner",
