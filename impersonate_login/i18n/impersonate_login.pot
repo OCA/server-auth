@@ -117,6 +117,7 @@ msgstr ""
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/mail_message.py:0
+#: code:addons/impersonate_login/models/mail_message.py:0
 #, python-format
 msgid "Logged in as {}"
 msgstr ""
