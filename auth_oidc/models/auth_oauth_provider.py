@@ -114,6 +114,7 @@ class AuthOauthProvider(models.Model):
 
 class AuthOauthProviderGroupLine(models.Model):
     _name = "auth.oauth.provider.group_line"
+    _description = "OAuth mapping between an Odoo group and an expression"
 
     provider_id = fields.Many2one("auth.oauth.provider", required=True)
     group_id = fields.Many2one("res.groups", required=True)
