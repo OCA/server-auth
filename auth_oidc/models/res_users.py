@@ -8,6 +8,7 @@ import requests
 
 from odoo import api, models
 from odoo.exceptions import AccessDenied
+from odoo.fields import Command
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
@@ -98,10 +99,10 @@ class ResUsers(models.Model):
             ):
                 if group_line._eval_expression(user, validation):
                     if group_line.group_id not in user.groups_id:
-                        group_updates.append((4, group_line.group_id.id))
+                        group_updates.append(Command.link(group_line.group_id.id))
                 else:
                     if group_line.group_id in user.groups_id:
-                        group_updates.append((3, group_line.group_id.id))
+                        group_updates.append(Command.unlink(group_line.group_id.id))
             if group_updates:
                 user.write({"groups_id": group_updates})
         return login
