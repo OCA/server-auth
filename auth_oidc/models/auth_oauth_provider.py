@@ -126,7 +126,7 @@ class AuthOauthProviderGroupLine(models.Model):
             try:
                 this._eval_expression(self.env.user, {})
             except (AttributeError, KeyError, NameError) as e:
-                raise exceptions.ValidationError("\n".join(e.args))
+                raise exceptions.ValidationError("\n".join(e.args)) from e
 
     def _eval_expression(self, user, token):
         self.ensure_one()
