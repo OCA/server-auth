@@ -69,6 +69,7 @@ class ResUsers(models.Model):
             data = requests.get(
                 oauth_provider.data_endpoint,
                 headers={"Authorization": "Bearer %s" % access_token},
+                timeout=10,
             ).json()
             validation.update(data)
         # required check
