@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record model="ir.ui.view" id="populate_wizard_view">
+        <field name="model">res.company.ldap.populate_wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add populate button to ldap view">
+                <group>
+                    <field name="users_created" readonly="1" />
+                    <field name="users_deactivated" readonly="1" />
+                    <button icon="fa-check-circle" string="OK" special="cancel" />
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>
