@@ -320,8 +320,23 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         self.assertEqual(token, "122/3")
         self.assertEqual(login, user.login)
 
-    def test_group_expression(self):
-        """Test that group expressions evaluate correctly"""
+    def test_group_expression_empty_token(self):
+        """Test that group expression with an empty token evaluate correctly"""
         group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
         group_line.expression = 'token["test"]["test"] == 1'
         self.assertFalse(group_line._eval_expression(self.env.user, {}))
+
+    def test_group_expressions_with_token(self):
+        """Test that group expression with token with groups evaluate correctly"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        group_line.expression = "'group-a' in token['groups']"
+        self.assertFalse(group_line._eval_expression(self.env.user, {}))
+        self.assertTrue(
+            group_line._eval_expression(
+                self.env.user, {"groups": ["group-a", "group-b"]}
+            )
+        )
+        self.assertFalse(
+            group_line._eval_expression(self.env.user, {"groups": ["group-c"]})
+        )
