@@ -21,6 +21,7 @@ from odoo.addons.website.tools import MockRequest as _MockRequest
 from ..controllers.main import OpenIDLogin
 
 BASE_URL = "http://localhost:%s" % odoo.tools.config["http_port"]
+KEYCLOAK_URL = "http://localhost:8080"
 
 
 @contextlib.contextmanager
@@ -110,7 +111,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             id_token_headers = {"kid": "the_key_id"}
         responses.add(
             responses.POST,
-            "http://localhost:8080/auth/realms/master/protocol/openid-connect/token",
+            KEYCLOAK_URL + "/auth/realms/master/protocol/openid-connect/token",
             json={
                 "access_token": access_token,
                 "id_token": jwt.encode(
@@ -128,7 +129,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
                 keys = [{"keys": [self.rsa_key_public_pem]}]
         responses.add(
             responses.GET,
-            "http://localhost:8080/auth/realms/master/protocol/openid-connect/certs",
+            KEYCLOAK_URL + "/auth/realms/master/protocol/openid-connect/certs",
             json={"keys": keys},
         )
 
