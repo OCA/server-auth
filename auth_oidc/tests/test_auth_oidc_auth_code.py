@@ -13,7 +13,7 @@ from jose.exceptions import JWTError
 from jose.utils import long_to_base64
 
 import odoo
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, ValidationError
 from odoo.tests import common
 
 from odoo.addons.website.tools import MockRequest as _MockRequest
@@ -339,4 +339,27 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
         self.assertFalse(
             group_line._eval_expression(self.env.user, {"groups": ["group-c"]})
+        )
+
+    def test_group_expression_with_inexistant_variable(self):
+        """Test that group expression with inexistant variable fails"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        with self.assertRaises(ValidationError):
+            group_line.expression = "inexistant_variable"
+
+    def test_group_expression_with_inexistant_attribute(self):
+        """Test that group expression with inexistant attribute (on user) fails"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        with self.assertRaises(ValidationError):
+            group_line.expression = "user.not_an_attribute"
+
+    def test_realistic_group_expression(self):
+        """Test that group expression with inexistant attribute (on user) fails"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        group_line.expression = "user.email == token['mail']"
+        self.assertTrue(
+            group_line._eval_expression(self.env.user, {"mail": self.env.user.email})
         )
