@@ -70,7 +70,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
 
     def setUp(self):
         super().setUp()
-        # search our test provider and bind the demo user to it
+        # search our only test provider
         self.provider_rec = self.env["auth.oauth.provider"].search(
             [("name", "=", "keycloak:8080 on localhost")]
         )
@@ -107,6 +107,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             self.assertEqual(params["prompt"], ["select_account"])
 
     def _prepare_login_test_user(self):
+        # bind the demo user to our test provider it
         user = self.env.ref("base.user_demo")
         user.write({"oauth_provider_id": self.provider_rec.id, "oauth_uid": user.login})
         return user
