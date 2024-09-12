@@ -38,10 +38,23 @@ msgid "Display Name"
 msgstr "Mostrar Nombre"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__end_session_endpoint
+msgid "End Session URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__id
 #: model:ir.model.fields,field_description:auth_oidc.field_res_users__id
 msgid "ID"
 msgstr "ID"
+
+#. module: auth_oidc
+#: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__end_session_endpoint
+msgid ""
+"If set, the user is logged out in the authorization provider upon logout in "
+"the client, should be the value of end_session_endpoint specified by the "
+"authorization provider."
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
@@ -87,9 +100,9 @@ msgstr "Requerido para OpenID Connect."
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
 msgid ""
-"Some Oauth providers don't map keys in their responses exactly as required."
-"  It is important to ensure user_id and email at least are mapped. For "
-"OpenID Connect user_id is the sub key in the standard."
+"Some Oauth providers don't map keys in their responses exactly as required.  "
+"It is important to ensure user_id and email at least are mapped. For OpenID "
+"Connect user_id is the sub key in the standard."
 msgstr ""
 "Algunos proveedores de Oauth no asignan las claves en sus respuestas "
 "exactamente como se requiere.  Es importante asegurarse de que al menos "
