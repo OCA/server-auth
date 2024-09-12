@@ -35,9 +35,22 @@ msgid "Display Name"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__end_session_endpoint
+msgid "End Session URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__id
 #: model:ir.model.fields,field_description:auth_oidc.field_res_users__id
 msgid "ID"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__end_session_endpoint
+msgid ""
+"If set, the user is logged out in the authorization provider upon logout in "
+"the client, should be the value of end_session_endpoint specified by the "
+"authorization provider."
 msgstr ""
 
 #. module: auth_oidc
