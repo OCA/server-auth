@@ -29,7 +29,7 @@ addon | version | maintainers | summary
 [auth_oauth_multi_token](auth_oauth_multi_token/) | 15.0.1.0.1 |  | Allow multiple connection with the same OAuth account
 [auth_oidc](auth_oidc/) | 15.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 15.0.1.4.4 | [![vincent-hatakeyama](https://github.com/vincent-hatakeyama.png?size=30px)](https://github.com/vincent-hatakeyama) | SAML2 Authentication
-[auth_session_timeout](auth_session_timeout/) | 15.0.1.0.0 |  | This module disable all inactive sessions since a given delay
+[auth_session_timeout](auth_session_timeout/) | 15.0.1.0.2 |  | This module disable all inactive sessions since a given delay
 [auth_signup_partner_company](auth_signup_partner_company/) | 15.0.1.0.0 |  | Auth Signup Partner Company
 [auth_signup_verify_email](auth_signup_verify_email/) | 15.0.1.0.0 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 15.0.1.0.0 |  | Makes the user login field case insensitive
