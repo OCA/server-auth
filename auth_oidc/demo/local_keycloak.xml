@@ -37,9 +37,20 @@
         <field name="body">Log in with Microsoft</field>
         <field name="auth_link_params">{'prompt':'select_account'}</field>
     </record>
-    <record id="local_keycloak_group_line" model="auth.oauth.provider.group_line">
+    <record
+        id="local_keycloak_group_line_name_is_test"
+        model="auth.oauth.provider.group_line"
+    >
         <field name="provider_id" ref="local_keycloak" />
         <field name="group_id" ref="base.group_no_one" />
         <field name="expression">token['name'] == 'test'</field>
+    </record>
+    <record
+        id="local_keycloak_group_line_erp_manager_in_groups"
+        model="auth.oauth.provider.group_line"
+    >
+        <field name="provider_id" ref="local_keycloak" />
+        <field name="group_id" ref="base.group_erp_manager" />
+        <field name="expression">'erp_manager' in token['groups']</field>
     </record>
 </odoo>
