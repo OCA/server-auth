@@ -9,6 +9,8 @@
     </record>
     <record id="inactive_session_time_out_ignored_url" model="ir.config_parameter">
         <field name="key">inactive_session_time_out_ignored_url</field>
-        <field name="value">/calendar/notify,/longpolling/poll</field>
+        <field
+            name="value"
+        >/calendar/notify,/longpolling/poll,/longpolling/im_status</field>
     </record>
 </odoo>
