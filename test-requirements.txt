@@ -1,1 +1,3 @@
 responses
+# necessary to avoid incompatibilities with pyopenssl
+cryptography<37
