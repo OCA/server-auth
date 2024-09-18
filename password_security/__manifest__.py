@@ -5,7 +5,7 @@
 {
     "name": "Password Security",
     "summary": "Allow admin to set password security requirements.",
-    "version": "16.0.1.0.1",
+    "version": "16.0.1.0.2",
     "author": "LasLabs, "
     "Onestein, "
     "Kaushal Prajapati, "
@@ -29,4 +29,5 @@
         "demo/res_users.xml",
     ],
     "installable": True,
+    "post_init_hook": "post_init_hook",
 }
