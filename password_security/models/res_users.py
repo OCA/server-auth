@@ -144,10 +144,7 @@ class ResUsers(models.Model):
             if pass_min <= 0:
                 continue
             write_date = user.password_write_date
-            if not write_date:
-                continue
-            delta = timedelta(hours=pass_min)
-            if write_date + delta > datetime.now():
+            if write_date and write_date + timedelta(hours=pass_min) > datetime.now():
                 raise UserError(
                     _(
                         "Passwords can only be reset every %d hour(s). "
