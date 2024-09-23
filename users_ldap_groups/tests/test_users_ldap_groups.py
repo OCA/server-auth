@@ -225,3 +225,70 @@ class TestUsersLdapGroups(TransactionCase):
                 self.env["res.users"].sudo().authenticate(
                     self.env.cr.dbname, "users_ldap_groups-username", "password", {}
                 )
+
+    def test_users_ldap_groups_ldap_returns_binary_data(self):
+        self._create_ldap_config(
+            groups=[
+                {
+                    "ldap_attribute": "name",
+                    "operator": "contains",
+                    "value": "hello3",
+                    "group_id": self.group_system.id,
+                },
+                {
+                    "ldap_attribute": "name",
+                    "operator": "contains",
+                    "value": "hello",
+                    "group_id": self.group_user.id,
+                },
+                {
+                    "ldap_attribute": "name",
+                    "operator": "contains",
+                    "value": "hello2",
+                    "group_id": self.group_contains.id,
+                },
+                {
+                    "ldap_attribute": "name",
+                    "operator": "equals",
+                    "value": "hello",
+                    "group_id": self.group_equals.id,
+                },
+                {
+                    "ldap_attribute": "",
+                    "operator": "query",
+                    "value": "is not run because of patching",
+                    "group_id": self.group_query.id,
+                },
+            ],
+            only_ldap_groups=True,
+        )
+        with mock.patch(
+            _company_ldap_class + "._connect",
+            return_value=FakeLdapConnection(
+                {
+                    "dc=users_ldap_groups,dc=example,dc=com": {
+                        "cn": [b"User Name"],
+                        "name": [b"hello", b"hello2"],
+                        "thumbnailPhoto": [
+                            b"GIF89a\x01\x00\x01\x00\x00\xff\x00,"
+                            b"\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;"
+                        ],
+                    }
+                }
+            ),
+        ), mock_cursor(self.cr):
+            user_id = (
+                self.env["res.users"]
+                .sudo()
+                .authenticate(
+                    self.env.cr.dbname, "users_ldap_groups-username", "password", {}
+                )
+            )
+        # this asserts group mappings from demo data
+        user = self.env["res.users"].sudo().browse(user_id)
+        groups = user.groups_id
+        self.assertIn(self.group_contains, groups)
+        self.assertIn(self.group_user, groups)
+        self.assertNotIn(self.group_equals, groups)
+        self.assertIn(self.group_query, groups)
+        self.assertNotIn(self.group_system, groups)
