@@ -98,6 +98,16 @@ class AuthSamlProvider(models.Model):
         help="Only the provider with the higher priority will be automatically "
         "redirected",
     )
+    saml_domain_ids = fields.Many2many(
+        "auth.saml.domain", string="Domains for auto-provisioning (optional)", required=False,
+        help=("When filled, authorizes automatic user account creation (auto-provisioning) based on this domains whitelist."
+            " Requires the 'matching_attribute' field to have a syntax like prefix@domain, where 'domain' value will"
+            " be search in the whitelist. Recommended: set claims to define 'res_users.name' attribute, or it by default be"
+            " set to saml_uid value for auto-provisioned users. If no domains are given, this feature is disabled and user"
+            " account must be pre-provisioned through Odoo 'Users' interface or with provisioning tools like SCIM."
+            " In this case, non-existing account will raise a error at login like 'Permission denied' or 'No access"
+            " granted to this database'.")
+    )
     sig_alg = fields.Selection(
         selection=lambda s: s._sig_alg_selection(),
         required=True,

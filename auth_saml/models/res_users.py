@@ -45,8 +45,31 @@ class ResUser(models.Model):
             limit=1,
         )
         user = user_saml.user_id
-        if len(user) != 1:
-            raise AccessDenied()
+        if len(user) != 1: # no res.users record found having the saml_uid key matching both validation["user_id"] & provider
+            domain = saml_uid.split('@')[-1] if saml_uid.count('@') == 1 else None
+            saml_provider = self.env["auth.saml.provider"].browse([provider])
+
+            if not domain or not domain in [domain.name for domain in saml_provider.saml_domain_ids]:
+                raise AccessDenied()
+            else:
+                # auto-provision res.users record if this provider's domain is trusted
+                with registry(self.env.cr.dbname).cursor() as new_cr:
+                    new_env = api.Environment(new_cr, self.env.uid, self.env.context)
+                    new_user = new_env.ref("base.default_user").sudo().with_context(no_reset_password=True).copy({
+                            "login": saml_uid, # login = saml_uid
+                            "email": saml_uid,
+                            "active": True,
+                            "signature": None, # auto-generates signature
+                        } | validation.get("mapped_attrs", {}) # claims should define "name" attr, if not it will be the same than "login"
+                    )
+                    # init the user's SAML info
+                    new_env["res.users.saml"].sudo().create({
+                        'user_id': new_user.id,
+                        'saml_provider_id': provider,
+                        'saml_uid': saml_uid,
+                        'saml_access_token': saml_response
+                    })
+                    return new_user.login
 
         with registry(self.env.cr.dbname).cursor() as new_cr:
             new_env = api.Environment(new_cr, self.env.uid, self.env.context)
