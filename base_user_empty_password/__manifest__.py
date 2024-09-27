@@ -3,7 +3,7 @@
 {
     "name": "Empty users password",
     "summary": "Allows to empty password of users",
-    "version": "14.0.1.0.0",
+    "version": "18.0.1.0.0",
     "development_status": "Beta",
     "category": "Uncategorized",
     "website": "https://github.com/OCA/server-auth",
@@ -14,7 +14,6 @@
         "base",
     ],
     "data": [
-        # "data/ir_actions.xml",
         "security/ir.model.access.csv",
         "views/res_users.xml",
         "wizard/empty_password.xml",
