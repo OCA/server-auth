@@ -10,7 +10,11 @@
     "external_dependencies": {},
     "license": "AGPL-3",
     "data": [],
-    "assets": {},
+    "assets": {
+        'web.assets_tests': [
+            'auth_password_pwned/static/tests/tours/**/*',
+        ],
+    },
     "demo": [],
     "installable": True,
 }
