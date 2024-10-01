@@ -13,7 +13,8 @@ from jose.exceptions import JWTError
 from jose.utils import long_to_base64
 
 import odoo
-from odoo.exceptions import AccessDenied
+from odoo.exceptions import AccessDenied, ValidationError
+from odoo.fields import Command
 from odoo.tests import common
 
 from odoo.addons.website.tools import MockRequest as _MockRequest
@@ -21,6 +22,7 @@ from odoo.addons.website.tools import MockRequest as _MockRequest
 from ..controllers.main import OpenIDLogin
 
 BASE_URL = "http://localhost:%s" % odoo.tools.config["http_port"]
+KEYCLOAK_URL = "http://localhost:8080"
 
 
 @contextlib.contextmanager
@@ -69,7 +71,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
 
     def setUp(self):
         super().setUp()
-        # search our test provider and bind the demo user to it
+        # search our only test provider
         self.provider_rec = self.env["auth.oauth.provider"].search(
             [("client_id", "=", "auth_oidc-test")]
         )
@@ -97,6 +99,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             self.assertEqual(params["redirect_uri"], [BASE_URL + "/auth_oauth/signin"])
 
     def _prepare_login_test_user(self):
+        # bind the demo user to our test provider it
         user = self.env.ref("base.user_demo")
         user.write({"oauth_provider_id": self.provider_rec.id, "oauth_uid": user.login})
         return user
@@ -110,7 +113,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             id_token_headers = {"kid": "the_key_id"}
         responses.add(
             responses.POST,
-            "http://localhost:8080/auth/realms/master/protocol/openid-connect/token",
+            KEYCLOAK_URL + "/auth/realms/master/protocol/openid-connect/token",
             json={
                 "access_token": access_token,
                 "id_token": jwt.encode(
@@ -128,7 +131,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
                 keys = [{"keys": [self.rsa_key_public_pem]}]
         responses.add(
             responses.GET,
-            "http://localhost:8080/auth/realms/master/protocol/openid-connect/certs",
+            KEYCLOAK_URL + "/auth/realms/master/protocol/openid-connect/certs",
             json={"keys": keys},
         )
 
@@ -146,6 +149,44 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             )
         self.assertEqual(token, "42")
         self.assertEqual(login, user.login)
+
+    @responses.activate
+    def test_manager_login(self):
+        """Test that login works and assigns the user to a manager group"""
+        user = self._prepare_login_test_user()
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login, "groups": ["erp_manager"]}
+        )
+
+        params = {"state": json.dumps({})}
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                params,
+            )
+        self.assertTrue(user.has_group("base.group_erp_manager"))
+
+    @responses.activate
+    def test_ex_manager_login(self):
+        """Test that login works and de-assigns the user from a manager group"""
+        user = self._prepare_login_test_user()
+        # Make them a manager
+        user.write(
+            {"groups_id": [Command.link(self.env.ref("base.group_erp_manager").id)]}
+        )
+        self.assertTrue(user.has_group("base.group_erp_manager"))
+
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login, "groups": ["not_erp_manager"]}
+        )
+
+        params = {"state": json.dumps({})}
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                params,
+            )
+        self.assertFalse(user.has_group("base.group_erp_manager"))
 
     @responses.activate
     def test_login_without_kid(self):
@@ -308,3 +349,47 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             )
         self.assertEqual(token, "122/3")
         self.assertEqual(login, user.login)
+
+    def test_group_expression_empty_token(self):
+        """Test that group expression with an empty token evaluate correctly"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+        group_line.expression = 'token["test"]["test"] == 1'
+        self.assertFalse(group_line._eval_expression(self.env.user, {}))
+
+    def test_group_expressions_with_token(self):
+        """Test that group expression with token with groups evaluate correctly"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        group_line.expression = "'group-a' in token['groups']"
+        self.assertFalse(group_line._eval_expression(self.env.user, {}))
+        self.assertTrue(
+            group_line._eval_expression(
+                self.env.user, {"groups": ["group-a", "group-b"]}
+            )
+        )
+        self.assertFalse(
+            group_line._eval_expression(self.env.user, {"groups": ["group-c"]})
+        )
+
+    def test_group_expression_with_inexistant_variable(self):
+        """Test that group expression with inexistant variable fails"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        with self.assertRaises(ValidationError):
+            group_line.expression = "inexistant_variable"
+
+    def test_group_expression_with_inexistant_attribute(self):
+        """Test that group expression with inexistant attribute (on user) fails"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        with self.assertRaises(ValidationError):
+            group_line.expression = "user.not_an_attribute"
+
+    def test_realistic_group_expression(self):
+        """Test that group expression with inexistant attribute (on user) fails"""
+        group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
+
+        group_line.expression = "user.email == token['mail']"
+        self.assertTrue(
+            group_line._eval_expression(self.env.user, {"mail": self.env.user.email})
+        )
