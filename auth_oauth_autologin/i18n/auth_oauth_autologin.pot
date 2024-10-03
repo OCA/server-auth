@@ -1,0 +1,31 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_oauth_autologin
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 13.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_oauth_autologin
+#: model:ir.model.fields,field_description:auth_oauth_autologin.field_auth_oauth_provider__autologin
+msgid "Automatic Login"
+msgstr ""
+
+#. module: auth_oauth_autologin
+#: model:ir.model.fields,help:auth_oauth_autologin.field_auth_oauth_provider__autologin
+msgid ""
+"If exactly one enabled provider has this checked, the login screen redirects"
+" to the OAuth provider."
+msgstr ""
+
+#. module: auth_oauth_autologin
+#: model:ir.model,name:auth_oauth_autologin.model_auth_oauth_provider
+msgid "OAuth2 provider"
+msgstr ""
