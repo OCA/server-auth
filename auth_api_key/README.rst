@@ -97,6 +97,13 @@ Contributors
 -  Quentin Groulard <quentin.groulard@acsone.eu>
 -  Sébastien Beau <sebastien.beau@akretion.com>
 -  Chafique Delli <chafique.delli@akretion.com>
+-  Thien Vo Hong <thienvh@trobz.com>
+
+Other credits
+-------------
+
+The migration of this module from 17.0 to 18.0 was financially supported
+by Camptocamp.
 
 Maintainers
 -----------

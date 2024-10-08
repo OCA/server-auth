@@ -28,19 +28,19 @@
         </field>
     </record>
     <record model="ir.ui.view" id="auth_api_key_tree_view">
-        <field name="name">auth.api.key.tree (in auth_api_key)</field>
+        <field name="name">auth.api.key.list (in auth_api_key)</field>
         <field name="model">auth.api.key</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="user_id" />
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.actions.act_window" id="auth_api_key_act_window">
         <field name="name">Auth Api Key</field>
         <field name="res_model">auth.api.key</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
