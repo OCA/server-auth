@@ -43,7 +43,7 @@ class AuthApiKey(models.Model):
         for api_key in self.search([]):
             if api_key.key and consteq(key, api_key.key):
                 return api_key.id
-        raise ValidationError(_("The key %s is not allowed") % key)
+        raise ValidationError(_(f"The key {key} is not allowed"))
 
     @api.model
     @tools.ormcache("key")
