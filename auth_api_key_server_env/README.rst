@@ -68,6 +68,13 @@ Contributors
 
 -  Simone Orsi <simone.orsi@camptocamp.com>
 -  Florian da Costa <florian.dacosta@akretion.com>
+-  Thien Vo Hong <thienvh@trobzh.com>
+
+Other credits
+-------------
+
+The migration of this module from 17.0 to 18.0 was financially supported
+by Camptocamp.
 
 Maintainers
 -----------
