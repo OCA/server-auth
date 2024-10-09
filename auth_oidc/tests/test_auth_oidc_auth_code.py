@@ -3,6 +3,7 @@
 
 import contextlib
 import json
+import logging
 from urllib.parse import parse_qs, urlparse
 
 import responses
@@ -20,7 +21,7 @@ from odoo.addons.website.tools import MockRequest as _MockRequest
 
 from ..controllers.main import OpenIDLogin
 
-BASE_URL = "http://localhost:%s" % odoo.tools.config["http_port"]
+BASE_URL = f"http://localhost:{odoo.tools.config['http_port']}"
 
 
 @contextlib.contextmanager
@@ -241,12 +242,22 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             keys=[],
         )
 
-        with self.assertRaises(AccessDenied):
-            with MockRequest(self.env):
-                self.env["res.users"].auth_oauth(
-                    self.provider_rec.id,
-                    {"state": json.dumps({})},
-                )
+        with (
+            self.assertRaises(AccessDenied),
+            MockRequest(self.env),
+            self.assertLogs(level=logging.ERROR) as logs,
+        ):
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
+        self.assertEqual(len(logs.records), 1)
+        self.assertEqual(logs.records[0].levelno, logging.ERROR)
+        self.assertEqual(
+            "ERROR:odoo.addons.auth_oidc.models.res_users:user_id claim not found in"
+            " id_token (after mapping).",
+            logs.output[0],
+        )
 
     @responses.activate
     def test_login_with_multiple_keys_in_jwks(self):
