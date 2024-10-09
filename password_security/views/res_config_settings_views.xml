@@ -85,12 +85,18 @@
                             <field name="password_special" class="oe_inline" />
                         </span>
                     </div>
-                      <div class="mt16">
-                          <span id="minlength">
-                               Minimum number of characters
-                          </span>
-                      </div>
-                  </div>
+                    <div class="mt16">
+                        <span id="minlength">
+                            Minimum number of characters
+                        </span>
+                    </div>
+                    <div class="mt16">
+                        <span>
+                            Minimum number of strength estimation
+                            <field name="password_estimate" class="oe_inline" />
+                        </span>
+                    </div>
+                </div>
             </xpath>
 
             <!-- Add oe_inline attribute to minlength -->
