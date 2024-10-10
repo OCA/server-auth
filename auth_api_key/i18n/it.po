@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-08-17 18:58+0000\n"
+"PO-Revision-Date: 2024-10-10 10:06+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -24,7 +24,7 @@ msgstr "Chiave API"
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__active
 msgid "Active"
-msgstr ""
+msgstr "Attiva"
 
 #. module: auth_api_key
 #: model:ir.model.constraint,message:auth_api_key.constraint_auth_api_key_name_uniq
@@ -34,7 +34,7 @@ msgstr "La chiave API deve essere univoca."
 #. module: auth_api_key
 #: model_terms:ir.ui.view,arch_db:auth_api_key.auth_api_key_form_view
 msgid "Archived"
-msgstr ""
+msgstr "In archivio"
 
 #. module: auth_api_key
 #: model:ir.actions.act_window,name:auth_api_key.auth_api_key_act_window
@@ -45,12 +45,12 @@ msgstr "Chiave API di autenticazione"
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Aziende"
 
 #. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Impostazioni configurazione"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_uid
@@ -66,12 +66,12 @@ msgstr "Creato il"
 #: model:ir.model.fields,field_description:auth_api_key.field_res_company__archived_user_disable_auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__archived_user_disable_auth_api_key
 msgid "Disable API key for archived user"
-msgstr ""
+msgstr "Disabilita chiave API per utenti archiviati"
 
 #. module: auth_api_key
 #: model_terms:ir.ui.view,arch_db:auth_api_key.res_config_settings_view_form
 msgid "Disable API key when archiving user"
-msgstr ""
+msgstr "Disabilita la chiave API quando si archivia un utente"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
@@ -96,6 +96,9 @@ msgid ""
 "propagated to his related api key. It is not retroactive (nothing is done  "
 "when enabling/disabling this option)."
 msgstr ""
+"Se selezionata, quando un utente viene archiviato/disattivato, la stessa "
+"modifica viene propagata alla sua chiave API correlata. Non è retroattivo ("
+"non viene fatto nulla quando si abilita/disabilita questa opzione)."
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key
