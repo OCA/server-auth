@@ -1,0 +1,11 @@
+[project]
+name = "odoo-addons-oca-server-auth"
+version = "18.0.20241011.0"
+dependencies = [
+    "odoo-addon-base_user_empty_password==18.0.*",
+]
+classifiers=[
+    "Programming Language :: Python",
+    "Framework :: Odoo",
+    "Framework :: Odoo :: 18.0",
+]
