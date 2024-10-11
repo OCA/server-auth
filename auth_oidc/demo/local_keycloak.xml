@@ -17,4 +17,24 @@
             name="jwks_uri"
         >http://localhost:8080/auth/realms/master/protocol/openid-connect/certs</field>
     </record>
+    <record id="provider_azuread_multi" model="auth.oauth.provider">
+        <field name="name">Azure AD Multitenant</field>
+        <field name="flow">id_token_code</field>
+        <field name="client_id">auth_oidc-test</field>
+        <field name="enabled">True</field>
+        <field name="token_map">upn:user_id upn:email</field>
+        <field
+            name="auth_endpoint"
+        >https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize</field>
+        <field name="scope">profile openid</field>
+        <field
+            name="token_endpoint"
+        >https://login.microsoftonline.com/organizations/oauth2/v2.0/token</field>
+        <field
+            name="jwks_uri"
+        >https://login.microsoftonline.com/organizations/discovery/v2.0/keys</field>
+        <field name="css_class">fa fa-fw fa-windows</field>
+        <field name="body">Log in with Microsoft</field>
+        <field name="auth_link_params">{'prompt':'select_account'}</field>
+    </record>
 </odoo>
