@@ -21,6 +21,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[auth_api_key](auth_api_key/) | 18.0.1.0.0 |  | Authenticate http requests from an API key
 [base_user_empty_password](base_user_empty_password/) | 18.0.1.0.0 | [![grindtildeath](https://github.com/grindtildeath.png?size=30px)](https://github.com/grindtildeath) | Allows to empty password of users
 
 [//]: # (end addons)
