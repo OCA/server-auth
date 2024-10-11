@@ -2,7 +2,8 @@ To use this module, you need an IDP server, properly set up.
 
 1.  Configure the module according to your IdP’s instructions (Settings
     \> Users & Companies \> SAML Providers).
-2.  Pre-create your users and set the SAML information against the user.
+2.  Pre-create your users and set the SAML information against the user,
+    or use the module ability to create users as they log in.
 
 By default, the module let users have both a password and SAML ids. To
 increase security, disable passwords by using the option in Settings.

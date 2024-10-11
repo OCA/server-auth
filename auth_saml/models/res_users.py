@@ -7,7 +7,7 @@ from typing import Set  # noqa
 
 import passlib
 
-from odoo import SUPERUSER_ID, _, api, fields, models, registry, tools
+from odoo import SUPERUSER_ID, Command, _, api, fields, models, registry, tools
 from odoo.exceptions import AccessDenied, ValidationError
 
 from .ir_config_parameter import ALLOW_SAML_UID_AND_PASSWORD
@@ -45,19 +45,52 @@ class ResUser(models.Model):
             limit=1,
         )
         user = user_saml.user_id
-        if len(user) != 1:
-            raise AccessDenied()
+        user_copy_defaults = {}
+        if not user:
+            user_copy_defaults = (
+                self.env["auth.saml.provider"]
+                .browse(provider)
+                ._user_copy_defaults(validation)
+            )
+            if not user_copy_defaults:
+                raise AccessDenied()
 
         with registry(self.env.cr.dbname).cursor() as new_cr:
             new_env = api.Environment(new_cr, self.env.uid, self.env.context)
+            if user_copy_defaults:
+                new_user = (
+                    new_env["auth.saml.provider"]
+                    .browse(provider)
+                    .create_user_template_id.with_context(no_reset_password=True)
+                    .copy(
+                        {
+                            **user_copy_defaults,
+                            "saml_ids": [
+                                Command.create(
+                                    {
+                                        "saml_provider_id": provider,
+                                        "saml_uid": saml_uid,
+                                        "saml_access_token": saml_response,
+                                    }
+                                )
+                            ],
+                        }
+                    )
+                )
+                # Update signature as needed.
+                new_user._compute_signature()
+                return new_user.login
+
             # Update the token. Need to be committed, otherwise the token is not visible
             # to other envs, like the one used in login_and_redirect
             user_saml.with_env(new_env).write({"saml_access_token": saml_response})
 
-        if validation.get("mapped_attrs", {}):
-            user.write(validation.get("mapped_attrs", {}))
+            # if a login is changed by a mapped attribute, it needs to be commited too
+            user = user.with_env(new_env)
+            if validation.get("mapped_attrs", {}):
+                user.write(validation.get("mapped_attrs", {}))
 
-        return user.login
+            return user.login
 
     @api.model
     def auth_saml(self, provider: int, saml_response: str, base_url: str = None):

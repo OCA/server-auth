@@ -13,6 +13,7 @@ class AuthSamlAttributeMapping(models.Model):
         "auth.saml.provider",
         index=True,
         required=True,
+        ondelete="cascade",
     )
     attribute_name = fields.Char(
         string="IDP Response Attribute",
