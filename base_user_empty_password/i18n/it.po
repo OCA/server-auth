@@ -1,0 +1,83 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* base_user_empty_password
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#. module: base_user_empty_password
+#: model_terms:ir.ui.view,arch_db:base_user_empty_password.empty_password_wizard_view
+msgid "Are you sure you want to empty password of selected users?"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model_terms:ir.ui.view,arch_db:base_user_empty_password.empty_password_wizard_view
+msgid "Cancel"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.actions.act_window,name:base_user_empty_password.empty_password_wizard_action
+#: model_terms:ir.ui.view,arch_db:base_user_empty_password.empty_password_wizard_view
+msgid "Empty Password"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model,name:base_user_empty_password.model_empty_password_wizard
+msgid "Empty Password Wizard"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_res_users__has_password
+msgid "Has Password"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__id
+msgid "ID"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: base_user_empty_password
+#. odoo-python
+#: code:addons/base_user_empty_password/wizard/empty_password.py:0
+msgid "This can only be used on users."
+msgstr ""
+
+#. module: base_user_empty_password
+#: model:ir.model,name:base_user_empty_password.model_res_users
+#: model:ir.model.fields,field_description:base_user_empty_password.field_empty_password_wizard__user_ids
+msgid "User"
+msgstr ""
