@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="provider_azuread_multi" model="auth.oauth.provider">
+        <field name="name">Azure AD Multitenant</field>
+        <field name="flow">id_token_code</field>
+        <field name="enabled">False</field>
+        <field name="token_map">upn:user_id upn:email</field>
+        <field
+            name="auth_endpoint"
+        >https://login.microsoftonline.com/organizations/oauth2/v2.0/authorize</field>
+        <field name="scope">profile openid</field>
+        <field
+            name="token_endpoint"
+        >https://login.microsoftonline.com/organizations/oauth2/v2.0/token</field>
+        <field
+            name="jwks_uri"
+        >https://login.microsoftonline.com/organizations/discovery/v2.0/keys</field>
+        <field name="css_class">fa fa-fw fa-windows</field>
+        <field name="body">Log in with Microsoft</field>
+    </record>
+    <record id="provider_azuread_single" model="auth.oauth.provider">
+        <field name="name">Azure AD Single Tenant</field>
+        <field name="flow">id_token_code</field>
+        <field name="enabled">False</field>
+        <field name="token_map">upn:user_id upn:email</field>
+        <field
+            name="auth_endpoint"
+        >https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/authorize</field>
+        <field name="scope">profile openid</field>
+        <field
+            name="token_endpoint"
+        >https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token</field>
+        <field
+            name="jwks_uri"
+        >https://login.microsoftonline.com/{tenant_id}/discovery/v2.0/keys</field>
+        <field name="css_class">fa fa-fw fa-windows</field>
+        <field name="body">Log in with Microsoft</field>
+    </record>
+</odoo>
