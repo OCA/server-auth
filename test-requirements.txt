@@ -1,0 +1,1 @@
+odoo-addon-auth_api_key @ git+https://github.com/oca/server-auth.git@refs/pull/701/head#subdirectory=auth_api_key
