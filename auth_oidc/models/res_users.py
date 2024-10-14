@@ -6,7 +6,7 @@ import logging
 
 import requests
 
-from odoo import api, models
+from odoo import api, fields, models
 from odoo.exceptions import AccessDenied
 from odoo.http import request
 
@@ -15,6 +15,8 @@ _logger = logging.getLogger(__name__)
 
 class ResUsers(models.Model):
     _inherit = "res.users"
+
+    oauth_id_token = fields.Char(string="OAuth Id Token", readonly=True, copy=False)
 
     def _auth_oauth_get_tokens_implicit_flow(self, oauth_provider, params):
         # https://openid.net/specs/openid-connect-core-1_0.html#ImplicitAuthResponse
@@ -74,7 +76,12 @@ class ResUsers(models.Model):
             raise AccessDenied()
         # retrieve and sign in user
         params["access_token"] = access_token
+        params["id_token"] = id_token
         login = self._auth_oauth_signin(provider, validation, params)
+        oauth_user = self.search(
+            [("login", "=", login), ("oauth_access_token", "=", access_token)]
+        )
+        oauth_user.write({"oauth_id_token": params["id_token"]})
         if not login:
             raise AccessDenied()
         # return user credentials

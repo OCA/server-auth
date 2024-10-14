@@ -128,3 +128,58 @@ class TestOpenIDLogout(common.HttpCase):
             actual_params = dict(parse_qsl(actual_components.query))
             self.assertEqual(CLIENT_ID, actual_params["client_id"])
             self.assertEqual(BASE_URL, actual_params["post_logout_redirect_uri"])
+
+    def test_oidc_logout_skip_confirmation(self):
+        """Test that oidc logout skips confirmation"""
+        id_token = "test-id-token"
+        self._set_test_oidc_logout_url(urljoin(OIDC_BASE_LOGOUT_URL, OIDC_LOGOUT_PATH))
+        self.provider.write({"skip_logout_confirmation": True})
+        user = self._prepare_login_test_user(self.provider)
+        user.write({"oauth_id_token": id_token})
+        with create_request(self.env, user.id, self.mock_logout_user):
+            resp = OpenIDLogout().logout()
+            self.assertTrue(resp.location.startswith(OIDC_BASE_LOGOUT_URL))
+            actual_components = urlparse(resp.location)
+            self.assertEqual(OIDC_LOGOUT_PATH, actual_components.path)
+            actual_params = dict(parse_qsl(actual_components.query))
+            self.assertEqual(CLIENT_ID, actual_params["client_id"])
+            self.assertEqual(id_token, actual_params["id_token_hint"])
+            self.assertEqual(
+                urljoin(BASE_URL, LOGIN_PATH), actual_params["post_logout_redirect_uri"]
+            )
+
+    def test_oidc_logout_not_skip_confirmation_if_no_id_token(self):
+        """Test that oidc logout does not skip confirmation if user has no oauth_id_token"""
+        self._set_test_oidc_logout_url(urljoin(OIDC_BASE_LOGOUT_URL, OIDC_LOGOUT_PATH))
+        self.provider.write({"skip_logout_confirmation": True})
+        user = self._prepare_login_test_user(self.provider)
+        with create_request(self.env, user.id, self.mock_logout_user):
+            resp = OpenIDLogout().logout()
+            self.assertTrue(resp.location.startswith(OIDC_BASE_LOGOUT_URL))
+            actual_components = urlparse(resp.location)
+            self.assertEqual(OIDC_LOGOUT_PATH, actual_components.path)
+            actual_params = dict(parse_qsl(actual_components.query))
+            self.assertEqual(CLIENT_ID, actual_params["client_id"])
+            self.assertIsNone(actual_params.get("id_token_hint"))
+            self.assertEqual(
+                urljoin(BASE_URL, LOGIN_PATH), actual_params["post_logout_redirect_uri"]
+            )
+
+    def test_oidc_logout_not_skip_confirmation_if_not_enabled(self):
+        """Test that oidc logout skips confirmation"""
+        id_token = "test-id-token"
+        self._set_test_oidc_logout_url(urljoin(OIDC_BASE_LOGOUT_URL, OIDC_LOGOUT_PATH))
+        self.provider.write({"skip_logout_confirmation": False})
+        user = self._prepare_login_test_user(self.provider)
+        user.write({"oauth_id_token": id_token})
+        with create_request(self.env, user.id, self.mock_logout_user):
+            resp = OpenIDLogout().logout()
+            self.assertTrue(resp.location.startswith(OIDC_BASE_LOGOUT_URL))
+            actual_components = urlparse(resp.location)
+            self.assertEqual(OIDC_LOGOUT_PATH, actual_components.path)
+            actual_params = dict(parse_qsl(actual_components.query))
+            self.assertEqual(CLIENT_ID, actual_params["client_id"])
+            self.assertIsNone(actual_params.get("id_token_hint"))
+            self.assertEqual(
+                urljoin(BASE_URL, LOGIN_PATH), actual_params["post_logout_redirect_uri"]
+            )
