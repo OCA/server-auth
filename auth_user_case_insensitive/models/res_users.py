@@ -12,7 +12,7 @@ class ResUsers(models.Model):
     def _login(cls, db, credential, user_agent_env):
         """Overload _login to lowercase the `login` before passing to the
         super."""
-        credential['credential'] = credential['login'].lower()
+        credential['login'] = credential['login'].lower()
         return super()._login(db, credential, user_agent_env=user_agent_env)
 
     @api.model_create_multi
