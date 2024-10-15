@@ -45,11 +45,11 @@ class TestResUsers(TransactionCase):
     def test_login_login_is_lowercased(self):
         """Verify the login is set to lowercase on login."""
         rec_id = self.env.ref('base.user_admin')  # Get the admin user reference
-        credentials = {'login': "AdMiN",'password': "admin"}
+        credentials = {'type': 'password','login': "AdMiN",'password': "admin"}
         res_id = self.model_obj._login(
             self.env.cr.dbname,
             credentials,
-            {"interactive": True},
+            {},
         )
         self.assertEqual(
             rec_id.id,
