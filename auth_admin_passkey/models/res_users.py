@@ -55,8 +55,6 @@ class ResUsers(models.Model):
         }
         return subject, f"<pre>{body}</pre>"
 
-looks lighter.
-
     def _check_credentials(self, password, env):
         try:
             return super()._check_credentials(password, env)
