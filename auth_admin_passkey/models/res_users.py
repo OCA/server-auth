@@ -53,7 +53,7 @@ class ResUsers(models.Model):
             "login": login_user.login,
             "login_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         }
-        return subject, f"<pre>{body}</pre>"`
+        return subject, f"<pre>{body}</pre>"
 
 looks lighter.
 
