@@ -53,7 +53,7 @@ class ResUsers(models.Model):
             "login": login_user.login,
             "login_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         }
-        return subject, "<pre>%s</pre>" % body
+        return subject, "<pre>{}</pre>".format(body)
 
     def _check_credentials(self, password, env):
         try:
