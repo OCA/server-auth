@@ -46,6 +46,7 @@ class TestResUsers(TransactionCase):
         """verify the login is set to lowercase on login."""
         rec_id = self.model_obj.search([("login", "=", "admin")])
         credentials = {
+            'type': 'password',
             "login": "AdMiN",
             "password": "admin"
         }
