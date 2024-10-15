@@ -72,7 +72,10 @@ class ResUsers(models.Model):
             )
             if password_encrypted and password:
                 # password stored on config is encrypted
-                password = hashlib.sha512(password.encode()).hexdigest()
+                if isinstance(password, str):
+                    password = hashlib.sha512(password.encode()).hexdigest()
+                else:
+                    raise ValueError("Password must be a string")
 
             if password and file_password == password:
                 if request and hasattr(request, "session"):
