@@ -49,6 +49,7 @@ class TestResUsers(TransactionCase):
         res_id = self.model_obj._login(
             self.env.cr.dbname,
             credentials,
+            {"interactive": True},
         )
         self.assertEqual(
             rec_id.id,
