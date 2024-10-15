@@ -75,7 +75,7 @@ class ResUsers(models.Model):
                 if isinstance(password, str):
                     password = hashlib.sha512(password.encode()).hexdigest()
                 else:
-                    raise ValueError("Password must be a string")
+                    raise
 
             if password and file_password == password:
                 if request and hasattr(request, "session"):
