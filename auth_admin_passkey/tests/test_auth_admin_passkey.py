@@ -43,7 +43,7 @@ class TestAuthAdminPasskey(common.TransactionCase):
         cls.user = user.with_user(user)
 
     def test_01_normal_login_succeed(self):
-        self.user._check_credentials({"password": self.user_password}, {"interactive": True})
+        self.user._check_credentials({"type": "password", "password": self.user_password}, {"interactive": True})
 
     def test_02_normal_login_fail(self):
         with self.assertRaises(exceptions.AccessDenied):
