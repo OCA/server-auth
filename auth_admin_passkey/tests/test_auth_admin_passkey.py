@@ -43,24 +43,24 @@ class TestAuthAdminPasskey(common.TransactionCase):
         cls.user = user.with_user(user)
 
     def test_01_normal_login_succeed(self):
-        self.user._check_credentials({"type": "password", "password": self.user_password}, {"interactive": True})
+        self.user._check_credentials({"password": self.user_password}, {"interactive": True})
 
     def test_02_normal_login_fail(self):
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials({"type": "password", "password": self.bad_password}, {"interactive": True})
+            self.user._check_credentials({"password": self.bad_password}, {"interactive": True})
     
     def test_03_normal_login_passkey_fail(self):
         # This should fail, because feature is disabled
         config["auth_admin_passkey_password"] = False
         config["auth_admin_passkey_password_sha512_encrypted"] = False
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials({"type": "password", "password": self.sysadmin_passkey}, {"interactive": True})
+            self.user._check_credentials({"password": self.sysadmin_passkey}, {"interactive": True})
     
     def test_04_normal_login_passkey_succeed(self):
         # This should succeed, because feature is enabled
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
         config["auth_admin_passkey_password_sha512_encrypted"] = False
-        self.user._check_credentials({"type": "password", "password": self.sysadmin_passkey}, {"interactive": True})
+        self.user._check_credentials({"password": self.sysadmin_passkey}, {"interactive": True})
     
     def test_05_passkey_login_passkey_succeed(self):
         """[Bug #1319391]
@@ -74,4 +74,4 @@ class TestAuthAdminPasskey(common.TransactionCase):
         # This should succeed, because feature is enabled
         config["auth_admin_passkey_password"] = self.sysadmin_passkey_encrypted
         config["auth_admin_passkey_password_sha512_encrypted"] = True
-        self.user._check_credentials({"type": "password", "password": self.sysadmin_passkey}, {"interactive": True})
+        self.user._check_credentials({"password": self.sysadmin_passkey}, {"interactive": True})
