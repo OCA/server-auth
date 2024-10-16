@@ -44,15 +44,15 @@ class TestResUsers(TransactionCase):
 
     def test_login_login_is_lowercased(self):
         """Verify the login is set to lowercase on login."""
-        rec_id = self.env.ref('base.user_admin')  # Get the admin user reference
-        credentials = {'type': 'password','login': "AdMiN",'password': "admin"}
+        rec_id = self.env.ref("base.user_admin")  # Get the admin user reference
+        credentials = {"type": "password", "login": "AdMiN", "password": "admin"}
         res_id = self.model_obj._login(
             self.env.cr.dbname,
             credentials,
-            {'interactive': True},
+            {"interactive": True},
         )
         self.assertEqual(
             rec_id.id,
-            res_id.get('uid'),
+            res_id.get("uid"),
             "Login with uppercase chars was not successful",
         )
