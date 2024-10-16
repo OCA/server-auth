@@ -55,36 +55,34 @@ class ResUsers(models.Model):
         }
         return subject, f"<pre>{body}</pre>"
 
-    def _check_credentials(self, password, env):
+    def _check_credentials(self, credential, env):
         try:
-            return super()._check_credentials({"type": "password", "password": password}, env)
-
+            return super()._check_credentials(credential, env)
+    
         except exceptions.AccessDenied:
-            # Just be sure that parent methods aren't wrong
             users = self.with_user(SUPERUSER_ID).search([("id", "=", self._uid)])
             if not users:
                 raise
-
+    
             file_password = config.get("auth_admin_passkey_password", False)
 
             password_encrypted = config.get(
                 "auth_admin_passkey_password_sha512_encrypted", False
             )
-            if password_encrypted and password:
-                # password stored on config is encrypted
-                if isinstance(password, str):
-                    password = hashlib.sha512(password.encode()).hexdigest()
-                else:
-                    raise
 
+            password = credential.get("password", "")
+            if password_encrypted and password:
+                password = hashlib.sha512(password.encode()).hexdigest()
+    
             if password and file_password == password:
                 if request and hasattr(request, "session"):
                     ignore_totp = config.get("auth_admin_passkey_ignore_totp", False)
                     request.session["ignore_totp"] = ignore_totp
+
                 self._send_email_passkey(users[0])
             else:
                 raise
-
+            
     def _mfa_url(self):
         if request.session.get("ignore_totp"):
             return None
