@@ -4,6 +4,7 @@
 
 from unittest import mock
 
+from freezegun import freeze_time
 from requests.exceptions import HTTPError
 
 from odoo import http
@@ -82,7 +83,8 @@ class TestPasswordSecuritySignup(HttpCase):
 
         # Stronger password: no error raised
         vals["password"] = "asdQWE12345_3"
-        login, pwd = self.env["res.users"].signup(vals)
+        with freeze_time("2020-01-01"):
+            login, pwd = self.env["res.users"].signup(vals)
 
         # check created user
         created_user = self.env["res.users"].search([("login", "=", "test_user")])
