@@ -123,6 +123,8 @@ class TestUI(common.HttpCase):
             "db": self.dbname,
         }
         response = self.post_request("/web/login/", data=data)
+        print("response data")
+        print(response)
 
         # He notices that his redirected to backoffice
         self.assertNotIn("oe_login_form", response.data.decode("utf8"))
@@ -169,6 +171,8 @@ class TestUI(common.HttpCase):
             "db": self.dbname,
         }
         response = self.post_request("/web/login/", data=data)
+        print("response data")
+        print(response)
 
         # He notices that his redirected to backoffice
         self.assertNotIn("oe_login_form", response.data.decode("utf8"))
