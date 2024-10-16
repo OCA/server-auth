@@ -53,6 +53,6 @@ class TestResUsers(TransactionCase):
         )
         self.assertEqual(
             rec_id.id,
-            res_id,
+            res_id.get('uid'),
             "Login with uppercase chars was not successful",
         )
