@@ -17,7 +17,13 @@ _logger = logging.getLogger(__name__)
 class PasswordSecurityHome(AuthSignupHome):
     def do_signup(self, qcontext):
         password = qcontext.get("password")
-        user = request.env.user
+        # If 2FA is activated, request.env.user is not updated to the logged-in user
+        # at this point. In order to do _check_password on the correct user we
+        # search by login.
+        user = (
+            request.env.user.search([("login", "=", qcontext.get("login"))])
+            or request.env.user
+        )
         user._check_password(password)
         return super().do_signup(qcontext)
 
