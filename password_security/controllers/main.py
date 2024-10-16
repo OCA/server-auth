@@ -17,7 +17,10 @@ _logger = logging.getLogger(__name__)
 class PasswordSecurityHome(AuthSignupHome):
     def do_signup(self, qcontext):
         password = qcontext.get("password")
-        user = request.env.user
+        user = (
+            request.env.user.search([("login", "=", qcontext.get("login"))])
+            or request.env.user
+        )
         user._check_password(password)
         return super(PasswordSecurityHome, self).do_signup(qcontext)
 

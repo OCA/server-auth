@@ -32,6 +32,11 @@ class ResUsers(models.Model):
             vals["password_write_date"] = fields.Datetime.now()
         return super(ResUsers, self).write(vals)
 
+    def copy(self, vals):
+        if vals.get("password"):
+            vals["password_write_date"] = fields.Datetime.now()
+        return super(ResUsers, self).copy(vals)
+
     @api.model
     def get_password_policy(self):
         data = super(ResUsers, self).get_password_policy()
