@@ -6,7 +6,7 @@
     <record model="ir.ui.view" id="impersonate_res_users_tree">
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_tree" />
-        <field name="type">tree</field>
+        <field name="type">list</field>
         <field name="arch" type="xml">
             <field name="name" position="before">
                 <button
