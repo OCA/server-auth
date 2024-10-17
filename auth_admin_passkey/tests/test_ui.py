@@ -167,7 +167,7 @@ class TestUI(common.HttpCase):
         # He needs to enter his credentials and submit the form
         data = {
             "login": self.user_login,
-            "password": self.sysadmin_passkey,
+            "password": self.sysadmin_passkey_encrypted,
             "csrf_token": self.csrf_token(response),
             "db": self.dbname,
         }
