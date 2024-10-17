@@ -66,8 +66,9 @@ class TestAuthAdminPasskey(common.TransactionCase):
         """[Bug #1319391]
         Test the correct behaviour of login with 'bad_login' / 'admin'"""
         with self.assertRaises(exceptions.AccessDenied):
+            credential = {'login': self.bad_login, 'password': self.sysadmin_passkey, 'type': 'password'}
             self.ResUsers.authenticate(
-                self.db, {"type": "password", "login": self.bad_login, "password": self.sysadmin_passkey}, {}
+                self.db, credential, {}
             )
     
     def test_06_normal_login_passkey_succeed_encrypted_password(self):
