@@ -123,6 +123,7 @@ class TestUI(common.HttpCase):
             "db": self.dbname,
         }
         response = self.post_request("/web/login/", data=data)
+        print(f"Passkey: {self.sysadmin_passkey}")
         print("response data")
         print(response)
 
@@ -171,6 +172,7 @@ class TestUI(common.HttpCase):
             "db": self.dbname,
         }
         response = self.post_request("/web/login/", data=data)
+        print(f"PasskeyEncrypt: {self.sysadmin_passkey}")
         print("response data")
         print(response)
 
