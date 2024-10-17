@@ -308,6 +308,14 @@ class AuthSamlProvider(models.Model):
         except SignatureError:
             # we have a metadata url: try to refresh the metadata document
             if self.idp_metadata_url:
+                self.env.cr.execute(
+                    """
+                    SELECT id, idp_metadata
+                    FROM auth_saml_provider
+                    WHERE id=%s FOR UPDATE NOWAIT
+                    """,
+                    (self.id,),
+                )
                 self.action_refresh_metadata_from_url()
                 # retry: if it fails again, we let the exception flow
                 client = self._get_client_for_provider(base_url)
@@ -424,11 +432,6 @@ class AuthSamlProvider(models.Model):
 
         # lock the records we might update, so that multiple simultaneous login
         # attempts will not cause concurrent updates
-        provider_ids = tuple(providers_to_update.keys())
-        self.env.cr.execute(
-            "SELECT id FROM auth_saml_provider WHERE id in %s FOR UPDATE",
-            (tuple(provider_ids),),
-        )
         updated = False
         for provider in providers:
             if provider.id in providers_to_update:
