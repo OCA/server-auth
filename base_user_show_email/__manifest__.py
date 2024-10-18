@@ -3,7 +3,7 @@
 
 {
     "name": "Base User Show Email",
-    "version": "17.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Tools",
     "website": "https://github.com/OCA/server-auth",
     "author": "Camptocamp, " "Odoo Community Association (OCA)",
