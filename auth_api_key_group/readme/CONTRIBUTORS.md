@@ -1,0 +1,3 @@
+- Simone Orsi \<<simone.orsi@camptocamp.com>\>
+- Son Ho <sonhd@trobz.com>
+- Thien Vo Hong \<<thienvh@trobz.com>\>
