@@ -22,6 +22,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [auth_api_key](auth_api_key/) | 18.0.1.0.0 |  | Authenticate http requests from an API key
+[auth_api_key_group](auth_api_key_group/) | 18.0.1.0.0 | [![simahawk](https://github.com/simahawk.png?size=30px)](https://github.com/simahawk) | Allow grouping API keys together. Grouping per se does nothing. This feature is supposed to be used by other modules to limit access to services or records based on groups of keys.
 [base_user_empty_password](base_user_empty_password/) | 18.0.1.0.0 | [![grindtildeath](https://github.com/grindtildeath.png?size=30px)](https://github.com/grindtildeath) | Allows to empty password of users
 
 [//]: # (end addons)
