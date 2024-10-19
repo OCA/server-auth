@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record model="ir.ui.view" id="auth_api_key_form_view">
+        <field name="model">auth.api.key</field>
+        <field name="inherit_id" ref="auth_api_key.auth_api_key_form_view" />
+        <field name="arch" type="xml">
+            <group name="config" position="inside">
+                <field name="auth_api_key_group_ids" colspan="4" />
+            </group>
+        </field>
+    </record>
+</odoo>
