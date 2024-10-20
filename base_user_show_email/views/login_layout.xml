@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="login" inherit_id="web.login" priority="100">
+        <xpath expr="//label[@for='login']" position="replace">
+            <label for="login" class="form-label">Login</label>
+        </xpath>
+        <xpath expr="//input[@name='login']" position="attributes">
+            <attribute name="placeholder">Login</attribute>
+        </xpath>
+    </template>
+</odoo>
