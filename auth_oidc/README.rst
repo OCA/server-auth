@@ -90,6 +90,9 @@ or
 
 |image2|
 
+-  Auth Link Params: Add {'prompt':'select_account'} to the auth link to
+   get the account selection screen |image3|
+
 Setup for Keycloak
 ------------------
 
@@ -126,6 +129,7 @@ In Odoo, create a new Oauth Provider with the following parameters:
 .. |image| image:: https://raw.githubusercontent.com/OCA/server-auth/17.0/auth_oidc/static/description/oauth-microsoft_azure-api_permissions.png
 .. |image1| image:: https://raw.githubusercontent.com/OCA/server-auth/17.0/auth_oidc/static/description/oauth-microsoft_azure-optional_claims.png
 .. |image2| image:: https://raw.githubusercontent.com/OCA/server-auth/17.0/auth_oidc/static/description/odoo-azure_ad_multitenant.png
+.. |image3| image:: https://raw.githubusercontent.com/OCA/server-auth/17.0/auth_oidc/static/description/oauth-microsoft_azure-select_account.png
 
 Usage
 =====

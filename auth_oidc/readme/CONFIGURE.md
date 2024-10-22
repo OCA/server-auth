@@ -38,6 +38,10 @@ or
 
 ![image](../static/description/odoo-azure_ad_multitenant.png)
 
+- Auth Link Params: Add {'prompt':'select_account'} to the auth link to get the account selection screen
+![image](../static/description/oauth-microsoft_azure-select_account.png)
+
+
 ## Setup for Keycloak
 
 Example configuration with OpenID Connect authorization code flow.

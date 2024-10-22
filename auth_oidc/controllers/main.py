@@ -6,6 +6,7 @@ import base64
 import hashlib
 import logging
 import secrets
+from ast import literal_eval
 
 from werkzeug.urls import url_decode, url_encode
 
@@ -43,6 +44,12 @@ class OpenIDLogin(OAuthLogin):
                     if "openid" not in provider["scope"].split():
                         _logger.error("openid connect scope must contain 'openid'")
                     params["scope"] = provider["scope"]
+
+                # append provider specific auth link params
+                if provider["auth_link_params"]:
+                    params_upd = literal_eval(provider["auth_link_params"])
+                    params.update(params_upd)
+
                 # auth link that the user will click
                 provider["auth_link"] = "{}?{}".format(
                     provider["auth_endpoint"], url_encode(params)
