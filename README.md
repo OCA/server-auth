@@ -26,7 +26,7 @@ addon | version | maintainers | summary
 [auth_api_key](auth_api_key/) | 17.0.1.1.1 |  | Authenticate http requests from an API key
 [auth_api_key_group](auth_api_key_group/) | 17.0.1.0.1 | [![simahawk](https://github.com/simahawk.png?size=30px)](https://github.com/simahawk) | Allow grouping API keys together. Grouping per se does nothing. This feature is supposed to be used by other modules to limit access to services or records based on groups of keys.
 [auth_api_key_server_env](auth_api_key_server_env/) | 17.0.1.0.0 |  | Configure api keys via server env. This can be very useful to avoid mixing your keys between your various environments when restoring databases. All you have to do is to add a new section to your configuration file according to the following convention:
-[auth_oidc](auth_oidc/) | 17.0.1.0.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
+[auth_oidc](auth_oidc/) | 17.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 17.0.1.0.0 | [![vincent-hatakeyama](https://github.com/vincent-hatakeyama.png?size=30px)](https://github.com/vincent-hatakeyama) | SAML2 Authentication
 [auth_signup_verify_email](auth_signup_verify_email/) | 17.0.1.0.0 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 17.0.1.0.0 |  | Makes the user login field case insensitive
