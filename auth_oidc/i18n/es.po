@@ -17,9 +17,21 @@ msgstr ""
 "X-Generator: Weblate 4.17\n"
 
 #. module: auth_oidc
+#: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__auth_link_params
+msgid ""
+"Additional parameters for the auth link. For example: "
+"{'prompt':'select_account'}"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__flow
 msgid "Auth Flow"
 msgstr "Flujo de autenticación"
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__auth_link_params
+msgid "Auth Link Params"
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret

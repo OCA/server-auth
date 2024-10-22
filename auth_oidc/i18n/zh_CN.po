@@ -17,9 +17,21 @@ msgstr ""
 "X-Generator: Weblate 4.17\n"
 
 #. module: auth_oidc
+#: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__auth_link_params
+msgid ""
+"Additional parameters for the auth link. For example: "
+"{'prompt':'select_account'}"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__flow
 msgid "Auth Flow"
 msgstr "认证流程"
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__auth_link_params
+msgid "Auth Link Params"
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret
@@ -75,9 +87,9 @@ msgstr "OpenID Connect 所需。"
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
 msgid ""
-"Some Oauth providers don't map keys in their responses exactly as required."
-"  It is important to ensure user_id and email at least are mapped. For "
-"OpenID Connect user_id is the sub key in the standard."
+"Some Oauth providers don't map keys in their responses exactly as required.  "
+"It is important to ensure user_id and email at least are mapped. For OpenID "
+"Connect user_id is the sub key in the standard."
 msgstr ""
 "一些 OAuth 提供者在其响应中并没有完全按照要求映射键。至少需要确保 user_id 和 "
 "email 被映射。对于 OpenID Connect，user_id 是标准中的 sub 键。"
