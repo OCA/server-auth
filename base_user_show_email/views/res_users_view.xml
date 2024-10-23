@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="user_email_form" model="ir.ui.view">
+        <field name="name">res.users.show_email.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='login']" position="attributes">
+                <attribute name="string">Login</attribute>
+            </xpath>
+            <field name="email" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="login" position="after">
+                <label for="email" class="oe_edit_only" string="Email Address" />
+                <h2>
+                    <field name="email" required="1" />
+                </h2>
+            </field>
+        </field>
+    </record>
+    <record id="user_email_tree" model="ir.ui.view">
+        <field name="name">res.users.show_email.list</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_tree" />
+        <field name="arch" type="xml">
+            <field name="login" position="after">
+                <field name="email" />
+            </field>
+        </field>
+    </record>
+</odoo>
