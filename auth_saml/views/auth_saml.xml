@@ -182,6 +182,16 @@
                             <field name="body" />
                             <field name="css_class" />
                         </group>
+                        <group
+                            string="User Creation Settings"
+                            name="create_user_settings"
+                        >
+                            <field name="create_user" />
+                            <field
+                                name="create_user_template_id"
+                                string="User Template"
+                            />
+                        </group>
                     </group>
                 </sheet>
             </form>

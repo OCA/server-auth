@@ -7,7 +7,9 @@ class ResUserSaml(models.Model):
     _name = "res.users.saml"
     _description = "User to SAML Provider Mapping"
 
-    user_id = fields.Many2one("res.users", index=True, required=True)
+    user_id = fields.Many2one(
+        "res.users", index=True, required=True, ondelete="cascade"
+    )
     saml_provider_id = fields.Many2one(
         "auth.saml.provider", string="SAML Provider", index=True
     )
