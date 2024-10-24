@@ -1,0 +1,8 @@
+- Holger Brunn \<<hbrunn@therp.nl>\>
+- Giacomo Spettoli \<<giacomo.spettoli@gmail.com>\>
+- [CorporateHub](https://corporatehub.eu/)
+  - Alexey Pelykh \<<alexey.pelykh@corphub.eu>\>
+- Tecnativa \<<https://www.tecnativa.com>\>
+  - João Marques
+  - Carolina Fernandez
+- Dhara Solanki \<<dhara.solanki@initos.com>\>
