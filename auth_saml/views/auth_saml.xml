@@ -102,6 +102,10 @@
                             <div>
                                 <field name="autoredirect" />
                             </div>
+                            <label for="saml_domain_ids" />
+                            <div>
+                                <field name="saml_domain_ids" widget="many2many_tags" />
+                            </div>
                             <label for="sp_baseurl" />
                             <div>
                                 <field name="sp_baseurl" widget="url" />
