@@ -96,10 +96,10 @@ Known issues / Roadmap
 Changelog
 =========
 
-16.0.1.0.0
+18.0.1.0.0
 ----------
 
-Initial migration for 16.0.
+Initial migration for 18.0.
 
 Bug Tracker
 ===========
@@ -145,6 +145,10 @@ Contributors
 
    -  Lorenzo Battistini
 
+- `Letzdoo <https://www.letzdoo.com/>`__:
+
+   -  Jérôme Sonnet
+
 Maintainers
 -----------
 
@@ -166,6 +170,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-vincent-hatakeyama| 
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/17.0/auth_saml>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/18.0/auth_saml>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.
