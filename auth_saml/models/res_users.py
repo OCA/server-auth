@@ -76,7 +76,7 @@ class ResUser(models.Model):
         # return user credentials
         return self.env.cr.dbname, login, saml_response
 
-    def _check_credentials(self, password, env):
+    def _check_credentials(self, credential, env):
         """Override to handle SAML auths.
 
         The token can be a password if the user has used the normal form...
@@ -85,9 +85,11 @@ class ResUser(models.Model):
         """
         try:
             # Attempt a regular login (via other auth addons) first.
-            return super()._check_credentials(password, env)
+            return super()._check_credentials(credential, env)
 
         except (AccessDenied, passlib.exc.PasswordSizeError):
+            if not (credential['type'] == 'saml_token' and credential['token']):
+                raise
             passwd_allowed = (
                 env["interactive"] or not self.env.user._rpc_api_keys_only()
             )
@@ -100,14 +102,14 @@ class ResUser(models.Model):
                     .search(
                         [
                             ("user_id", "=", self.env.user.id),
-                            ("saml_access_token", "=", password),
+                            ("saml_access_token", "=", credential["token"]),
                         ]
                     )
                 )
                 if token:
                     return
             raise AccessDenied() from None
-
+        
     @api.model
     def _saml_allowed_user_ids(self) -> Set[int]:  # noqa
         """Users that can have a password even if the option to disallow it is set.

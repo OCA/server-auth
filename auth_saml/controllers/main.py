@@ -241,7 +241,14 @@ class AuthSAMLController(http.Controller):
                 url = "/#action=%s" % action
             elif menu:
                 url = "/#menu_id=%s" % menu
-            pre_uid = request.session.authenticate(*credentials)
+
+            credentials_dict = = {
+                'login': credentials[1],
+                'token': credentials[2],
+                'type' : 'saml_token',
+            }
+
+            pre_uid = request.session.authenticate(dbname, credentials_dict)
             resp = request.redirect(_get_login_redirect_url(pre_uid, url), 303)
             resp.autocorrect_location_header = False
             return resp
