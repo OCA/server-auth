@@ -242,7 +242,7 @@ class AuthSAMLController(http.Controller):
             elif menu:
                 url = "/#menu_id=%s" % menu
 
-            credentials_dict = = {
+            credentials_dict = {
                 'login': credentials[1],
                 'token': credentials[2],
                 'type' : 'saml_token',
