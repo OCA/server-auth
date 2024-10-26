@@ -107,7 +107,11 @@ class ResUser(models.Model):
                     )
                 )
                 if token:
-                    return
+                    return {
+                        'uid': self.env.user.id,
+                        'auth_method': 'saml',
+                        'mfa': 'default',
+                    }
             raise AccessDenied() from None
         
     @api.model

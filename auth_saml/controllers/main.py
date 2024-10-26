@@ -247,7 +247,6 @@ class AuthSAMLController(http.Controller):
                 'token': credentials[2],
                 'type' : 'saml_token',
             }
-
             pre_uid = request.session.authenticate(dbname, credentials_dict)
             resp = request.redirect(_get_login_redirect_url(pre_uid, url), 303)
             resp.autocorrect_location_header = False
