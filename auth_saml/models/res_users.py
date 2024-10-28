@@ -84,11 +84,15 @@ class ResUser(models.Model):
         and the interesting code is inside the "except" clause.
         """
         try:
-            # Attempt a regular login (via other auth addons) first.
-            return super()._check_credentials(credential, env)
+            if self.allow_saml_and_password():
+                # If both SAML and password are allowed we can try first the normal auth
+                return super()._check_credentials(credential, env)
+            else:
+                # If only SAML we go to the except clause
+                raise AccessDenied() from None
 
         except (AccessDenied, passlib.exc.PasswordSizeError):
-            if not (credential['type'] == 'saml_token' and credential['token']):
+            if not (credential["type"] == "saml_token" and credential["token"]):
                 raise
             passwd_allowed = (
                 env["interactive"] or not self.env.user._rpc_api_keys_only()
@@ -108,12 +112,12 @@ class ResUser(models.Model):
                 )
                 if token:
                     return {
-                        'uid': self.env.user.id,
-                        'auth_method': 'saml',
-                        'mfa': 'default',
+                        "uid": self.env.user.id,
+                        "auth_method": "saml",
+                        "mfa": "default",
                     }
             raise AccessDenied() from None
-        
+
     @api.model
     def _saml_allowed_user_ids(self) -> Set[int]:  # noqa
         """Users that can have a password even if the option to disallow it is set.
