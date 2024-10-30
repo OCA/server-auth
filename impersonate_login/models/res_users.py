@@ -25,7 +25,10 @@ class Users(models.Model):
     def impersonate_login(self):
         if request:
             if request.session.impersonate_from_uid:
-                raise UserError(_("You are already Logged as another user."))
+                if self.id == request.session.impersonate_from_uid:
+                    return self.back_to_origin_login()
+                else:
+                    raise UserError(_("You are already Logged as another user."))
             if self.id == request.session.uid:
                 raise UserError(_("It's you."))
             if request.env.user._is_impersonate_user():
@@ -37,9 +40,7 @@ class Users(models.Model):
                     .sudo()
                     .create(
                         {
-                            "user_id": self.env["res.users"]
-                            .browse(self._uid)
-                            .partner_id.id,
+                            "user_id": self._uid,
                             "impersonated_partner_id": self.env["res.users"]
                             .browse(target_uid)
                             .partner_id.id,
@@ -52,15 +53,33 @@ class Users(models.Model):
                     f"IMPERSONATE: {self._get_partner_name(self._uid)} "
                     f"Login as {self._get_partner_name(self.id)}"
                 )
-
+                # invalidate session token cache as we've changed the uid
                 request.env["res.users"].clear_caches()
                 request.session.session_token = security.compute_session_token(
                     request.session, request.env
                 )
+
+                # reload the client;
                 return {
                     "type": "ir.actions.client",
                     "tag": "reload",
                 }
+
+    @api.model
+    def action_impersonate_login(self):
+        if request:
+            from_uid = request.session.impersonate_from_uid
+            if not from_uid:
+                action = self.env["ir.actions.act_window"]._for_xml_id(
+                    "base.action_res_users"
+                )
+                action["views"] = [[self.env.ref("base.view_users_tree").id, "tree"]]
+                action["domain"] = [
+                    ("id", "!=", self.env.user.id),
+                    ("share", "=", False),
+                ]
+                action["target"] = "new"
+                return action
 
     @api.model
     def back_to_origin_login(self):
@@ -75,6 +94,7 @@ class Users(models.Model):
                         "date_end": fields.datetime.now(),
                     }
                 )
+                # invalidate session token cache as we've changed the uid
                 request.env["res.users"].clear_caches()
                 request.session.impersonate_from_uid = False
                 request.session.impersonate_log_id = False
@@ -85,3 +105,9 @@ class Users(models.Model):
                     f"IMPERSONATE: {self._get_partner_name(from_uid)} "
                     f"Logout as {self._get_partner_name(self._uid)}"
                 )
+
+            # reload the client;
+            return {
+                "type": "ir.actions.client",
+                "tag": "reload",
+            }

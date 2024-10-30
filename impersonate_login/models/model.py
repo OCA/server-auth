@@ -12,13 +12,21 @@ class BaseModel(models.AbstractModel):
     @api.model_create_multi
     def _create(self, data_list):
         res = super()._create(data_list)
-        if request and request.session.impersonate_from_uid:
+        if (
+            request
+            and request.session.impersonate_from_uid
+            and "create_uid" in self._fields
+        ):
             for rec in res:
-                rec.create_uid = request.session.impersonate_from_uid
+                rec["create_uid"] = request.session.impersonate_from_uid
         return res
 
     def write(self, vals):
         res = super().write(vals)
-        if request and request.session.impersonate_from_uid:
-            self.write_uid = request.session.impersonate_from_uid
+        if (
+            request
+            and request.session.impersonate_from_uid
+            and "write_uid" in self._fields
+        ):
+            self._fields["write_uid"].write(self, request.session.impersonate_from_uid)
         return res

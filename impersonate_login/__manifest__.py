@@ -27,4 +27,5 @@
     "qweb": [
         "static/src/xml/user_menu.xml",
     ],
+    "pre_init_hook": "pre_init_hook",
 }
