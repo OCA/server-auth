@@ -123,6 +123,8 @@ class TestImpersonateLogin(HttpCase):
 
         # Check impersonate log
         log2 = self.env["impersonate.log"].search([], order="id desc", limit=1)
+        # Refresh the log1 after the attribute date_end is updated
+        log1.refresh()
         self.assertEqual(log1, log2)
         self.assertTrue(log1.date_start)
         self.assertTrue(log1.date_end)
@@ -254,6 +256,8 @@ class TestImpersonateLogin(HttpCase):
         data = response.json()
         result = data["result"]
 
+        # Refresh contact to reflect changes in the database
         self.assertEqual(result, True)
+        contact.invalidate_cache()
         self.assertEqual(contact.ref, "abc")
         self.assertEqual(contact.write_uid, self.admin_user)
