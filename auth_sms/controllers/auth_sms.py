@@ -106,7 +106,7 @@ class AuthSms(Home):
         )
         return bytearray(
             c ^ otp
-            for c, otp in itertools.izip(
+            for c, otp in zip(
                 itertools.chain(
                     input_bytes,
                     pad
