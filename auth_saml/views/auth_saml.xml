@@ -21,7 +21,10 @@
     </template>
     <template id="auth_saml.login" inherit_id="web.login" name="Samlv2 Login buttons">
         <xpath expr="//form" position="before">
-            <t t-set="form_small" t-value="len(saml_providers) &gt; 2" />
+            <t
+                t-set="form_small"
+                t-value="saml_providers and len(saml_providers) &gt; 2 or False"
+            />
         </xpath>
         <xpath expr="//div[hasclass('o_login_auth')]" position="inside">
             <t t-call="auth_saml.providers" />

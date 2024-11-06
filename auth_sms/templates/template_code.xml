@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <template id="template_code" inherit_id="web.login" primary="True">
+    <template id="template_code" inherit_id="web.login" primary="True" priority="128">
         <xpath expr="//form" position="attributes">
             <attribute name="t-attf-action">/auth_sms/code</attribute>
+            <attribute name="onsubmit" />
         </xpath>
+        <!-- Remove database selector. -->
+        <xpath expr="//label[@for='db']/parent::div" position="replace" />
         <xpath expr="//form" position="inside">
             <input type="hidden" name="secret" t-att-value="secret" />
             <input type="hidden" name="user_login" t-att-value="login" />
@@ -15,6 +18,9 @@
         </xpath>
         <xpath expr="//label[@for='password']" position="replace">
             <label for="password" class="control-label">Code</label>
+        </xpath>
+        <xpath expr="//input[@name='password']" position="attributes">
+            <attribute name="placeholder" />
         </xpath>
     </template>
 </odoo>

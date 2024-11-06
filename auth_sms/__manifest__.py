@@ -2,10 +2,12 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 {
     "name": "Two factor authentication via SMS",
-    "version": "10.0.1.0.0",
+    "version": "16.0.1.0.0",
     "author": "Therp BV,Odoo Community Association (OCA)",
+    "maintainers": ["NL66278"],
     "license": "AGPL-3",
-    "category": "Extra Tools",
+    "category": "Tools",
+    "website": "https://github.com/OCA/server-auth",
     "summary": "Allow users to turn on two factor authentication via SMS",
     "depends": [
         "mail",
@@ -18,7 +20,7 @@
         "views/sms_provider.xml",
         "views/res_users.xml",
         "security/ir_rule.xml",
-        "views/templates.xml",
+        "templates/template_code.xml",
         "security/ir.model.access.csv",
     ],
 }

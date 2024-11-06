@@ -20,8 +20,7 @@ class SmsProvider(models.Model):
     # could be the preparation for a module base_sms that doesn't rely on
     # Odoo's in app purchases as the v12 sms module does
     _name = "sms.provider"
-    _description = "Holds whatever data necessary to send an SMS via some "
-    "provider"
+    _description = "Holds whatever data necessary to send an SMS via some provider"
     _rec_name = "provider"
     _order = "sequence desc"
 
@@ -39,7 +38,7 @@ class SmsProvider(models.Model):
 
     @api.model
     def send_sms(self, number, text, **kwargs):
-        provider = self.search([], limit=1)
+        provider = self.sudo().search([], limit=1)
         if not provider:
             return False
         _logger.debug(
@@ -67,6 +66,7 @@ class SmsProvider(models.Model):
                 "recipients": number,
                 "body": text,
             },
+            timeout=60,
         ).json()
         _logger.debug(result)
         if result.get("errors"):

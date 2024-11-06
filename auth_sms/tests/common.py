@@ -1,48 +1,29 @@
-# Copyright 2019 Therp BV <https://therp.nl>
+# Copyright 2019-2025 Therp BV <https://therp.nl>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
-from contextlib import contextmanager
-from functools import partial
-
-from werkzeug.test import EnvironBuilder
-from werkzeug.wrappers import Request as WerkzeugRequest
-
-from odoo import http
-from odoo.tests.common import TransactionCase
+from odoo.tests import HttpCase, new_test_user
 
 
-class Common(TransactionCase):
-    def setUp(self):
-        super(Common, self).setUp()
-        self.odoo_root = http.Root()
-        self.session = self.odoo_root.session_store.new()
-        self.env["res.users"]._register_hook()
-        self.demo_user = self.env.ref("auth_sms.demo_user")
-        self.env["auth_sms.code"].search([]).unlink()
+class HttpCaseSMS(HttpCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.admin_user = cls.env.ref("base.user_admin")
+        cls.username = "dportier"
+        cls.password = "!asdQWE12345_3"  # strong password
+        cls.demo_user = cls._create_user()
+        cls.code = None
+        cls.secret = None
 
-    @contextmanager
-    def _request(self, path, method="POST", data=None):
-        """yield request, endpoint for given http request data"""
-        werkzeug_env = EnvironBuilder(
-            method=method,
-            path=path,
-            data=data,
-            headers=[("cookie", "session_id=%s" % self.session.sid)],
-            environ_base={
-                "HTTP_HOST": "localhost",
-                "REMOTE_ADDR": "127.0.0.1",
-            },
-        ).get_environ()
-        werkzeug_request = WerkzeugRequest(werkzeug_env)
-        self.odoo_root.setup_session(werkzeug_request)
-        werkzeug_request.session.db = self.env.cr.dbname
-        self.odoo_root.setup_db(werkzeug_request)
-        self.odoo_root.setup_lang(werkzeug_request)
-
-        request = http.HttpRequest(werkzeug_request)
-        request._env = self.env
-        with request:
-            routing_map = self.env["ir.http"].routing_map()
-            endpoint, dummy = routing_map.bind_to_environ(werkzeug_env).match(
-                return_rule=False,
-            )
-            yield request, partial(endpoint, **request.params)
+    @classmethod
+    def _create_user(cls):
+        """Create auth_sms_enabled user."""
+        return new_test_user(
+            cls.env,
+            login=cls.username,
+            context={"no_reset_password": True},
+            password=cls.password,
+            name="Auth SMS test user",
+            mobile="0123456789",
+            email="auth_sms_test_user@yourcompany.com",
+            auth_sms_enabled=True,
+        )

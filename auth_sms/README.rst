@@ -119,6 +119,14 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
+.. |maintainer-NL66278| image:: https://github.com/NL66278.png?size=40px
+    :target: https://github.com/NL66278
+    :alt: NL66278
+
+Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
+
+|maintainer-NL66278| 
+
 This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/16.0/auth_sms>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

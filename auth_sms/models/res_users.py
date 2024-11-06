@@ -1,9 +1,9 @@
-# Copyright 2019 Therp BV <https://therp.nl>
+# Copyright 2019-2025 Therp BV <https://therp.nl>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 import logging
 import random
 import string
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
@@ -67,15 +67,21 @@ class ResUsers(models.Model):
     @api.model
     def _auth_sms_generate_code(self):
         """generate a code to send to the user for second factor"""
-        choices = self.env["ir.config_parameter"].get_param(
-            "auth_sms.code_chars",
-            string.ascii_letters + string.digits,
+        choices = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
+                "auth_sms.code_chars",
+                string.ascii_letters + string.digits,
+            )
         )
         return "".join(
             random.choice(choices)
             for dummy in range(
                 int(
-                    self.env["ir.config_parameter"].get_param(
+                    self.env["ir.config_parameter"]
+                    .sudo()
+                    .get_param(
                         "auth_sms.code_length",
                         8,
                     ),
@@ -94,60 +100,62 @@ class ResUsers(models.Model):
             request and request.session.sid,
         )
         user = self.env["res.users"].browse(user_id)
-        self.env["auth_sms.code"].create(
+        self.env["auth_sms.code"].sudo().create(
             {
                 "code": code,
                 "user_id": user.id,
                 "session_id": request and request.session.sid,
             }
         )
-        if not user._auth_sms_check_rate_limit():
+        if not user.sudo()._auth_sms_check_rate_limit():
             raise AccessDeniedSmsRateLimit(_("SMS rate limit"))
-        if not self.env["sms.provider"].send_sms(user.mobile, code):
+        mobile = user.sudo().mobile
+        if not self.env["sms.provider"].send_sms(mobile, code):
             raise UserError(_("Sending SMS failed"))
 
     def _auth_sms_check_rate_limit(self):
-        """return false if the user has requested an SMS code too often"""
+        """Return false if the user has requested an SMS code too often"""
         self.ensure_one()
-        rate_limit_hours = float(
-            self.env["ir.config_parameter"].get_param(
+        rate_limit_hours = self._get_rate_limit_hours()
+        rate_limit_limit = self._get_rate_limit_limit()
+        if not (rate_limit_hours and rate_limit_limit):
+            return False
+        cutoff_time = fields.Datetime.now() - timedelta(hours=rate_limit_hours)
+        already_sent = self.env["auth_sms.code"].search_count(
+            [("create_date", ">=", cutoff_time), ("user_id", "=", self.id)]
+        )
+        within_limit = already_sent <= rate_limit_limit
+        if not within_limit:
+            _logger.info("To many sms's send to user %(login)s", {"login": self.login})
+        return within_limit
+
+    def _get_rate_limit_hours(self):
+        """Return timeframe in which to check count of sms's send to user."""
+        return float(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
                 "auth_sms.rate_limit_hours",
                 24,
             )
         )
-        rate_limit_limit = float(
-            self.env["ir.config_parameter"].get_param(
+
+    def _get_rate_limit_limit(self):
+        """Return limit of times sms send to user within a specific timeframe."""
+        return float(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param(
                 "auth_sms.rate_limit_limit",
                 10,
             )
         )
-        return (
-            rate_limit_hours
-            and rate_limit_limit
-            and self.env["auth_sms.code"].search(
-                [
-                    (
-                        "create_date",
-                        ">=",
-                        fields.Datetime.to_string(
-                            datetime.now() - timedelta(hours=rate_limit_hours),
-                        ),
-                    ),
-                    ("user_id", "=", self.id),
-                ],
-                count=True,
-            )
-            <= rate_limit_limit
-        )
 
-    # def _register_hook(self):
-    #    # don't log our exceptions during RPC dispatch
-    #    if AccessDeniedNoSmsCode not in http.NO_POSTMORTEM:
-    #        http.NO_POSTMORTEM = tuple(
-    #            list(http.NO_POSTMORTEM)
-    #            + [
-    #                AccessDeniedNoSmsCode,
-    #                AccessDeniedWrongSmsCode,
-    #            ],
-    #        )
-    #    return super(ResUsers, self)._register_hook()
+    def _mfa_type(self):
+        """If auth_sms enabled, disable other totp methods."""
+        sudo_self = self.sudo()
+        result = super(ResUsers, sudo_self)._mfa_type()
+        if len(self) != 1 or not sudo_self.auth_sms_enabled:
+            return result
+        # If we get here, we have one user record that is enabled for sms auth.
+        return "auth_sms"
