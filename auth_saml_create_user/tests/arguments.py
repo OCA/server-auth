@@ -1,7 +1,7 @@
 provider = 2
-validation = {'user_id': 'user2@example.com'}
+validation = {"user_id": "user2@example.com"}
 
-saml_response = 'PHNhbWxwOlJlc3BvbnNlIHhtbG5zOnNhbWxwPSJ1cm46b2FzaXM6bmFtZXM6d\
+saml_response = "PHNhbWxwOlJlc3BvbnNlIHhtbG5zOnNhbWxwPSJ1cm46b2FzaXM6bmFtZXM6d\
     GM6U0FNTDoyLjA6cHJvdG9jb2wiIHhtbG5zOnNhbWw9InVybjpvYXNpczpuYW1lczp0YzpTQU1\
     MOjIuMDphc3NlcnRpb24iIElEPSJfNDVlYzVjYTcwZGViYmI2NGE5ZjBhZjU0OThkMzBjM\
     jgwMjc4YTc2YjJiIiBWZXJzaW9uPSIyLjAiIElzc3VlSW5zdGFudD0iMjAxOS0wOC0wNVQ\
@@ -135,4 +135,4 @@ saml_response = 'PHNhbWxwOlJlc3BvbnNlIHhtbG5zOnNhbWxwPSJ1cm46b2FzaXM6bmFtZXM6d\
     DpiYXNpYyI+PHNhbWw6QXR0cmlidXRlVmFsdWUgeHNpOnR5cGU9InhzOnN0cmluZyI+dXN\
     lcjJAZXhhbXBsZS5jb208L3NhbWw6QXR0cmlidXRlVmFsdWU+PC9zYW1sOkF0dHJpYnV0Z\
     T48L3NhbWw6QXR0cmlidXRlU3RhdGVtZW50Pjwvc2FtbDpBc3NlcnRpb24+PC9zYW1scDp\
-    SZXNwb25zZT4='
+    SZXNwb25zZT4="
