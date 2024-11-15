@@ -5,8 +5,14 @@
         <field name="model">auth.saml.provider</field>
         <field name="inherit_id" ref="auth_saml.view_saml_provider_form" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='matching_attribute']" position="after">
-                <field name="create_user" />
+            <xpath expr="//group[@name='idp_settings']/group" position="inside">
+                <label for="create_user" />
+                <div>
+                    <field name="create_user" />
+                    <p class="help small">Attribute to create user if not exist
+                    </p>
+                </div>
+
             </xpath>
         </field>
     </record>
