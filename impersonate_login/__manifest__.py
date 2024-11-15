@@ -21,6 +21,7 @@
         "views/assets.xml",
         "views/res_users.xml",
         "views/impersonate_log.xml",
+        "views/res_config_settings.xml",
         "security/group.xml",
         "security/ir.model.access.csv",
     ],

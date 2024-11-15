@@ -24,6 +24,22 @@ class Users(models.Model):
 
     def impersonate_login(self):
         if request:
+
+            config_restrict = (
+                self.env["ir.config_parameter"]
+                .sudo()
+                .get_param("impersonate_login.restrict_impersonate_admin_settings")
+            )
+            if config_restrict:
+                admin_settings_group = self.env.ref("base.group_system")
+                if admin_settings_group in self.groups_id:
+                    raise UserError(
+                        _(
+                            "You cannot impersonate users with"
+                            " 'Administration: Settings' access rights."
+                        )
+                    )
+
             if request.session.impersonate_from_uid:
                 if self.id == request.session.impersonate_from_uid:
                     return self.back_to_origin_login()

@@ -4,3 +4,4 @@ from . import mail_thread
 from . import mail_message
 from . import impersonate_log
 from . import model
+from . import res_config_settings

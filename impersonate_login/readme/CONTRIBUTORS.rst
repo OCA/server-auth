@@ -1,3 +1,5 @@
 - Kévin Roche <kevin.roche@akretion.com>
 - [360ERP](https://www.360erp.com):
   - Andrea Stirpe
+- `Ooops404 <https://www.ooops404.com/>`_:
+  - Eduard Brahas <eduard@ooops404.com>

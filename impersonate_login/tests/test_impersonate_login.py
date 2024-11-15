@@ -261,3 +261,43 @@ class TestImpersonateLogin(HttpCase):
         contact.invalidate_cache()
         self.assertEqual(contact.ref, "abc")
         self.assertEqual(contact.write_uid, self.admin_user)
+
+    def test_05_limit_access_to_admin(self):
+        """
+        Test restriction on impersonating admin users
+        with 'Administration: Settings' access rights.
+        """
+        # Enable the configuration setting via ResConfigSettings
+        config_settings = self.env["res.config.settings"].create(
+            {"restrict_impersonate_admin_settings": True}
+        )
+        config_settings.execute()
+
+        # Ensure the configuration parameter is set
+        config_restrict = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("impersonate_login.restrict_impersonate_admin_settings")
+        )
+        self.assertTrue(config_restrict)
+
+        # Ensure the admin user has the 'Administration: Settings' group
+        admin_settings_group = self.env.ref("base.group_system")
+        self.admin_user.groups_id += admin_settings_group
+
+        # Login as demo user
+        self.authenticate(user="demo", password="demo")
+        self.assertEqual(self.session.uid, self.demo_user.id)
+
+        # Give demo user the impersonation group
+        self.demo_user.groups_id += self.env.ref(
+            "impersonate_login.group_impersonate_login"
+        )
+
+        with mute_logger("odoo.http"):
+            data = self._impersonate_user(self.admin_user)
+        # Validate the error message
+        self.assertEqual(
+            data["error"]["data"]["message"],
+            "You cannot impersonate users with 'Administration: Settings' access rights.",
+        )
