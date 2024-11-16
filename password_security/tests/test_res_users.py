@@ -17,12 +17,10 @@ class TestResUsers(TransactionCase):
             "email": self.login,
         }
         self.password = "asdQWE123$%^"
-        self.main_comp = self.env.ref("base.main_company")
         self.vals = {
             "name": "User",
             "login": self.login,
             "password": self.password,
-            "company_id": self.main_comp.id,
         }
         self.model_obj = self.env["res.users"]
 
@@ -143,14 +141,21 @@ class TestResUsers(TransactionCase):
     def test_validate_pass_reset_zero(self):
         """It should allow reset pass when <= 0"""
         rec_id = self._new_record()
-        rec_id.company_id.password_minimum = 0
+        self.env["ir.config_parameter"].sudo().set_param(
+            "password_security.minimum_hours", 0
+        )
         self.assertEqual(
             True,
             rec_id._validate_pass_reset(),
         )
 
     def test_underscore_is_special_character(self):
-        self.assertTrue(self.main_comp.password_special)
+        password_special = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("password_security.special", default=1)
+        )
+        self.assertTrue(password_special)
         rec_id = self._new_record()
         rec_id._check_password("asdQWE12345_3")
 

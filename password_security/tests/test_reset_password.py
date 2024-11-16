@@ -39,7 +39,10 @@ class TestPasswordSecurityReset(HttpCase):
     def test_01_reset_password_fail(self):
         """It should fail when reset password below Minimum Hours"""
         # Enable check on Minimum Hours
-        self.env.company.password_minimum = 24
+        min_hours = 24
+        self.env["ir.config_parameter"].sudo().set_param(
+            "password_security.minimum_hours", min_hours
+        )
 
         # Reset password
         response = self.reset_password("jackoneill")
@@ -49,8 +52,7 @@ class TestPasswordSecurityReset(HttpCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(
             "Passwords can only be reset every %s hour(s). "
-            "Please contact an administrator for assistance."
-            % self.env.company.password_minimum,
+            "Please contact an administrator for assistance." % min_hours,
             response.text,
         )
 
@@ -58,7 +60,9 @@ class TestPasswordSecurityReset(HttpCase):
         """It should succeed when check on Minimum Hours is disabled"""
 
         # Disable check on Minimum Hours
-        self.env.company.password_minimum = 0
+        self.env["ir.config_parameter"].sudo().set_param(
+            "password_security.minimum_hours", 0
+        )
 
         # Reset password
         response = self.reset_password("jackoneill")
@@ -74,7 +78,9 @@ class TestPasswordSecurityReset(HttpCase):
     def test_03_reset_password_admin(self):
         """It should succeed when reset password is executed by Admin"""
         # Enable check on Minimum Hours
-        self.env.company.password_minimum = 24
+        self.env["ir.config_parameter"].sudo().set_param(
+            "password_security.minimum_hours", 24
+        )
 
         # Executed by Admin: no error is raised
         self.assertTrue(self.env.user._is_admin())

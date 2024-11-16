@@ -85,7 +85,9 @@ class TestPasswordSecurityLogin(HttpCase):
             env = self.env(cr)
             user = env["res.users"].search([("login", "=", self.username)])
             user.password_write_date = three_days_ago
-            user.company_id.password_expiration = 1
+            self.env["ir.config_parameter"].sudo().set_param(
+                "password_security.expiration_days", 1
+            )
 
         # Try to log in
         response = self.login(self.username, self.passwd)
@@ -110,7 +112,9 @@ class TestPasswordSecurityLogin(HttpCase):
             env = self.env(cr)
             user = env["res.users"].search([("login", "=", self.username)])
             user.password_write_date = three_days_ago
-            user.company_id.password_expiration = 1
+            self.env["ir.config_parameter"].sudo().set_param(
+                "password_security.expiration_days", 1
+            )
 
         # Try to access just a page
         req_page1 = self.url_open("/web")
