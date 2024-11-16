@@ -92,8 +92,8 @@ class TestPasswordSecurityChange(HttpCase):
         """It should fail when chosen password was previously used"""
 
         # Set password history limit
+        self.env["ir.config_parameter"].sudo().set_param("password_security.history", 3)
         user = self.env["res.users"].search([("login", "=", "admin")], limit=1)
-        user.company_id.password_history = 3
         self.assertEqual(len(user.password_history_ids), 0)
 
         # Change password: password history records created
