@@ -22,6 +22,11 @@ msgid "Base"
 msgstr "Base"
 
 #. module: impersonate_login
+#: model:ir.model,name:impersonate_login.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_mail__body
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__body
 msgid "Contents"
@@ -42,6 +47,7 @@ msgstr "Creato il"
 #: model:ir.model.fields,field_description:impersonate_login.field_ir_http__display_name
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__display_name
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_thread__display_name
+#: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:impersonate_login.field_res_users__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
@@ -66,9 +72,17 @@ msgstr "Instradamento HTTP"
 #: model:ir.model.fields,field_description:impersonate_login.field_ir_http__id
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__id
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_thread__id
+#: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__id
 #: model:ir.model.fields,field_description:impersonate_login.field_res_users__id
 msgid "ID"
 msgstr "ID"
+
+#. module: impersonate_login
+#: model:ir.model.fields,help:impersonate_login.field_res_config_settings__restrict_impersonate_admin_settings
+msgid ""
+"If enabled, users with the 'Administration: Settings' access right cannot be "
+"impersonated."
+msgstr ""
 
 #. module: impersonate_login
 #: model:ir.actions.act_window,name:impersonate_login.impersonate_log_action
@@ -97,6 +111,11 @@ msgid "Impersonated Logs"
 msgstr "Imita registri"
 
 #. module: impersonate_login
+#: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
+msgid "Impersonation Login"
+msgstr ""
+
+#. module: impersonate_login
 #: code:addons/impersonate_login/models/res_users.py:0
 #, python-format
 msgid "It's you."
@@ -107,6 +126,7 @@ msgstr "Sei tu."
 #: model:ir.model.fields,field_description:impersonate_login.field_ir_http____last_update
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message____last_update
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_thread____last_update
+#: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings____last_update
 #: model:ir.model.fields,field_description:impersonate_login.field_res_users____last_update
 msgid "Last Modified on"
 msgstr "Ultima modifica il"
@@ -128,7 +148,6 @@ msgstr "Registrato come"
 
 #. module: impersonate_login
 #: code:addons/impersonate_login/models/mail_message.py:0
-#: code:addons/impersonate_login/models/mail_message.py:0
 #, python-format
 msgid "Logged in as {}"
 msgstr "Registrato come {}"
@@ -137,6 +156,17 @@ msgstr "Registrato come {}"
 #: model:ir.model,name:impersonate_login.model_mail_message
 msgid "Message"
 msgstr "Messaggio"
+
+#. module: impersonate_login
+#: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
+msgid "Restrict Impersonation Login"
+msgstr ""
+
+#. module: impersonate_login
+#: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__restrict_impersonate_admin_settings
+#: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
+msgid "Restrict Impersonation of 'Administration: Settings' Users"
+msgstr ""
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_start
@@ -166,6 +196,13 @@ msgstr "Utenti"
 #, python-format
 msgid "You are already Logged as another user."
 msgstr "Si è già registrati come altro utente."
+
+#. module: impersonate_login
+#: code:addons/impersonate_login/models/res_users.py:0
+#, python-format
+msgid ""
+"You cannot impersonate users with 'Administration: Settings' access rights."
+msgstr ""
 
 #. module: impersonate_login
 #. openerp-web
