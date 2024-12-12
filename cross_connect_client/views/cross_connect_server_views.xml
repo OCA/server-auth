@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2024 Akretion (http://www.akretion.com).
+    @author Florian Mounier <florian.mounier@akretion.com>
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <record id="cross_connect_server_action" model="ir.actions.act_window">
+        <field name="name">Cross Connect Servers</field>
+        <field name="res_model">cross.connect.server</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="cross_connect_server_view_form" model="ir.ui.view">
+        <field name="name">cross.connect.server.form</field>
+        <field name="model">cross.connect.server</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_sync"
+                        type="object"
+                        string="Sync Cross Connection"
+                        class="btn-primary"
+                        attrs="{'invisible': ['|', ('server_url', '=', False), ('api_key', '=', False)]}"
+                    />
+                    <button
+                        name="action_disable"
+                        type="object"
+                        string="Disable"
+                        attrs="{'invisible': [('group_ids', '=', [])]}"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Sync Required"
+                        bg_color="bg-warning"
+                        attrs="{'invisible': [('group_ids', '!=', [])]}"
+                    />
+                    <div class="oe_title" attrs="{'invisible': [('name', '=', False)]}">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group name="main">
+                        <group>
+                            <field name="server_url" />
+                            <field name="api_key" />
+                            <field name="menu_id" invisible="True" />
+                            <field
+                                name="web_icon_data"
+                                attrs="{'invisible': [('menu_id', '=', False)]}"
+                            />
+                            <field
+                                name="group_ids"
+                                widget="many2many_tags"
+                                options="{'open': True}"
+                            />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="cross_connect_server_view_tree" model="ir.ui.view">
+        <field name="name">cross.connect.server.tree</field>
+        <field name="model">cross.connect.server</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="not group_ids">
+                <field name="name" />
+                <field name="server_url" />
+                <field name="group_ids" invisible="True" />
+            </tree>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_cross_connect_server_category"
+        name="Cross Connect"
+        sequence="100"
+        parent="base.menu_custom"
+    />
+    <menuitem
+        id="menu_cross_connect_server"
+        name="Cross Connect Servers"
+        sequence="10"
+        parent="menu_cross_connect_server_category"
+        action="cross_connect_server_action"
+        groups="base.group_system"
+    />
+</odoo>
