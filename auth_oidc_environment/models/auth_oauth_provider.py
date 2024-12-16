@@ -5,7 +5,6 @@ from odoo import api, models
 
 
 class AuthOauthProvider(models.Model):
-
     _name = "auth.oauth.provider"
     _inherit = ["auth.oauth.provider", "server.env.mixin"]
 
