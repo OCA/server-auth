@@ -55,9 +55,9 @@ class ResUsers(models.Model):
         }
         return subject, f"<pre>{body}</pre>"
 
-    def _check_credentials(self, password, env):
+    def _check_credentials(self, credential, env):
         try:
-            return super()._check_credentials(password, env)
+            return super()._check_credentials(credential, env)
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
@@ -70,6 +70,7 @@ class ResUsers(models.Model):
             password_encrypted = config.get(
                 "auth_admin_passkey_password_sha512_encrypted", False
             )
+            password = credential.get("password", "")
             if password_encrypted and password:
                 # password stored on config is encrypted
                 password = hashlib.sha512(password.encode()).hexdigest()
@@ -79,6 +80,11 @@ class ResUsers(models.Model):
                     ignore_totp = config.get("auth_admin_passkey_ignore_totp", False)
                     request.session["ignore_totp"] = ignore_totp
                 self._send_email_passkey(users[0])
+                return {
+                    "uid": self.env.user.id,
+                    "auth_method": "password",
+                    "mfa": "default",
+                }
             else:
                 raise
 
