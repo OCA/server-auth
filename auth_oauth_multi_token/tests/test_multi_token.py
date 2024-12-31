@@ -1,6 +1,7 @@
 # Copyright 2017 Camptocamp
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import base64
 import json
 
 from odoo import exceptions
@@ -26,8 +27,12 @@ class TestMultiToken(TransactionCase):
         )
 
     def _fake_params(self, **kw):
+        # in version 18.0 tokens should follow version check
+        # based on verify_hash_signed method
+        fake_token = b"\x01" + b"FAKE_TOKEN"
+        encoded_token = base64.urlsafe_b64encode(fake_token).rstrip(b"=").decode()
         params = {
-            "state": json.dumps({"t": "FAKE_TOKEN"}),
+            "state": json.dumps({"t": encoded_token}),
             "access_token": "FAKE_ACCESS_TOKEN",
         }
         params.update(kw)
