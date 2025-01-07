@@ -150,10 +150,7 @@ class FakeIDP(Server):
 
     def authn_request_endpoint(self, req, binding, relay_state):
         req = self.parse_authn_request(req, binding)
-        if req.message.protocol_binding == BINDING_HTTP_REDIRECT:
-            _binding = BINDING_HTTP_POST
-        else:
-            _binding = req.message.protocol_binding
+        _binding = req.message.protocol_binding
 
         resp_args = self.response_args(req.message, [_binding])
 
