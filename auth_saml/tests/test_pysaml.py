@@ -92,10 +92,8 @@ class TestPySaml(HttpCase):
         )
         self.assertIn("Login with Authentic", response.text)
         self.assertIn(
-            "/auth_saml/get_auth_request?pid={}&amp;redirect=%2Fweb%23action%3D37%26mod"
-            "el%3Dir.module.module%26view_type%3Dkanban%26menu_id%3D5".format(
-                self.saml_provider.id
-            ),
+            f"/auth_saml/get_auth_request?pid={self.saml_provider.id}&amp;redirect=%2Fweb%23action%3D37%26mod"
+            "el%3Dir.module.module%26view_type%3Dkanban%26menu_id%3D5",
             response.text,
         )
 
@@ -127,7 +125,7 @@ class TestPySaml(HttpCase):
             {"p": self.saml_provider.id, "d": self.env.cr.dbname}
         )
         expected_url = urllib.parse.urljoin(
-            "http://example.com", ("/auth_saml/metadata?%s" % expected_qs)
+            "http://example.com", f"/auth_saml/metadata?{expected_qs}"
         )
         # Assert that sp_metadata_url is set correctly
         self.assertEqual(self.saml_provider.sp_metadata_url, expected_url)
