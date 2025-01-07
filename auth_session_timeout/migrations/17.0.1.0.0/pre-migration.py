@@ -1,9 +1,9 @@
-def migrate(env, version):
+def migrate(cr, version):
     """
     Updates the 'inactive_session_time_out_ignored_url' parameter
     in the 'ir_config_parameter' table during migration.
     """
-    env.cr.execute(
+    cr.execute(
         """
         UPDATE ir_config_parameter
         SET value = '/calendar/notify,/websocket'
