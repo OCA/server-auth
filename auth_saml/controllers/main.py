@@ -100,7 +100,7 @@ class SAMLLogin(Home):
         redirect = request.params.get("redirect")
         if redirect:
             params["redirect"] = redirect
-        return "/auth_saml/get_auth_request?%s" % werkzeug.urls.url_encode(params)
+        return f"/auth_saml/get_auth_request?{werkzeug.urls.url_encode(params)}"
 
     @http.route()
     def web_client(self, s_action=None, **kw):
@@ -238,9 +238,9 @@ class AuthSAMLController(http.Controller):
             if redirect:
                 url = redirect
             elif action:
-                url = "/#action=%s" % action
+                url = f"/#action={action}"
             elif menu:
-                url = "/#menu_id=%s" % menu
+                url = f"/#menu_id={menu}"
             pre_uid = request.session.authenticate(*credentials)
             resp = request.redirect(_get_login_redirect_url(pre_uid, url), 303)
             resp.autocorrect_location_header = False
