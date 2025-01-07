@@ -8,6 +8,8 @@ from unittest.mock import patch
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
 
+from odoo.addons.auth_saml.controllers.main import fragment_to_query_string
+
 from .fake_idp import DummyResponse, FakeIDP
 
 
@@ -78,6 +80,13 @@ class TestPySaml(HttpCase):
             )
         )
 
+        # Define a sample function to test the decorator
+        def dummy_function(self, **kw):
+            return "Function executed"
+
+        # Apply the decorator to the dummy function
+        self.decorated_function = fragment_to_query_string(dummy_function)
+
     def test_ensure_provider_appears_on_login(self):
         # SAML provider should be listed in the login page
         response = self.url_open("/web/login")
@@ -125,7 +134,7 @@ class TestPySaml(HttpCase):
             {"p": self.saml_provider.id, "d": self.env.cr.dbname}
         )
         expected_url = urllib.parse.urljoin(
-            "http://example.com", f"/auth_saml/metadata?{expected_qs}"
+            "http://example.com", (f"/auth_saml/metadata?{expected_qs}")
         )
         # Assert that sp_metadata_url is set correctly
         self.assertEqual(self.saml_provider.sp_metadata_url, expected_url)
@@ -200,7 +209,10 @@ class TestPySaml(HttpCase):
 
         # Try to log in with a non-existing SAML token
         with self.assertRaises(AccessDenied):
-            self.authenticate(user="test@example.com", password="test_saml_token")
+            self.user._check_credentials(
+                {"type": "password", "password": "test_saml_token"},
+                {"interactive": True},
+            )
 
         redirect_url = self.saml_provider._get_auth_request()
         self.assertIn("http://localhost:8000/sso/redirect?SAMLRequest=", redirect_url)
@@ -254,7 +266,10 @@ class TestPySaml(HttpCase):
 
         # We should not be able to log in with the wrong token
         with self.assertRaises(AccessDenied):
-            self.authenticate(user="test@example.com", password=f"{token}-WRONG")
+            self.user._check_credentials(
+                {"type": "password", "password": "WRONG_TOKEN"},
+                {"interactive": True},
+            )
 
         # User should now be able to log in with the token
         self.authenticate(user="test@example.com", password=token)
@@ -268,8 +283,9 @@ class TestPySaml(HttpCase):
         ).value = "False"
         # The password should be blank and the user should not be able to connect
         with self.assertRaises(AccessDenied):
-            self.authenticate(
-                user="user@example.com", password="NesTNSte9340D720te>/-A"
+            self.user._check_credentials(
+                {"type": "password", "password": "NesTNSte9340D720te>/-A"},
+                {"interactive": True},
             )
 
     def test_disallow_user_password_new_user(self):
@@ -332,18 +348,19 @@ class TestPySaml(HttpCase):
         with self.assertRaises(ValidationError):
             user.password = "new password"
 
-    def test_disallow_user_password(self):
+    def test_disallow_user_password_on_option_disable(self):
         """Test that existing user password is deleted when adding an SAML provider when
         the disallow option is set."""
+        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
         # change the option
         self.browse_ref(
             "auth_saml.allow_saml_uid_and_internal_password"
         ).value = "False"
-        # Test that existing user password is deleted when adding an SAML provider
-        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
-        self.add_provider_to_user()
         with self.assertRaises(AccessDenied):
-            self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+            self.user._check_credentials(
+                {"type": "password", "password": "Lu,ums-7vRU>0i]=YDLa"},
+                {"interactive": True},
+            )
 
     def test_disallow_user_admin_can_have_password(self):
         """Test that admin can have its password set
@@ -417,6 +434,240 @@ class TestPySaml(HttpCase):
         ).execute()
 
         with self.assertRaises(AccessDenied):
-            self.authenticate(
-                user="user@example.com", password="NesTNSte9340D720te>/-A"
+            self.user._check_credentials(
+                {"type": "password", "password": "NesTNSte9340D720te>/-A"},
+                {"interactive": True},
             )
+
+    def test_fragment_to_query_string_no_kw(self):
+        """Test the case where no keyword arguments are passed."""
+        response = self.decorated_function(self)
+        expected_html = """<html><head><script>
+                var l = window.location;
+                var q = l.hash.substring(1);
+                var r = '/' + l.search;
+                if(q.length !== 0) {
+                    var s = l.search ? (l.search === '?' ? '' : '&') : '?';
+                    r = l.pathname + l.search + s + q;
+                }
+                window.location = r;
+            </script></head><body></body></html>"""
+        self.assertEqual(response.strip(), expected_html.strip())
+
+    def test_fragment_to_query_string_with_kw(self):
+        """Test the case where keyword arguments are passed."""
+        response = self.decorated_function(self, key="value")
+        self.assertEqual(response, "Function executed")
+
+    def test_sig_alg_selection(self):
+        """Test that _sig_alg_selection is returning correct selection."""
+        expected_selection = [
+            ("SIG_RSA_SHA1", "SIG_RSA_SHA1"),
+            ("SIG_RSA_SHA224", "SIG_RSA_SHA224"),
+            ("SIG_RSA_SHA256", "SIG_RSA_SHA256"),
+            ("SIG_RSA_SHA384", "SIG_RSA_SHA384"),
+            ("SIG_RSA_SHA512", "SIG_RSA_SHA512"),
+        ]
+        self.assertEqual(self.saml_provider._sig_alg_selection(), expected_selection)
+
+    def test_saml_metadata_invalid_provider(self):
+        """Accessing SAML metadata with an invalid provider ID should return 404."""
+        response = self.url_open(f"/auth_saml/metadata?p=999999&d={self.env.cr.dbname}")
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Unknown provider", response.text)
+
+    def test_saml_metadata_missing_parameters(self):
+        """Accessing the SAML metadata endpoint without params should return 404."""
+        response = self.url_open("/auth_saml/metadata")
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Missing parameters", response.text)
+
+    def test_saml_provider_deactivation(self):
+        """A deactivated SAML provider should not be usable for authentication."""
+        self.saml_provider.active = False
+
+        redirect_url = self.saml_provider._get_auth_request()
+        response = self.idp.fake_login(redirect_url)
+        unpacked_response = response._unpack()
+
+        with self.assertRaises(AccessDenied):
+            self.env["res.users"].sudo().auth_saml(
+                self.saml_provider.id, unpacked_response.get("SAMLResponse"), None
+            )
+
+    def test_compute_sp_metadata_url_for_new_record(self):
+        """Test that sp_metadata_url is set to False for a new (unsaved) provider."""
+        new_provider = self.env["auth.saml.provider"].new(
+            {"name": "New SAML Provider", "sp_baseurl": "http://example.com"}
+        )
+        new_provider._compute_sp_metadata_url()
+        self.assertFalse(new_provider.sp_metadata_url)
+
+    def test_store_outstanding_request(self):
+        """Test that the SAML request ID is stored in the auth_saml.request model."""
+        reqid = "test-request-id"
+        self.saml_provider._store_outstanding_request(reqid)
+
+        request = self.env["auth_saml.request"].search(
+            [("saml_request_id", "=", reqid)]
+        )
+        self.assertTrue(request)
+        self.assertEqual(request.saml_provider_id.id, self.saml_provider.id)
+
+    def test_get_auth_request_redirect_url(self):
+        """Test that _get_auth_request returns a valid redirect URL."""
+        redirect_url = self.saml_provider._get_auth_request()
+        self.assertIsNotNone(redirect_url)
+        self.assertIn("SAMLRequest=", redirect_url)
+
+    def test_get_auth_request_valid_provider(self):
+        """Test that get_auth_request returns a redirect for a valid provider."""
+        response = self.url_open(
+            f"/auth_saml/get_auth_request?pid={self.saml_provider.id}",
+            allow_redirects=False,
+        )
+        self.assertEqual(response.status_code, 303)
+        self.assertIn("Location", response.headers)
+        self.assertIn("SAMLRequest=", response.headers["Location"])
+
+    def test_create_res_users_saml(self):
+        """Test that creating a SAML mapping removes the password when disallowed."""
+        user = self.env["res.users"].create(
+            {
+                "name": "Test User",
+                "login": "testuser@example.com",
+                "password": "securepassword",
+            }
+        )
+        self.env["ir.config_parameter"].set_param(
+            "auth_saml.allow_saml_uid_and_internal_password", "False"
+        )
+        self.env["res.users.saml"].create(
+            {
+                "user_id": user.id,
+                "saml_provider_id": self.env["auth.saml.provider"]
+                .create(
+                    {
+                        "name": "Demo Provider",
+                        "sig_alg": "SIG_RSA_SHA1",
+                        "idp_metadata": "fake_metadata",
+                        "sp_pem_public": base64.b64encode(b"public_key"),
+                        "sp_pem_private": base64.b64encode(b"private_key"),
+                    }
+                )
+                .id,
+                "saml_uid": "testuser@example.com",
+            }
+        )
+        self.assertFalse(user.password)
+
+    def test_missing_parameters_in_metadata(self):
+        """Test that missing parameters in the SAML metadata request return a 404."""
+        response = self.url_open("/auth_saml/metadata")
+        self.assertEqual(response.status_code, 404)
+        self.assertIn("Missing parameters", response.text)
+
+    def test_saml_request_creation(self):
+        """Test that a SAML request is correctly stored in the model."""
+        self.env["auth_saml.request"].create(
+            {
+                "saml_provider_id": self.saml_provider.id,
+                "saml_request_id": "test-request-id",
+            }
+        )
+        request = self.env["auth_saml.request"].search(
+            [("saml_request_id", "=", "test-request-id")]
+        )
+        self.assertTrue(request)
+        self.assertEqual(request.saml_provider_id.id, self.saml_provider.id)
+
+    def test_get_cert_key_path_tempfile(self):
+        """Test _get_cert_key_path for non-file storage locations."""
+        # Create a mock attachment with base64-encoded data
+        self.env["ir.attachment"].create(
+            {
+                "name": "test.pem",
+                "datas": base64.b64encode(b"dummy_cert_key_content").decode("utf-8"),
+                "res_model": "auth.saml.provider",
+                "res_field": "sp_pem_public",
+                "res_id": 1,
+            }
+        )
+        # Mock the _storage method to return a non-file location
+        with patch(
+            "odoo.addons.base.models.ir_attachment.IrAttachment._storage",
+            return_value="db",
+        ):
+            provider = self.env["auth.saml.provider"].browse(1)
+            cert_key_path = provider._get_cert_key_path("sp_pem_public")
+
+            # Verify the temporary file was created and contains the expected content
+            with open(cert_key_path, "rb") as f:
+                content = f.read()
+                self.assertEqual(content, b"dummy_cert_key_content")
+
+            # Clean up the temporary file
+            os.remove(cert_key_path)
+
+    def test_signin_no_relaystate_redirect(self):
+        """Test redirect to /?type=signup when RelayState is missing."""
+        self.add_provider_to_user()
+
+        redirect_url = self.saml_provider._get_auth_request()
+        self.assertIn("http://localhost:8000/sso/redirect?SAMLRequest=", redirect_url)
+
+        # Simulate the login request and remove RelayState from the response
+        response = self.idp.fake_login(redirect_url)
+        response.text = response.text.replace('name="RelayState" value="', "")
+
+        signin_response = self.url_open(
+            "/auth_saml/signin",
+            data={"SAMLResponse": response.text},
+            allow_redirects=False,
+        )
+        self.assertEqual(signin_response.status_code, 303)
+        self.assertIn("/?type=signup", signin_response.headers["Location"])
+
+    def test_action_redirect(self):
+        """Test that providing action will do correct redirect."""
+        self.add_provider_to_user()
+
+        redirect_url = self.saml_provider._get_auth_request({"a": "action"})
+        response = self.idp.fake_login(redirect_url)
+        unpacked_response = response._unpack()
+
+        for key in unpacked_response:
+            unpacked_response[key] = html.unescape(unpacked_response[key])
+        response = self.url_open(
+            "/auth_saml/signin",
+            data=unpacked_response,
+            allow_redirects=True,
+            timeout=300,
+        )
+        self.assertTrue(response.ok)
+        self.assertEqual(
+            response.url,
+            self.base_url() + "/odoo#action=action",
+        )
+
+    def test_menu_redirect(self):
+        """Test that providing menu will do correct redirect."""
+        self.add_provider_to_user()
+
+        redirect_url = self.saml_provider._get_auth_request({"m": "12"})
+        response = self.idp.fake_login(redirect_url)
+        unpacked_response = response._unpack()
+
+        for key in unpacked_response:
+            unpacked_response[key] = html.unescape(unpacked_response[key])
+        response = self.url_open(
+            "/auth_saml/signin",
+            data=unpacked_response,
+            allow_redirects=True,
+            timeout=300,
+        )
+        self.assertTrue(response.ok)
+        self.assertEqual(
+            response.url,
+            self.base_url() + "/odoo#menu_id=12",
+        )

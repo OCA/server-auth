@@ -164,7 +164,7 @@ class AuthSamlProvider(models.Model):
             qs = urllib.parse.urlencode({"p": record.id, "d": self.env.cr.dbname})
 
             record.sp_metadata_url = urllib.parse.urljoin(
-                base_url, f"/auth_saml/metadata?{qs}"
+                base_url, (f"/auth_saml/metadata?{qs}")
             )
 
     def _get_cert_key_path(self, field="sp_pem_public"):

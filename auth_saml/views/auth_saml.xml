@@ -48,12 +48,12 @@
         <field name="name">auth.saml.provider.list</field>
         <field name="model">auth.saml.provider</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="not active">
+            <list decoration-muted="not active">
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="active" widget="boolean_toggle" />
                 <field name="autoredirect" />
-            </tree>
+            </list>
         </field>
     </record>
     <record model="ir.ui.view" id="view_saml_provider_form">
@@ -168,10 +168,10 @@
                                     name="attribute_mapping_ids"
                                     context="{'default_provider_id': id}"
                                 >
-                                    <tree editable="bottom">
+                                    <list editable="bottom">
                                         <field name="attribute_name" />
                                         <field name="field_name" widget="selection" />
-                                    </tree>
+                                    </list>
                                 </field>
                                 <p class="help small">
                                     Mapped attributes are copied from the SAML response at every logon, if available. If multiple values are returned (i.e. a list) then the first value is used.
@@ -191,7 +191,7 @@
     <record model="ir.actions.act_window" id="action_saml_provider">
         <field name="name">Providers</field>
         <field name="res_model">auth.saml.provider</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
     <menuitem
         id="menu_saml_providers"
