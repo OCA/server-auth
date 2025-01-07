@@ -11,10 +11,10 @@
                 <page string="SAML">
                     <group>
                         <field name="saml_ids" nolabel="1" colspan="2">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field name="saml_provider_id" />
                                 <field name="saml_uid" />
-                            </tree>
+                            </list>
                         </field>
                     </group>
                 </page>
