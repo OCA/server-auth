@@ -344,6 +344,11 @@ class TestAuthMethod(TransactionCase):
         with self.assertRaises(UnauthorizedInvalidToken):
             validator._decode(token)
 
+    def test_no_aud(self):
+        validator = self._create_validator("validator", audience=None)
+        token = self._create_token(audience=None)
+        validator._decode(token)
+
     def test_nbf(self):
         validator = self._create_validator("validator")
         token = self._create_token(nbf=time.time() - 60)
