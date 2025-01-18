@@ -16,13 +16,53 @@ The JWT validator can be configured with the following properties:
 
 - `name`: the validator name, to match the `auth="jwt_{validator-name}"`
   route property.
-- `audience`: a comma-separated list of allowed audiences, used to
-  validate the `aud` claim.
+- `audience`: a comma-separated list of values that must intersect with
+  the JWT claim selected by `audience_type` (by default the standard
+  `aud` claim — see "Audience type" below for matching against other
+  claims like `groups` or `scope`).
+- `audience_type`: selects which JWT payload claim the `audience` list
+  is matched against — `Audience` (default, validates `aud`), `Group`,
+  `Scope`, or `Custom`. See "Audience type" below.
+- `audience_type_custom`: when `audience_type` is `Custom`, the JWT
+  payload key to validate against the `audience` list (e.g.
+  `cognito:groups`, `permissions`).
 - `issuer`: used to validate the `iss` claim.
 - Signature type (secret or public key), algorithm, secret and JWK URI
   are used to validate the token signature.
 
 In addition, the `exp` claim is validated to reject expired tokens.
+
+**Audience type — matching non-standard JWT claims.** The `audience`
+setting is matched against the standard JWT `aud` claim by default
+(RFC 7519). Some identity providers — notably AWS Cognito and several
+OAuth2-only IdPs — issue access tokens without an `aud` claim but
+expose authorization information under other claims (`cognito:groups`,
+`scope`, `roles`). The `audience_type` field controls which claim the
+`audience` list is matched against:
+
+- **Audience** (default): standard `aud` claim validation; at least
+  one configured value must be present in the token's `aud` claim.
+- **Group**: validates against the `groups` claim (array or
+  space-separated string).
+- **Scope**: validates against the `scope` claim (space-separated per
+  OAuth2 RFC 6749 §3.3, or an array).
+- **Custom**: validates against the arbitrary payload key configured
+  in *Custom Audience Type Key* (e.g. `cognito:groups`, `permissions`,
+  `https://example.com/claims/roles`).
+
+For all non-`aud` types the JWT library's built-in `aud` verification
+is skipped (the token has no `aud`) and the match is a set
+intersection: any one of the configured `audience` values appearing in
+the token's claim authorizes the request.
+
+**Example — AWS Cognito access token.** Cognito access tokens carry
+no `aud` claim but include `cognito:groups`
+(e.g. `["odoo-admin", "odoo-portal"]`) and `scope`
+(e.g. `"openid profile odoo/read"`). To restrict a route to clients
+in the `odoo-admin` Cognito group, configure the validator with
+`audience_type = Custom`, `audience_type_custom = cognito:groups`,
+and `audience = odoo-admin`. To restrict by OAuth scope instead,
+configure `audience_type = Scope` and `audience = odoo/read`.
 
 If the `Authorization` HTTP header is missing, malformed, or contains an
 invalid token, the request is rejected with a 401 (Unauthorized) code,

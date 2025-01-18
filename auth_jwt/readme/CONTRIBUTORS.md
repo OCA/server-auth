@@ -1,2 +1,3 @@
 - Stéphane Bidoul \<<stephane.bidoul@acsone.eu>\>
 - Mohamed Alkobrosli \<<malkobrosly@kencove.com>\>
+- Don Kendall \<<kendall@donkendall.com>\>
