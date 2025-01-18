@@ -64,8 +64,19 @@ class AuthJwtValidator(models.Model):
         ],
         default="RS256",
     )
+    audience_type = fields.Selection(
+        [
+            ("aud", "Audience"),
+            ("group", "Group"),
+            ("scope", "Scope"),
+            ("custom", "Custom"),
+        ],
+        required=True,
+        default="aud",
+    )
+    audience_type_custom = fields.Char(required=False, help="payload key to validate")
     audience = fields.Char(
-        required=True, help="Comma separated list of audiences, to validate aud."
+        required=True, help="Comma separated list of attribute needed."
     )
     issuer = fields.Char(required=True, help="To validate iss.")
     user_id_strategy = fields.Selection(
@@ -160,7 +171,7 @@ class AuthJwtValidator(models.Model):
 
     @tools.ormcache("self.public_key_jwk_uri", "kid")
     def _get_key(self, kid):
-        jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
+        jwks_client = PyJWKClient(self.public_key_jwk_uri)
         return jwks_client.get_signing_key(kid).key
 
     def _encode(self, payload, secret, expire):
@@ -194,20 +205,35 @@ class AuthJwtValidator(models.Model):
                 raise UnauthorizedInvalidToken() from e
             key = self._get_key(header.get("kid"))
             algorithm = self.public_key_algorithm
+        aud = (self.audience or "").split(",") if self.audience_type == "aud" else None
         try:
             payload = jwt.decode(
                 token,
                 key=key,
                 algorithms=[algorithm],
                 options=dict(
-                    require=["exp", "aud", "iss"],
+                    require=["exp", "iss"],
                     verify_exp=True,
-                    verify_aud=True,
                     verify_iss=True,
                 ),
-                audience=self.audience.split(","),
+                audience=aud,
                 issuer=self.issuer,
             )
+            payload_key = (
+                self.audience_type_custom
+                if self.audience_type == "custom"
+                else self.audience_type
+            )
+            if len((self.audience or "").split(",") or []) > 0:
+                for key_value in (self.audience or "").split(","):
+                    payload_value = (
+                        payload.get(payload_key)
+                        if isinstance(payload.get(payload_key), list)
+                        else (payload.get(payload_key) or "").split(" ")
+                    )
+                    if key_value in payload_value:
+                        return payload
+                raise UnauthorizedInvalidToken()
         except Exception as e:
             _logger.info("Invalid token: %s", e)
             raise UnauthorizedInvalidToken() from e

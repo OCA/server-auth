@@ -12,8 +12,12 @@
                             <field name="next_validator_id" />
                         </group>
                         <group colspan="2" string="Token validation">
+                            <field name="audience_type" />
+                            <field
+                                name="audience_type_custom"
+                                invisible="audience_type != 'custom'"
+                            />
                             <field name="audience" />
-                            <field name="issuer" />
                             <field name="signature_type" />
                             <field
                                 name="secret_key"

@@ -404,3 +404,46 @@ class TestAuthMethod(TransactionCase):
         with self._mock_request(authorization=authorization) as request:
             self.env["ir.http"]._auth_method_public_or_jwt_validator()
             assert request.jwt_payload["aud"] == "me"
+
+    def test_valid_token_with_audience_type_aud(self):
+        validator = self._create_validator("val1", audience="client1,client2")
+        validator.audience_type = "aud"
+        token = self._create_token(audience="client1")
+        payload = validator._decode(token)
+        self.assertEqual(payload["aud"], "client1")
+
+    def test_invalid_audience_with_audience_type_aud(self):
+        validator = self._create_validator("val2", audience="client1,client2")
+        validator.audience_type = "aud"
+        token = self._create_token(audience="otherclient")
+        with self.assertRaises(UnauthorizedInvalidToken):
+            validator._decode(token)
+
+    def test_valid_token_with_custom_audience_type(self):
+        validator = self._create_validator("val3", audience="read,write")
+        validator.audience_type = "custom"
+        validator.audience_type_custom = "scope"
+        payload = {
+            "iss": "http://the.issuer",
+            "exp": time.time() + 100,
+            "scope": "read write",  # token claim space-separated
+        }
+        token = jwt.encode(payload, "thesecret", algorithm="HS256")
+        decoded = validator._decode(token)
+        self.assertIn("read", decoded["scope"].split(" "))
+
+    def test_invalid_custom_audience_type(self):
+        validator = self._create_validator("val4", audience="read")
+        validator.audience_type = "custom"
+        validator.audience_type_custom = "scope"
+        token = self._create_token()
+        # No scope claim in token
+        with self.assertRaises(UnauthorizedInvalidToken):
+            validator._decode(token)
+
+    def test_invalid_signature_rejected(self):
+        validator = self._create_validator("val5", audience="client1")
+        validator.audience_type = "aud"
+        token = self._create_token(audience="client1", key="wrongsecret")
+        with self.assertRaises(UnauthorizedInvalidToken):
+            validator._decode(token)
