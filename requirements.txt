@@ -1,6 +1,7 @@
 # generated from manifests external_dependencies
 cryptography
 email_validator
+oauthlib
 pyjwt
 pysaml2
 python-jose
