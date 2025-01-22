@@ -3,9 +3,9 @@
 
 import logging
 from datetime import datetime, timedelta
+from unittest import mock
 from urllib.parse import parse_qs, urlparse
 
-import mock
 from werkzeug.test import Client
 from werkzeug.wrappers import BaseResponse
 

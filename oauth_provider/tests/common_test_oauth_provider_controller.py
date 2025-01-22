@@ -5,8 +5,7 @@ import hashlib
 import json
 import logging
 from datetime import datetime
-
-import mock
+from unittest import mock
 
 _logger = logging.getLogger(__name__)
 
