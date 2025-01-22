@@ -19,7 +19,7 @@
                     t-att-value="request.csrf_token()"
                 />
                 <div>
-                    <h3 t-esc="oauth_client" />
+                    <h3 t-out="oauth_client" />
                     This application would like to access these resources :
                 </div>
                 <div class="list-group">
@@ -39,9 +39,9 @@
         <t t-call="web.login_layout">
             <div class="panel panel-danger">
                 <div class="panel-heading">
-                    <h3 t-esc="title" />
+                    <h3 t-out="title" />
                 </div>
-                <div class="panel-body" t-esc="message" />
+                <div class="panel-body" t-out="message" />
             </div>
         </t>
     </template>
