@@ -45,15 +45,15 @@ class TestResUsers(TransactionCase):
     def test_login_login_is_lowercased(self):
         """verify the login is set to lowercase on login."""
         rec_id = self.model_obj.search([("login", "=", "admin")])
-        res_id = self.model_obj._login(
+        credential = {"login": "AdMiN", "password": "admin", "type": "password"}
+        auth_info = self.model_obj._login(
             self.env.registry.db_name,
-            "AdMiN",
-            "admin",
+            credential,
             {"interactive": True},
         )
         self.assertEqual(
             rec_id.id,
-            res_id,
+            auth_info["uid"],
             "Login with with uppercase chars was not \
             successful",
         )
