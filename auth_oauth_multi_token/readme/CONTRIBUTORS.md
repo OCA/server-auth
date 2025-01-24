@@ -6,3 +6,5 @@
 - Stéphane Bidoul \<<stephane.bidoul@acsone.eu>\>
 - Dan Tillinghast
 - Miku Laitinen
+- [Kencove](https://www.kencove.com/):
+  - Mohamed Alkobrosli
