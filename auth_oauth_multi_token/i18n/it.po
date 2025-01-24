@@ -42,11 +42,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: auth_oauth_multi_token
-#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
@@ -91,3 +86,6 @@ msgstr "Token OAuth"
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__user_id
 msgid "User"
 msgstr "Utente"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
