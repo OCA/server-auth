@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-03 15:51+0000\n"
-"PO-Revision-Date: 2022-04-04 08:56+0000\n"
+"PO-Revision-Date: 2025-01-27 11:02+0000\n"
 "Last-Translator: Vincent Hatakeyama <vincent+github@hatakeyama.fr>\n"
 "Language-Team: XCG Consulting\n"
 "Language: fr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.3.2\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.providers
@@ -287,12 +287,12 @@ msgstr "Dernière modification le"
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__body
 msgid "Link text in Login Dialog"
-msgstr ""
+msgstr "Texte du lien dans l’écran de connexion"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__body
 msgid "Login button label"
-msgstr ""
+msgstr "Libellé du bouton de connexion"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__logout_requests_signed
