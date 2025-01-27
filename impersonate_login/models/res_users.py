@@ -75,10 +75,12 @@ class Users(models.Model):
                     request.session, request.env
                 )
 
-                # reload the client;
+                # reload the client; open the first available root menu
+                menu = self.env["ir.ui.menu"].search([("parent_id", "=", False)])[:1]
                 return {
                     "type": "ir.actions.client",
                     "tag": "reload",
+                    "params": {"menu_id": menu.id},
                 }
 
     @api.model
@@ -89,7 +91,7 @@ class Users(models.Model):
                 action = self.env["ir.actions.act_window"]._for_xml_id(
                     "base.action_res_users"
                 )
-                action["views"] = [[self.env.ref("base.view_users_tree").id, "tree"]]
+                action["views"] = [[self.env.ref("base.view_users_tree").id, "list"]]
                 action["domain"] = [
                     ("id", "!=", self.env.user.id),
                     ("share", "=", False),
@@ -122,8 +124,10 @@ class Users(models.Model):
                     f"Logout as {self._get_partner_name(self._uid)}"
                 )
 
-            # reload the client;
+            # reload the client; open the first available root menu
+            menu = self.env["ir.ui.menu"].search([("parent_id", "=", False)])[:1]
             return {
                 "type": "ir.actions.client",
                 "tag": "reload",
+                "params": {"menu_id": menu.id},
             }
