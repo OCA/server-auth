@@ -55,7 +55,20 @@ class ResUser(models.Model):
             user_saml.with_env(new_env).write({"saml_access_token": saml_response})
 
         if validation.get("mapped_attrs", {}):
-            user.write(validation.get("mapped_attrs", {}))
+            # Only write field that changes to avoid generating Security Update on users
+            # when login/email changes (from mail module)
+            vals = {}
+            for key, value in validation.get("mapped_attrs", {}).items():
+                # If the value or the field value is not a str,
+                # avoid comparison and write anyway
+                if (
+                    not isinstance(value, str)
+                    or not isinstance(user[key], str)
+                    or user[key] != value
+                ):
+                    vals[key] = value
+            if vals:
+                user.write(vals)
 
         return user.login
 
@@ -163,27 +176,31 @@ class ResUser(models.Model):
             # pylint: disable=protected-access
             super(ResUser, non_blank_password_users)._set_password()
         if blank_password_users:
-            # similar to what Odoo does in Users._set_encrypted_password
-            self.env.cr.execute(
-                "UPDATE res_users SET password = NULL WHERE id IN %s",
-                (tuple(blank_password_users.ids),),
-            )
-            blank_password_users.invalidate_recordset(fnames=["password"])
+            blank_password_users._set_password_blank()
         return
+
+    def _set_password_blank(self):
+        """Set the password to a value that prohibits logging."""
+        # Use SQL to blank the password to avoid sending security messages (done in
+        # mail module) to end users.
+        _logger.debug("Removing password from %s user(s)", len(self.ids))
+        # similar to what Odoo does in Users._set_encrypted_password
+        self.env.cr.execute(
+            "UPDATE res_users SET password = NULL WHERE id IN %s",
+            (tuple(self.ids),),
+        )
+        self.invalidate_recordset(fnames=["password"])
 
     def allow_saml_and_password_changed(self):
         """Called after the parameter is changed."""
         if not self.allow_saml_and_password():
             # sudo because the user doing the parameter change might not have the right
             # to search or write users
-            users_to_blank_password = self.sudo().search(
+            blank_password_users = self.sudo().search(
                 [
                     "&",
                     ("saml_ids", "!=", False),
                     ("id", "not in", list(self._saml_allowed_user_ids())),
                 ]
             )
-            _logger.debug(
-                "Removing password from %s user(s)", len(users_to_blank_password)
-            )
-            users_to_blank_password.write({"password": False})
+            blank_password_users._set_password_blank()
