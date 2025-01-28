@@ -5,6 +5,6 @@
 - Avoid redirecting when there is a SAML error.
 
 
-## 16.0.1.0.0
+## 18.0.1.0.0
 
-Initial migration for 16.0.
+Initial migration for 18.0.

@@ -146,17 +146,11 @@ class TestPySaml(HttpCase):
         self.assertEqual(self.saml_provider.sp_metadata_url, expected_url)
         self.saml_provider.sp_baseurl = temp
 
-    def test__hook_validate_auth_response(self):
-        # Create a fake response with attributes
-        fake_response = DummyResponse(200, "fake_data")
-        fake_response.set_identity(
-            {"email": "new_user@example.com", "first_name": "New", "last_name": "User"}
-        )
-
-        # Add attribute mappings to the provider
+    def _add_mapping_to_provider(self):
+        """Add mapping to the provider"""
         self.saml_provider.attribute_mapping_ids = [
-            (0, 0, {"attribute_name": "email", "field_name": "login"}),
-            (0, 0, {"attribute_name": "first_name", "field_name": "name"}),
+            (0, 0, {"attribute_name": "mail", "field_name": "login"}),
+            (0, 0, {"attribute_name": "givenName", "field_name": "name"}),
             (
                 0,
                 0,
@@ -164,6 +158,13 @@ class TestPySaml(HttpCase):
             ),  # This attribute is not in attrs
         ]
 
+    def test__hook_validate_auth_response(self):
+        # Create a fake response with attributes
+        fake_response = DummyResponse(200, "fake_data")
+        fake_response.set_identity(
+            {"mail": "new_user@example.com", "givenName": "New", "last_name": "User"}
+        )
+        self._add_mapping_to_provider()
         # Call the method
         result = self.saml_provider._hook_validate_auth_response(
             fake_response, "test@example.com"
@@ -279,6 +280,17 @@ class TestPySaml(HttpCase):
 
         # User should now be able to log in with the token
         self.authenticate(user="test@example.com", password=token)
+
+    def test_login_with_saml_mapping_attributes(self):
+        """Test login with SAML on a provider with mapping attributes"""
+        self.assertEqual(self.user.name, "User")
+        self.assertEqual(self.user.login, "test@example.com")
+        self._add_mapping_to_provider()
+        self.test_login_with_saml()
+        # Changed due to mapping and FakeIDP returning another value
+        self.assertEqual(self.user.name, "Test")
+        # Not changed
+        self.assertEqual(self.user.login, "test@example.com")
 
     def test_disallow_user_password_when_changing_ir_config_parameter(self):
         """Test that disabling users from having both a password and SAML ids remove
