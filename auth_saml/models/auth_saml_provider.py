@@ -357,7 +357,7 @@ class AuthSamlProvider(models.Model):
         for attribute in self.attribute_mapping_ids:
             if attribute.attribute_name not in attrs:
                 _logger.debug(
-                    "SAML attribute '%s' found in response %s",
+                    "SAML attribute '%s' not found in response %s",
                     attribute.attribute_name,
                     attrs,
                 )
