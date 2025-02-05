@@ -8,7 +8,7 @@
         <field name="name">oauth.provider.client.tree</field>
         <field name="model">oauth.provider.client</field>
         <field name="arch" type="xml">
-            <tree string="OAuth Provider Clients">
+            <tree name="OAuth Provider Clients">
                 <field name="name" />
                 <field name="identifier" />
                 <field name="application_type" />
@@ -20,7 +20,7 @@
         <field name="name">oauth.provider.client.form</field>
         <field name="model">oauth.provider.client</field>
         <field name="arch" type="xml">
-            <form string="OAuth Provider Clients">
+            <form name="OAuth Provider Clients">
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -46,11 +46,11 @@
                     </group>
                     <notebook colspan="4">
                         <page
-                            string="Allowed Redirect URIs"
+                            name="Allowed Redirect URIs"
                             attrs="{'invisible': [('application_type', 'not in', ('mobile application', 'web application'))]}"
                         >
                             <field name="redirect_uri_ids">
-                                <tree string="Redirect URIs" editable="bottom">
+                                <tree name="Redirect URIs" editable="bottom">
                                     <field name="sequence" widget="handle" />
                                     <field name="name" />
                                 </tree>
