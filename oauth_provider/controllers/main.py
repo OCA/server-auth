@@ -33,7 +33,9 @@ class OAuth2ProviderController(http.Controller):
             data=data, status=status, headers=headers
         )
 
-    @http.route("/oauth2/authorize", type="http", auth="user", methods=["GET"])
+    @http.route(
+        "/oauth2/authorize", type="http", auth="user", methods=["GET"], website=True
+    )
     def authorize(
         self,
         client_id=None,
@@ -115,7 +117,9 @@ class OAuth2ProviderController(http.Controller):
             },
         )
 
-    @http.route("/oauth2/authorize", type="http", auth="user", methods=["POST"])
+    @http.route(
+        "/oauth2/authorize", type="http", auth="user", methods=["POST"], website=True
+    )
     def authorize_post(self, *args, **kwargs):
         """Redirect to the requested URI during the authorization"""
         client = (
@@ -158,7 +162,14 @@ class OAuth2ProviderController(http.Controller):
 
         return werkzeug.utils.redirect(headers["Location"], code=status)
 
-    @http.route("/oauth2/token", type="http", auth="none", methods=["POST"], csrf=False)
+    @http.route(
+        "/oauth2/token",
+        type="http",
+        auth="none",
+        methods=["POST"],
+        csrf=False,
+        website=True,
+    )
     def token(
         self,
         client_id=None,
@@ -251,7 +262,9 @@ class OAuth2ProviderController(http.Controller):
 
         return werkzeug.wrappers.BaseResponse(body, status=status, headers=headers)
 
-    @http.route("/oauth2/tokeninfo", type="http", auth="none", methods=["GET"])
+    @http.route(
+        "/oauth2/tokeninfo", type="http", auth="none", methods=["GET"], website=True
+    )
     def tokeninfo(self, access_token=None, *args, **kwargs):
         """Return some information about the supplied token
 
@@ -279,7 +292,9 @@ class OAuth2ProviderController(http.Controller):
             data.update(user_id=token._generate_user_id())
         return self._json_response(data=data)
 
-    @http.route("/oauth2/userinfo", type="http", auth="none", methods=["GET"])
+    @http.route(
+        "/oauth2/userinfo", type="http", auth="none", methods=["GET"], website=True
+    )
     def userinfo(self, access_token=None, *args, **kwargs):
         """Return some information about the user linked to the supplied token
 
@@ -300,6 +315,7 @@ class OAuth2ProviderController(http.Controller):
         type="http",
         auth="oauth_provider",
         methods=["GET"],
+        websise=True,
     )
     def otherinfo(self, access_token=None, model=None, *args, **kwargs):
         """Return allowed information about the requested model"""
@@ -320,7 +336,9 @@ class OAuth2ProviderController(http.Controller):
         data = http.request.oauth_token._get_data_for_model(model)
         return self._json_response(data=data)
 
-    @http.route("/oauth2/revoke_token", type="http", auth="none", methods=["POST"])
+    @http.route(
+        "/oauth2/revoke_token", type="http", auth="none", methods=["POST"], website=True
+    )
     def revoke_token(self, token=None, *args, **kwargs):
         """Revoke the supplied token"""
         ensure_db()
