@@ -8,7 +8,7 @@
         <field name="name">oauth.provider.scope.tree</field>
         <field name="model">oauth.provider.scope</field>
         <field name="arch" type="xml">
-            <tree string="OAuth Provider Scopes">
+            <tree name="OAuth Provider Scopes">
                 <field name="name" />
                 <field name="code" />
                 <field name="description" />
@@ -20,7 +20,7 @@
         <field name="name">oauth.provider.scope.form</field>
         <field name="model">oauth.provider.scope</field>
         <field name="arch" type="xml">
-            <form string="OAuth Provider Scopes">
+            <form name="OAuth Provider Scopes">
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -29,15 +29,15 @@
                         <group>
                             <field name="code" />
                             <field name="description" />
-                            <separator string="Filter settings" colspan="2" />
+                            <separator name="Filter settings" colspan="2" />
                             <field name="model_id" />
                             <field name="filter_id" />
                             <field name="model" invisible="1" />
                         </group>
                         <group>
-                            <separator string="Fields" colspan="2" />
+                            <separator name="Fields" colspan="2" />
                             <field name="field_ids" nolabel="1">
-                                <tree string="Fields">
+                                <tree name="Fields">
                                     <field name="name" />
                                     <field name="field_description" />
                                     <field name="ttype" />
