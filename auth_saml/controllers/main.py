@@ -81,7 +81,7 @@ class SAMLLogin(Home):
         autoredirect_providers = self.list_saml_providers(True)
         # do not redirect if asked too or if a SAML error has been found
         disable_autoredirect = (
-            "disable_autoredirect" in request.params or "error" in request.params
+            "disable_autoredirect" in request.params or "saml_error" in request.params
         )
         if autoredirect_providers and not disable_autoredirect:
             return werkzeug.utils.redirect(
