@@ -12,8 +12,8 @@ msgstr ""
 "PO-Revision-Date: 2024-05-29 16:35+0000\n"
 "Last-Translator: Rodrigo Macedo <sottomaiormacedotec@users.noreply."
 "translation.odoo-community.org>\n"
-"Language-Team: Portuguese (Brazil) (https://www.transifex.com/oca/teams/"
-"23907/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (https://www.transifex.com/oca/"
+"teams/23907/pt_BR/)\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,11 +60,6 @@ msgstr "Identificação"
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__ldap_id
 msgid "LDAP Configuration"
 msgstr "Configuração LDAP"
-
-#. module: users_ldap_populate
-#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard____last_update
-msgid "Last Modified on"
-msgstr "Última atualização em"
 
 #. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__write_uid
@@ -139,3 +134,6 @@ msgstr "Não foi possível processar o usuário com login %s"
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
 msgid "Users never to deactivate"
 msgstr "Usuários nunca devem desativar"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Última atualização em"

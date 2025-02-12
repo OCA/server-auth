@@ -60,11 +60,6 @@ msgid "LDAP Configuration"
 msgstr ""
 
 #. module: users_ldap_populate
-#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard____last_update
-msgid "Last Modified on"
-msgstr "最後修改:"
-
-#. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__write_uid
 msgid "Last Updated by"
 msgstr "最後更新："
@@ -133,3 +128,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
 msgid "Users never to deactivate"
 msgstr ""
+
+#~ msgid "Last Modified on"
+#~ msgstr "最後修改:"

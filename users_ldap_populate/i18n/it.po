@@ -61,11 +61,6 @@ msgid "LDAP Configuration"
 msgstr "Configurazione LDAP"
 
 #. module: users_ldap_populate
-#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
-
-#. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Ultimo aggiornamento di"
@@ -138,6 +133,9 @@ msgstr "Impossibile elaborare utente con accesso %s"
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
 msgid "Users never to deactivate"
 msgstr "Utenti da non disattivare"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
 
 #~ msgid "res.company.ldap"
 #~ msgstr "res.company.ldap"

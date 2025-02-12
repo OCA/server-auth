@@ -60,11 +60,6 @@ msgid "LDAP Configuration"
 msgstr "Configuración LDAP"
 
 #. module: users_ldap_populate
-#: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard____last_update
-msgid "Last Modified on"
-msgstr "Última actualización por"
-
-#. module: users_ldap_populate
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap_populate_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Última actualización por"
@@ -137,3 +132,6 @@ msgstr "Imposible procesar usuario con el login %s"
 #: model:ir.model.fields,field_description:users_ldap_populate.field_res_company_ldap__no_deactivate_user_ids
 msgid "Users never to deactivate"
 msgstr "Usuarios a no desactivar nunca"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Última actualización por"
