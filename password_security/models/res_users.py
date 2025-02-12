@@ -78,7 +78,6 @@ class ResUsers(models.Model):
         return result
 
     def password_match_message(self):
-        self.ensure_one()
         message = []
         pwd_params = self._get_all_password_params()
         if pwd_params["lower"]:
@@ -113,7 +112,6 @@ class ResUsers(models.Model):
         return True
 
     def _check_password_rules(self, password):
-        self.ensure_one()
         if not password:
             return True
         pwd_params = self._get_all_password_params()
