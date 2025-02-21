@@ -8,3 +8,4 @@
 - Miku Laitinen
 - [Kencove](https://www.kencove.com/):
   - Mohamed Alkobrosli
+- Christopher Rogos
