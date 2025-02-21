@@ -5,10 +5,6 @@ import uuid
 
 from odoo import api, exceptions, fields, models
 
-from odoo.addons import base
-
-base.models.res_users.USER_PRIVATE_FIELDS.append("oauth_master_uuid")
-
 
 class ResUsers(models.Model):
     _inherit = "res.users"
@@ -27,10 +23,9 @@ class ResUsers(models.Model):
     oauth_access_max_token = fields.Integer(
         string="Max Number of Simultaneous Connections", default=10, required=True
     )
-    oauth_master_uuid = fields.Char(
-        string="Master UUID",
-        copy=False,
-        readonly=True,
+
+    # use the oauth_access_token field as oauth_master_uuid
+    oauth_access_token = fields.Char(
         required=True,
         default=lambda self: self._generate_oauth_master_uuid(),
     )
@@ -40,21 +35,35 @@ class ResUsers(models.Model):
         return self.env["auth.oauth.multi.token"]
 
     @api.model
+    def _generate_signup_values(self, provider, validation, params):
+        """Because access_token was replaced in
+        _auth_oauth_signin we need to replace it here."""
+        res = super()._generate_signup_values(provider, validation, params)
+        res["oauth_access_token"] = params["access_token_multi"]
+        return res
+
+    @api.model
     def _auth_oauth_signin(self, provider, validation, params):
         """Override to handle sign-in with multi token."""
-        res = super()._auth_oauth_signin(provider, validation, params)
+        params["access_token_multi"] = params["access_token"]
 
-        oauth_uid = validation["user_id"]
         # Lookup for user by oauth uid and provider
+        oauth_uid = validation["user_id"]
         user = self.search(
             [("oauth_uid", "=", oauth_uid), ("oauth_provider_id", "=", provider)]
         )
+
+        # Because access_token is automatically written to the user, we need to replace
+        # this by the existing oauth_access_token which acts as oauth_master_uuid
+        params["access_token"] = user.oauth_access_token
+        res = super()._auth_oauth_signin(provider, validation, params)
+
         if not user:
             raise exceptions.AccessDenied()
         user.ensure_one()
         # user found and unique: create a token
         self.multi_token_model.create(
-            {"user_id": user.id, "oauth_access_token": params["access_token"]}
+            {"user_id": user.id, "oauth_access_token": params["access_token_multi"]}
         )
         return res
 
@@ -62,22 +71,29 @@ class ResUsers(models.Model):
         """Inactivate current user tokens."""
         self.mapped("oauth_access_token_ids")._oauth_clear_token()
         for res in self:
-            res.oauth_access_token = False
-            res.oauth_master_uuid = self._generate_oauth_master_uuid()
+            res.oauth_access_token = self._generate_oauth_master_uuid()
 
     @api.model
-    def _check_credentials(self, password, env):
+    def _check_credentials(self, credential, env):
         """Override to check credentials against multi tokens."""
         try:
-            return super()._check_credentials(password, env)
+            return super()._check_credentials(credential, env)
         except exceptions.AccessDenied:
-            res = self.multi_token_model.sudo().search(
-                [("user_id", "=", self.env.uid), ("oauth_access_token", "=", password)]
+            passwd_allowed = (
+                env["interactive"] or not self.env.user._rpc_api_keys_only()
             )
-            if not res:
-                raise
+            if passwd_allowed and self.env.user.active and "token" in credential:
+                res = self.multi_token_model.sudo().search(
+                    [
+                        ("user_id", "=", self.env.uid),
+                        ("oauth_access_token", "=", credential["token"]),
+                    ]
+                )
+                if res:
+                    return {
+                        "uid": self.env.user.id,
+                        "auth_method": "oauth",
+                        "mfa": "default",
+                    }
 
-    def _get_session_token_fields(self):
-        res = super()._get_session_token_fields()
-        res.remove("oauth_access_token")
-        return res | {"oauth_master_uuid"}
+            raise
