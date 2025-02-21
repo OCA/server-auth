@@ -80,6 +80,8 @@ Contributors
 
   - Mohamed Alkobrosli
 
+- Christopher Rogos
+
 Maintainers
 -----------
 
