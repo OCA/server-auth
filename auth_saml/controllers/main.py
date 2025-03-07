@@ -25,6 +25,11 @@ _logger = logging.getLogger(__name__)
 # ----------------------------------------------------------
 
 
+def clean_context(context):
+    """ This function take a dictionary and remove each entry with its key starting with 'default_' """
+    return {k: v for k, v in context.items() if not k.startswith('default_')}
+
+
 def fragment_to_query_string(func):
     @functools.wraps(func)
     def wrapper(self, req, **kw):
@@ -174,7 +179,7 @@ class AuthSAMLController(http.Controller):
         state = simplejson.loads(kw['RelayState'])
         provider = state['p']
         dbname = state['d']
-        context = state.get('c', {})
+        context = clean_context(state.get('c', {}))
         registry = registry_get(dbname)
         with registry.cursor() as cr:
             try:
