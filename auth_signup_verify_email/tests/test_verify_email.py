@@ -11,6 +11,7 @@ except ImportError:
 from odoo.tests.common import HttpCase
 from odoo.tools.misc import mute_logger
 
+from odoo.addons.base.models import ir_http
 from odoo.addons.mail.models import mail_template
 
 
@@ -44,6 +45,15 @@ class UICase(HttpCase):
         self.data["login"] = "bad email"
         doc = self.html_doc(data=self.data)
         self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
+
+    def test_failed_recaptcha(self):
+        """Test rejection of failed reCaptcha."""
+        with patch.object(
+            ir_http.IrHttp, "_verify_request_recaptcha_token", return_value=False
+        ):
+            self.data["login"] = "contributors@odoo-community.org"
+            doc = self.html_doc(data=self.data)
+            self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
 
     @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
     def test_good_email(self):
