@@ -58,7 +58,7 @@ class TestPasswordSecurityLogin(HttpCase):
         response = self.login(self.username, self.passwd)
 
         # Ensure we end up on the right page
-        self.assertEqual(response.request.path_url, "/web")
+        self.assertEqual(response.request.path_url, "/odoo")
         self.assertEqual(response.status_code, 200)
 
     def test_04_web_login_fail(self):
@@ -102,7 +102,7 @@ class TestPasswordSecurityLogin(HttpCase):
         response = self.login(self.username, self.passwd)
 
         # Ensure we end up on the right page
-        self.assertEqual(response.request.path_url, "/web")
+        self.assertEqual(response.request.path_url, "/odoo")
         self.assertEqual(response.status_code, 200)
 
         # Make password expired while still logged in
@@ -129,7 +129,7 @@ class TestPasswordSecurityLogin(HttpCase):
 
         # Try to access just a page: user kicked out
         req_page2 = self.url_open("/web")
-        self.assertEqual("/web/login", req_page2.request.path_url)
+        self.assertTrue(req_page2.request.path_url.startswith("/web/login"))
         self.assertEqual(req_page2.status_code, 200)
 
     def test_07_web_login_redirect(self):
@@ -149,5 +149,5 @@ class TestPasswordSecurityLogin(HttpCase):
 
         # Try to access just a page: user kicked out
         req_page = self.url_open("/web")
-        self.assertEqual("/web/login", req_page.request.path_url)
+        self.assertTrue(req_page.request.path_url.startswith("/web/login"))
         self.assertEqual(req_page.status_code, 200)

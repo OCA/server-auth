@@ -51,8 +51,8 @@ class TestPasswordSecurityReset(HttpCase):
         self.assertEqual(response.request.path_url, "/web/reset_password")
         self.assertEqual(response.status_code, 200)
         self.assertIn(
-            "Passwords can only be reset every %s hour(s). "
-            "Please contact an administrator for assistance." % min_hours,
+            f"Passwords can only be reset every {min_hours} hour(s). "
+            "Please contact an administrator for assistance.",
             response.text,
         )
 
