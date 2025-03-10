@@ -143,11 +143,8 @@ class ResUsers(models.Model):
         return days > pwd_params["expiration_days"]
 
     def action_expire_password(self):
-        expiration = delta_now(days=+1)
         for user in self:
-            user.mapped("partner_id").signup_prepare(
-                signup_type="reset", expiration=expiration
-            )
+            user.mapped("partner_id").signup_prepare(signup_type="reset")
 
     def _validate_pass_reset(self):
         """It provides validations before initiating a pass reset email

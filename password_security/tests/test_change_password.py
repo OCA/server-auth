@@ -35,7 +35,7 @@ class TestPasswordSecurityChange(HttpCase):
 
         # Log in: ensure we end up on the right page
         res_login = self.login("admin", "admin")
-        self.assertEqual(res_login.request.path_url, "/web")
+        self.assertEqual(res_login.request.path_url, "/odoo")
         self.assertEqual(res_login.status_code, 200)
 
         # Change password
@@ -50,7 +50,7 @@ class TestPasswordSecurityChange(HttpCase):
 
         # Log in: ensure we end up on the right page
         res_login = self.login("admin", "admin")
-        self.assertEqual(res_login.request.path_url, "/web")
+        self.assertEqual(res_login.request.path_url, "/odoo")
         self.assertEqual(res_login.status_code, 200)
 
         # Change password: error is raised because it's too short
@@ -68,7 +68,7 @@ class TestPasswordSecurityChange(HttpCase):
 
         # Log in: ensure we end up on the right page
         res_login = self.login("admin", "admin")
-        self.assertEqual(res_login.request.path_url, "/web")
+        self.assertEqual(res_login.request.path_url, "/odoo")
         self.assertEqual(res_login.status_code, 200)
 
         # Reload page: ensure we stay on the same page
@@ -85,7 +85,7 @@ class TestPasswordSecurityChange(HttpCase):
         # Try to reload page: user kicked out
         res_page2 = self.url_open("/web")
         res_page2.raise_for_status()
-        self.assertEqual(res_page2.request.path_url, "/web/login")
+        self.assertTrue(res_page2.request.path_url.startswith("/web/login"))
         self.assertEqual(res_page2.status_code, 200)
 
     def test_04_change_password_check_password_history(self):
@@ -108,7 +108,7 @@ class TestPasswordSecurityChange(HttpCase):
 
         # Log in: ensure we end up on the right page
         res_login = self.login("admin", "!asdQWE12345_7")
-        self.assertEqual(res_login.request.path_url, "/web")
+        self.assertEqual(res_login.request.path_url, "/odoo")
 
         # Change password: reuse password in history
         with self.assertRaises(UserError):
@@ -133,4 +133,4 @@ class TestPasswordSecurityChange(HttpCase):
 
         # Log in with new password: ensure we end up on the right page
         res_login2 = self.login("admin", "!asdQWE12345_4")
-        self.assertEqual(res_login2.request.path_url, "/web")
+        self.assertEqual(res_login2.request.path_url, "/odoo")

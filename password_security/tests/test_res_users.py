@@ -113,16 +113,6 @@ class TestResUsers(TransactionCase):
             "Password was just created but has already expired.",
         )
 
-    def test_expire_password_generates_token(self):
-        rec_id = self._new_record()
-        rec_id.sudo().action_expire_password()
-        rec_id.invalidate_recordset()
-        token = rec_id.partner_id.signup_token
-        self.assertTrue(
-            token,
-            "A token was not generated.",
-        )
-
     def test_validate_pass_reset_error(self):
         """It should throw UserError on reset inside min threshold"""
         rec_id = self._new_record()
