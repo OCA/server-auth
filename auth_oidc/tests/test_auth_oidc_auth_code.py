@@ -242,15 +242,13 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             keys=[],
         )
 
-        with (
-            self.assertRaises(AccessDenied),
-            MockRequest(self.env),
-            self.assertLogs(level=logging.ERROR) as logs,
-        ):
-            self.env["res.users"].auth_oauth(
-                self.provider_rec.id,
-                {"state": json.dumps({})},
-            )
+        with self.assertRaises(AccessDenied):
+            with MockRequest(self.env):
+                with self.assertLogs(level=logging.ERROR) as logs:
+                    self.env["res.users"].auth_oauth(
+                        self.provider_rec.id,
+                        {"state": json.dumps({})},
+                    )
         self.assertEqual(len(logs.records), 1)
         self.assertEqual(logs.records[0].levelno, logging.ERROR)
         self.assertEqual(
