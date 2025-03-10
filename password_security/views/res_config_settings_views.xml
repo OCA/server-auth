@@ -18,17 +18,17 @@
                     <setting>
                         <span>
                             Password expires in <field
-                                name="password_expiration"
-                                class="oe_inline"
-                            /> days.
+                            name="password_expiration"
+                            class="oe_inline"
+                        /> days.
                         </span>
                     </setting>
                     <setting>
                         <span>
                             User can change password in <field
-                                name="password_minimum"
-                                class="oe_inline"
-                            /> hours again.
+                            name="password_minimum"
+                            class="oe_inline"
+                        /> hours again.
                         </span>
                     </setting>
 
