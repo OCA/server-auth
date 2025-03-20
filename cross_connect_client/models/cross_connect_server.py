@@ -107,7 +107,7 @@ class CrossConnectServer(models.Model):
         response.raise_for_status()
         return response.json()
 
-    def _get_cross_connect_url(self):
+    def _get_cross_connect_url(self, redirect_url=None):
         self.ensure_one()
         groups = self.env.user.groups_id & self.group_ids
         if not groups:
@@ -122,6 +122,7 @@ class CrossConnectServer(models.Model):
                 "login": self.env.user.login,
                 "lang": self.env.user.lang,
                 "groups": [group.cross_connect_server_group_id for group in groups],
+                "redirect_url": redirect_url,
             },
         )
         client_id = response.get("client_id")
