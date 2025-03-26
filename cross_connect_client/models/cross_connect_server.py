@@ -65,7 +65,7 @@ class CrossConnectServer(models.Model):
                     {
                         "name": record.name,
                         "url": f"/cross_connect_server/{record.id}",
-                        "target": "self",
+                        "target": "new",
                     }
                 )
 
