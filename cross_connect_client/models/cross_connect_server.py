@@ -113,18 +113,17 @@ class CrossConnectServer(models.Model):
         if not groups:
             raise UserError(_("You are not allowed to access this server"))
 
-        response = self._request(
-            "POST",
-            "/access",
-            data={
-                "id": self.env.user.id,
-                "name": self.env.user.name,
-                "login": self.env.user.login,
-                "lang": self.env.user.lang,
-                "groups": [group.cross_connect_server_group_id for group in groups],
-                "redirect_url": redirect_url,
-            },
-        )
+        data = {
+            "id": self.env.user.id,
+            "name": self.env.user.name,
+            "login": self.env.user.login,
+            "lang": self.env.user.lang,
+            "groups": [group.cross_connect_server_group_id for group in groups],
+        }
+        if redirect_url:
+            data["redirect_url"] = redirect_url
+
+        response = self._request("POST", "/access", data=data)
         client_id = response.get("client_id")
         token = response.get("token")
         if not token:
