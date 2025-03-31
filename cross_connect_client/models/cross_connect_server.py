@@ -113,10 +113,14 @@ class CrossConnectServer(models.Model):
         if not groups:
             raise UserError(_("You are not allowed to access this server"))
 
+        if not self.env.user.email:
+            raise UserError(_("User email is required"))
+
         data = {
             "id": self.env.user.id,
             "name": self.env.user.name,
             "login": self.env.user.login,
+            "email": self.env.user.email,
             "lang": self.env.user.lang,
             "groups": [group.cross_connect_server_group_id for group in groups],
         }
