@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+    Copyright 2024 Akretion (http://www.akretion.com).
+    @author Florian Mounier <florian.mounier@akretion.com>
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+    <record model="ir.ui.view" id="fastapi_endpoint_form_view">
+        <field name="model">fastapi.endpoint</field>
+        <field name="inherit_id" ref="fastapi.fastapi_endpoint_form_view" />
+        <field name="arch" type="xml">
+            <field name="save_http_session" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [('app', '==', 'cross_connect')]}
+                </attribute>
+            </field>
+            <span name="configuration" position="after">
+                <group
+                    name="cross_connect"
+                    title="Cross Connect Configuration"
+                    attrs="{'invisible': [('app', '!=', 'cross_connect')]}"
+                    groups="cross_connect_server.group_cross_connect_manager"
+                >
+                    <field
+                        name="cross_connect_allowed_group_ids"
+                        widget="many2many_tags"
+                        options="{'open': True}"
+                    />
+                    <field name="cross_connect_client_ids">
+                        <tree editable="bottom">
+                            <field name="name" />
+                            <field name="api_key" />
+                            <field name="allowed_group_ids" invisible="True" />
+                            <field
+                                name="group_ids"
+                                widget="many2many_tags"
+                                options="{'no_create': True}"
+                            />
+                            <field name="user_count" />
+                        </tree>
+                    </field>
+                </group>
+            </span>
+        </field>
+    </record>
+</odoo>
