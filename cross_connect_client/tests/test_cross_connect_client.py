@@ -121,7 +121,7 @@ class TestCrossConnectClient(TransactionCase):
         self.assertEqual(
             self.server.menu_id.action.url, f"/cross_connect_server/{self.server.id}"
         )
-        self.assertEqual(self.server.menu_id.action.target, "self")
+        self.assertEqual(self.server.menu_id.action.target, "new")
 
         self.assertTrue(self.server.web_icon_data)
 
@@ -178,7 +178,13 @@ class TestCrossConnectClient(TransactionCase):
         )
         self.server.action_sync()
 
-        user = self.env["res.users"].create({"name": "Test User", "login": "test_user"})
+        user = self.env["res.users"].create(
+            {
+                "name": "Test User",
+                "login": "test_user",
+                "email": "test@example.com",
+            }
+        )
         group = self.server.group_ids[0]
         user.write({"groups_id": [(4, group.id)]})
 
@@ -198,6 +204,7 @@ class TestCrossConnectClient(TransactionCase):
                 "id": user.id,
                 "name": "Test User",
                 "login": "test_user",
+                "email": "test@example.com",
                 "lang": "en_US",
                 "groups": [group.cross_connect_server_group_id],
             },
@@ -220,7 +227,13 @@ class TestCrossConnectClient(TransactionCase):
         )
         self.server.action_sync()
 
-        user = self.env["res.users"].create({"name": "Test User", "login": "test_user"})
+        user = self.env["res.users"].create(
+            {
+                "name": "Test User",
+                "login": "test_user",
+                "email": "test@example.com",
+            }
+        )
 
         req.reset_mock()
         req.return_value = _mock_json({"client_id": 1, "token": "test-token"})
@@ -254,7 +267,12 @@ class TestCrossConnectClientController(HttpCase):
             server.action_sync()
 
         user = self.env["res.users"].create(
-            {"name": "Test User", "login": "test_user", "password": "user_pas$w0rd"}
+            {
+                "name": "Test User",
+                "login": "test_user",
+                "email": "test@example.com",
+                "password": "user_pas$w0rd",
+            }
         )
         group = server.group_ids[0]
         user.write({"groups_id": [(4, group.id)]})
