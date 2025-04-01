@@ -1,0 +1,316 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * password_security
+#
+# Translators:
+# OCA Transbot <transbot@odoo-community.org>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-22 00:55+0000\n"
+"PO-Revision-Date: 2017-02-22 00:55+0000\n"
+"Last-Translator: OCA Transbot <transbot@odoo-community.org>, 2016\n"
+"Language-Team: Spanish (Mexico) (https://www.transifex.com/oca/teams/23907/"
+"es_MX/)\n"
+"Language: es_MX\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Lowercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Numeric digit (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Special character (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Uppercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid ""
+"<span id=\"minlength\">\n"
+"                               Minimum number of characters\n"
+"                          </span>"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_minimum
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_minimum
+msgid "Amount of hours until a user may change password again"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Cannot use the most recent %d passwords"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_company
+msgid "Companies"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_expiration
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_expiration
+msgid "Days"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Disallow reuse of"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_history
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_history
+msgid ""
+"Disallow reuse of this many previous passwords - use negative number for "
+"infinite, or 0 to disable"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__display_name
+msgid "Display Name"
+msgstr "Nombre desplegado"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__password_crypt
+msgid "Encrypted Password"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_history
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_history
+msgid "History"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_expiration
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_expiration
+msgid "How many days until passwords expire"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__id
+msgid "ID"
+msgstr "ID"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history____last_update
+msgid "Last Modified on"
+msgstr "Ultima modificacion realizada"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__write_uid
+msgid "Last Updated by"
+msgstr "Ultima actualización por"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__write_date
+msgid "Last Updated on"
+msgstr "Ultima actualización en"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users__password_write_date
+msgid "Last password update"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_lower
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_lower
+msgid "Lowercase"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_minimum
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_minimum
+msgid "Minimum Hours"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of lowercase characters"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of numeric characters"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of special characters"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of uppercase characters"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Must contain the following:"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_numeric
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_numeric
+msgid "Numeric"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users__password_history_ids
+msgid "Password History"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Password Policy"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Password expires in"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Password must be %d characters or more."
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"Passwords can only be reset every %d hour(s). Please contact an "
+"administrator for assistance."
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_lower
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_lower
+msgid "Require number of lowercase letters"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_numeric
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_numeric
+msgid "Require number of numeric digits"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_special
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_special
+msgid "Require number of unique special characters"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_upper
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_upper
+msgid "Require number of uppercase letters"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_users_pass_history
+msgid "Res Users Password History"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_special
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
+msgid "Special"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_upper
+msgid "Uppercase"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Use negative number for infinite, or 0 to disable"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_users
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__user_id
+msgid "User"
+msgstr "Usuario"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "User can change password in"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "days."
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "hours again."
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "previous passwords."
+msgstr ""
