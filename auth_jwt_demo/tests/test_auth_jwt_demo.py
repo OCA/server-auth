@@ -1,11 +1,25 @@
 # Copyright 2021 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import logging
 import time
 
 import jwt
 
 from odoo import tests
+
+
+class IgnoreSpecificWarningFilter(logging.Filter):
+    def filter(self, record):
+        return (
+            'A route with auth="jwt" must not be used within a user session'
+            not in record.getMessage()
+        )
+
+
+# Add filter to the specific logger
+logger = logging.getLogger("odoo.addons.auth_jwt.models.ir_http")
+logger.addFilter(IgnoreSpecificWarningFilter())
 
 
 @tests.tagged("post_install", "-at_install")

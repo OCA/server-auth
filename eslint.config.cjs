@@ -21,6 +21,10 @@ const config = [{
         ecmaVersion: 2024,
         sourceType: "script",
     },
+    ignores: [
+        "auth_jwt_demo/tests/spa/js/app.js",
+        "auth_jwt_demo/tests/spa/js/oidc-client.js"
+    ],
 
     rules: {
         "accessor-pairs": "warn",
