@@ -170,7 +170,7 @@ class TestCrossConnectServer(FastAPITransactionCase):
         self.assertEqual(len(rc.records), 1)
         new_user = rc.records[0]
         self.assertEqual(new_user.name, "Client User")
-        self.assertEqual(new_user.login, "user@client.example.org")
+        self.assertEqual(new_user.login, f"{self.client.id}_12_user@client.example.org")
         self.assertEqual(new_user.email, "user@client.example.org")
         self.assertEqual(new_user.lang, "en_US")
         self.assertEqual(new_user.cross_connect_client_id.id, self.client.id)
@@ -271,7 +271,9 @@ class TestCrossConnectServer(FastAPITransactionCase):
         self.assertEqual(len(rc2.records), 0)
         new_user = rc.records[0]
         self.assertEqual(new_user.name, "Client User2")
-        self.assertEqual(new_user.login, "user2@client.example.org")
+        self.assertEqual(
+            new_user.login, f"{self.client.id}_12_user2@client.example.org"
+        )
         self.assertEqual(new_user.email, "user2@client.example.org")
         self.assertEqual(new_user.lang, "en_US")
         self.assertIn(self.env.ref("fastapi.group_fastapi_user"), new_user.groups_id)

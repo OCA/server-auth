@@ -73,7 +73,7 @@ class CrossConnectClient(models.Model):
             lambda u: u.cross_connect_client_user_id == access_request.id
         )
         vals = {
-            "login": access_request.login,
+            "login": f"{self.id}_{access_request.id}_{access_request.login}",
             "email": access_request.email,
             "name": access_request.name,
             "lang": access_request.lang,
