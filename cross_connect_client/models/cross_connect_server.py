@@ -1,7 +1,6 @@
 # Copyright 2024 Akretion (http://www.akretion.com).
 # @author Florian Mounier <florian.mounier@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from urllib.parse import urlparse
 
 import requests
 
@@ -15,7 +14,8 @@ class CrossConnectServer(models.Model):
     _inherit = "server.env.mixin"
 
     name = fields.Char(
-        required=True, compute="_compute_name", readonly=False, store=True
+        required=True,
+        help="This name will be used for the new created app",
     )
     server_url = fields.Char(required=True)
     api_key = fields.Char(
@@ -37,15 +37,6 @@ class CrossConnectServer(models.Model):
     web_icon_data = fields.Binary(
         compute="_compute_web_icon_data", inverse="_inverse_web_icon_data"
     )
-
-    @api.depends("server_url")
-    def _compute_name(self):
-        for record in self:
-            if not record.name or record.name == "/":
-                try:
-                    record.name = urlparse(record.server_url).hostname
-                except Exception:
-                    record.name = "/"
 
     @api.depends("name", "group_ids")
     def _compute_menu_id(self):
