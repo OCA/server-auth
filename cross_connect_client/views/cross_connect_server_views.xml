@@ -38,7 +38,7 @@
                         bg_color="bg-warning"
                         attrs="{'invisible': [('group_ids', '!=', [])]}"
                     />
-                    <div class="oe_title" attrs="{'invisible': [('name', '=', False)]}">
+                    <div class="oe_title">
                         <h1>
                             <field name="name" />
                         </h1>
