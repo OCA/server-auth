@@ -1,7 +1,6 @@
 # Copyright 2024 Akretion (http://www.akretion.com).
 # @author Florian Mounier <florian.mounier@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo import _
 from odoo.exceptions import UserError
 from odoo.http import Controller, request, route
 
@@ -20,7 +19,7 @@ class CrossConnectController(Controller):
     ):
         server = request.env["cross.connect.server"].sudo().browse(server_id)
         if not server:
-            raise UserError(_("Server not found"))
+            raise UserError(request.env._("Server not found"))
 
         url = server._get_cross_connect_url(request.params.get("redirect_url"))
         return request.redirect(url, local=False)

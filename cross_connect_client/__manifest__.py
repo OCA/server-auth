@@ -4,7 +4,7 @@
 
 {
     "name": "Cross Connect Client",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "author": "Akretion, Odoo Community Association (OCA)",
     "summary": "Cross Connect Client allows to connect to a "
     "Cross Connect Server enabled odoo instance.",

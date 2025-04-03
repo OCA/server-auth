@@ -8,7 +8,7 @@
     <record id="cross_connect_server_action" model="ir.actions.act_window">
         <field name="name">Cross Connect Servers</field>
         <field name="res_model">cross.connect.server</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <record id="cross_connect_server_view_form" model="ir.ui.view">
@@ -22,13 +22,13 @@
                         type="object"
                         string="Sync Cross Connection"
                         class="btn-primary"
-                        attrs="{'invisible': ['|', ('server_url', '=', False), ('api_key', '=', False)]}"
+                        invisible="not server_url or not api_key"
                     />
                     <button
                         name="action_disable"
                         type="object"
                         string="Disable"
-                        attrs="{'invisible': [('group_ids', '=', [])]}"
+                        invisible="not group_ids"
                     />
                 </header>
                 <sheet>
@@ -36,7 +36,7 @@
                         name="web_ribbon"
                         title="Sync Required"
                         bg_color="bg-warning"
-                        attrs="{'invisible': [('group_ids', '!=', [])]}"
+                        invisible="group_ids"
                     />
                     <div class="oe_title">
                         <h1>
@@ -48,10 +48,7 @@
                             <field name="server_url" />
                             <field name="api_key" />
                             <field name="menu_id" invisible="True" />
-                            <field
-                                name="web_icon_data"
-                                attrs="{'invisible': [('menu_id', '=', False)]}"
-                            />
+                            <field name="web_icon_data" invisible="not menu_id" />
                             <field
                                 name="group_ids"
                                 widget="many2many_tags"
@@ -65,14 +62,14 @@
     </record>
 
     <record id="cross_connect_server_view_tree" model="ir.ui.view">
-        <field name="name">cross.connect.server.tree</field>
+        <field name="name">cross.connect.server.list</field>
         <field name="model">cross.connect.server</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="not group_ids">
+            <list decoration-muted="not group_ids">
                 <field name="name" />
                 <field name="server_url" />
                 <field name="group_ids" invisible="True" />
-            </tree>
+            </list>
         </field>
     </record>
 

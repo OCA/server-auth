@@ -4,7 +4,7 @@
 
 import requests
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -59,12 +59,12 @@ class CrossConnectServer(models.Model):
                         "target": "new",
                     }
                 )
-
+                icon = "cross_connect_client,static/description/web_icon_data.png"
                 record.menu_id = self.env["ir.ui.menu"].create(
                     {
                         "name": record.name,
                         "action": f"ir.actions.act_url,{action.id}",  # noqa
-                        "web_icon": "cross_connect_client,static/description/web_icon_data.png",
+                        "web_icon": icon,
                         "groups_id": [(6, 0, menu_groups.ids)],
                         "sequence": 100,
                     }
@@ -102,10 +102,10 @@ class CrossConnectServer(models.Model):
         self.ensure_one()
         groups = self.env.user.groups_id & self.group_ids
         if not groups:
-            raise UserError(_("You are not allowed to access this server"))
+            raise UserError(self.env._("You are not allowed to access this server"))
 
         if not self.env.user.email:
-            raise UserError(_("User email is required"))
+            raise UserError(self.env._("User email is required"))
 
         data = {
             "id": self.env.user.id,
@@ -122,7 +122,7 @@ class CrossConnectServer(models.Model):
         client_id = response.get("client_id")
         token = response.get("token")
         if not token:
-            raise UserError(_("Missing token"))
+            raise UserError(self.env._("Missing token"))
 
         return self._absolute_url_for(f"login/{client_id}/{token}")
 
