@@ -1,0 +1,362 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * password_security
+#
+# Translators:
+# OCA Transbot <transbot@odoo-community.org>, 2016
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-02-22 00:55+0000\n"
+"PO-Revision-Date: 2021-11-17 11:36+0000\n"
+"Last-Translator: Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>\n"
+"Language-Team: Finnish (https://www.transifex.com/oca/teams/23907/fi/)\n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.3.2\n"
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Lowercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Numeric digit (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Special character (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"\n"
+"* Uppercase letter (at least %s characters)"
+msgstr ""
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid ""
+"<span id=\"minlength\">\n"
+"                               Minimum number of characters\n"
+"                          </span>"
+msgstr ""
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_minimum
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_minimum
+msgid "Amount of hours until a user may change password again"
+msgstr "Kuinka monen tunnin välein käyttäjä voi vaihtaa salasanan"
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Cannot use the most recent %d passwords"
+msgstr "Et voi käyttää viimeisimpiä %d salasanaa"
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_company
+msgid "Companies"
+msgstr "Yritykset"
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_config_settings
+msgid "Config Settings"
+msgstr "Asetukset"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__create_uid
+msgid "Created by"
+msgstr "Luonut"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__create_date
+msgid "Created on"
+msgstr "Luotu"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__date
+msgid "Date"
+msgstr "Päivämäärä"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_expiration
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_expiration
+msgid "Days"
+msgstr "Päiviä"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Disallow reuse of"
+msgstr "Estä uusiokäyttö"
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_history
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_history
+msgid ""
+"Disallow reuse of this many previous passwords - use negative number for "
+"infinite, or 0 to disable"
+msgstr ""
+"Estä salasanojen uusiokäyttö. Negatiivinen numero estää salasanan "
+"uusiokäytön ikinä. Arvo 0 poistaa rajoitteen käytöstä"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__display_name
+msgid "Display Name"
+msgstr "Nimi"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__password_crypt
+msgid "Encrypted Password"
+msgstr "Salattu salasana"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_history
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_history
+msgid "History"
+msgstr "Historia"
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_expiration
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_expiration
+msgid "How many days until passwords expire"
+msgstr "Kuinka monen päivän päästä salasana vanhenee"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__id
+msgid "ID"
+msgstr "ID"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history____last_update
+msgid "Last Modified on"
+msgstr "Viimeksi muokattu"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__write_uid
+msgid "Last Updated by"
+msgstr "Viimeksi päivittänyt"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__write_date
+msgid "Last Updated on"
+msgstr "Viimeksi päivitetty"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users__password_write_date
+msgid "Last password update"
+msgstr "Salasana päivitety viimeksi"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_lower
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_lower
+msgid "Lowercase"
+msgstr "Pieni kirjain"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_minimum
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_minimum
+msgid "Minimum Hours"
+msgstr "Vähimmäismäärä tunteja"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of lowercase characters"
+msgstr "Vähimmäismäärä pieniä kirjaimia"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of numeric characters"
+msgstr "Vähimmäismäärä numeroita"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of special characters"
+msgstr "Vähimmäismäärä erikoismerkkejä"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Minimum number of uppercase characters"
+msgstr "Vähimmäismäärä isoja kirjaimia"
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Must contain the following:"
+msgstr "Täytyy sisältää seuraavat:"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_numeric
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_numeric
+msgid "Numeric"
+msgstr "Numeerinen"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_users__password_history_ids
+msgid "Password History"
+msgstr "Salasanahistoria"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Password Policy"
+msgstr "Salasanapolitiikka"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Password expires in"
+msgstr "Salasana vanhenee"
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid "Password must be %d characters or more."
+msgstr ""
+
+#. module: password_security
+#. odoo-python
+#: code:addons/password_security/models/res_users.py:0
+#, python-format
+msgid ""
+"Passwords can only be reset every %d hour(s). Please contact an "
+"administrator for assistance."
+msgstr ""
+"Salasanan voi vaihtaa vain %d tunnin välein. Ole yhteyttä hallinnoitsijaan "
+"jos tarvitset apua."
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_lower
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_lower
+msgid "Require number of lowercase letters"
+msgstr "Vaadittu määrä pieniä kirjaimia"
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_numeric
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_numeric
+msgid "Require number of numeric digits"
+msgstr "Vaadittu määrä numeroita"
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_special
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_special
+msgid "Require number of unique special characters"
+msgstr "Vaadittu määrä erikoismerkkejä"
+
+#. module: password_security
+#: model:ir.model.fields,help:password_security.field_res_company__password_upper
+#: model:ir.model.fields,help:password_security.field_res_config_settings__password_upper
+msgid "Require number of uppercase letters"
+msgstr "Vaadittu määrä suuria kirjaimia"
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_users_pass_history
+msgid "Res Users Password History"
+msgstr "Käyttäjien salasanahistoria"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_special
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
+msgid "Special"
+msgstr "Erikoismerkki"
+
+#. module: password_security
+#: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
+#: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_upper
+msgid "Uppercase"
+msgstr "Iso kirjain"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "Use negative number for infinite, or 0 to disable"
+msgstr "Käytä negatiivista arvoa äärettömään, tai 0 poistaaksesi käytöstä"
+
+#. module: password_security
+#: model:ir.model,name:password_security.model_res_users
+#: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__user_id
+msgid "User"
+msgstr "Käyttäjä"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "User can change password in"
+msgstr "Käyttäjä voi vaihtaa salasanan"
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "days."
+msgstr "päivää."
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "hours again."
+msgstr "tuntia."
+
+#. module: password_security
+#: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
+msgid "previous passwords."
+msgstr "edellistä salasanaa."
+
+#~ msgid "Characters"
+#~ msgstr "Merkit"
+
+#~ msgid "Estimation"
+#~ msgstr "Arvio"
+
+#~ msgid "Minimum number of characters"
+#~ msgstr "Vähimmäismäärä merkkejä"
+
+#~ msgid "Minimum number of strength estimation"
+#~ msgstr "Vahvuusarvion vähimmäisluku"
+
+#~ msgid "Required score for the strength estimation. Between 0 and 4"
+#~ msgstr "Vaadittu vahvuusarvion arvo. Välillä 0-4"
+
+#, python-format
+#~ msgid "The estimation must be between 0 and 4."
+#~ msgstr "Vahvuusarvion on oltava väliltä 0 ja 4."
+
+#~ msgid "Users"
+#~ msgstr "Käyttäjät"
+
+#, python-format
+#~ msgid "at least %d characters"
+#~ msgstr "vähintään %d merkkiä"
+
+#, python-format
+#~ msgid "at least %d lower case characters"
+#~ msgstr "vähintään %d pientä kirjainta"
+
+#, python-format
+#~ msgid "at least %d numeric characters"
+#~ msgstr "vähintään %d numeroa"
+
+#, python-format
+#~ msgid "at least %d special characters"
+#~ msgstr "vähintään %d erikoismerkkiä"
+
+#, python-format
+#~ msgid "at least %d upper case characters"
+#~ msgstr "vähintään %d isoa kirjainta"
