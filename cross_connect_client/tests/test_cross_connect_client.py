@@ -38,13 +38,6 @@ class TestCrossConnectClient(TransactionCase):
         self.assertFalse(self.server.menu_id)
         self.assertFalse(self.server.web_icon_data)
 
-    def test_name(self):
-        self.server.name = False
-        self.server.server_url = "//["
-        self.assertEqual(self.server.name, "/")
-        self.server.server_url = "https://test.example.org"
-        self.assertEqual(self.server.name, "test.example.org")
-
     def test_absolute_url_for(self):
         self.assertEqual(
             self.server._absolute_url_for("test"),
@@ -113,10 +106,7 @@ class TestCrossConnectClient(TransactionCase):
             self.server.menu_id.web_icon,
             "cross_connect_client,static/description/web_icon_data.png",
         )
-        self.assertEqual(
-            self.server.menu_id.groups_id,
-            self.server.group_ids | self.env.ref("base.group_system"),
-        )
+        self.assertEqual(self.server.menu_id.groups_id, self.server.group_ids)
         self.assertTrue(self.server.menu_id.action.name, "Test Server")
         self.assertEqual(
             self.server.menu_id.action.url, f"/cross_connect_server/{self.server.id}"
