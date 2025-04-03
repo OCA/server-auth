@@ -5,6 +5,7 @@ from unittest.mock import Mock, patch
 
 from odoo.exceptions import UserError
 from odoo.tests.common import HttpCase, TransactionCase
+from odoo.tools import mute_logger
 
 
 def _mock_json(data):
@@ -281,5 +282,6 @@ class TestCrossConnectClientController(HttpCase):
 
     def test_bad_server(self):
         self.assertFalse(self.env["cross.connect.server"].search([]))
-        resp = self.url_open("/cross_connect_server/1", allow_redirects=False)
+        with mute_logger("odoo.http"):
+            resp = self.url_open("/cross_connect_server/1", allow_redirects=False)
         self.assertEqual(resp.status_code, 400)
