@@ -17,7 +17,6 @@
         </field>
     </record>
 
-
     <record id="impersonate_log_action" model="ir.actions.act_window">
         <field name="name">Impersonate Login Logs</field>
         <field name="res_model">impersonate.log</field>
@@ -32,5 +31,4 @@
         parent="base.menu_custom"
         sequence="100"
     />
-
 </odoo>
