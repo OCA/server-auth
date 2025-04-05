@@ -78,7 +78,7 @@ class Users(models.Model):
                 action = self.env["ir.actions.act_window"]._for_xml_id(
                     "base.action_res_users"
                 )
-                action["views"] = [[self.env.ref("base.view_users_tree").id, "tree"]]
+                action["views"] = [[self.env.ref("base.view_users_tree").id, "list"]]
                 action["domain"] = [
                     ("id", "!=", self.env.user.id),
                     ("share", "=", False),
