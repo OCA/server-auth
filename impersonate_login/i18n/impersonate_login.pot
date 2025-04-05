@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 17.0\n"
+"Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,7 +16,6 @@ msgstr ""
 #. module: impersonate_login
 #. odoo-javascript
 #: code:addons/impersonate_login/static/src/js/user_menu.esm.js:0
-#, python-format
 msgid "Back to Original User"
 msgstr ""
 
@@ -95,7 +94,6 @@ msgstr ""
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
-#, python-format
 msgid "It's you."
 msgstr ""
 
@@ -117,8 +115,6 @@ msgstr ""
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/mail_message.py:0
-#: code:addons/impersonate_login/models/mail_message.py:0
-#, python-format
 msgid "Logged in as {}"
 msgstr ""
 
@@ -136,7 +132,6 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/impersonate_login/static/src/js/user_menu.esm.js:0
 #: model_terms:ir.ui.view,arch_db:impersonate_login.impersonate_res_users_tree
-#, python-format
 msgid "Switch Login"
 msgstr ""
 
@@ -149,6 +144,5 @@ msgstr ""
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
-#, python-format
 msgid "You are already Logged as another user."
 msgstr ""
