@@ -628,6 +628,31 @@ class TestPySaml(HttpCase):
         self.assertEqual(signin_response.status_code, 303)
         self.assertIn("/?type=signup", signin_response.headers["Location"])
 
+    def test_signin_redirect_mfa(self):
+        """Test redirect to mfa url"""
+        self.add_provider_to_user()
+
+        redirect_url = self.saml_provider._get_auth_request({"a": "action"})
+        response = self.idp.fake_login(redirect_url)
+        unpacked_response = response._unpack()
+
+        for key in unpacked_response:
+            unpacked_response[key] = html.unescape(unpacked_response[key])
+        with patch.object(
+            self.env.registry["res.users"], "_mfa_url", return_value="/web/login/totp"
+        ):
+            response = self.url_open(
+                "/auth_saml/signin",
+                data=unpacked_response,
+                allow_redirects=True,
+                timeout=300,
+            )
+        self.assertTrue(response.ok)
+        self.assertEqual(
+            response.url,
+            self.base_url() + "/web/login/totp?redirect=%2F%23action%3Daction",
+        )
+
     def test_action_redirect(self):
         """Test that providing action will do correct redirect."""
         self.add_provider_to_user()
