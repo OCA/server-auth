@@ -10,7 +10,7 @@ import werkzeug.wrappers
 
 from odoo import http
 
-from odoo.addons.web.controllers.main import ensure_db
+from odoo.addons.web.controllers.utils import ensure_db
 
 _logger = logging.getLogger(__name__)
 
