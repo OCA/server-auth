@@ -91,6 +91,16 @@ class OAuthProviderClient(models.Model):
         comodel_name="res.users",
         help="Map calls from this client to this user for backend applications",
     )
+    # Field for the Oauthlib python library
+    #
+    # This field breaks the standard Odoo nomenclature
+    #
+    # client_id is a field needed by the oauthlib, it is identical to
+    # the field identifier
+    # See: https://github.com/oauthlib/oauthlib/blob/
+    #      dab6a5ae1830ddd8a79c1e9687f63508eae60b57/oauthlib/oauth2/
+    #      rfc6749/grant_types/authorization_code.py#L471-L474
+    client_id = fields.Char(compute="_compute_oauthlib_client_id")
 
     _sql_constraints = [
         (
@@ -108,6 +118,11 @@ class OAuthProviderClient(models.Model):
             "legacy application": ("password", "none"),
             "backend application": ("client_credentials", "none"),
         }
+
+    @api.depends("identifier")
+    def _compute_oauthlib_client_id(self):
+        for client in self:
+            client.client_id = client.identifier
 
     @api.depends("application_type")
     def _compute_grant_response_type(self):
