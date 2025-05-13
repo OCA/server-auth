@@ -1,14 +1,15 @@
 # Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016, 2022-2023 XCG Consulting <https://xcg-consulting.fr/>
+# Copyright (C) 2010-2016, 2022-2023 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import functools
 import json
 import logging
+from urllib.parse import quote_plus, unquote_plus, urlencode
 
 import werkzeug.utils
+from saml2.validate import ResponseLifetimeExceed
 from werkzeug.exceptions import BadRequest
-from werkzeug.urls import url_quote_plus
 
 from odoo import (
     SUPERUSER_ID,
@@ -100,7 +101,7 @@ class SAMLLogin(Home):
         redirect = request.params.get("redirect")
         if redirect:
             params["redirect"] = redirect
-        return "/auth_saml/get_auth_request?%s" % werkzeug.urls.url_encode(params)
+        return "/auth_saml/get_auth_request?%s" % urlencode(params)
 
     @http.route()
     def web_client(self, s_action=None, **kw):
@@ -136,6 +137,8 @@ class SAMLLogin(Home):
                 error = _("Sign up is not allowed on this database.")
             elif error == "access-denied":
                 error = _("Access Denied")
+            elif error == "response-lifetime-exceed":
+                error = _("Response Lifetime Exceeded")
             elif error == "expired":
                 error = _(
                     "You do not have access to this database. Please contact"
@@ -169,7 +172,7 @@ class AuthSAMLController(http.Controller):
             )
 
         state = {
-            "r": url_quote_plus(redirect),
+            "r": quote_plus(redirect),
         }
         return state
 
@@ -231,9 +234,7 @@ class AuthSAMLController(http.Controller):
             )
             action = state.get("a")
             menu = state.get("m")
-            redirect = (
-                werkzeug.urls.url_unquote_plus(state["r"]) if state.get("r") else False
-            )
+            redirect = unquote_plus(state["r"]) if state.get("r") else False
             url = "/web"
             if redirect:
                 url = redirect
@@ -255,6 +256,9 @@ class AuthSAMLController(http.Controller):
             redirect = werkzeug.utils.redirect(url, 303)
             redirect.autocorrect_location_header = False
             return redirect
+        except ResponseLifetimeExceed as e:
+            _logger.debug("Response Lifetime Exceed - %s", str(e))
+            url = "/web/login?saml_error=response-lifetime-exceed"
 
         except Exception as e:
             # signup error

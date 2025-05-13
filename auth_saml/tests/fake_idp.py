@@ -73,13 +73,21 @@ CONFIG = {
 }
 
 
+class DummyNameId:
+    """Dummy name id with text value"""
+
+    def __init__(self, text):
+        self.text = text
+
+
 class DummyResponse:
-    def __init__(self, status, data, headers=None):
+    def __init__(self, status, data, headers=None, name_id: str = ""):
         self.status_code = status
         self.text = data
         self.headers = headers or []
         self.content = data
         self._identity = {}
+        self.name_id = DummyNameId(name_id)
 
     def _unpack(self, ver="SAMLResponse"):
         """
@@ -127,6 +135,7 @@ class FakeIDP(Server):
         config.load(settings)
         config.allow_unknown_attributes = True
         Server.__init__(self, config=config)
+        self.mail = "test@example.com"
 
     def get_metadata(self):
         return create_metadata_string(
@@ -163,7 +172,7 @@ class FakeIDP(Server):
             "surName": "Example",
             "givenName": "Test",
             "title": "Ind",
-            "mail": "test@example.com",
+            "mail": self.mail,
         }
 
         resp_args.update({"sign_assertion": True, "sign_response": True})

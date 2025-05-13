@@ -1,4 +1,5 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+# Copyright (C) 2025-2026 XCG SAS <https://orbeet.io/>
 import base64
 import html
 import os
@@ -7,6 +8,7 @@ from unittest.mock import patch
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
+from odoo.tools import mute_logger
 
 from .fake_idp import DummyResponse, FakeIDP
 
@@ -101,6 +103,8 @@ class TestPySaml(HttpCase):
 
     def test__onchange_name(self):
         temp = self.saml_provider.body
+        r = self.saml_provider._onchange_name()
+        self.assertEqual(self.saml_provider.body, temp)
         self.saml_provider.body = ""
         r = self.saml_provider._onchange_name()
         self.assertEqual(r, None)
@@ -153,9 +157,10 @@ class TestPySaml(HttpCase):
         )
         self._add_mapping_to_provider()
         # Call the method
-        result = self.saml_provider._hook_validate_auth_response(
-            fake_response, "test@example.com"
-        )
+        with mute_logger("odoo.addons.auth_saml.models.auth_saml_provider"):
+            result = self.saml_provider._hook_validate_auth_response(
+                fake_response, "test@example.com"
+            )
 
         # Check the result
         self.assertIn("mapped_attrs", result)
@@ -236,7 +241,9 @@ class TestPySaml(HttpCase):
 
     def test_login_with_saml(self):
         self.add_provider_to_user()
+        self._login_with_saml()
 
+    def _login_with_saml(self):
         redirect_url = self.saml_provider._get_auth_request()
         self.assertIn("http://localhost:8000/sso/redirect?SAMLRequest=", redirect_url)
 
@@ -253,7 +260,7 @@ class TestPySaml(HttpCase):
         )
 
         self.assertEqual(database, self.env.cr.dbname)
-        self.assertEqual(login, self.user.login)
+        self.assertEqual(login, "test@example.com")
 
         # We should not be able to log in with the wrong token
         with self.assertRaises(AccessDenied):
@@ -272,6 +279,42 @@ class TestPySaml(HttpCase):
         self.assertEqual(self.user.name, "Test")
         # Not changed
         self.assertEqual(self.user.login, "test@example.com")
+
+    def test_login_with_saml_mapping_attributes_subject(self):
+        """Test login with SAML on a provider with mapping attributes"""
+        self.assertEqual(self.user.email, "test@example.com")
+        self.saml_provider.attribute_mapping_ids = [
+            (0, 0, {"attribute_name": "subject.nameId", "field_name": "email"}),
+        ]
+        self.test_login_with_saml()
+        # The value is changed, but FakeIDP returns a random value so
+        # only test that the value is changed.
+        self.assertNotEqual(self.user.email, "test@example.com")
+
+    def test_login_with_saml_to_lower(self):
+        self.add_provider_to_user()
+        self.saml_provider.matching_attribute_to_lower = True
+        self.idp.mail = "TEST@example.com"
+        self._login_with_saml()
+
+    def test_login_with_saml_non_existing_mapping_attribute(self):
+        self.saml_provider.matching_attribute = "nick_name"
+        self.add_provider_to_user()
+        with self.assertRaises(KeyError):
+            self._login_with_saml()
+
+    def test_create_user(self):
+        self.user.unlink()
+        self.saml_provider.create_user = True
+        self._login_with_saml()
+        self.user = self.env["res.users"].search([("login", "=", "test@example.com")])
+        # Disable user and check that it is not enabled
+        self.user.active = False
+        with self.assertRaises(AccessDenied):
+            self._login_with_saml()
+        self.saml_provider.create_user_reactivate = True
+        self._login_with_saml()
+        self.assertTrue(self.user.active)
 
     def test_disallow_user_password_when_changing_ir_config_parameter(self):
         """Test that disabling users from having both a password and SAML ids remove
@@ -317,9 +360,10 @@ class TestPySaml(HttpCase):
         """Test that a new user with SAML ids can not have its password set up when the
         disallow option is set."""
         # change the option
-        self.browse_ref(
-            "auth_saml.allow_saml_uid_and_internal_password"
-        ).value = "False"
+        self.browse_ref("auth_saml.allow_saml_uid_and_internal_password").unlink()
+        self.env["ir.config_parameter"].set_param(
+            "auth_saml.allow_saml_uid_and_internal_password", "False"
+        )
         # Create a new user with only SAML ids
         user = (
             self.env["res.users"]
@@ -353,11 +397,35 @@ class TestPySaml(HttpCase):
         self.browse_ref(
             "auth_saml.allow_saml_uid_and_internal_password"
         ).value = "False"
-        # Test that existing user password is deleted when adding an SAML provider
+        # Test that existing user password still works if no saml uid is set
         self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+        # Test that existing user password is deleted when adding an SAML provider
         self.add_provider_to_user()
         with self.assertRaises(AccessDenied):
             self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+
+    def test_disallow_user_password_unlink(self):
+        """Test that existing user password is deleted when adding an SAML provider when
+        the disallow option is not present (and defaults to false)."""
+        # change the option
+        self.browse_ref("auth_saml.allow_saml_uid_and_internal_password").unlink()
+        # Test that existing user password still works if no saml uid is set
+        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+        # Test that existing user password is deleted when adding an SAML provider
+        self.add_provider_to_user()
+        with self.assertRaises(AccessDenied):
+            self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+
+    def test_change_unrelated_ir_config_parameter(self):
+        """Test another branch, creating or writing another ir.config_parameter"""
+        param = self.env["ir.config_parameter"].create(
+            [{"key": "test", "value": "unrelated"}]
+        )
+        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+        self.env["ir.config_parameter"].set_param("test", "False")
+        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+        param.unlink()
+        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
 
     def test_disallow_user_admin_can_have_password(self):
         """Test that admin can have its password set
