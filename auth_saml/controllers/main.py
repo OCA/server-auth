@@ -5,10 +5,11 @@
 import functools
 import json
 import logging
+from urllib.parse import quote_plus, unquote_plus, urlencode
 
 import werkzeug.utils
+from saml2.validate import ResponseLifetimeExceed
 from werkzeug.exceptions import BadRequest
-from werkzeug.urls import url_quote_plus
 
 from odoo import (
     SUPERUSER_ID,
@@ -101,7 +102,7 @@ class SAMLLogin(Home):
         redirect = request.params.get("redirect")
         if redirect:
             params["redirect"] = redirect
-        return f"/auth_saml/get_auth_request?{werkzeug.urls.url_encode(params)}"
+        return f"/auth_saml/get_auth_request?{urlencode(params)}"
 
     @http.route()
     def web_client(self, s_action=None, **kw):
@@ -137,6 +138,8 @@ class SAMLLogin(Home):
                 error = request.env._("Sign up is not allowed on this database.")
             elif error == "access-denied":
                 error = request.env._("Access Denied")
+            elif error == "response-lifetime-exceed":
+                error = request.env._("Response Lifetime Exceeded")
             elif error == "expired":
                 error = request.env._(
                     "You do not have access to this database. Please contact support."
@@ -169,7 +172,7 @@ class AuthSAMLController(http.Controller):
             )
 
         state = {
-            "r": url_quote_plus(redirect),
+            "r": quote_plus(redirect),
         }
         return state
 
@@ -237,9 +240,7 @@ class AuthSAMLController(http.Controller):
             request.env.cr.commit()
             action = state.get("a")
             menu = state.get("m")
-            redirect = (
-                werkzeug.urls.url_unquote_plus(state["r"]) if state.get("r") else False
-            )
+            redirect = unquote_plus(state["r"]) if state.get("r") else False
             url = "/odoo"
             if redirect:
                 url = redirect
@@ -265,6 +266,9 @@ class AuthSAMLController(http.Controller):
             redirect = werkzeug.utils.redirect(url, 303)
             redirect.autocorrect_location_header = False
             return redirect
+        except ResponseLifetimeExceed as e:
+            _logger.debug("Response Lifetime Exceed - %s", str(e))
+            url = "/web/login?saml_error=response-lifetime-exceed"
 
         except Exception as e:
             # signup error
