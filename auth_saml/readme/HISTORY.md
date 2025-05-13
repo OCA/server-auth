@@ -1,3 +1,10 @@
+## 17.0.1.0.2 (2025-05-13)
+
+### Bugfixes
+
+- Avoid redirecting when there is a SAML error.
+
+
 ## 17.0.1.1.0
 
 When using attribute mapping, only write value that changes.
