@@ -1,3 +1,11 @@
+15.0.1.4.6 (2025-05-13)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+**Bugfixes**
+
+- Avoid redirecting when there is a SAML error. ()
+
+
 15.0.1.4.0
 ~~~~~~~~~~
 
