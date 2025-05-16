@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-02-04 22:36+0000\n"
+"PO-Revision-Date: 2025-05-16 09:24+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: auth_api_key_server_env
 #: model:ir.model,name:auth_api_key_server_env.model_auth_api_key
@@ -24,7 +24,7 @@ msgstr "Chiave API"
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__server_env_defaults
 msgid "Server Env Defaults"
-msgstr "Server ambiente predefinito"
+msgstr "Predefiniti ambiente server"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__tech_name
