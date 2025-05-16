@@ -6,112 +6,114 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2025-05-16 08:24+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__api_key
 msgid "API Key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_fastapi_endpoint__app
 msgid "App"
-msgstr ""
+msgstr "Applicazione"
 
 #. module: cross_connect_server
 #. odoo-python
 #: code:addons/cross_connect_server/routers/cross_connect.py:0
 #, python-format
 msgid "Client not found"
-msgstr ""
+msgstr "Client non trovato"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__allowed_group_ids
 #: model:ir.model.fields,field_description:cross_connect_server.field_fastapi_endpoint__cross_connect_allowed_group_ids
 msgid "Cross Connect Allowed Groups"
-msgstr ""
+msgstr "Gruppi abilitati cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model,name:cross_connect_server.model_cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_server.field_res_users__cross_connect_client_id
 msgid "Cross Connect Client"
-msgstr ""
+msgstr "Client cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_res_users__cross_connect_client_user_id
 msgid "Cross Connect Client User ID"
-msgstr ""
+msgstr "ID utente cliente cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_fastapi_endpoint__cross_connect_client_ids
 msgid "Cross Connect Clients"
-msgstr ""
+msgstr "Client cross-connect"
 
 #. module: cross_connect_server
 #: model_terms:ir.ui.view,arch_db:cross_connect_server.fastapi_endpoint_form_view
 msgid "Cross Connect Configuration"
-msgstr ""
+msgstr "Configurazione cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model.fields.selection,name:cross_connect_server.selection__fastapi_endpoint__app__cross_connect
 msgid "Cross Connect Endpoint"
-msgstr ""
+msgstr "Endopoint cross-connect"
 
 #. module: cross_connect_server
 #: model:res.groups,name:cross_connect_server.group_cross_connect_manager
 msgid "Cross Connect Manager"
-msgstr ""
+msgstr "Gestore cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_fastapi_endpoint__cross_connect_secret_key
 msgid "Cross Connect Secret Key"
-msgstr ""
+msgstr "Chiave segreta cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__user_count
 msgid "Cross Connected User Count"
-msgstr ""
+msgstr "Conteggio utenti cross-connect"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__endpoint_id
 msgid "Endpoint"
-msgstr ""
+msgstr "Endpoint"
 
 #. module: cross_connect_server
 #: model:ir.model,name:cross_connect_server.model_fastapi_endpoint
 msgid "FastAPI Endpoint"
-msgstr ""
+msgstr "Endopoint FastAPI"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__group_ids
 msgid "Groups"
-msgstr ""
+msgstr "Gruppi"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cross_connect_server
 #. odoo-python
@@ -119,92 +121,93 @@ msgstr ""
 #: code:addons/cross_connect_server/models/cross_connect_client.py:0
 #, python-format
 msgid "Invalid Token"
-msgstr ""
+msgstr "Token non valido"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__server_env_defaults
 msgid "Server Env Defaults"
-msgstr ""
+msgstr "Predefiniti ambiente server"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_cross_connect_client__api_key
 msgid "The API key to give to configure on the client."
-msgstr ""
+msgstr "Chiave API da fornire per configurare il client."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_fastapi_endpoint__cross_connect_client_ids
 msgid "The clients that can access this endpoint."
-msgstr ""
+msgstr "I client che possono accedere questo endpoint."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_res_users__cross_connect_client_id
 msgid "The cross connect client that created this user."
-msgstr ""
+msgstr "Il client cross-connect che ha creato questo utente."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_cross_connect_client__allowed_group_ids
 #: model:ir.model.fields,help:cross_connect_server.field_fastapi_endpoint__cross_connect_allowed_group_ids
 msgid "The groups that can access the cross connect clients of this endpoint."
 msgstr ""
+"I gruppi che possono accedere i client cross-connect di questo endpoint."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_cross_connect_client__group_ids
 msgid "The groups that this client belongs to."
-msgstr ""
+msgstr "I gruppi a cui appartiene questo client."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_cross_connect_client__user_count
 msgid "The number of users created by this cross connection."
-msgstr ""
+msgstr "Il numero di utenti creati da questa cross-connect."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_fastapi_endpoint__cross_connect_secret_key
 msgid "The secret key used for cross connection."
-msgstr ""
+msgstr "La chiave segreta usata per la cross-connect."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_res_users__cross_connect_client_user_id
 msgid "The user ID on the cross connect client."
-msgstr ""
+msgstr "L'ID utente nel client cross-connect."
 
 #. module: cross_connect_server
 #: model:ir.model.fields,help:cross_connect_server.field_cross_connect_client__user_ids
 msgid "The users created by this cross connection."
-msgstr ""
+msgstr "Gli utenti creati da questa cross-connect."
 
 #. module: cross_connect_server
 #: model:ir.model,name:cross_connect_server.model_res_users
 msgid "User"
-msgstr ""
+msgstr "Utente"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__user_ids
 msgid "Users"
-msgstr ""
+msgstr "Utenti"
 
 #. module: cross_connect_server
 #. odoo-python
 #: code:addons/cross_connect_server/models/cross_connect_client.py:0
 #, python-format
 msgid "You are not allowed to access this endpoint."
-msgstr ""
+msgstr "Non si è autorizzati ad accedere a questo endpoint."
