@@ -94,7 +94,7 @@ class AuthOauthProvider(models.Model):
                 values = jwt.decode(
                     id_token,
                     key,
-                    algorithms=["RS256"],
+                    algorithms=["RS256", "ES256", "ES384", "HS256"],
                     audience=self.client_id,
                     access_token=access_token,
                 )
