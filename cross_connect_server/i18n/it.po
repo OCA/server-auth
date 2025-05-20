@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-05-16 08:24+0000\n"
+"PO-Revision-Date: 2025-05-20 10:26+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -103,7 +103,7 @@ msgstr "Endpoint"
 #. module: cross_connect_server
 #: model:ir.model,name:cross_connect_server.model_fastapi_endpoint
 msgid "FastAPI Endpoint"
-msgstr "Endopoint FastAPI"
+msgstr "Endpoint FastAPI"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__group_ids
