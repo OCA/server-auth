@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-03-14 15:06+0000\n"
+"PO-Revision-Date: 2025-05-20 10:25+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,12 +14,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: auth_api_key_server_env
 #: model:ir.model,name:auth_api_key_server_env.model_auth_api_key
 msgid "API Key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__display_name
@@ -29,14 +29,14 @@ msgstr "Nome visualizzato"
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: auth_api_key_server_env
 #: model:ir.model.fields,field_description:auth_api_key_server_env.field_auth_api_key__server_env_defaults
 msgid "Server Env Defaults"
-msgstr ""
+msgstr "Server ambiente predefinito"
