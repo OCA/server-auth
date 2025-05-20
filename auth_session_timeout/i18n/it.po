@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-06 02:24+0000\n"
-"PO-Revision-Date: 2025-03-14 15:06+0000\n"
+"PO-Revision-Date: 2025-05-20 10:25+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: auth_session_timeout
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_config_parameter__display_name
@@ -30,26 +30,26 @@ msgstr "Nome visualizzato"
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Instradamento HTTP"
 
 #. module: auth_session_timeout
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_config_parameter__id
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_http__id
 #: model:ir.model.fields,field_description:auth_session_timeout.field_res_users__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_session_timeout
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_config_parameter____last_update
 #: model:ir.model.fields,field_description:auth_session_timeout.field_ir_http____last_update
 #: model:ir.model.fields,field_description:auth_session_timeout.field_res_users____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_ir_config_parameter
 msgid "System Parameter"
-msgstr ""
+msgstr "Parametro di sistema"
 
 #. module: auth_session_timeout
 #: model:ir.model,name:auth_session_timeout.model_res_users
