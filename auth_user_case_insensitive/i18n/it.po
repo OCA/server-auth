@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-05-17 21:08+0000\n"
-"PO-Revision-Date: 2025-03-14 15:06+0000\n"
+"PO-Revision-Date: 2025-05-20 10:25+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: auth_user_case_insensitive
 #: code:addons/auth_user_case_insensitive/hooks.py:0
 #, python-format
 msgid "Conflicting user logins exist for `%s`"
-msgstr ""
+msgstr "Esiste un conflitto di accessi per l'utente '%s'"
 
 #. module: auth_user_case_insensitive
 #: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__display_name
@@ -33,22 +33,22 @@ msgstr "Nome visualizzato"
 #. module: auth_user_case_insensitive
 #: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: auth_user_case_insensitive
 #: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Ultima modifica il"
 
 #. module: auth_user_case_insensitive
 #: model:ir.model.fields,field_description:auth_user_case_insensitive.field_res_users__login
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #. module: auth_user_case_insensitive
 #: model:ir.model.fields,help:auth_user_case_insensitive.field_res_users__login
 msgid "Used to log into the system. Case insensitive."
-msgstr ""
+msgstr "Utilizzato per l'accesso al sistema. Insensibile a maiuscole/minuscole."
 
 #. module: auth_user_case_insensitive
 #: model:ir.model,name:auth_user_case_insensitive.model_res_users
