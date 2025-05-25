@@ -57,6 +57,13 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         ) = cls._generate_ec_key(curve=ec.SECP384R1())
         
         cls.hs256_key = secrets.token_bytes(32)
+        cls.hs256_jwk = {
+            "kty": "oct",
+            "use": "sig",
+            "alg": "HS256",
+            "kid": "hs256-key",
+            "k": jwt.utils.base64url_encode(cls.hs256_key).decode("utf-8"),
+        }
 
     @staticmethod
     def _generate_rsa_key():
@@ -97,21 +104,21 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             serialization.PublicFormat.SubjectPublicKeyInfo,
         ).decode("utf8")
         
-        # Get the curve name for the JWK
         curve_name = "P-256" if isinstance(curve, ec.SECP256R1) else "P-384"
+        alg = "ES256" if isinstance(curve, ec.SECP256R1) else "ES384"
         
-        # Get x and y coordinates from the public key
         public_numbers = ec_key_public.public_numbers()
         x = long_to_base64(public_numbers.x).decode("utf-8")
         y = long_to_base64(public_numbers.y).decode("utf-8")
         
         jwk = {
-            # https://datatracker.ietf.org/doc/html/rfc7518#section-6.2
             "kty": "EC",
             "use": "sig",
             "crv": curve_name,
+            "alg": alg,
             "x": x,
             "y": y,
+            "kid": "ec-key-" + alg.lower(),
         }
         return ec_key_pem, ec_key_public_pem, jwk
 
@@ -185,8 +192,10 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
                 public_key_pem = self.es384_key_public_pem
             elif algorithm == "HS256":
                 private_key = self.hs256_key
-                public_key_pem = self.hs256_key
+                # For HS256, we don't use public_key_pem as it's a symmetric key
+                public_key_pem = None
         else:
+            # For asymmetric algorithms, public_key_pem is needed
             public_key_pem = public_key or private_key
             
         responses.add(
@@ -203,11 +212,23 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             },
         )
         
+        # Handle the keys parameter based on the algorithm
         if keys is None:
-            if "kid" in id_token_headers:
-                keys = [{"kid": "the_key_id", "keys": [public_key_pem]}]
+            if algorithm == "HS256":
+                # For HS256, we use the JWK directly
+                keys = [self.hs256_jwk]
+            elif algorithm == "ES256":
+                # For ES256, we use the JWK directly
+                keys = [self.es256_key_public_jwk]
+            elif algorithm == "ES384":
+                # For ES384, we use the JWK directly
+                keys = [self.es384_key_public_jwk]
             else:
-                keys = [{"keys": [public_key_pem]}]
+                # For RS256, we use the traditional approach
+                if "kid" in id_token_headers:
+                    keys = [{"kid": id_token_headers["kid"], "keys": [public_key_pem]}]
+                else:
+                    keys = [{"keys": [public_key_pem]}]
                 
         responses.add(
             responses.GET,
@@ -405,11 +426,9 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         """Test that login works with ES256 algorithm"""
         user = self._prepare_login_test_user()
         
-        self.es256_key_public_jwk["kid"] = "es256_key_id"
-        
         self._prepare_login_test_responses(
             id_token_body={"user_id": user.login},
-            id_token_headers={"kid": "es256_key_id"},
+            id_token_headers={"kid": self.es256_key_public_jwk["kid"]},
             algorithm="ES256",
             access_token="es256token",
             keys=[self.es256_key_public_jwk],
@@ -428,11 +447,9 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         """Test that login works with ES384 algorithm"""
         user = self._prepare_login_test_user()
         
-        self.es384_key_public_jwk["kid"] = "es384_key_id"
-        
         self._prepare_login_test_responses(
             id_token_body={"user_id": user.login},
-            id_token_headers={"kid": "es384_key_id"},
+            id_token_headers={"kid": self.es384_key_public_jwk["kid"]},
             algorithm="ES384",
             access_token="es384token",
             keys=[self.es384_key_public_jwk],
@@ -451,20 +468,12 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         """Test that login works with HS256 algorithm"""
         user = self._prepare_login_test_user()
         
-        hs256_jwk = {
-            "kty": "oct",
-            "use": "sig",
-            "kid": "hs256_key_id",
-            "k": jwt.utils.base64url_encode(self.hs256_key).decode("utf-8"),
-            "alg": "HS256",
-        }
-        
         self._prepare_login_test_responses(
             id_token_body={"user_id": user.login},
-            id_token_headers={"kid": "hs256_key_id"},
+            id_token_headers={"kid": self.hs256_jwk["kid"]},
             algorithm="HS256",
             access_token="hs256token",
-            keys=[hs256_jwk],
+            keys=[self.hs256_jwk],
         )
         
         with MockRequest(self.env):
