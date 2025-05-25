@@ -361,6 +361,28 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
 
     @responses.activate
+    def test_login_with_custom_keys(self):
+        """Test that login works with custom provided keys"""
+        user = self._prepare_login_test_user()
+        # Generate a new RSA key for this test
+        custom_key_pem, custom_key_public_pem, _ = self._generate_rsa_key()
+        
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login},
+            private_key=custom_key_pem,
+            public_key=custom_key_public_pem,
+            access_token="custom_key_token",
+        )
+        
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
+        self.assertEqual(token, "custom_key_token")
+        self.assertEqual(login, user.login)
+
+    @responses.activate
     def test_login_with_multiple_keys_in_jwks(self):
         """Test that login works with multiple keys present in jwks"""
         user = self._prepare_login_test_user()
@@ -431,7 +453,6 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             id_token_headers={"kid": self.es256_key_public_jwk["kid"]},
             algorithm="ES256",
             access_token="es256token",
-            keys=[self.es256_key_public_jwk],
         )
         
         with MockRequest(self.env):
@@ -452,7 +473,6 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             id_token_headers={"kid": self.es384_key_public_jwk["kid"]},
             algorithm="ES384",
             access_token="es384token",
-            keys=[self.es384_key_public_jwk],
         )
         
         with MockRequest(self.env):
@@ -473,7 +493,6 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             id_token_headers={"kid": self.hs256_jwk["kid"]},
             algorithm="HS256",
             access_token="hs256token",
-            keys=[self.hs256_jwk],
         )
         
         with MockRequest(self.env):
