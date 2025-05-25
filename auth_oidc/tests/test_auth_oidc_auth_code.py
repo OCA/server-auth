@@ -12,7 +12,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa, ec
 from jose import jwt
 from jose.exceptions import JWTError
-from jose.utils import long_to_base64
+from jose.utils import long_to_base64, base64url_encode
 
 import odoo
 from odoo.exceptions import AccessDenied
@@ -62,7 +62,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             "use": "sig",
             "alg": "HS256",
             "kid": "hs256-key",
-            "k": jwt.utils.base64url_encode(cls.hs256_key).decode("utf-8"),
+            "k": base64url_encode(cls.hs256_key).decode("utf-8"),
         }
 
     @staticmethod
