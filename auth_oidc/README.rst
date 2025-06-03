@@ -75,23 +75,23 @@ Single tenant provider limits the access to user of your tenant, while
 Multitenants allow access for all AzureAD users, so user of foreign
 companies can use their AzureAD login without an guest account.
 
--  Provider Name: Azure AD Single Tenant
--  Client ID: Application (client) id
--  Client Secret: Client secret
--  Allowed: yes
+- Provider Name: Azure AD Single Tenant
+- Client ID: Application (client) id
+- Client Secret: Client secret
+- Allowed: yes
 
 or
 
--  Provider Name: Azure AD Multitenant
--  Client ID: Application (client) id
--  Client Secret: Client secret
--  Allowed: yes
--  replace {tenant_id} in urls with your Azure tenant id
+- Provider Name: Azure AD Multitenant
+- Client ID: Application (client) id
+- Client Secret: Client secret
+- Allowed: yes
+- replace {tenant_id} in urls with your Azure tenant id
 
 |image2|
 
--  Auth Link Params: Add {'prompt':'select_account'} to the auth link to
-   get the account selection screen |image3|
+- Auth Link Params: Add {'prompt':'select_account'} to the auth link to
+  get the account selection screen |image3|
 
 Setup for Keycloak
 ------------------
@@ -109,22 +109,30 @@ In Keycloak:
 
 In Odoo, create a new Oauth Provider with the following parameters:
 
--  Provider name: Keycloak (or any name you like that identify your
-   keycloak provider)
--  Auth Flow: OpenID Connect (authorization code flow)
--  Client ID: the same Client ID you entered when configuring the client
-   in Keycloak
--  Client Secret: found in keycloak on the client Credentials tab
--  Allowed: yes
--  Body: the link text to appear on the login page, such as Login with
-   Keycloak
--  Scope: openid email
--  Authentication URL: The "authorization_endpoint" URL found in the
-   OpenID Endpoint Configuration of your Keycloak realm
--  Token URL: The "token_endpoint" URL found in the OpenID Endpoint
-   Configuration of your Keycloak realm
--  JWKS URL: The "jwks_uri" URL found in the OpenID Endpoint
-   Configuration of your Keycloak realm
+- Provider name: Keycloak (or any name you like that identify your
+  keycloak provider)
+- Auth Flow: OpenID Connect (authorization code flow)
+- Client ID: the same Client ID you entered when configuring the client
+  in Keycloak
+- Client Secret: found in keycloak on the client Credentials tab
+- Allowed: yes
+- Body: the link text to appear on the login page, such as Login with
+  Keycloak
+- Scope: openid email
+- With OIDC Discovery:
+
+  - Supports OIDC Discovery: True
+  - OIDC Config URL: "<url of keycloak>/auth/realms/<realm
+    name>/.well-known/openid-configuration
+
+- Without OIDC Discovery
+
+  - Authentication URL: The "authorization_endpoint" URL found in the
+    OpenID Endpoint Configuration of your Keycloak realm
+  - Token URL: The "token_endpoint" URL found in the OpenID Endpoint
+    Configuration of your Keycloak realm
+  - JWKS URL: The "jwks_uri" URL found in the OpenID Endpoint
+    Configuration of your Keycloak realm
 
 .. |image| image:: https://raw.githubusercontent.com/OCA/server-auth/17.0/auth_oidc/static/description/oauth-microsoft_azure-api_permissions.png
 .. |image1| image:: https://raw.githubusercontent.com/OCA/server-auth/17.0/auth_oidc/static/description/oauth-microsoft_azure-optional_claims.png
@@ -139,10 +147,10 @@ On the login page, click on the authentication provider you configured.
 Known issues / Roadmap
 ======================
 
--  When going to the login screen, check for a existing token and do a
-   direct login without the clicking on the SSO link
--  When doing a logout an extra option to also logout at the SSO
-   provider.
+- When going to the login screen, check for a existing token and do a
+  direct login without the clicking on the SSO link
+- When doing a logout an extra option to also logout at the SSO
+  provider.
 
 Changelog
 =========
@@ -150,47 +158,47 @@ Changelog
 17.0.1.0.0 2024-03-20
 ---------------------
 
--  Odoo 17 migration
+- Odoo 17 migration
 
 16.0.1.1.0 2024-02-28
 ---------------------
 
--  Forward port OpenID Connect fixes from 15.0 to 16.0
+- Forward port OpenID Connect fixes from 15.0 to 16.0
 
 16.0.1.0.2 2023-11-16
 ---------------------
 
--  Readme link updates
+- Readme link updates
 
 16.0.1.0.1 2023-10-09
 ---------------------
 
--  Add AzureAD code flow provider
+- Add AzureAD code flow provider
 
 16.0.1.0.0 2023-01-27
 ---------------------
 
--  Odoo 16 migration
+- Odoo 16 migration
 
 15.0.1.0.0 2023-01-06
 ---------------------
 
--  Odoo 15 migration
+- Odoo 15 migration
 
 14.0.1.0.0 2021-12-10
 ---------------------
 
--  Odoo 14 migration
+- Odoo 14 migration
 
 13.0.1.0.0 2020-04-10
 ---------------------
 
--  Odoo 13 migration, add authorization code flow.
+- Odoo 13 migration, add authorization code flow.
 
 10.0.1.0.0 2018-10-05
 ---------------------
 
--  Initial implementation
+- Initial implementation
 
 Bug Tracker
 ===========
@@ -215,10 +223,13 @@ Authors
 Contributors
 ------------
 
--  Alexandre Fayolle <alexandre.fayolle@camptocamp.com>
--  Stéphane Bidoul <stephane.bidoul@acsone.eu>
--  David Jaen <david.jaen.revert@gmail.com>
--  Andreas Perhab <andreas.perhab@wt-io-it.at>
+- Alexandre Fayolle <alexandre.fayolle@camptocamp.com>
+- Stéphane Bidoul <stephane.bidoul@acsone.eu>
+- David Jaen <david.jaen.revert@gmail.com>
+- Andreas Perhab <andreas.perhab@wt-io-it.at>
+- Tecnativa (https://www.tecnativa.com)
+
+  - David Bañón
 
 Maintainers
 -----------

@@ -31,6 +31,11 @@ msgid "Auth Link Params"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__auth_endpoint
+msgid "Authorization URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret
 msgid "Client Secret"
 msgstr ""
@@ -38,6 +43,13 @@ msgstr ""
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__code_verifier
 msgid "Code Verifier"
+msgstr ""
+
+#. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Incorrect response from issuer, check OIDC config URL"
 msgstr ""
 
 #. module: auth_oidc
@@ -62,6 +74,11 @@ msgid "OAuth2 provider"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__oidc_discovery_url
+msgid "OIDC config URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token_code
 msgid "OpenID Connect (authorization code flow)"
 msgstr ""
@@ -82,11 +99,29 @@ msgid "Required for OpenID Connect."
 msgstr ""
 
 #. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Scope %(scope)s is not supported by provider"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__scopes_supported
+msgid "Scopes Supported"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
 msgid ""
 "Some Oauth providers don't map keys in their responses exactly as required."
 "  It is important to ensure user_id and email at least are mapped. For "
 "OpenID Connect user_id is the sub key in the standard."
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__supports_oidc_discovery
+msgid "Supports Oidc Discovery"
 msgstr ""
 
 #. module: auth_oidc
@@ -97,6 +132,11 @@ msgstr ""
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_endpoint
 msgid "Token URL"
+msgstr ""
+
+#. module: auth_oidc
+#: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
+msgid "Update OIDC config"
 msgstr ""
 
 #. module: auth_oidc

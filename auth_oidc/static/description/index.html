@@ -478,12 +478,21 @@ in Keycloak</li>
 <li>Body: the link text to appear on the login page, such as Login with
 Keycloak</li>
 <li>Scope: openid email</li>
+<li>With OIDC Discovery:<ul>
+<li>Supports OIDC Discovery: True</li>
+<li>OIDC Config URL: “&lt;url of keycloak&gt;/auth/realms/&lt;realm
+name&gt;/.well-known/openid-configuration</li>
+</ul>
+</li>
+<li>Without OIDC Discovery<ul>
 <li>Authentication URL: The “authorization_endpoint” URL found in the
 OpenID Endpoint Configuration of your Keycloak realm</li>
 <li>Token URL: The “token_endpoint” URL found in the OpenID Endpoint
 Configuration of your Keycloak realm</li>
 <li>JWKS URL: The “jwks_uri” URL found in the OpenID Endpoint
 Configuration of your Keycloak realm</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -582,6 +591,10 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <li>Stéphane Bidoul &lt;<a class="reference external" href="mailto:stephane.bidoul&#64;acsone.eu">stephane.bidoul&#64;acsone.eu</a>&gt;</li>
 <li>David Jaen &lt;<a class="reference external" href="mailto:david.jaen.revert&#64;gmail.com">david.jaen.revert&#64;gmail.com</a>&gt;</li>
 <li>Andreas Perhab &lt;<a class="reference external" href="mailto:andreas.perhab&#64;wt-io-it.at">andreas.perhab&#64;wt-io-it.at</a>&gt;</li>
+<li>Tecnativa (<a class="reference external" href="https://www.tecnativa.com">https://www.tecnativa.com</a>)<ul>
+<li>David Bañón</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="maintainers">

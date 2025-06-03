@@ -6,7 +6,6 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-07-03 10:47+0000\n"
 "Last-Translator: xtanuiha <feihu.zhang@live.com>\n"
 "Language-Team: none\n"
 "Language: zh_CN\n"
@@ -34,6 +33,11 @@ msgid "Auth Link Params"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__auth_endpoint
+msgid "Authorization URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret
 msgid "Client Secret"
 msgstr "客户端密钥"
@@ -42,6 +46,13 @@ msgstr "客户端密钥"
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__code_verifier
 msgid "Code Verifier"
 msgstr "代码验证器"
+
+#. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Incorrect response from issuer, check OIDC config URL"
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
@@ -65,6 +76,11 @@ msgid "OAuth2 provider"
 msgstr "OAuth2 提供者"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__oidc_discovery_url
+msgid "OIDC config URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token_code
 msgid "OpenID Connect (authorization code flow)"
 msgstr "OpenID Connect（授权码流程）"
@@ -85,6 +101,18 @@ msgid "Required for OpenID Connect."
 msgstr "OpenID Connect 所需。"
 
 #. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Scope %(scope)s is not supported by provider"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__scopes_supported
+msgid "Scopes Supported"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
 msgid ""
 "Some Oauth providers don't map keys in their responses exactly as required.  "
@@ -95,6 +123,11 @@ msgstr ""
 "email 被映射。对于 OpenID Connect，user_id 是标准中的 sub 键。"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__supports_oidc_discovery
+msgid "Supports Oidc Discovery"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_map
 msgid "Token Map"
 msgstr "令牌映射"
@@ -103,6 +136,11 @@ msgstr "令牌映射"
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_endpoint
 msgid "Token URL"
 msgstr "令牌网址"
+
+#. module: auth_oidc
+#: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
+msgid "Update OIDC config"
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__code_verifier

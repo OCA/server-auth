@@ -6,15 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2023-10-15 19:36+0000\n"
 "Last-Translator: Ivorra78 <informatica@totmaterial.es>\n"
 "Language-Team: none\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Poedit 3.6\n"
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__auth_link_params
@@ -34,6 +33,11 @@ msgid "Auth Link Params"
 msgstr ""
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__auth_endpoint
+msgid "Authorization URL"
+msgstr "URL de autorización"
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret
 msgid "Client Secret"
 msgstr "Secreto del cliente"
@@ -42,6 +46,14 @@ msgstr "Secreto del cliente"
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__code_verifier
 msgid "Code Verifier"
 msgstr "Verificador del código"
+
+#. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Incorrect response from issuer, check OIDC config URL"
+msgstr ""
+"Respuesta del proveedor incorrecta, comprueba la URL de configuración OIDC"
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
@@ -65,6 +77,11 @@ msgid "OAuth2 provider"
 msgstr "Proveedor OAuth2"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__oidc_discovery_url
+msgid "OIDC config URL"
+msgstr "URL de configuración OIDC"
+
+#. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token_code
 msgid "OpenID Connect (authorization code flow)"
 msgstr "OpenID Connect (flujo de código de autorización)"
@@ -85,6 +102,18 @@ msgid "Required for OpenID Connect."
 msgstr "Requerido para OpenID Connect."
 
 #. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Scope %(scope)s is not supported by provider"
+msgstr "El ambito %(scope)s no esta soportado por el proveedor"
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__scopes_supported
+msgid "Scopes Supported"
+msgstr "Ambitos soportados"
+
+#. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
 msgid ""
 "Some Oauth providers don't map keys in their responses exactly as required.  "
@@ -97,6 +126,11 @@ msgstr ""
 "en el estándar."
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__supports_oidc_discovery
+msgid "Supports Oidc Discovery"
+msgstr "Soporta OIDC Discovery"
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_map
 msgid "Token Map"
 msgstr "Mapa de Símbolos"
@@ -105,6 +139,11 @@ msgstr "Mapa de Símbolos"
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_endpoint
 msgid "Token URL"
 msgstr "URL de la ficha"
+
+#. module: auth_oidc
+#: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
+msgid "Update OIDC config"
+msgstr "Actualizar configuración OIDC"
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__code_verifier

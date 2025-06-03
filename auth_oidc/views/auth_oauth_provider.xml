@@ -15,12 +15,46 @@
             <field name="client_id" position="after">
                 <field name="client_secret" />
             </field>
+            <field name="validation_endpoint" position="attributes">
+                <attribute
+                    name="invisible"
+                    value="supports_oidc_discovery"
+                >supports_oidc_discovery</attribute>
+            </field>
+
             <field name="validation_endpoint" position="after">
-                <field name="token_endpoint" />
-                <field name="jwks_uri" />
+                <field name="token_endpoint" invisible="supports_oidc_discovery" />
+                <field name="jwks_uri" invisible="supports_oidc_discovery" />
+            </field>
+            <field name="auth_endpoint" position="attributes">
+                <attribute
+                    name="invisible"
+                    value="supports_oidc_discovery"
+                >supports_oidc_discovery</attribute>
             </field>
             <field name="auth_endpoint" position="after">
                 <field name="auth_link_params" />
+            </field>
+            <field name="data_endpoint" position="attributes">
+                <attribute
+                    name="invisible"
+                    value="supports_oidc_discovery"
+                >supports_oidc_discovery</attribute>
+            </field>
+            <field name="auth_endpoint" position="before">
+                <field name="supports_oidc_discovery" widget="boolean_toggle" />
+                <field
+                    name="oidc_discovery_url"
+                    invisible="not supports_oidc_discovery"
+                />
+                <button
+                    string="Update OIDC config"
+                    name="action_get_oidc_configuration"
+                    type="object"
+                    class="oe_highlight"
+                    invisible="not supports_oidc_discovery"
+                    colspan="2"
+                />
             </field>
         </field>
     </record>

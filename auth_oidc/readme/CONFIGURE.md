@@ -68,9 +68,13 @@ In Odoo, create a new Oauth Provider with the following parameters:
 - Body: the link text to appear on the login page, such as Login with
   Keycloak
 - Scope: openid email
-- Authentication URL: The "authorization_endpoint" URL found in the
-  OpenID Endpoint Configuration of your Keycloak realm
-- Token URL: The "token_endpoint" URL found in the OpenID Endpoint
-  Configuration of your Keycloak realm
-- JWKS URL: The "jwks_uri" URL found in the OpenID Endpoint
-  Configuration of your Keycloak realm
+- With OIDC Discovery:
+  - Supports OIDC Discovery: True
+  - OIDC Config URL: "\<url of keycloak>/auth/realms/\<realm name>/.well-known/openid-configuration
+- Without OIDC Discovery
+  - Authentication URL: The "authorization_endpoint" URL found in the
+    OpenID Endpoint Configuration of your Keycloak realm
+  - Token URL: The "token_endpoint" URL found in the OpenID Endpoint
+    Configuration of your Keycloak realm
+  - JWKS URL: The "jwks_uri" URL found in the OpenID Endpoint
+    Configuration of your Keycloak realm

@@ -6,7 +6,6 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-10-23 09:06+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -36,6 +35,11 @@ msgid "Auth Link Params"
 msgstr "Parametri link autorizzazione"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__auth_endpoint
+msgid "Authorization URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__client_secret
 msgid "Client Secret"
 msgstr "Chiave segreta client"
@@ -44,6 +48,13 @@ msgstr "Chiave segreta client"
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__code_verifier
 msgid "Code Verifier"
 msgstr "Verificatore codice"
+
+#. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Incorrect response from issuer, check OIDC config URL"
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
@@ -67,6 +78,11 @@ msgid "OAuth2 provider"
 msgstr "Provider OAuth2"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__oidc_discovery_url
+msgid "OIDC config URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__id_token_code
 msgid "OpenID Connect (authorization code flow)"
 msgstr "OpenID Connect (flusso codice autorizzazione)"
@@ -87,6 +103,18 @@ msgid "Required for OpenID Connect."
 msgstr "Richiesto per OpenID Connect."
 
 #. module: auth_oidc
+#. odoo-python
+#: code:addons/auth_oidc/models/auth_oauth_provider.py:0
+#, python-format
+msgid "Scope %(scope)s is not supported by provider"
+msgstr ""
+
+#. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__scopes_supported
+msgid "Scopes Supported"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__token_map
 msgid ""
 "Some Oauth providers don't map keys in their responses exactly as required.  "
@@ -98,6 +126,11 @@ msgstr ""
 "mappati. Per OpenID Connect user_id è la sotto-chiave nello standard."
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__supports_oidc_discovery
+msgid "Supports Oidc Discovery"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_map
 msgid "Token Map"
 msgstr "Mappa token"
@@ -106,6 +139,11 @@ msgstr "Mappa token"
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__token_endpoint
 msgid "Token URL"
 msgstr "URL token"
+
+#. module: auth_oidc
+#: model_terms:ir.ui.view,arch_db:auth_oidc.view_oidc_provider_form
+msgid "Update OIDC config"
+msgstr ""
 
 #. module: auth_oidc
 #: model:ir.model.fields,help:auth_oidc.field_auth_oauth_provider__code_verifier

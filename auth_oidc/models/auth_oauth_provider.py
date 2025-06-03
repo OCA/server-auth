@@ -7,7 +7,7 @@ import secrets
 
 import requests
 
-from odoo import fields, models, tools
+from odoo import _, api, exceptions, fields, models, tools
 
 try:
     from jose import jwt
@@ -50,6 +50,60 @@ class AuthOauthProvider(models.Model):
         help="Additional parameters for the auth link. "
         "For example: {'prompt':'select_account'}"
     )
+    oidc_discovery_url = fields.Char(string="OIDC Discovery Document URL")
+    supports_oidc_discovery = fields.Boolean(default=False)
+    auth_endpoint = fields.Char(required=False)
+    scopes_supported = fields.Char()
+
+    @api.onchange("scope")
+    def onchange_scope(self):
+        if not self.scopes_supported:
+            return
+        for scope in self.scope.split(" "):
+            if ":" in scope:
+                while len(scope) > 1:
+                    scope = ":".join(scope.split(":")[0:-1])
+                    if scope + ":*" not in self.scopes_supported:
+                        return {
+                            "warning": {
+                                "title": _("Warning: Invalid Scope"),
+                                "message": _(
+                                    "Scope %(scope)s is not advertised "
+                                    "as supported by provider"
+                                )
+                                % {"scope": scope},
+                            }
+                        }
+            if scope not in self.scopes_supported:
+                return {
+                    "warning": {
+                        "title": _("Warning: Invalid Scope"),
+                        "message": _(
+                            "Scope %(scope)s is not advertised as supported by provider"
+                        )
+                        % {"scope": scope},
+                    }
+                }
+
+    def action_get_oidc_configuration(self):
+        if not self.supports_oidc_discovery:
+            raise exceptions.UserError(
+                _("OIDC discovery is not supported by this provider.")
+            )
+        r = requests.get(self.oidc_discovery_url, timeout=10)
+        r.raise_for_status()
+        response = r.json()
+        try:
+            self.auth_endpoint = response["authorization_endpoint"]
+            self.validation_endpoint = response["userinfo_endpoint"]
+        except KeyError:
+            raise exceptions.ValidationError(
+                _("Incorrect response from issuer, check OIDC Discovery Document URL")
+            ) from KeyError
+        self.jwks_uri = response.get("jwks_uri", False)
+        self.scopes_supported = response.get("scopes_supported", False)
+        self.token_endpoint = response.get("token_endpoint", False)
+        self.data_endpoint = response.get("data_endpoint", False)
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):
