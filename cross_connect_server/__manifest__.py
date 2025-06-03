@@ -4,7 +4,7 @@
 
 {
     "name": "Cross Connect Server",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.1",
     "author": "Akretion, Odoo Community Association (OCA)",
     "summary": "Cross Connect Server allows Cross Connect Client to connect to it.",
     "category": "Tools",
