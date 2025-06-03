@@ -83,7 +83,9 @@ class CrossConnectClient(models.Model):
         }
         # Create user if not exists
         if not user:
-            user = self.env["res.users"].create(vals)
+            user = (
+                self.env["res.users"].with_context(no_reset_password=True).create(vals)
+            )
         else:
             user.write(vals)
 
