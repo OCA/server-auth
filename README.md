@@ -23,22 +23,22 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [auth_api_key](auth_api_key/) | 13.0.1.1.1 |  | Authenticate http requests from an API key
 [auth_from_http_remote_user](auth_from_http_remote_user/) | 13.0.1.0.0 |  | Authenticate via HTTP Remote User
-[auth_jwt](auth_jwt/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | JWT bearer token authentication.
-[auth_jwt_demo](auth_jwt_demo/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Test/demo module for auth_jwt.
+[auth_jwt](auth_jwt/) | 13.0.1.1.0 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | JWT bearer token authentication.
+[auth_jwt_demo](auth_jwt_demo/) | 13.0.1.1.0 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | Test/demo module for auth_jwt.
 [auth_ldaps](auth_ldaps/) | 13.0.1.0.2 |  | Allows to use LDAP over SSL authentication
-[auth_oauth_autologin](auth_oauth_autologin/) | 13.0.1.1.0 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Automatically redirect to the OAuth provider for login
+[auth_oauth_autologin](auth_oauth_autologin/) | 13.0.1.1.0 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | Automatically redirect to the OAuth provider for login
 [auth_oauth_multi_token](auth_oauth_multi_token/) | 13.0.2.0.0 |  | Allow multiple connection with the same OAuth account
-[auth_oidc](auth_oidc/) | 13.0.1.1.1 | [![sbidoul](https://github.com/sbidoul.png?size=30px)](https://github.com/sbidoul) | Allow users to login through OpenID Connect Provider
+[auth_oidc](auth_oidc/) | 13.0.1.1.1 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | Allow users to login through OpenID Connect Provider
 [auth_saml](auth_saml/) | 13.0.1.0.2 |  | Saml2 Authentication
 [auth_session_timeout](auth_session_timeout/) | 13.0.1.1.1 |  | This module disable all inactive sessions since a given delay
 [auth_signup_verify_email](auth_signup_verify_email/) | 13.0.1.0.2 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 13.0.1.0.0 |  | Makes the user login field case insensitive
 [base_user_show_email](base_user_show_email/) | 13.0.1.0.0 |  | Untangle user login and email
 [password_security](password_security/) | 13.0.1.0.0 |  | Allow admin to set password security requirements.
-[user_log_view](user_log_view/) | 13.0.1.0.0 | [![trojikman](https://github.com/trojikman.png?size=30px)](https://github.com/trojikman) | Allow to see user's actions log
+[user_log_view](user_log_view/) | 13.0.1.0.0 | <a href='https://github.com/trojikman'><img src='https://github.com/trojikman.png' width='32' height='32' style='border-radius:50%;' alt='trojikman'/></a> | Allow to see user's actions log
 [users_ldap_groups](users_ldap_groups/) | 13.0.1.0.1 |  | Adds user accounts to groups based on rules defined by the administrator.
-[users_ldap_mail](users_ldap_mail/) | 13.0.1.0.1 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP mapping for user name and e-mail
-[users_ldap_populate](users_ldap_populate/) | 13.0.1.0.0 | [![joao-p-marques](https://github.com/joao-p-marques.png?size=30px)](https://github.com/joao-p-marques) | LDAP Populate
+[users_ldap_mail](users_ldap_mail/) | 13.0.1.0.1 | <a href='https://github.com/joao-p-marques'><img src='https://github.com/joao-p-marques.png' width='32' height='32' style='border-radius:50%;' alt='joao-p-marques'/></a> | LDAP mapping for user name and e-mail
+[users_ldap_populate](users_ldap_populate/) | 13.0.1.0.0 | <a href='https://github.com/joao-p-marques'><img src='https://github.com/joao-p-marques.png' width='32' height='32' style='border-radius:50%;' alt='joao-p-marques'/></a> | LDAP Populate
 [vault](vault/) | 13.0.1.4.0 |  | Password vault integration in Odoo
 [vault_share](vault_share/) | 13.0.1.0.1 |  | Implementation of a mechanism to share secrets
 
