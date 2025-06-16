@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2025 Alberto Martínez <alberto.martinez@sygel.es>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="form_res_users_key_description" model="ir.ui.view">
+        <field name="name">form_res_users_key_description</field>
+        <field name="model">res.users.apikeys.description</field>
+        <field name="inherit_id" ref="base.form_res_users_key_description" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <br />
+                <p
+                >Enter the optional scope for the key. If set, the key access would be restricted.</p>
+                <p invisible="has_custom_scope">APIKey scope: <field
+                        name="scope"
+                        placeholder="No scope"
+                    /></p>
+                <p invisible="not has_custom_scope"><field
+                        name="custom_scope"
+                        placeholder="What's the key scope?"
+                    /></p>
+                <p>I want a custom scope <field name="has_custom_scope" /></p>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
