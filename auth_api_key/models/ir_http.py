@@ -5,8 +5,9 @@
 
 import logging
 
+from werkzeug.exceptions import Unauthorized
+
 from odoo import models
-from odoo.exceptions import AccessDenied
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
@@ -33,4 +34,4 @@ class IrHttp(models.AbstractModel):
                 request.auth_api_key_id = auth_api_key.id
                 return True
         _logger.error("Wrong HTTP_API_KEY, access denied")
-        raise AccessDenied()
+        raise Unauthorized()
