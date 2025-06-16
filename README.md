@@ -23,7 +23,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [auth_admin_passkey](auth_admin_passkey/) | 17.0.1.0.0 |  | Allows system administrator to authenticate with any account
 [auth_admin_passkey_totp_mail_enforce](auth_admin_passkey_totp_mail_enforce/) | 17.0.1.0.0 |  | Disable 2FA if Passkey is being used
-[auth_api_key](auth_api_key/) | 17.0.1.1.1 |  | Authenticate http requests from an API key
+[auth_api_key](auth_api_key/) | 17.0.1.1.2 |  | Authenticate http requests from an API key
 [auth_api_key_group](auth_api_key_group/) | 17.0.1.0.1 | <a href='https://github.com/simahawk'><img src='https://github.com/simahawk.png' width='32' height='32' style='border-radius:50%;' alt='simahawk'/></a> | Allow grouping API keys together. Grouping per se does nothing. This feature is supposed to be used by other modules to limit access to services or records based on groups of keys.
 [auth_api_key_server_env](auth_api_key_server_env/) | 17.0.1.0.0 |  | Configure api keys via server env. This can be very useful to avoid mixing your keys between your various environments when restoring databases. All you have to do is to add a new section to your configuration file according to the following convention:
 [auth_jwt](auth_jwt/) | 17.0.1.0.0 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | JWT bearer token authentication.
