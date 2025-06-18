@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template
+        id="signup_recaptcha_v2"
+        inherit_id="auth_signup.signup"
+        name="Sign up login recaptcha v2"
+    >
+        <xpath expr="//div[hasclass('oe_login_buttons')]" position="before">
+            <t t-call="website_recaptcha_v2.recaptcha_widget" />
+        </xpath>
+    </template>
+</odoo>

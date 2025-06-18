@@ -17,6 +17,7 @@ org_name: Odoo Community Association (OCA)
 org_slug: OCA
 rebel_module_groups:
 - auth_jwt_server_env
+- auth_signup_recaptcha_v2
 repo_description: Modules for handling various authentication schemes
 repo_name: Server Authentication
 repo_slug: server-auth
