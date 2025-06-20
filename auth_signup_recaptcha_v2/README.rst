@@ -1,6 +1,6 @@
-=========================
-Auth Sign Up Recaptcha v2
-=========================
+===================
+Signup reCAPTCHA v2
+===================
 
 .. 
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -28,7 +28,7 @@ Auth Sign Up Recaptcha v2
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-Add recaptcha v2 to sign up form.
+Add reCAPTCHA v2 to sign-up form.
 
 **Table of contents**
 
