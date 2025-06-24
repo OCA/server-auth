@@ -5,7 +5,6 @@ from odoo import models
 
 
 class AuthJwtValidator(models.Model):
-
     _name = "auth.jwt.validator"
     _inherit = ["auth.jwt.validator", "server.env.mixin"]
 
