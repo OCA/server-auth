@@ -50,6 +50,12 @@ class AuthOauthProvider(models.Model):
         help="Additional parameters for the auth link. "
         "For example: {'prompt':'select_account'}"
     )
+    end_session_endpoint = fields.Char(
+        string="End Session URL",
+        help="If set, the user is logged out in the authorization provider upon logout "
+        "in the client, should be the value of end_session_endpoint specified by "
+        "the authorization provider.",
+    )
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):
