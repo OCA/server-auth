@@ -79,6 +79,8 @@ class OpenIDLogout(Session):
                 params = parse_qs(components.query)
                 params["client_id"] = provider.client_id
                 params["post_logout_redirect_uri"] = redirect_url
+                if provider.skip_logout_confirmation and user.oauth_id_token:
+                    params["id_token_hint"] = user.oauth_id_token
                 logout_url = components._replace(query=url_encode(params)).geturl()
                 request.session.logout(keep_db=True)
                 return request.redirect(logout_url, local=False)
