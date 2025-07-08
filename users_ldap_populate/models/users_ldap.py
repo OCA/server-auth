@@ -66,6 +66,8 @@ class CompanyLDAP(models.Model):
             results = self._get_ldap_entry_dicts(conf)
             for result in results:
                 login = result[1][login_attr][0].lower().strip()
+                if isinstance(login, bytes):
+                    login = login.decode()
                 user_id = None
                 try:
                     user_id = self.with_context(
