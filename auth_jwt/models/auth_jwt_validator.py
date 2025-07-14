@@ -27,6 +27,12 @@ from ..exceptions import (
 _logger = logging.getLogger(__name__)
 
 AUTHORIZATION_RE = re.compile(r"^Bearer ([^ ]+)$")
+SECRET_ALGORITHM_SELECTION = [
+    # https://pyjwt.readthedocs.io/en/stable/algorithms.html
+    ("HS256", "HS256 - HMAC using SHA-256 hash algorithm"),
+    ("HS384", "HS384 - HMAC using SHA-384 hash algorithm"),
+    ("HS512", "HS512 - HMAC using SHA-512 hash algorithm"),
+]
 
 
 class AuthJwtValidator(models.Model):
@@ -39,12 +45,7 @@ class AuthJwtValidator(models.Model):
     )
     secret_key = fields.Char()
     secret_algorithm = fields.Selection(
-        [
-            # https://pyjwt.readthedocs.io/en/stable/algorithms.html
-            ("HS256", "HS256 - HMAC using SHA-256 hash algorithm"),
-            ("HS384", "HS384 - HMAC using SHA-384 hash algorithm"),
-            ("HS512", "HS512 - HMAC using SHA-512 hash algorithm"),
-        ],
+        SECRET_ALGORITHM_SELECTION,
         default="HS256",
     )
     public_key_jwk_uri = fields.Char()
@@ -96,6 +97,17 @@ class AuthJwtValidator(models.Model):
     )
     cookie_secure = fields.Boolean(
         default=True, help="Set to false only for development without https."
+    )
+    renew_cookie_on_response = fields.Boolean(
+        help="Renew the cookie in every response to stay the client "
+        "authenticatedas long it use the API. Don't mark unless you have a "
+        "way to invalidate sessions",
+        default=True,
+    )
+    renew_cookie_secret = fields.Char()
+    renew_cookie_algorithm = fields.Selection(
+        SECRET_ALGORITHM_SELECTION,
+        default="HS256",
     )
 
     _sql_constraints = [
@@ -163,26 +175,40 @@ class AuthJwtValidator(models.Model):
         jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
         return jwks_client.get_signing_key(kid).key
 
-    def _encode(self, payload, secret, expire):
+    def _encode(self, payload, expire, secret=False):
         """Encode and sign a JWT payload so it can be decoded and validated with
         _decode().
 
         The aud and iss claims are set to this validator's values.
         The exp claim is set according to the expire parameter.
         """
+        if secret:
+            key = secret
+            algorithm = "HS256"
+        elif self.renew_cookie_on_response:
+            key = self.renew_cookie_secret
+            algorithm = self.renew_cookie_algorithm
+        elif self.signature_type == "secret":
+            key = self.secret_key
+            algorithm = self.secret_algorithm
+        else:
+            raise ConfigurationError(_("The token cannot be encoded with public key"))
         payload = dict(
             payload,
             exp=timegm(datetime.datetime.utcnow().utctimetuple()) + expire,
             aud=self.audience,
             iss=self.issuer,
         )
-        return jwt.encode(payload, key=secret, algorithm="HS256")
+        return jwt.encode(payload, key=key, algorithm=algorithm)
 
-    def _decode(self, token, secret=None):
+    def _decode(self, token, secret=None, cookie_secret=False):
         """Validate and decode a JWT token, return the payload."""
         if secret:
             key = secret
             algorithm = "HS256"
+        elif self.renew_cookie_on_response and cookie_secret:
+            key = self.renew_cookie_secret
+            algorithm = self.renew_cookie_algorithm
         elif self.signature_type == "secret":
             key = self.secret_key
             algorithm = self.secret_algorithm
@@ -290,13 +316,6 @@ class AuthJwtValidator(models.Model):
     def unlink(self):
         self._unregister_auth_method()
         return super().unlink()
-
-    def _get_jwt_cookie_secret(self):
-        secret = self.env["ir.config_parameter"].sudo().get_param("database.secret")
-        if not secret:
-            _logger.error("database.secret system parameter is not set.")
-            raise ConfigurationError()
-        return secret
 
     @api.model
     def _parse_bearer_authorization(self, authorization):

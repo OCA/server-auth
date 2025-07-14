@@ -24,6 +24,8 @@
         <field name="partner_id_required" eval="False" />
         <field name="cookie_enabled" eval="True" />
         <field name="cookie_name">demo_auth</field>
+        <field name="renew_cookie_on_response" eval="True" />
+        <field name="renew_cookie_secret">renew_cookie_secret</field>
     </record>
     <record id="demo_keycloak_validator" model="auth.jwt.validator">
         <field name="name">demo_keycloak</field>

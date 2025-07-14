@@ -65,7 +65,7 @@ class IrHttpJwt(models.AbstractModel):
                 raise
             token = cls._get_cookie_token(validator.cookie_name)
             assert token
-            return validator._decode(token, secret=validator._get_jwt_cookie_secret())
+            return validator._decode(token, cookie_secret=True)
 
     @classmethod
     def _auth_method_jwt(cls, validator_name=None):
@@ -91,7 +91,7 @@ class IrHttpJwt(models.AbstractModel):
                 raise list(exceptions.values())[0]
             raise UnauthorizedCompositeJwtError(exceptions)
 
-        if validator.cookie_enabled:
+        if validator.cookie_enabled and validator.renew_cookie_on_response:
             if not validator.cookie_name:
                 _logger.info("Cookie name not set for validator %s", validator.name)
                 raise ConfigurationError()
@@ -99,7 +99,6 @@ class IrHttpJwt(models.AbstractModel):
                 key=validator.cookie_name,
                 value=validator._encode(
                     payload,
-                    secret=validator._get_jwt_cookie_secret(),
                     expire=validator.cookie_max_age,
                 ),
                 max_age=validator.cookie_max_age,

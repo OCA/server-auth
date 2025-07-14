@@ -68,6 +68,24 @@
                                 name="cookie_max_age"
                                 attrs="{'invisible': [('cookie_enabled', '=', False)]}"
                             />
+                            <field
+                                name="cookie_secure"
+                                attrs="{'invisible': [('cookie_enabled', '=', False)]}"
+                            />
+                            <field
+                                name="renew_cookie_on_response"
+                                attrs="{'invisible': [('cookie_enabled', '=', False)]}"
+                            />
+                            <field
+                                name="renew_cookie_secret"
+                                attrs="{'invisible': ['|', ('cookie_enabled', '=', False), ('renew_cookie_on_response', '=', False)],
+                                        'required': [('cookie_enabled', '=', True), ('renew_cookie_on_response', '=', True)]}"
+                            />
+                            <field
+                                name="renew_cookie_algorithm"
+                                attrs="{'invisible': ['|', ('cookie_enabled', '=', False), ('renew_cookie_on_response', '=', False)],
+                                        'required': [('cookie_enabled', '=', True), ('renew_cookie_on_response', '=', True)]}"
+                            />
                         </group>
                     </group>
                 </sheet>
