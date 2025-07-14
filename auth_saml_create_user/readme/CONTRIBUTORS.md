@@ -4,3 +4,7 @@
 - Larbi Gharib \<larbi.gharib@savoirfairelinux.com\>
 - Pierre Gault \<pierre.gault@savoirfairelinux.com\>
 - William Beverly \<william.beverly@savoirfairelinux.com\>
+
+- [SMILE] (https://smile.eu/en):
+  - Martin Deconinck \<martin.deconinck@smile.fr\>
+  - Théo Martin \<theo.martin@smile.fr\>

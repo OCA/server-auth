@@ -10,9 +10,9 @@ Auth SAML Create User
    !! source digest: sha256:99e8fd5583907518e2d4a0ef800c952bf67fe884007baa8365c037da4ffa55b0
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-.. |badge1| image:: https://img.shields.io/badge/maturity-Production%2FStable-green.png
+.. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
-    :alt: Production/Stable
+    :alt: Beta
 .. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
@@ -61,16 +61,27 @@ Authors
 -------
 
 * Savoir-faire Linux
+* Smile
 
 Contributors
 ------------
 
 - Luis Garcia(luis.garcia@savoirfairelinux.com)
+
 - Jerome Oufella(jerome.oufella@savoirfairelinux.com)
+
 - Rim Ben Dhaou <rim.bendhaou@savoirfairelinux.com>
+
 - Larbi Gharib <larbi.gharib@savoirfairelinux.com>
+
 - Pierre Gault <pierre.gault@savoirfairelinux.com>
+
 - William Beverly <william.beverly@savoirfairelinux.com>
+
+- [SMILE] (https://smile.eu/en):
+
+  - Martin Deconinck <martin.deconinck@smile.fr>
+  - Théo Martin <theo.martin@smile.fr>
 
 Other credits
 -------------

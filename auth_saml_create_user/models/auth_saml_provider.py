@@ -8,5 +8,5 @@ class AuthSamlProvider(models.Model):
     _inherit = "auth.saml.provider"
 
     create_user = fields.Boolean(
-        string="Create User",
+        default=True,
     )
