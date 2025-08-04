@@ -40,7 +40,7 @@ msgstr "URL JWKS"
 #: model:auth.oauth.provider,body:auth_oidc.provider_azuread_multi
 #: model:auth.oauth.provider,body:auth_oidc.provider_azuread_single
 msgid "Log in with Microsoft"
-msgstr "Accedi con Mcrosoft"
+msgstr "Accedi con Microsoft"
 
 #. module: auth_oidc
 #: model:ir.model.fields.selection,name:auth_oidc.selection__auth_oauth_provider__flow__access_token
