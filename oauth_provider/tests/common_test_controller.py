@@ -6,11 +6,13 @@ from datetime import datetime, timedelta
 from unittest import mock
 from urllib.parse import parse_qs, urlparse
 
+# from werkzeug.serving import BaseWSGIServer
 from werkzeug.test import Client
-from werkzeug.wrappers import BaseResponse
+from werkzeug.wrappers import Response
 
-from odoo import fields
-from odoo.service import wsgi_server
+from odoo import fields, http
+
+# from odoo.service import wsgi_server
 from odoo.tests.common import TransactionCase
 from odoo.tools.misc import consteq
 
@@ -90,7 +92,7 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
 
     def initialize_test_client(self):
         # Instantiate a test client
-        self.test_client = Client(wsgi_server.application, BaseResponse)
+        self.test_client = Client(http.root, Response)
         # Select the database
         self.get_request("/web", data={"db": self.env.cr.dbname})
 
@@ -110,7 +112,7 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
         self.get_request("/web/session/logout")
         self.logged_user = False
 
-    @mock.patch("odoo.http.WebRequest.env", new_callable=mock.PropertyMock)
+    @mock.patch("odoo.http.request.env", new_callable=mock.PropertyMock)
     def get_request(self, uri, request_env, data=None, headers=None):
         """Execute a GET request on the test client"""
         # Mock the http request's environ to allow it to see test records
@@ -121,8 +123,8 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
             uri, query_string=data, environ_base=self.werkzeug_environ, headers=headers
         )
 
-    @mock.patch("odoo.http.WebRequest.env", new_callable=mock.PropertyMock)
-    @mock.patch("odoo.http.WebRequest.validate_csrf")
+    @mock.patch("odoo.http.request.env", new_callable=mock.PropertyMock)
+    @mock.patch("odoo.http.request.validate_csrf")
     def post_request(self, uri, validate_csrf, request_env, data=None, headers=None):
         """Execute a POST request on the test client"""
         # Mock the http request's environ to allow it to see test records
