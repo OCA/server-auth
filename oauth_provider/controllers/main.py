@@ -288,6 +288,7 @@ class OAuth2ProviderController(http.Controller):
         # Add the oauth user identifier, if user's information access is
         # allowed by the token's scopes
         user_data = token._get_data_for_model("res.users", res_id=token.user_id.id)
+        data.update(user_data)
         if "id" in user_data:
             data.update(user_id=token._generate_user_id())
         return self._json_response(data=data)
@@ -311,30 +312,159 @@ class OAuth2ProviderController(http.Controller):
         return self._json_response(data=data)
 
     @http.route(
-        "/oauth2/otherinfo",
+        "/oauth2/resources/<string:model>",
         type="http",
         auth="oauth_provider",
         methods=["GET"],
-        websise=True,
+        website=True,
     )
-    def otherinfo(self, access_token=None, model=None, *args, **kwargs):
-        """Return allowed information about the requested model"""
+    def protected_resource(
+        self, model, access_token=None, resource_id=None, *args, **kwargs
+    ):
+        """Return allowed information about the requested model
+
+        This endpoint follows OAuth 2.0 RFC 6749 for protected resource access.
+        It requires a valid access token and appropriate scopes.
+        """
         ensure_db()
 
-        model_obj = (
-            http.request.env["ir.model"]
-            .sudo()
-            .search(
-                [
-                    ("model", "=", model),
-                ]
-            )
-        )
-        if not model_obj:
-            return self._json_response(data={"error": "invalid_model"}, status=400)
+        # Extract token from Authorization header if not provided as parameter
+        if not access_token:
+            auth_header = http.request.httprequest.headers.get("Authorization", "")
+            if auth_header.startswith("Bearer "):
+                access_token = auth_header[7:]  # Remove "Bearer " prefix
+            else:
+                return self._json_response(
+                    data={
+                        "error": "invalid_request",
+                        "error_description": (
+                            "Missing access token. Use Authorization: Bearer "
+                            "<token> header or access_token parameter."
+                        ),
+                    },
+                    status=401,
+                )
 
-        data = http.request.oauth_token._get_data_for_model(model)
-        return self._json_response(data=data)
+        # Validate the access token
+        token = self._check_access_token(access_token)
+        if not token:
+            return self._json_response(
+                data={
+                    "error": "invalid_token",
+                    "error_description": (
+                        "The access token provided is expired, revoked, "
+                        "malformed, or invalid."
+                    ),
+                },
+                status=401,
+            )
+
+        # Validate that the model exists and is accessible
+        try:
+            model_obj = (
+                http.request.env["ir.model"]
+                .sudo()
+                .search([("model", "=", model)], limit=1)
+            )
+            if not model_obj:
+                return self._json_response(
+                    data={
+                        "error": "invalid_resource",
+                        "error_description": (
+                            f"The requested resource model '{model}' does not exist."
+                        ),
+                    },
+                    status=404,
+                )
+
+            # Check if the token has appropriate scopes for this model
+            allowed_scopes = token.scope_ids.filtered(lambda s: s.model == model)
+            if not allowed_scopes:
+                return self._json_response(
+                    data={
+                        "error": "insufficient_scope",
+                        "error_description": (
+                            f"The access token does not have the required "
+                            f"scope to access '{model}' resources."
+                        ),
+                    },
+                    status=403,
+                )
+
+            # Get data based on scopes and optional resource_id filter
+            res_id = None
+            if resource_id:
+                try:
+                    res_id = int(resource_id)
+                except (ValueError, TypeError):
+                    return self._json_response(
+                        data={
+                            "error": "invalid_request",
+                            "error_description": (
+                                "Invalid resource_id format. Must be an integer."
+                            ),
+                        },
+                        status=400,
+                    )
+
+            data = token._get_data_for_model(model, res_id=res_id)
+
+            # Return structured response following OAuth 2.0 best practices
+            response_data = {
+                "resource": model,
+                "data": data,
+                "scope": " ".join(allowed_scopes.mapped("code")),
+                "client_id": token.client_id.identifier,
+            }
+
+            if res_id:
+                response_data["resource_id"] = res_id
+
+            return self._json_response(data=response_data)
+
+        except Exception as e:
+            _logger.error("Error accessing protected resource: %s", str(e))
+            return self._json_response(
+                data={
+                    "error": "server_error",
+                    "error_description": (
+                        "An internal server error occurred while "
+                        "processing the request."
+                    ),
+                },
+                status=500,
+            )
+
+    @http.route(
+        "/oauth2/otherinfo",
+        type="http",
+        auth="none",
+        methods=["GET"],
+        website=True,
+    )
+    def otherinfo(self, access_token=None, model=None, *args, **kwargs):
+        """Legacy endpoint for backward compatibility
+
+        DEPRECATED: Use /oauth2/resources/<model> instead.
+        This endpoint is maintained for backward compatibility but should
+        not be used in new implementations.
+        """
+        _logger.warning(
+            "DEPRECATED: /oauth2/otherinfo endpoint is deprecated. "
+            "Use /oauth2/resources/<model> instead."
+        )
+
+        if not model:
+            return self._json_response(
+                data={
+                    "error": "invalid_request",
+                    "error_description": "Missing required 'model' parameter.",
+                },
+                status=400,
+            )
+
+        # Redirect to new endpoint implementation
+        return self.protected_resource(model, access_token, *args, **kwargs)
 
     @http.route(
         "/oauth2/revoke_token", type="http", auth="none", methods=["POST"], website=True
