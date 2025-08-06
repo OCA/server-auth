@@ -26,7 +26,7 @@ class TestOAuthProviderController(
     TestOAuthProviderRevokeTokenController,
 ):
     def setUp(self):
-        super(TestOAuthProviderController, self).setUp("legacy application")
+        super().setUp("legacy application")
 
     def test_token_error_missing_arguments(self):
         """Check /oauth2/token without any argument
@@ -268,7 +268,7 @@ class TestOAuthProviderController(
         """
         # Don't define a secret for the client
         auth_string = base64.b64encode(
-            "{client.identifier}:secret".format(client=self.client).encode("utf8")
+            f"{self.client.identifier}:secret".encode()
         ).decode("utf8")
 
         # Ask a token to the server
@@ -284,7 +284,7 @@ class TestOAuthProviderController(
             headers=[
                 (
                     "Authorization",
-                    "Basic {auth_string}".format(auth_string=auth_string),
+                    f"Basic {auth_string}",
                 ),
             ],
         )
@@ -300,7 +300,7 @@ class TestOAuthProviderController(
         # Define a secret for the client
         self.client.secret = "OAuth Client secret"
         auth_string = base64.b64encode(
-            "{client.identifier}:secret".format(client=self.client).encode("utf8")
+            f"{self.client.identifier}:secret".encode()
         ).decode("utf8")
 
         # Ask a token to the server
@@ -316,7 +316,7 @@ class TestOAuthProviderController(
             headers=[
                 (
                     "Authorization",
-                    "Basic {auth_string}".format(auth_string=auth_string),
+                    f"Basic {auth_string}",
                 ),
             ],
         )
@@ -329,9 +329,7 @@ class TestOAuthProviderController(
         # Define a secret for the client
         self.client.secret = "OAuth Client secret"
         auth_string = base64.b64encode(
-            "{client.identifier}:{client.secret}".format(client=self.client).encode(
-                "utf8"
-            )
+            f"{self.client.identifier}:{self.client.secret}".encode()
         ).decode("utf8")
 
         # Ask a token to the server
@@ -347,7 +345,7 @@ class TestOAuthProviderController(
             headers=[
                 (
                     "Authorization",
-                    "Basic {auth_string}".format(auth_string=auth_string),
+                    f"Basic {auth_string}",
                 ),
             ],
         )
@@ -377,7 +375,7 @@ class TestOAuthProviderController(
         """
         # Don't define a secret for the client
         auth_string = base64.b64encode(
-            "{client.identifier}:secret".format(client=self.client).encode("utf8")
+            f"{self.client.identifier}:secret".encode()
         ).decode("utf8")
 
         # Ask a token to the server
@@ -393,7 +391,7 @@ class TestOAuthProviderController(
             headers=[
                 (
                     "Authorization",
-                    "Digest {auth_string}".format(auth_string=auth_string),
+                    f"Digest {auth_string}",
                 ),
             ],
         )
@@ -425,9 +423,7 @@ class TestOAuthProviderController(
         # Define a secret for the client
         self.client.secret = "OAuth Client secret"
         auth_string = base64.b64encode(
-            "{client.identifier}:{client.secret}".format(client=self.client).encode(
-                "utf8"
-            )
+            f"{self.client.identifier}:{self.client.secret}".encode()
         ).decode("utf8")
 
         # Ask a token to the server
@@ -443,7 +439,7 @@ class TestOAuthProviderController(
             headers=[
                 (
                     "Authorization",
-                    "Digest {auth_string}".format(auth_string=auth_string),
+                    f"Digest {auth_string}",
                 ),
             ],
         )

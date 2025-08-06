@@ -32,7 +32,7 @@ class TestOAuthProviderController(
     TestOAuthProviderRevokeTokenController,
 ):
     def setUp(self):
-        super(TestOAuthProviderController, self).setUp("web application")
+        super().setUp("web application")
 
     def new_code(self):
         # Configure the client to skip the authorization page
@@ -69,9 +69,7 @@ class TestOAuthProviderController(
         )
         self.assertUrlsEqual(
             response.headers["Location"],
-            "{uri_base}?{query_string}".format(
-                uri_base=self.redirect_uri_base, query_string=query_string
-            ),
+            f"{self.redirect_uri_base}?{query_string}",
         )
         self.assertEqual(code.user_id, self.user)
 
@@ -370,9 +368,7 @@ class TestOAuthProviderController(
         )
         self.assertUrlsEqual(
             response.headers["Location"],
-            "{uri_base}?{query_string}".format(
-                uri_base=self.redirect_uri_base, query_string=query_string
-            ),
+            f"{self.redirect_uri_base}?{query_string}",
         )
         self.assertEqual(code.user_id, self.user)
 
@@ -424,9 +420,7 @@ class TestOAuthProviderController(
         )
         self.assertUrlsEqual(
             response.headers["Location"],
-            "{uri_base}?{query_string}".format(
-                uri_base=self.redirect_uri_base, query_string=query_string
-            ),
+            f"{self.redirect_uri_base}?{query_string}",
         )
         self.assertEqual(code.user_id, self.user)
 
