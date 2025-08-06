@@ -288,6 +288,7 @@ class OAuth2ProviderController(http.Controller):
         # Add the oauth user identifier, if user's information access is
         # allowed by the token's scopes
         user_data = token._get_data_for_model("res.users", res_id=token.user_id.id)
+        data.update(user_data)
         if "id" in user_data:
             data.update(user_id=token._generate_user_id())
         return self._json_response(data=data)
