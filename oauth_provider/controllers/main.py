@@ -44,7 +44,7 @@ class OAuth2ProviderController(http.Controller):
         scope=None,
         state=None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Check client's request, and display an authorization page to the user,
 
@@ -94,7 +94,7 @@ class OAuth2ProviderController(http.Controller):
             return http.request.render(
                 "oauth_provider.authorization_error",
                 {
-                    "title": "Error: {error}".format(error=e.error),
+                    "title": f"Error: {e.error}",
                     "message": e.description,
                 },
             )
@@ -102,7 +102,7 @@ class OAuth2ProviderController(http.Controller):
             return http.request.render(
                 "oauth_provider.authorization_error",
                 {
-                    "title": "Error: {error}".format(error=e.error),
+                    "title": f"Error: {e.error}",
                     "message": "An unknown error occured! Please contact your "
                     "administrator",
                 },
@@ -182,7 +182,7 @@ class OAuth2ProviderController(http.Controller):
         password=None,
         refresh_token=None,
         *args,
-        **kwargs
+        **kwargs,
     ):
         """Return a token corresponding to the supplied information
 
