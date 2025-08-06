@@ -29,7 +29,7 @@ class TestOAuthProviderController(
     TestOAuthProviderRevokeTokenController,
 ):
     def setUp(self):
-        super(TestOAuthProviderController, self).setUp("mobile application")
+        super().setUp("mobile application")
 
     def test_authorize_skip_authorization(self):
         """Call /oauth2/authorize while skipping the authorization page"""
@@ -76,9 +76,7 @@ class TestOAuthProviderController(
         )
         self.assertUrlsEqual(
             response.headers["Location"],
-            "{uri_base}#{query_string}".format(
-                uri_base=self.redirect_uri_base, query_string=query_string
-            ),
+            f"{self.redirect_uri_base}#{query_string}",
         )
         self.assertEqual(token.user_id, self.user)
 
@@ -133,8 +131,6 @@ class TestOAuthProviderController(
         )
         self.assertUrlsEqual(
             response.headers["Location"],
-            "{uri_base}#{query_string}".format(
-                uri_base=self.redirect_uri_base, query_string=query_string
-            ),
+            f"{self.redirect_uri_base}#{query_string}",
         )
         self.assertEqual(token.user_id, self.user)

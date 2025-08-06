@@ -10,7 +10,7 @@ from unittest import mock
 _logger = logging.getLogger(__name__)
 
 
-class TestOAuthProviderAurhorizeController(object):
+class TestOAuthProviderAurhorizeController:
     def test_authorize_error_missing_arguments(self):
         """Call /oauth2/authorize without any argument
 
@@ -158,7 +158,7 @@ class TestOAuthProviderAurhorizeController(object):
         self.assertTrue(self.client.name in response_text)
 
 
-class TestOAuthProviderRefreshTokenController(object):
+class TestOAuthProviderRefreshTokenController:
     def test_refresh_token_error_too_much_scopes(self):
         """Call /oauth2/token using a refresh token, with too much scopes"""
         token = self.new_token()
@@ -204,7 +204,7 @@ class TestOAuthProviderRefreshTokenController(object):
         self.assertEqual(new_token.user_id, self.user)
 
 
-class TestOAuthProviderTokeninfoController(object):
+class TestOAuthProviderTokeninfoController:
     def test_tokeninfo_error_missing_arguments(self):
         """Call /oauth2/tokeninfo without any argument
 
@@ -278,7 +278,7 @@ class TestOAuthProviderTokeninfoController(object):
         )
 
 
-class TestOAuthProviderUserinfoController(object):
+class TestOAuthProviderUserinfoController:
     def test_userinfo_error_missing_arguments(self):
         """Call /oauth2/userinfo without any argument
 
@@ -341,7 +341,7 @@ class TestOAuthProviderUserinfoController(object):
         )
 
 
-class TestOAuthProviderOtherinfoController(object):
+class TestOAuthProviderOtherinfoController:
     def test_otherinfo_error_missing_arguments(self):
         """Call /oauth2/otherinfo method without any argument
 
@@ -459,7 +459,7 @@ class TestOAuthProviderOtherinfoController(object):
         )
 
 
-class TestOAuthProviderRevokeTokenController(object):
+class TestOAuthProviderRevokeTokenController:
     def test_revoke_token_error_missing_arguments(self):
         """Call /oauth2/revoke_token method without any argument"""
         response = self.post_request("/oauth2/revoke_token")

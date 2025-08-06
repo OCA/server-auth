@@ -17,7 +17,7 @@ except ImportError:
 
 class TestOAuthProviderClient(TransactionCase):
     def setUp(self):
-        super(TestOAuthProviderClient, self).setUp()
+        super().setUp()
         self.client_vals = {
             "name": "Client",
             "identifier": "client",
