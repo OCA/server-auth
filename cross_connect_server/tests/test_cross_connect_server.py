@@ -145,7 +145,9 @@ class TestCrossConnectServer(FastAPITransactionCase):
             self.assertEqual(response.status_code, 401)
 
     def test_access_ok(self):
-        with RecordCapturer(self.env["res.users"], []) as rc:
+        with RecordCapturer(
+            self.env["res.users"].with_context(active_test=False), []
+        ) as rc:
             with self._create_test_client() as test_client:
                 response = test_client.post(
                     "/cross_connect/access",
@@ -227,7 +229,9 @@ class TestCrossConnectServer(FastAPITransactionCase):
         self.assertEqual(len(rc.records), 0)
 
     def test_access_existing(self):
-        with RecordCapturer(self.env["res.users"], []) as rc:
+        with RecordCapturer(
+            self.env["res.users"].with_context(active_test=False), []
+        ) as rc:
             with self._create_test_client() as test_client:
                 response = test_client.post(
                     "/cross_connect/access",
@@ -282,7 +286,9 @@ class TestCrossConnectServer(FastAPITransactionCase):
         )
 
     def test_login_ok(self):
-        with RecordCapturer(self.env["res.users"], []) as rc:
+        with RecordCapturer(
+            self.env["res.users"].with_context(active_test=False), []
+        ) as rc:
             with self._create_test_client() as test_client:
                 response = test_client.post(
                     "/cross_connect/access",

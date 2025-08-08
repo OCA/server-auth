@@ -69,7 +69,7 @@ class CrossConnectClient(models.Model):
         if groups - self.group_ids or not groups.exists():
             raise AccessDenied(_("You are not allowed to access this endpoint."))
 
-        user = self.user_ids.filtered(
+        user = self.with_context(active_test=False).user_ids.filtered(
             lambda u: u.cross_connect_client_user_id == access_request.id
         )
         vals = {
@@ -80,6 +80,7 @@ class CrossConnectClient(models.Model):
             "groups_id": [(6, 0, groups.ids)],
             "cross_connect_client_id": self.id,
             "cross_connect_client_user_id": access_request.id,
+            "active": False,
         }
         # Create user if not exists
         if not user:
