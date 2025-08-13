@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" ?>
 <odoo>
     <!--
       Copyright (C) 2018 Brainbean Apps (https://brainbeanapps.com)
@@ -9,11 +9,11 @@
         <field name="name">ldap.attribute.mapping.view.tree</field>
         <field name="model">ldap.attribute.mapping</field>
         <field name="arch" type="xml">
-            <tree string="LDAP Attribute Mapping" editable="bottom">
+            <list string="LDAP Attribute Mapping" editable="bottom">
                 <field name="attribute_name" />
                 <field name="field_name" />
                 <field name="mode" />
-            </tree>
+            </list>
         </field>
     </record>
 </odoo>

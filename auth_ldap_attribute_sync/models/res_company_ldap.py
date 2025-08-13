@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import SUPERUSER_ID, api, fields, models, registry, tools
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -26,14 +26,14 @@ class CompanyLDAP(models.Model):
     def _get_ldap_user(self, conf, login):
         entry = False
         try:
-            filter = filter_format(conf["ldap_filter"], (login,))
+            formatted_filter = filter_format(conf["ldap_filter"], (login,))
         except TypeError:
             _logger.warning(
                 "Could not format LDAP filter. " "Your filter should contain one '%s'."
             )
             return False
         try:
-            results = self._query(conf, tools.ustr(filter))
+            results = self._query(conf, formatted_filter)
 
             # Get rid of (None, attrs) for searchResultReference replies
             results = [i for i in results if i[0]]
@@ -93,9 +93,5 @@ class CompanyLDAP(models.Model):
             'Updating field values from LDAP attributes for login "%s"', user.login
         )
         fields = self._map_attributes_to_fields(conf, ldap_entry, ["always"])
-
-        with registry(self.env.cr.dbname).cursor() as cr:
-            env = api.Environment(cr, SUPERUSER_ID, {})
-            SudoUser = env["res.users"].sudo()
-            SudoUser.browse(user.id).write(fields)
+        user.sudo().write(fields)
         return ldap_entry

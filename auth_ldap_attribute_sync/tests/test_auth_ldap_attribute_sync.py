@@ -2,11 +2,11 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 import logging
-from unittest import mock
+from unittest.mock import patch
 
-from openerp.tests.common import TransactionCase
-
-from odoo import SUPERUSER_ID, api, registry
+from odoo import SUPERUSER_ID, api
+from odoo.modules.registry import Registry
+from odoo.tests.common import HttpCase
 
 _logger = logging.getLogger(__name__)
 _auth_ldap_ns = "odoo.addons.auth_ldap"
@@ -33,19 +33,19 @@ class FakeLdapConnection:
 
     def __getattr__(self, name):
         def wrapper():
-            raise Exception("'%s' is not mocked" % name)
+            raise Exception(f"'{name}' is not mocked")
 
         return wrapper
 
 
-class TestAuthLdapAttributeSync(TransactionCase):
+class TestAuthLdapAttributeSync(HttpCase):
     def test_auth_ldap_attribute_sync(self):
-        with registry(self.env.cr.dbname).cursor() as cr:
+        with Registry(self.env.cr.dbname).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
 
             env["res.company.ldap"].sudo().create(
                 {
-                    "company": env["res.company"]._company_default_get().id,
+                    "company": self.env.company.id,
                     "ldap_base": "dc=example,dc=com",
                     "ldap_filter": "(uid=%s)",
                     "ldap_binddn": "cn=bind,dc=example,dc=com",
@@ -73,13 +73,13 @@ class TestAuthLdapAttributeSync(TransactionCase):
                 }
             )
 
-        with registry(self.env.cr.dbname).cursor() as cr:
+        with Registry(self.env.cr.dbname).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
             SudoUser = env["res.users"].sudo()
 
-            user_id = False
-            with mock.patch(
-                _company_ldap_class + "._connect",
+            with patch.object(
+                self.registry["res.company.ldap"],
+                "_connect",
                 return_value=FakeLdapConnection(
                     {
                         "dc=example,dc=com": {
@@ -90,21 +90,19 @@ class TestAuthLdapAttributeSync(TransactionCase):
                     }
                 ),
             ):
-                user_id = SudoUser.authenticate(
-                    env.cr.dbname, "username", "password", {}
-                )
-            user = SudoUser.browse(user_id)
+                self.authenticate(user="username", password="password")
+            user = SudoUser.browse(self.session.uid)
             self.assertEqual(user.login, "username")
             self.assertEqual(user.name, "User Name")
             self.assertEqual(user.email, "user@example.com")
 
-        with registry(self.env.cr.dbname).cursor() as cr:
+        with Registry(self.env.cr.dbname).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
             SudoUser = env["res.users"].sudo()
 
-            user_id = False
-            with mock.patch(
-                _company_ldap_class + "._connect",
+            with patch.object(
+                self.registry["res.company.ldap"],
+                "_connect",
                 return_value=FakeLdapConnection(
                     {
                         "dc=example,dc=com": {
@@ -115,10 +113,8 @@ class TestAuthLdapAttributeSync(TransactionCase):
                     }
                 ),
             ):
-                user_id = SudoUser.authenticate(
-                    env.cr.dbname, "username", "password", {}
-                )
-            user = SudoUser.browse(user_id)
+                self.authenticate(user="username", password="password")
+            user = SudoUser.browse(self.session.uid)
             self.assertEqual(user.login, "username")
             self.assertEqual(user.name, "User Name")
             self.assertEqual(user.email, "altered.user@example.com")

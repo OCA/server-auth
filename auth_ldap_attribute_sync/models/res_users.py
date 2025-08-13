@@ -7,9 +7,9 @@ from odoo import models
 class Users(models.Model):
     _inherit = "res.users"
 
-    def _check_credentials(self, password):
+    def _check_credentials(self, credential, env):
         try:
-            super()._check_credentials(password)
+            return super()._check_credentials(credential, env)
         finally:
             Ldap = self.env["res.company.ldap"]
             for conf in Ldap._get_ldap_dicts():
