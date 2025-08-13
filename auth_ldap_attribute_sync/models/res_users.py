@@ -5,13 +5,13 @@ from odoo import models
 
 
 class Users(models.Model):
-    _inherit = 'res.users'
+    _inherit = "res.users"
 
     def _check_credentials(self, password):
         try:
             super()._check_credentials(password)
         finally:
-            Ldap = self.env['res.company.ldap']
+            Ldap = self.env["res.company.ldap"]
             for conf in Ldap._get_ldap_dicts():
                 if Ldap._update_user(conf, self):
                     break

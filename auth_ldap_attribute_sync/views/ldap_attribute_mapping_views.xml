@@ -10,11 +10,10 @@
         <field name="model">ldap.attribute.mapping</field>
         <field name="arch" type="xml">
             <tree string="LDAP Attribute Mapping" editable="bottom">
-                <field name="attribute_name"/>
-                <field name="field_name"/>
-                <field name="mode"/>
+                <field name="attribute_name" />
+                <field name="field_name" />
+                <field name="mode" />
             </tree>
         </field>
     </record>
-
- </odoo>
+</odoo>
