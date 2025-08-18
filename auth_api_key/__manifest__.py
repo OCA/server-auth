@@ -16,4 +16,6 @@
         "views/auth_api_key.xml",
         "views/res_config_settings.xml",
     ],
+    "installable": True,
+    "application": False,
 }
