@@ -21,6 +21,7 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
+[apikey_scope_editable](apikey_scope_editable/) | 17.0.1.0.0 |  | Set the API Key scope at creation
 [auth_admin_passkey](auth_admin_passkey/) | 17.0.1.0.0 |  | Allows system administrator to authenticate with any account
 [auth_admin_passkey_totp_mail_enforce](auth_admin_passkey_totp_mail_enforce/) | 17.0.1.0.0 |  | Disable 2FA if Passkey is being used
 [auth_api_key](auth_api_key/) | 17.0.1.1.2 |  | Authenticate http requests from an API key
