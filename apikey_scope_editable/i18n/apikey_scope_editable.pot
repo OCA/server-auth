@@ -1,0 +1,71 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* apikey_scope_editable
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: apikey_scope_editable
+#: model:ir.model,name:apikey_scope_editable.model_res_users_apikeys_description
+msgid "API Key Description"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model_terms:ir.ui.view,arch_db:apikey_scope_editable.form_res_users_key_description
+msgid "APIKey scope:"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model:ir.model.fields,field_description:apikey_scope_editable.field_res_users_apikeys_description__custom_scope
+msgid "Custom Scope"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model_terms:ir.ui.view,arch_db:apikey_scope_editable.form_res_users_key_description
+msgid ""
+"Enter the optional scope for the key. If set, the key access would be "
+"restricted."
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model:ir.model.fields,field_description:apikey_scope_editable.field_res_users_apikeys_description__has_custom_scope
+msgid "Has Custom Scope"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model_terms:ir.ui.view,arch_db:apikey_scope_editable.form_res_users_key_description
+msgid "I want a custom scope"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model_terms:ir.ui.view,arch_db:apikey_scope_editable.form_res_users_key_description
+msgid "No scope"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model:ir.model.fields,field_description:apikey_scope_editable.field_res_users_apikeys_description__scope
+msgid "Scope"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model:ir.model,name:apikey_scope_editable.model_res_users_apikeys
+msgid "Users API Keys"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model_terms:ir.ui.view,arch_db:apikey_scope_editable.form_res_users_key_description
+msgid "What's the key scope?"
+msgstr ""
+
+#. module: apikey_scope_editable
+#: model:ir.model.fields.selection,name:apikey_scope_editable.selection__res_users_apikeys_description__scope__rpc
+msgid "rpc"
+msgstr ""
