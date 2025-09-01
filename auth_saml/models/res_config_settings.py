@@ -18,6 +18,6 @@ class ResConfigSettings(models.TransientModel):
         related="company_id.allow_saml_unsolicited_req",
         readonly=False,
         string="Allow SAML Unsolicited Requests",
-        help="Allow IdP-initiated authentication requests "        
+        help="Allow IdP-initiated authentication requests "
     )
 
