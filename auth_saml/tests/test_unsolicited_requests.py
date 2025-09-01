@@ -12,7 +12,7 @@ from .fake_idp import FakeIDP
 class TestUnsolicitedRequests(TransactionCase):
     def setUp(self):
         super().setUp()
-        
+
         with open(
             os.path.join(os.path.dirname(__file__), "data", "sp.pem"),
             encoding="UTF-8",
@@ -42,7 +42,7 @@ class TestUnsolicitedRequests(TransactionCase):
         """Test that unsolicited requests are disabled by default"""
         # Default company setting should be False
         self.assertFalse(self.env.company.allow_saml_unsolicited_req)
-        
+
         # Provider computed field should reflect company setting
         self.assertFalse(self.saml_provider.allow_saml_unsolicited_req)
 
@@ -50,7 +50,7 @@ class TestUnsolicitedRequests(TransactionCase):
         """Test enabling unsolicited requests"""
         # Enable unsolicited requests for company
         self.env.company.allow_saml_unsolicited_req = True
-        
+
         # Provider computed field should reflect the change
         self.saml_provider._compute_allow_saml_unsolicited()
         self.assertTrue(self.saml_provider.allow_saml_unsolicited_req)
@@ -60,10 +60,10 @@ class TestUnsolicitedRequests(TransactionCase):
         # Enable unsolicited requests
         self.env.company.allow_saml_unsolicited_req = True
         self.saml_provider._compute_allow_saml_unsolicited()
-        
+
         # Get SAML config
         config = self.saml_provider._get_config_for_provider()
-        
+
         # Check that the config includes the allow_unsolicited setting
         sp_config = config.getattr("service", "sp")
         self.assertTrue(sp_config.get("allow_unsolicited"))
@@ -73,10 +73,10 @@ class TestUnsolicitedRequests(TransactionCase):
         # Ensure unsolicited requests are disabled
         self.env.company.allow_saml_unsolicited_req = False
         self.saml_provider._compute_allow_saml_unsolicited()
-        
+
         # Get SAML config
         config = self.saml_provider._get_config_for_provider()
-        
+
         # Check that the config does not allow unsolicited requests
         sp_config = config.getattr("service", "sp")
         self.assertFalse(sp_config.get("allow_unsolicited"))

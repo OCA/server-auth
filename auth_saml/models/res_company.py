@@ -9,5 +9,5 @@ class ResCompany(models.Model):
 
     allow_saml_unsolicited_req = fields.Boolean(
         string="Allow SAML Unsolicited Requests",
-        help="Allow IdP-initiated authentication requests without prior AuthnRequest from SP"
+        help="Allow IdP-initiated authentication requests without prior AuthnRequest from SP",
     )

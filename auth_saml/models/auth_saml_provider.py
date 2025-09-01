@@ -140,7 +140,7 @@ class AuthSamlProvider(models.Model):
     allow_saml_unsolicited_req = fields.Boolean(
         compute="_compute_allow_saml_unsolicited",
         string="Allow Unsolicited Requests",
-        help="Allow IdP-initiated authentication requests without prior AuthnRequest from SP"
+        help="Allow IdP-initiated authentication requests without prior AuthnRequest from SP",
     )
 
     @api.model
@@ -376,8 +376,10 @@ class AuthSamlProvider(models.Model):
             vals[attribute.field_name] = attribute_value
 
         return {"mapped_attrs": vals}
-    
+
     def _compute_allow_saml_unsolicited(self):
         for record in self:
-            record.allow_saml_unsolicited_req = self.env.company.allow_saml_unsolicited_req
+            record.allow_saml_unsolicited_req = (
+                self.env.company.allow_saml_unsolicited_req
+            )
 
