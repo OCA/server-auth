@@ -140,8 +140,7 @@ class AuthSamlProvider(models.Model):
     allow_saml_unsolicited_req = fields.Boolean(
         compute="_compute_allow_saml_unsolicited",
         string="Allow Unsolicited Requests",
-        help="Allow IdP-initiated authentication requests without prior "
-        "AuthnRequest from SP",
+        help="Allow IdP-initiated authentication requests"        
     )
 
     @api.model
