@@ -13,6 +13,7 @@
                     id="module_auth_saml"
                 >
                     <field name="allow_saml_uid_and_internal_password" />
+                    <field name="allow_saml_unsolicited_req" string="Allow SAML Unsolicited Requests" />
                 </setting>
             </xpath>
         </field>

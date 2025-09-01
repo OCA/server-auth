@@ -18,3 +18,11 @@ query parameter `disable_autoredirect`, as in
 `https://example.com/web/login?disable_autoredirect=` The login is also
 displayed if there is an error with SAML login, in order to display any
 error message.
+
+**SAML Unsolicited Requests**
+
+By default, unsolicited SAML requests (IdP-initiated authentication) are
+disabled for security reasons. You can enable them in Settings > Users &
+Companies > Settings under the SAML section. When enabled, the Identity
+Provider can initiate authentication requests without a prior AuthnRequest
+from the Service Provider (Odoo).
