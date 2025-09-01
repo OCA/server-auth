@@ -20,4 +20,3 @@ class ResConfigSettings(models.TransientModel):
         string="Allow SAML Unsolicited Requests",
         help="Allow IdP-initiated authentication requests ",
     )
-

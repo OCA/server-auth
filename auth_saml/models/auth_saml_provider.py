@@ -382,4 +382,3 @@ class AuthSamlProvider(models.Model):
             record.allow_saml_unsolicited_req = (
                 self.env.company.allow_saml_unsolicited_req
             )
-
