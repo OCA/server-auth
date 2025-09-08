@@ -48,6 +48,3 @@ msgstr "Atributo LDAP a ser usado para recuperar o endereço de e-mail."
 #: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__name_attribute
 msgid "Name Attribute"
 msgstr "Atributo Nome"
-
-#~ msgid "LDAP attribute to use to retrieve em-mail address."
-#~ msgstr "Use o atributo LDAP para recuperar o endereço de e-mail"

@@ -50,9 +50,3 @@ msgstr ""
 #: model:ir.model.fields,field_description:users_ldap_mail.field_res_company_ldap__name_attribute
 msgid "Name Attribute"
 msgstr "Atributo Nombre"
-
-#~ msgid "LDAP attribute to use to retrieve em-mail address."
-#~ msgstr "Atributo LDAP a utilizar para recumerar la dirección em-mail."
-
-#~ msgid "res.company.ldap"
-#~ msgstr "res.company.ldap"
