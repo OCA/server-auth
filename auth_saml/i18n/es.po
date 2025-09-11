@@ -24,7 +24,6 @@ msgstr "- o -"
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
-#, python-format
 msgid "Access Denied"
 msgstr "Acceso Denegado"
 
@@ -215,6 +214,11 @@ msgid "Identity Provider Metadata"
 msgstr "Metadatos del proveedor de identidad"
 
 #. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata_url
+msgid "Identity Provider Metadata URL"
+msgstr ""
+
+#. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Identity Provider Settings"
 msgstr "Configuración del proveedor de identidades"
@@ -316,7 +320,6 @@ msgstr "URL de metadatos"
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
-#, python-format
 msgid "Missing parameters"
 msgstr "Parámetros que faltan"
 
@@ -376,6 +379,11 @@ msgstr "Nombre de Proveedor"
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_provider_view_search
 msgid "Providers"
 msgstr "Proveedores"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Refresh"
+msgstr ""
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
@@ -452,7 +460,6 @@ msgstr "Firmar metadatos"
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
-#, python-format
 msgid "Sign up is not allowed on this database."
 msgstr "No está permitido registrarse en esta base de datos."
 
@@ -460,6 +467,14 @@ msgstr "No está permitido registrarse en esta base de datos."
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sig_alg
 msgid "Signature Algorithm"
 msgstr "Algoritmo de firma"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__idp_metadata_url
+msgid ""
+"Some SAML providers, notably Office365 can have a metadata document which "
+"changes over time, and they provide a URL to the document instead. When this "
+"field is set, the metadata can be fetched from the provided URL."
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_ir_config_parameter
@@ -484,9 +499,16 @@ msgid "The current SAML token in use"
 msgstr "El código SAML actual en uso"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"The metadata may be automatically redownloaded from that URL. If that's okay "
+"for you and you provider gives you a URL, use this field "
+"preferably. Otherwise use the next one"
+msgstr ""
+
+#. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/models/res_users.py:0
-#, python-format
 msgid ""
 "This database disallows users to have both passwords and SAML IDs. Error for "
 "logins %s"
@@ -497,7 +519,6 @@ msgstr ""
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
-#, python-format
 msgid "Unknown provider"
 msgstr "Proveedor desconocido"
 
@@ -549,7 +570,6 @@ msgstr "Si la solicitud debe firmarse o no"
 #. module: auth_saml
 #. odoo-python
 #: code:addons/auth_saml/controllers/main.py:0
-#, python-format
 msgid "You do not have access to this database. Please contact support."
 msgstr ""
 "No tiene acceso a esta base de datos. Póngase en contacto con el servicio de "
