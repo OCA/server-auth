@@ -223,7 +223,7 @@ class OAuth2ProviderController(http.Controller):
 
         # Retrieve needed arguments for oauthlib methods
         uri, http_method, body, headers = self._get_request_information()
-        credentials = {"scope": scope}
+        credentials = {"scope": " ".join(client.scope_ids.mapped("code"))}
 
         # Retrieve the authorization code, if any, to get Odoo's user id
         existing_code = (
@@ -260,7 +260,7 @@ class OAuth2ProviderController(http.Controller):
             credentials=credentials,
         )
 
-        return werkzeug.wrappers.BaseResponse(body, status=status, headers=headers)
+        return werkzeug.Response(body, status=status, headers=headers)
 
     @http.route(
         "/oauth2/tokeninfo", type="http", auth="none", methods=["GET"], website=True
@@ -271,6 +271,10 @@ class OAuth2ProviderController(http.Controller):
         Similar to Google's "tokeninfo" request
         """
         ensure_db()
+        if not access_token:
+            auth_header = http.request.httprequest.headers.get("Authorization", "")
+            if auth_header.startswith("Bearer "):
+                access_token = auth_header[7:]
         token = self._check_access_token(access_token)
         if not token:
             return self._json_response(
@@ -302,6 +306,10 @@ class OAuth2ProviderController(http.Controller):
         Similar to Google's "userinfo" request
         """
         ensure_db()
+        if not access_token:
+            auth_header = http.request.httprequest.headers.get("Authorization", "")
+            if auth_header.startswith("Bearer "):
+                access_token = auth_header[7:]
         token = self._check_access_token(access_token)
         if not token:
             return self._json_response(
@@ -504,4 +512,4 @@ class OAuth2ProviderController(http.Controller):
         headers, body, status = oauth2_server.create_revocation_response(
             uri, http_method=http_method, body=body, headers=headers
         )
-        return werkzeug.wrappers.BaseResponse(body, status=status, headers=headers)
+        return werkzeug.Response(body, status=status, headers=headers)
