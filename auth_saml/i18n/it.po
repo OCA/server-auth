@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2024-01-05 10:34+0000\n"
+"PO-Revision-Date: 2025-09-26 18:43+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.providers
@@ -213,7 +213,7 @@ msgstr "Metadati provider identità"
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata_url
 msgid "Identity Provider Metadata URL"
-msgstr ""
+msgstr "URL metadata identity provider"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
@@ -380,7 +380,7 @@ msgstr "Provider"
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Refresh"
-msgstr ""
+msgstr "Aggiorna"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
@@ -472,6 +472,10 @@ msgid ""
 "changes over time, and they provide a URL to the document instead. When this "
 "field is set, the metadata can be fetched from the provided URL."
 msgstr ""
+"Alcuni provider SAML, in particolare Office365, possono avere un documento "
+"di metadati che cambia nel tempo e forniscono invece un URL al documento. "
+"Quando questo campo è impostato, i metadati possono essere recuperati "
+"dall'URL fornito."
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_ir_config_parameter
@@ -502,6 +506,9 @@ msgid ""
 "for you and you provider gives you a URL, use this field "
 "preferably. Otherwise use the next one"
 msgstr ""
+"I metadati potrebbero essere scaricati automaticamente di nuovo da quel URL. "
+"Se è corretto e il provider fornisce un URL, utilizzare preferibilmente "
+"questo campo. Altrimenti, usare quello successivo"
 
 #. module: auth_saml
 #. odoo-python
