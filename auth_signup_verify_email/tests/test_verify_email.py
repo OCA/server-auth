@@ -9,6 +9,7 @@ from odoo.tests.common import HttpCase
 from odoo.tools.misc import mute_logger
 
 from odoo.addons.mail.models import mail_template
+from odoo.addons.mail.tests.common import mail_new_test_user
 
 
 class UICase(HttpCase):
@@ -48,3 +49,13 @@ class UICase(HttpCase):
         self.data["login"] = "contributors@odoo-community.org"
         doc = self.html_doc(data=self.data)
         self.assertTrue(doc.xpath('//p[@class="alert alert-success"]'))
+
+    def test_already_exists(self):
+        already_existing_user = mail_new_test_user(
+            self.env,
+            login="king@example.com",
+            name="The King",
+        )
+        self.data["login"] = already_existing_user.login
+        doc = self.html_doc(data=self.data)
+        self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
