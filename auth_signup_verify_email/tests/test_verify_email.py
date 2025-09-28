@@ -1,12 +1,9 @@
 # Copyright 2016 Jairo Llopis <jairo.llopis@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from lxml.html import document_fromstring
+from unittest.mock import patch
 
-try:
-    from unittest.mock import patch
-except ImportError:
-    from unittest.mock import patch
+from lxml.html import document_fromstring
 
 from odoo.tests.common import HttpCase
 from odoo.tools.misc import mute_logger
