@@ -17,7 +17,7 @@ import odoo
 from odoo.exceptions import AccessDenied
 from odoo.tests import common
 
-from odoo.addons.website.tools import MockRequest as _MockRequest
+from odoo.addons.http_routing.tests.common import MockRequest as _MockRequest
 
 from ..controllers.main import OpenIDLogin
 
@@ -70,9 +70,19 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
 
     def setUp(self):
         super().setUp()
-        # search our test provider and bind the demo user to it
-        self.provider_rec = self.env["auth.oauth.provider"].search(
-            [("client_id", "=", "auth_oidc-test")]
+        # set up our test provider to bind the test user to it
+        self.provider_rec = self.env["auth.oauth.provider"].create(
+            {
+                "name": "OAuth Provider for TestAuthOIDCAuthorizationCodeFlow",
+                "client_id": "auth_oidc-test",
+                "enabled": True,
+                "body": "Config of an oauth provider for tests",
+                "scope": "openid email",
+                "flow": "id_token_code",
+                "auth_endpoint": "http://localhost:8080/auth/realms/master/protocol/openid-connect/auth",
+                "token_endpoint": "http://localhost:8080/auth/realms/master/protocol/openid-connect/token",
+                "jwks_uri": "http://localhost:8080/auth/realms/master/protocol/openid-connect/certs",
+            }
         )
         self.assertEqual(len(self.provider_rec), 1)
 
@@ -98,7 +108,12 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             self.assertEqual(params["redirect_uri"], [BASE_URL + "/auth_oauth/signin"])
 
     def _prepare_login_test_user(self):
-        user = self.env.ref("base.user_demo")
+        user = self.env["res.users"].create(
+            {
+                "login": "auth_oidc_test_user",
+                "name": "Auth OIDC Test User",
+            }
+        )
         user.write({"oauth_provider_id": self.provider_rec.id, "oauth_uid": user.login})
         return user
 
