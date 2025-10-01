@@ -7,9 +7,7 @@
     "version": "18.0.1.0.0",
     "license": "AGPL-3",
     "author": (
-        "ICTSTUDIO, André Schenkels, "
-        "ACSONE SA/NV, "
-        "Odoo Community Association (OCA)"
+        "ICTSTUDIO, André Schenkels, ACSONE SA/NV, Odoo Community Association (OCA)"
     ),
     "maintainers": ["sbidoul"],
     "website": "https://github.com/OCA/server-auth",
