@@ -3,7 +3,7 @@
 
 import contextlib
 import time
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import jwt
 
@@ -15,6 +15,7 @@ from odoo.tools.misc import DotDict
 
 from ..exceptions import (
     AmbiguousJwtValidator,
+    ConfigurationError,
     JwtValidatorNotFound,
     UnauthorizedCompositeJwtError,
     UnauthorizedInvalidToken,
@@ -51,7 +52,7 @@ class TestAuthMethod(TransactionCase):
 
     def _create_token(
         self,
-        key="thesecret",
+        key="oca_auth_jwt_test_secret_key_minimum_32_bytes",
         audience="me",
         issuer="http://the.issuer",
         exp_delta=100,
@@ -70,7 +71,7 @@ class TestAuthMethod(TransactionCase):
         name,
         audience="me",
         issuer="http://the.issuer",
-        secret_key="thesecret",
+        secret_key="oca_auth_jwt_test_secret_key_minimum_32_bytes",
         partner_id_required=False,
         static_user_id=1,
     ):
@@ -171,21 +172,27 @@ class TestAuthMethod(TransactionCase):
     def test_auth_method_invalid_token_on_chain(self):
         validator1 = self._create_validator("validator", issuer="http://other.issuer")
         validator2 = self._create_validator("validator2", audience="bad audience")
-        validator3 = self._create_validator("validator3", secret_key="bad key")
+        validator3 = self._create_validator(
+            "validator3", secret_key="this_is_an_intentionally_wrong_key_for_testing"
+        )
         validator4 = self._create_validator(
             "validator4", issuer="http://other.issuer", audience="bad audience"
         )
         validator5 = self._create_validator(
-            "validator5", issuer="http://other.issuer", secret_key="bad key"
+            "validator5",
+            issuer="http://other.issuer",
+            secret_key="this_is_an_intentionally_wrong_key_for_testing",
         )
         validator6 = self._create_validator(
-            "validator6", audience="bad audience", secret_key="bad key"
+            "validator6",
+            audience="bad audience",
+            secret_key="this_is_an_intentionally_wrong_key_for_testing",
         )
         validator7 = self._create_validator(
             "validator7",
             issuer="http://other.issuer",
             audience="bad audience",
-            secret_key="bad key",
+            secret_key="this_is_an_intentionally_wrong_key_for_testing",
         )
         validator1.next_validator_id = validator2
         validator2.next_validator_id = validator3
@@ -260,11 +267,13 @@ class TestAuthMethod(TransactionCase):
             validator.next_validator_id = validator
         self.assertEqual(
             str(error.exception),
-            "Validators mustn't make a closed chain: " "validator -> validator.",
+            "Validators mustn't make a closed chain: validator -> validator.",
         )
 
     def test_partner_id_strategy_email_found(self):
-        partner = self.env["res.partner"].search([("email", "!=", False)])[0]
+        partner = self.env["res.partner"].create(
+            {"name": "Test Partner Found", "email": "found@example.com"}
+        )
         self._create_validator("validator6")
         authorization = "Bearer " + self._create_token(email=partner.email)
         with self._mock_request(authorization=authorization) as request:
@@ -321,7 +330,7 @@ class TestAuthMethod(TransactionCase):
 
     def test_bad_tokens(self):
         validator = self._create_validator("validator")
-        token = self._create_token(key="badsecret")
+        token = self._create_token(key="this_is_an_intentionally_wrong_key_for_testing")
         with self.assertRaises(UnauthorizedInvalidToken):
             validator._decode(token)
         token = self._create_token(audience="badaudience")
@@ -404,3 +413,51 @@ class TestAuthMethod(TransactionCase):
         with self._mock_request(authorization=authorization) as request:
             self.env["ir.http"]._auth_method_public_or_jwt_validator()
             assert request.jwt_payload["aud"] == "me"
+
+    def test_decode_public_key(self):
+        validator = self._create_validator("pub_validator")
+        validator.write(
+            {
+                "signature_type": "public_key",
+                "public_key_jwk_uri": "http://example.com/jwks",
+                "public_key_algorithm": "RS256",
+            }
+        )
+        token = self._create_token()
+        with patch.object(type(validator), "_get_key", return_value="secret"):
+            with self.assertRaises(UnauthorizedInvalidToken):
+                validator._decode(token)
+
+    def test_partner_id_strategy_email_missing_claim(self):
+        self._create_validator("validator_no_email")
+        token = self._create_token()
+        with self._mock_request(authorization="Bearer " + token) as request:
+            self.env["ir.http"]._auth_method_jwt_validator_no_email()
+            self.assertFalse(request.jwt_partner_id)
+
+    def test_partner_id_strategy_email_ambiguous(self):
+        self.env["res.partner"].create({"name": "P1", "email": "dup@example.com"})
+        self.env["res.partner"].create({"name": "P2", "email": "dup@example.com"})
+        self._create_validator("validator_dup")
+        token = self._create_token(email="dup@example.com")
+        with self._mock_request(authorization="Bearer " + token) as request:
+            self.env["ir.http"]._auth_method_jwt_validator_dup()
+            self.assertFalse(request.jwt_partner_id)
+
+    def test_unregister_auth_method_attribute_error(self):
+        validator = self._create_validator("val_attr")
+        if hasattr(self.env["ir.http"].__class__, "_auth_method_jwt_val_attr"):
+            delattr(self.env["ir.http"].__class__, "_auth_method_jwt_val_attr")
+        validator._unregister_auth_method()
+
+    def test_get_jwt_cookie_secret_error(self):
+        validator = self._create_validator("validator_no_secret")
+
+        with patch.object(
+            type(self.env["ir.config_parameter"]), "get_param", return_value=False
+        ):
+            with (
+                self.assertRaises(ConfigurationError),
+                mute_logger("odoo.addons.auth_jwt.models.auth_jwt_validator"),
+            ):
+                validator._get_jwt_cookie_secret()

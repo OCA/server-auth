@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import SUPERUSER_ID, api, models
+from odoo import api, models
 from odoo.http import request
 
 from ..exceptions import (
@@ -44,7 +44,7 @@ class IrHttpJwt(models.AbstractModel):
             # Odoo calls _authenticate more than once (in v14? why?), so
             # on the second call we have a request uid and that is not an error
             # because _authenticate will not call _auth_method_jwt a second time.
-            if request.uid and not hasattr(request, "jwt_payload"):
+            if request.env.uid and not hasattr(request, "jwt_payload"):
                 _logger.error(
                     "A route with auth='jwt' should not have a request.uid here."
                 )
@@ -68,10 +68,9 @@ class IrHttpJwt(models.AbstractModel):
 
     @classmethod
     def _auth_method_jwt(cls, validator_name=None):
-        assert not request.uid
         assert not request.session.uid
-        # # Use request cursor to allow partner creation strategy in validator
-        env = api.Environment(request.cr, SUPERUSER_ID, {})
+        # Use request cursor to allow partner creation strategy in validator
+        env = api.Environment(request.env.cr, api.SUPERUSER_ID, {})
         validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
         assert len(validator) == 1
 
@@ -117,7 +116,7 @@ class IrHttpJwt(models.AbstractModel):
     @classmethod
     def _auth_method_public_or_jwt(cls, validator_name=None):
         if "HTTP_AUTHORIZATION" not in request.httprequest.environ:
-            env = api.Environment(request.cr, SUPERUSER_ID, {})
+            env = api.Environment(request.env.cr, api.SUPERUSER_ID, {})
             validator = env["auth.jwt.validator"]._get_validator_by_name(validator_name)
             assert len(validator) == 1
             if not validator.cookie_enabled or not request.httprequest.cookies.get(

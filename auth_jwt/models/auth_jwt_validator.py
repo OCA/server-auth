@@ -7,12 +7,13 @@ import re
 from calendar import timegm
 from functools import partial
 
-import jwt  # pylint: disable=missing-manifest-dependency
+import jwt
 from jwt import PyJWKClient
 from werkzeug.exceptions import InternalServerError
 
-from odoo import _, api, fields, models, tools
+from odoo import api, fields, models, tools
 from odoo.exceptions import ValidationError
+from odoo.fields import Domain
 
 from ..exceptions import (
     AmbiguousJwtValidator,
@@ -77,7 +78,7 @@ class AuthJwtValidator(models.Model):
 
     next_validator_id = fields.Many2one(
         "auth.jwt.validator",
-        domain="[('id', '!=', id)]",
+        domain=Domain("id", "!=", id),
         help="Next validator to try if this one fails",
     )
 
@@ -98,16 +99,16 @@ class AuthJwtValidator(models.Model):
         default=True, help="Set to false only for development without https."
     )
 
-    _sql_constraints = [
-        ("name_uniq", "unique(name)", "JWT validator names must be unique !"),
-    ]
+    _name_unique = models.Constraint(
+        "UNIQUE(name)", "JWT validator names must be unique !"
+    )
 
     @api.constrains("name")
     def _check_name(self):
         for rec in self:
             if not rec.name.isidentifier():
                 raise ValidationError(
-                    _("Name %r is not a valid python identifier.") % (rec.name,)
+                    self.env._("Name %r is not a valid python identifier.", rec.name)
                 )
 
     @api.constrains("next_validator_id")
@@ -121,8 +122,9 @@ class AuthJwtValidator(models.Model):
                 chain.append(validator.name)
                 if rec == validator:
                     raise ValidationError(
-                        _("Validators mustn't make a closed chain: {}.").format(
-                            " -> ".join(chain)
+                        self.env._(
+                            "Validators mustn't make a closed chain: %s.",
+                            " -> ".join(chain),
                         )
                     )
 
@@ -131,17 +133,17 @@ class AuthJwtValidator(models.Model):
         for rec in self:
             if rec.cookie_enabled and not rec.cookie_name:
                 raise ValidationError(
-                    _(
+                    self.env._(
                         "A cookie name must be provided on JWT validator %s "
-                        "because it has cookie mode enabled."
+                        "because it has cookie mode enabled.",
+                        rec.name,
                     )
-                    % (rec.name,)
                 )
 
     @api.model
     def _get_validator_by_name_domain(self, validator_name):
         if validator_name:
-            return [("name", "=", validator_name)]
+            return Domain("name", "=", validator_name)
         return []
 
     @api.model
@@ -246,7 +248,7 @@ class AuthJwtValidator(models.Model):
 
     def _register_hook(self):
         res = super()._register_hook()
-        self.search([])._register_auth_method()
+        self.search([], limit=None)._register_auth_method()
         return res
 
     def _register_auth_method(self):
