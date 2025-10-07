@@ -188,6 +188,45 @@ class AuthSAMLController(http.Controller):
         redirect.autocorrect_location_header = True
         return redirect
 
+    def _extract_user_info_from_saml_response(self, provider_id, saml_response, base_url):
+        """Extract user information from SAML response for user creation"""
+        try:
+            # Simple approach: just extract the NameID which we can see in the logs
+            # From the logs we can see: Subject NameID: bringsvor@bringsvor.com
+            
+            # For now, let's use a simple regex to extract the email from the SAML response
+            import re
+            import base64
+            
+            # Decode the SAML response to look for the NameID
+            try:
+                decoded_response = base64.b64decode(saml_response).decode('utf-8')
+                
+                # Look for NameID pattern
+                nameid_pattern = r'<[^>]*NameID[^>]*>([^<]+)</[^>]*NameID>'
+                nameid_match = re.search(nameid_pattern, decoded_response)
+                
+                if nameid_match:
+                    nameid_value = nameid_match.group(1).strip()
+                    user_info = {
+                        'login': nameid_value,
+                        'email': nameid_value if '@' in nameid_value else '',
+                        'name': nameid_value.split('@')[0] if '@' in nameid_value else nameid_value
+                    }
+                    _logger.info("SAML2: Extracted user info from NameID: %s", user_info)
+                    return user_info
+                
+            except Exception as decode_error:
+                _logger.warning("SAML2: Could not decode SAML response: %s", str(decode_error))
+            
+            # Fallback: return empty info
+            _logger.warning("SAML2: Could not extract user info from SAML response")
+            return {}
+            
+        except Exception as e:
+            _logger.exception("Failed to extract user info from SAML response: %s", str(e))
+            return {}
+
     @http.route(
         "/auth_saml/signin", type="http", auth="none", csrf=False, readonly=False
     )
@@ -253,6 +292,128 @@ class AuthSAMLController(http.Controller):
 
         except exceptions.AccessDenied:
             # saml credentials not valid, user could be on a temporary session
+            # Try to create user if it doesn't exist
+            try:
+                # First, let's see what the validation actually returns
+                provider_obj = request.env["auth.saml.provider"].sudo().browse(provider)
+                validation = provider_obj._validate_auth_response(saml_response, request.httprequest.url_root.rstrip("/"))
+                _logger.info("SAML2: Validation result: %s", validation)
+                if validation.get("user_id"):
+                    _logger.info("SAML2: Expected SAML UID from validation: %s", validation["user_id"])
+                
+                user_info = self._extract_user_info_from_saml_response(
+                    provider, saml_response, request.httprequest.url_root.rstrip("/")
+                )
+                
+                if user_info and user_info.get('login'):
+                    # Check if user already exists
+                    existing_user = request.env['res.users'].sudo().search([
+                        ('login', '=', user_info['login'])
+                    ], limit=1)
+                    
+                    if not existing_user:
+                        # Create new user in activated state (no email verification needed)
+                        company = request.env['res.company'].sudo().search([], limit=1)
+                        if not company:
+                            raise Exception("No company found in database")
+                        
+                        # Create user with context that bypasses signup workflow
+                        new_user = request.env['res.users'].with_user(1).sudo().with_context(
+                            no_reset_password=True,
+                            mail_create_nosubscribe=True,
+                            mail_create_nolog=True
+                        ).create({
+                            'name': user_info.get('name', user_info['login']),
+                            'login': user_info['login'],
+                            'email': user_info.get('email', user_info['login']),
+                            'company_id': company.id,
+                            'company_ids': [(6, 0, [company.id])],
+                            'groups_id': [(6, 0, [
+                                request.env.ref('base.group_user').id,
+                            ])],
+                            'active': True,
+                        })
+                        
+                        _logger.info("SAML2: Created activated user with company: %s, allowed companies: %s", 
+                                   company.name, new_user.company_ids.mapped('name'))
+                        
+                        # Create the SAML linking record - this is crucial!
+                        saml_uid = validation.get("user_id", user_info['login'])  # Use validation user_id or fallback to email
+                        request.env['res.users.saml'].sudo().create({
+                            'user_id': new_user.id,
+                            'saml_provider_id': provider,
+                            'saml_uid': saml_uid,
+                        })
+                        
+                        _logger.info("SAML2: Created new user %s with SAML linking record, SAML UID: %s", new_user.login, saml_uid)
+                        
+                        # Commit the user creation immediately so it's available for authentication
+                        request.env.cr.commit()
+                        _logger.info("SAML2: User creation committed to database")
+                    
+                    else:
+                        # User exists, check if SAML linking record exists
+                        saml_link = request.env['res.users.saml'].sudo().search([
+                            ('user_id', '=', existing_user.id),
+                            ('saml_provider_id', '=', provider)
+                        ], limit=1)
+                        
+                        # Always recreate the SAML linking record with correct saml_uid
+                        if saml_link:
+                            saml_link.unlink()  # Delete existing wrong record
+                            _logger.info("SAML2: Deleted existing SAML linking record for user %s", existing_user.login)
+                        
+                        # Create new SAML linking record with correct saml_uid
+                        saml_uid = validation.get("user_id", user_info['login'])  # Use validation user_id or fallback to email
+                        request.env['res.users.saml'].sudo().create({
+                            'user_id': existing_user.id,
+                            'saml_provider_id': provider,
+                            'saml_uid': saml_uid,
+                        })
+                        _logger.info("SAML2: Created SAML linking record for existing user %s with SAML UID: %s", existing_user.login, saml_uid)
+                    
+                    # Try authentication again now that SAML linking record exists
+                    try:
+                        credentials = (
+                            request.env["res.users"]
+                            .with_user(SUPERUSER_ID)
+                            .auth_saml(
+                                provider,
+                                saml_response,
+                                request.httprequest.url_root.rstrip("/"),
+                            )
+                        )
+                        
+                        action = state.get("a")
+                        menu = state.get("m")
+                        redirect = (
+                            werkzeug.urls.url_unquote_plus(state["r"]) if state.get("r") else False
+                        )
+                        url = "/web"
+                        if redirect:
+                            url = redirect
+                        elif action:
+                            url = f"/#action={action}"
+                        elif menu:
+                            url = f"/#menu_id={menu}"
+                        
+                        credentials_dict = {
+                            "login": credentials[1],
+                            "token": credentials[2],
+                            "type": "saml_token",
+                        }
+                        auth_info = request.session.authenticate(dbname, credentials_dict)
+                        resp = request.redirect(_get_login_redirect_url(auth_info["uid"], url), 303)
+                        resp.autocorrect_location_header = False
+                        return resp
+                        
+                    except exceptions.AccessDenied:
+                        _logger.info("SAML2: Authentication still failed even after creating SAML linking record")
+                
+            except Exception as create_error:
+                _logger.exception("SAML2: Failed to create user - %s", str(create_error))
+            
+            # Fall back to original behavior if user creation fails
             _logger.info("SAML2: access denied")
             url = "/web/login?saml_error=expired"
             redirect = werkzeug.utils.redirect(url, 303)
