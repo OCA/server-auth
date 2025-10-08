@@ -6,7 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 17.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2025-10-08 08:20+0000\n"
+"Last-Translator: Andrzej Gerasimuk <a.gerasimuk@archimedes.pl>\n"
 "Language-Team: none\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -14,107 +15,108 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: impersonate_login
 #. odoo-javascript
 #: code:addons/impersonate_login/static/src/js/user_menu.esm.js:0
 #, python-format
 msgid "Back to Original User"
-msgstr ""
+msgstr "Powrót do oryginalnego użytkownika"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_base
 msgid "Base"
-msgstr ""
+msgstr "Baza"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_mail__body
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__body
 msgid "Contents"
-msgstr ""
+msgstr "Zawartość"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Utworzona przez"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Utworzono"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nazwa wyświetlana"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_mail_thread
 msgid "Email Thread"
-msgstr ""
+msgstr "Wątek email"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_end
 msgid "End Date"
-msgstr ""
+msgstr "Data Zakończenia"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Wytyczanie HTTP"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: impersonate_login
 #: model:ir.actions.act_window,name:impersonate_login.impersonate_log_action
 msgid "Impersonate Login Logs"
-msgstr ""
+msgstr "Logi zalogowania się w celu podszywania się"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_impersonate_log
 msgid "Impersonate Logs"
-msgstr ""
+msgstr "Logi podszywania się"
 
 #. module: impersonate_login
 #: model:res.groups,name:impersonate_login.group_impersonate_login
 msgid "Impersonate Users"
-msgstr ""
+msgstr "Użytkownicy podszywania się"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_mail__impersonated_author_id
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__impersonated_author_id
 msgid "Impersonated Author"
-msgstr ""
+msgstr "Autor poszywania się"
 
 #. module: impersonate_login
 #: model:ir.ui.menu,name:impersonate_login.menu_impersonate_log
 msgid "Impersonated Logs"
-msgstr ""
+msgstr "Logi podszywania się"
 
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
 #, python-format
 msgid "It's you."
-msgstr ""
+msgstr "To ty."
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ostatnio modyfikowane przez"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ostatnia zmiana"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__impersonated_partner_id
 msgid "Logged as"
-msgstr ""
+msgstr "Zalogowany jako"
 
 #. module: impersonate_login
 #. odoo-python
@@ -122,17 +124,17 @@ msgstr ""
 #: code:addons/impersonate_login/models/mail_message.py:0
 #, python-format
 msgid "Logged in as {}"
-msgstr ""
+msgstr "Zalogowano jako {}"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_mail_message
 msgid "Message"
-msgstr ""
+msgstr "Wiadomość"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_start
 msgid "Start Date"
-msgstr ""
+msgstr "Data Rozpoczęcia"
 
 #. module: impersonate_login
 #. odoo-javascript
@@ -140,17 +142,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:impersonate_login.impersonate_res_users_tree
 #, python-format
 msgid "Switch Login"
-msgstr ""
+msgstr "Przełącz Login"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_res_users
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__user_id
 msgid "User"
-msgstr ""
+msgstr "Użytkownik"
 
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
 #, python-format
 msgid "You are already Logged as another user."
-msgstr ""
+msgstr "Jesteś już zalogowany jako inny użytkownik."
