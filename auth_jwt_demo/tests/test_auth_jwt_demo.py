@@ -1,6 +1,7 @@
 # Copyright 2021 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import logging
 import time
 
 import jwt
@@ -45,7 +46,16 @@ class TestEndToEnd(tests.HttpCase):
         # Try again in a user session, it will be rejected because auth_jwt
         # is not designed to work in user session.
         self.authenticate("demo", "demo")
-        resp = self.url_open("/auth_jwt_demo/whoami", headers={"Authorization": token})
+        with self.assertLogs("odoo.addons.auth_jwt.models.ir_http", "WARNING") as logs:
+            resp = self.url_open(
+                "/auth_jwt_demo/whoami", headers={"Authorization": token}
+            )
+            self.assertEqual(len(logs.records), 1)
+            self.assertEqual(logs.records[0].levelno, logging.WARNING)
+            self.assertIn(
+                'A route with auth="jwt" must not be used within a user session',
+                logs.output[0],
+            )
         self.assertEqual(resp.status_code, 401)
 
     def test_whoami_cookie(self):
