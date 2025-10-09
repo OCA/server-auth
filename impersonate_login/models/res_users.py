@@ -4,7 +4,7 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.service import security
@@ -24,19 +24,21 @@ class Users(models.Model):
 
     def impersonate_login(self):
         if request:
-            if request.session.impersonate_from_uid:
-                if self.id == request.session.impersonate_from_uid:
+            if request.session.get("impersonate_from_uid"):
+                if self.id == request.session.get("impersonate_from_uid"):
                     return self.back_to_origin_login()
                 else:
-                    raise UserError(_("You are already Logged as another user."))
+                    raise UserError(
+                        self.env._("You are already Logged as another user.")
+                    )
             if self.id == request.session.uid:
-                raise UserError(_("It's you."))
+                raise UserError(self.env._("It's you."))
             if (
                 request.env.user._is_impersonate_user()
                 and request.env.user._is_internal()
             ):
                 target_uid = self.id
-                request.session.impersonate_from_uid = self._uid
+                request.session["impersonate_from_uid"] = self._uid
                 request.session.uid = target_uid
                 impersonate_log = (
                     self.env["impersonate.log"]
@@ -47,11 +49,11 @@ class Users(models.Model):
                             "impersonated_partner_id": self.env["res.users"]
                             .browse(target_uid)
                             .partner_id.id,
-                            "date_start": fields.datetime.now(),
+                            "date_start": fields.Datetime.now(),
                         }
                     )
                 )
-                request.session.impersonate_log_id = impersonate_log.id
+                request.session["impersonate_log_id"] = impersonate_log.id
                 logger.info(
                     f"IMPERSONATE: {self._get_partner_name(self._uid)} "
                     f"Login as {self._get_partner_name(self.id)}"
@@ -73,7 +75,7 @@ class Users(models.Model):
     @api.model
     def action_impersonate_login(self):
         if request:
-            from_uid = request.session.impersonate_from_uid
+            from_uid = request.session.get("impersonate_from_uid")
             if not from_uid:
                 action = self.env["ir.actions.act_window"]._for_xml_id(
                     "base.action_res_users"
@@ -84,25 +86,36 @@ class Users(models.Model):
                     ("share", "=", False),
                 ]
                 action["target"] = "new"
+                # Provide a styled helper consistent with other apps when list is empty
+                help_title = self.env._("No users found. Let's create one!")
+                help_body = self.env._(
+                    "Create and manage users that will connect to the system. "
+                    "Users can be deactivated should there be a period of time "
+                    "during which "
+                    "they will/should not connect to the system. "
+                    "You can assign them groups in order to give them specific access "
+                    "to the applications they need to use in the system."
+                )
+                action["help"] = f"<p>{help_title}</p><p>{help_body}</p>"
                 return action
 
     @api.model
     def back_to_origin_login(self):
         if request:
-            from_uid = request.session.impersonate_from_uid
+            from_uid = request.session.get("impersonate_from_uid")
             if from_uid:
                 request.session.uid = from_uid
                 self.env["impersonate.log"].sudo().browse(
-                    request.session.impersonate_log_id
+                    request.session.get("impersonate_log_id")
                 ).write(
                     {
-                        "date_end": fields.datetime.now(),
+                        "date_end": fields.Datetime.now(),
                     }
                 )
                 # invalidate session token cache as we've changed the uid
                 request.env.registry.clear_cache()
-                request.session.impersonate_from_uid = False
-                request.session.impersonate_log_id = False
+                request.session["impersonate_from_uid"] = False
+                request.session["impersonate_log_id"] = False
                 request.session.session_token = security.compute_session_token(
                     request.session, request.env
                 )
