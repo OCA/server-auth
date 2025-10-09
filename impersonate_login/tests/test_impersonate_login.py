@@ -13,8 +13,32 @@ class TestImpersonateLogin(HttpCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        # Admin always exists; ensure it can impersonate and has a known password
         cls.admin_user = cls.env.ref("base.user_admin")
-        cls.demo_user = cls.env.ref("base.user_demo")
+        # Make sure admin can use the feature (group check in session info)
+        group_imp = cls.env.ref("impersonate_login.group_impersonate_login")
+        if group_imp not in cls.admin_user.group_ids:
+            cls.admin_user.group_ids += group_imp
+        # Ensure a demo user exists for tests on Odoo 19 (no demo loaded by default)
+        try:
+            cls.demo_user = cls.env.ref("base.user_demo")
+        except Exception:  # ValueError when not found
+            Users = cls.env["res.users"].with_context(no_reset_password=True)
+            cls.demo_user = Users.create(
+                {
+                    "name": "Demo User",
+                    "login": "demo",
+                    "password": "demo",
+                    # Internal user rights
+                    "group_ids": [
+                        (
+                            6,
+                            0,
+                            [cls.env.ref("base.group_user").id],
+                        )
+                    ],
+                }
+            )
 
     def _impersonate_user(self, user):
         response = self.url_open(
@@ -141,7 +165,7 @@ class TestImpersonateLogin(HttpCase):
         self.assertFalse(result["impersonate_from_uid"])
 
         # Impersonate demo user: is already current user
-        self.demo_user.groups_id += self.env.ref(
+        self.demo_user.group_ids += self.env.ref(
             "impersonate_login.group_impersonate_login"
         )
         with mute_logger("odoo.http"):
