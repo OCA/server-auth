@@ -39,6 +39,10 @@ class TestImpersonateLogin(HttpCase):
                     ],
                 }
             )
+        # Ensure demo has contact creation rights in Odoo 19
+        contact_creation = cls.env.ref("base.group_partner_manager")
+        if contact_creation not in cls.demo_user.group_ids:
+            cls.demo_user.group_ids += contact_creation
 
     def _impersonate_user(self, user):
         response = self.url_open(
