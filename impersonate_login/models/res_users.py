@@ -38,14 +38,14 @@ class Users(models.Model):
                 and request.env.user._is_internal()
             ):
                 target_uid = self.id
-                request.session["impersonate_from_uid"] = self._uid
+                request.session["impersonate_from_uid"] = self.env.uid
                 request.session.uid = target_uid
                 impersonate_log = (
                     self.env["impersonate.log"]
                     .sudo()
                     .create(
                         {
-                            "user_id": self._uid,
+                            "user_id": self.env.uid,
                             "impersonated_partner_id": self.env["res.users"]
                             .browse(target_uid)
                             .partner_id.id,
@@ -55,7 +55,7 @@ class Users(models.Model):
                 )
                 request.session["impersonate_log_id"] = impersonate_log.id
                 logger.info(
-                    f"IMPERSONATE: {self._get_partner_name(self._uid)} "
+                    f"IMPERSONATE: {self._get_partner_name(self.env.uid)} "
                     f"Login as {self._get_partner_name(self.id)}"
                 )
                 # invalidate session token cache as we've changed the uid
@@ -121,7 +121,7 @@ class Users(models.Model):
                 )
                 logger.info(
                     f"IMPERSONATE: {self._get_partner_name(from_uid)} "
-                    f"Logout as {self._get_partner_name(self._uid)}"
+                    f"Logout as {self._get_partner_name(self.env.uid)}"
                 )
 
             # reload the client; open the first available root menu
