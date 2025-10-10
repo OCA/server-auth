@@ -4,6 +4,7 @@
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import {session} from "@web/session";
+import {markup} from "@odoo/owl";
 
 export function impersonateLoginItem(env) {
     return {
@@ -16,6 +17,13 @@ export function impersonateLoginItem(env) {
                 "res.users",
                 "action_impersonate_login"
             );
+            // Ensure help (if containing HTML) renders as markup, like /web/action/load path
+            if (
+                actionImpersonateLogin &&
+                typeof actionImpersonateLogin.help === "string"
+            ) {
+                actionImpersonateLogin.help = markup(actionImpersonateLogin.help);
+            }
             env.services.action.doAction(actionImpersonateLogin);
         },
         sequence: 55,
