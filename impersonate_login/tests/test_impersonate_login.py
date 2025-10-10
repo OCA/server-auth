@@ -4,6 +4,7 @@
 import json
 from uuid import uuid4
 
+from odoo import fields
 from odoo.tests import HttpCase, tagged
 from odoo.tools import mute_logger
 
@@ -13,8 +14,41 @@ class TestImpersonateLogin(HttpCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.demo_login = "impersonate_demo"
+        cls.demo_password = "demo"
+        # Admin always exists; ensure it can impersonate and has a known password
         cls.admin_user = cls.env.ref("base.user_admin")
-        cls.demo_user = cls.env.ref("base.user_demo")
+        # Make sure admin can use the feature (group check in session info)
+        group_imp = cls.env.ref("impersonate_login.group_impersonate_login")
+        if group_imp not in cls.admin_user.group_ids:
+            cls.admin_user.write({"group_ids": [fields.Command.link(group_imp.id)]})
+
+        group_user = cls.env.ref("base.group_user")
+        contact_creation = cls.env.ref("base.group_partner_manager")
+
+        Users = cls.env["res.users"].with_context(no_reset_password=True)
+        cls.demo_user = Users.search([("login", "=", cls.demo_login)], limit=1)
+        if not cls.demo_user:
+            cls.demo_user = Users.create(
+                {
+                    "name": "Demo User",
+                    "login": cls.demo_login,
+                    "password": cls.demo_password,
+                    "group_ids": [
+                        fields.Command.set([group_user.id, contact_creation.id])
+                    ],
+                }
+            )
+        else:
+            cls.demo_user.with_context(no_reset_password=True).write(
+                {"password": cls.demo_password}
+            )
+            if group_user not in cls.demo_user.group_ids:
+                cls.demo_user.write({"group_ids": [fields.Command.link(group_user.id)]})
+            if contact_creation not in cls.demo_user.group_ids:
+                cls.demo_user.write(
+                    {"group_ids": [fields.Command.link(contact_creation.id)]}
+                )
 
     def _impersonate_user(self, user):
         response = self.url_open(
@@ -131,7 +165,7 @@ class TestImpersonateLogin(HttpCase):
     def test_02_user_demo_impersonates_admin(self):
         """Demo user impersonates Admin user"""
         # Login as demo user
-        self.authenticate(user="demo", password="demo")
+        self.authenticate(user=self.demo_login, password=self.demo_password)
         self.assertEqual(self.session.uid, self.demo_user.id)
 
         # Check get_session_info()
@@ -141,7 +175,7 @@ class TestImpersonateLogin(HttpCase):
         self.assertFalse(result["impersonate_from_uid"])
 
         # Impersonate demo user: is already current user
-        self.demo_user.groups_id += self.env.ref(
+        self.demo_user.group_ids += self.env.ref(
             "impersonate_login.group_impersonate_login"
         )
         with mute_logger("odoo.http"):

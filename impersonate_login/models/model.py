@@ -13,11 +13,11 @@ class BaseModel(models.AbstractModel):
         result_vals_list = super()._prepare_create_values(vals_list)
         if (
             request
-            and request.session.impersonate_from_uid
+            and request.session.get("impersonate_from_uid")
             and "create_uid" in self._fields
         ):
             for vals in result_vals_list:
-                vals["create_uid"] = request.session.impersonate_from_uid
+                vals["create_uid"] = request.session.get("impersonate_from_uid")
         return result_vals_list
 
     def write(self, vals):
@@ -25,8 +25,10 @@ class BaseModel(models.AbstractModel):
         res = super().write(vals)
         if (
             request
-            and request.session.impersonate_from_uid
+            and request.session.get("impersonate_from_uid")
             and "write_uid" in self._fields
         ):
-            self._fields["write_uid"].write(self, request.session.impersonate_from_uid)
+            self._fields["write_uid"].write(
+                self, request.session.get("impersonate_from_uid")
+            )
         return res

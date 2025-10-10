@@ -9,15 +9,13 @@ from odoo.http import request
 class MailThread(models.AbstractModel):
     _inherit = "mail.thread"
 
-    def _message_compute_author(
-        self, author_id=None, email_from=None, raise_on_email=True
-    ):
-        if request and request.session.impersonate_from_uid:
+    def _message_compute_author(self, author_id=None, email_from=None):
+        if request and request.session.get("impersonate_from_uid"):
             author = self.env["res.users"].browse(request.session.uid).partner_id
             if author_id == author.id or author_id is None:
                 impersonate_from_author = (
                     self.env["res.users"]
-                    .browse(request.session.impersonate_from_uid)
+                    .browse(request.session.get("impersonate_from_uid"))
                     .partner_id
                 )
                 email = impersonate_from_author.email_formatted
@@ -26,5 +24,4 @@ class MailThread(models.AbstractModel):
         return super()._message_compute_author(
             author_id=author_id,
             email_from=email_from,
-            raise_on_email=raise_on_email,
         )
