@@ -14,7 +14,8 @@ class Http(models.AbstractModel):
         session_info.update(
             {
                 "is_impersonate_user": request.env.user._is_impersonate_user(),
-                "impersonate_from_uid": request.session.impersonate_from_uid,
+                # Use dict-style get to avoid attribute errors when not set
+                "impersonate_from_uid": request.session.get("impersonate_from_uid"),
             }
         )
         return session_info
