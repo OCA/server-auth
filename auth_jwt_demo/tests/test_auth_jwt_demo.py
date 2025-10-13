@@ -7,10 +7,51 @@ import time
 import jwt
 
 from odoo import tests
+from odoo.tools import convert, file_path
+
+
+class TestAuthJwtDemo(tests.common.HttpCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
 
 @tests.tagged("post_install", "-at_install")
 class TestRegisterHook(tests.HttpCase):
+    def setUp(self):
+        super().setUp()
+        demo_user = self.env.ref("base.user_demo", raise_if_not_found=False)
+        if not demo_user:
+            demo_user = self.env["res.users"].create(
+                {
+                    "name": "Demo User",
+                    "login": "demo",
+                    "email": "demo@example.com",
+                    "group_ids": [(6, 0, [self.env.ref("base.group_user").id])],
+                }
+            )
+            self.env["ir.model.data"].create(
+                {
+                    "name": "user_demo",
+                    "module": "base",
+                    "model": "res.users",
+                    "res_id": demo_user.id,
+                    "noupdate": True,
+                }
+            )
+        module_name = "auth_jwt_demo"
+        xml_path_in_module = "demo/auth_jwt_validator.xml"
+        try:
+            full_path = file_path(f"{module_name}/{xml_path_in_module}")
+        except FileNotFoundError:
+            self.fail(f"No se pudo encontrar el fichero demo: {xml_path_in_module}")
+            full_path = None
+        if full_path:
+            with open(full_path, "rb") as f:
+                convert.convert_xml_import(
+                    self.env, module_name, f, idref={}, mode="demo", noupdate=False
+                )
+
     def test_auth_method_exists(self):
         validator = self.env["auth.jwt.validator"].search([("name", "=", "demo")])
         self.assertEqual(len(validator), 1)
@@ -19,6 +60,40 @@ class TestRegisterHook(tests.HttpCase):
 
 @tests.tagged("post_install", "-at_install")
 class TestEndToEnd(tests.HttpCase):
+    def setUp(self):
+        super().setUp()
+        demo_user = self.env.ref("base.user_demo", raise_if_not_found=False)
+        if not demo_user:
+            demo_user = self.env["res.users"].create(
+                {
+                    "name": "Demo User",
+                    "login": "demo",
+                    "email": "demo@example.com",
+                    "group_ids": [(6, 0, [self.env.ref("base.group_user").id])],
+                }
+            )
+            self.env["ir.model.data"].create(
+                {
+                    "name": "user_demo",
+                    "module": "base",
+                    "model": "res.users",
+                    "res_id": demo_user.id,
+                    "noupdate": True,
+                }
+            )
+        module_name = "auth_jwt_demo"
+        xml_path_in_module = "demo/auth_jwt_validator.xml"
+        try:
+            full_path = file_path(f"{module_name}/{xml_path_in_module}")
+        except FileNotFoundError:
+            self.fail(f"No se pudo encontrar el fichero demo: {xml_path_in_module}")
+            full_path = None
+        if full_path:
+            with open(full_path, "rb") as f:
+                convert.convert_xml_import(
+                    self.env, module_name, f, idref={}, mode="demo", noupdate=False
+                )
+
     def _get_token(self, aud=None, email=None):
         validator = self.env["auth.jwt.validator"].search([("name", "=", "demo")])
         payload = {
@@ -74,7 +149,7 @@ class TestEndToEnd(tests.HttpCase):
         self.assertTrue(cookie)
         # Try again with the cookie.
         resp = self.url_open(
-            "/auth_jwt_demo_cookie/whoami", headers={"Cookie": f"demo_auth={cookie}"}
+            "/auth_jwt_demo_cookie/whoami", cookies={"demo_auth": cookie}
         )
         resp.raise_for_status()
         whoami = resp.json()
@@ -159,7 +234,7 @@ class TestEndToEnd(tests.HttpCase):
         token = self._get_token(email=partner.email)
         resp = self.url_open(
             "/auth_jwt_demo_cookie/whoami-public-or-jwt",
-            headers={"Cookie": f"demo_auth={cookie}"},
+            cookies={"demo_auth": cookie},
         )
         resp.raise_for_status()
         whoami = resp.json()
