@@ -16,10 +16,8 @@ _logger = logging.getLogger(__name__)
 class CompanyLDAP(models.Model):
     _inherit = "res.company.ldap"
 
-    is_ssl = fields.Boolean(string="Use LDAPS", default=False)
-    skip_cert_validation = fields.Boolean(
-        string="Skip certificate validation", default=False
-    )
+    is_ssl = fields.Boolean("Use LDAPS")
+    skip_cert_validation = fields.Boolean("Skip certificate validation")
 
     def _get_ldap_dicts(self):
         res = super()._get_ldap_dicts()
@@ -30,8 +28,12 @@ class CompanyLDAP(models.Model):
         return res
 
     def _connect(self, conf):
+        # Handle case when called from the "Test configuration" button
+        if self.env.context.get("test_connection"):
+            conf["is_ssl"] = self.is_ssl
+            conf["skip_cert_validation"] = self.skip_cert_validation
         if conf["is_ssl"]:
-            uri = "ldaps://%s:%d" % (conf["ldap_server"], conf["ldap_server_port"])
+            uri = f"ldaps://{conf['ldap_server']}:{conf['ldap_server_port']}"
             connection = ldap.initialize(uri)
             ldap_chase_ref_disabled = (
                 self.env["ir.config_parameter"]
