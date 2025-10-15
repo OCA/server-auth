@@ -64,12 +64,12 @@ class SignupVerifyEmail(AuthSignupHome):
                 .search([("login", "=", qcontext.get("login"))])
             ):
                 qcontext["error"] = _(
-                    "Another user is already registered using this email" " address."
+                    "Another user is already registered using this email address."
                 )
             else:
                 # Agnostic message for security
                 qcontext["error"] = _(
-                    "Something went wrong, please try again later or" " contact us."
+                    "Something went wrong, please try again later or contact us."
                 )
             return request.render("auth_signup.signup", qcontext)
 
