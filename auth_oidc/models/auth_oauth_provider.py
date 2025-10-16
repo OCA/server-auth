@@ -46,6 +46,12 @@ class AuthOauthProvider(models.Model):
         string="Token URL", help="Required for OpenID Connect authorization code flow."
     )
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
+    end_session_endpoint = fields.Char(
+        string="End Session URL",
+        help="If set, the user is logged out in the authorization provider upon logout "
+        "in the client, should be the value of end_session_endpoint specified by "
+        "the authorization provider.",
+    )
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):
