@@ -74,7 +74,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         super().setUp()
         # search our only test provider
         self.provider_rec = self.env["auth.oauth.provider"].search(
-            [("client_id", "=", "auth_oidc-test")]
+            [("name", "=", "keycloak:8080 on localhost")]
         )
         self.assertEqual(len(self.provider_rec), 1)
 
@@ -82,7 +82,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         """Test that the authentication link is correct."""
         # disable existing providers except our test provider
         self.env["auth.oauth.provider"].search(
-            [("client_id", "!=", "auth_oidc-test")]
+            [("name", "!=", "keycloak:8080 on localhost")]
         ).write(dict(enabled=False))
         with MockRequest(self.env):
             providers = OpenIDLogin().list_providers()
