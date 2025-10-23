@@ -76,7 +76,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         self.provider_rec = self.env["auth.oauth.provider"].search(
             [("client_id", "=", "auth_oidc-test")]
         )
-        self.assertEqual(len(self.provider_rec), 1)
+        self.assertEqual(len(self.provider_rec), 2)
 
     def test_auth_link(self):
         """Test that the authentication link is correct."""
@@ -86,7 +86,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         ).write(dict(enabled=False))
         with MockRequest(self.env):
             providers = OpenIDLogin().list_providers()
-            self.assertEqual(len(providers), 1)
+            self.assertEqual(len(providers), 2)
             auth_link = providers[0]["auth_link"]
             assert auth_link.startswith(self.provider_rec.auth_endpoint)
             params = parse_qs(urlparse(auth_link).query)
