@@ -64,14 +64,20 @@ class ResUsers(models.Model):
         if not id_token:
             _logger.error("No id_token in response.")
             raise AccessDenied()
+
+        # Parse the ID token
         validation = oauth_provider._parse_id_token(id_token, access_token)
+
+        # Use the access_token to fetch the data_endpoint (userinfo)
         if oauth_provider.data_endpoint:
-            data = requests.get(
+            response = requests.get(
                 oauth_provider.data_endpoint,
                 headers={"Authorization": "Bearer %s" % access_token},
                 timeout=10,
-            ).json()
-            validation.update(data)
+            )
+            if response.ok:  # nb: could be a successful failure
+                validation.update(response.json())
+
         # required check
         if "sub" in validation and "user_id" not in validation:
             # set user_id for auth_oauth, user_id is not an OpenID Connect standard
