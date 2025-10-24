@@ -143,9 +143,12 @@ class TestOAuthProviderAurhorizeController:
         # Mock the http request's environ to allow it to see test records
         request_env.return_value = self.env(user=self.user)
 
-        query_string = "client_id=%s&response_type=%s&state={}" % (
-            self.client.identifier,
-            self.client.response_type,
+        query_string = (
+            "client_id={}&response_type={}&state={}",
+            format(
+                self.client.identifier,
+                self.client.response_type,
+            ),
         )
         self.login("demo", "demo")
         response = self.test_client.get(
