@@ -102,13 +102,10 @@ class OAuthProviderClient(models.Model):
     #      rfc6749/grant_types/authorization_code.py#L471-L474
     client_id = fields.Char(compute="_compute_oauthlib_client_id")
 
-    _sql_constraints = [
-        (
-            "identifier_unique",
-            "UNIQUE (identifier)",
-            "The identifier of the client must be unique !",
-        ),
-    ]
+    _identifier_unique = models.Constraint(
+        "UNIQUE (identifier)",
+        "The identifier of the client must be unique !",
+    )
 
     @api.model
     def application_type_mapping(self):

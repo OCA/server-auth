@@ -9,6 +9,6 @@
     </record>
 
     <record id="base.user_admin" model="res.users">
-        <field name="groups_id" eval="[(4, ref('group_oauth_provider_manager'))]" />
+        <field name="group_ids" eval="[(4, ref('group_oauth_provider_manager'))]" />
     </record>
 </odoo>
