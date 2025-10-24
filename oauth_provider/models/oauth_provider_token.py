@@ -1,7 +1,7 @@
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class OAuthProviderToken(models.Model):
@@ -42,18 +42,14 @@ class OAuthProviderToken(models.Model):
         help="A token is active only if it has not yet expired.",
     )
 
-    _sql_constraints = [
-        (
-            "token_unique",
-            "UNIQUE (token, client_id)",
-            "The token must be unique per client !",
-        ),
-        (
-            "refresh_token_unique",
-            "UNIQUE (refresh_token, client_id)",
-            "The refresh token must be unique per client !",
-        ),
-    ]
+    _token_unique = models.Constraint(
+        "UNIQUE (token, client_id)",
+        "The token must be unique per client !",
+    )
+    _refresh_token_unique = models.Constraint(
+        "UNIQUE (refresh_token, client_id)",
+        "The refresh token must be unique per client !",
+    )
 
     @api.depends("expires_at")
     def _compute_active(self):
@@ -89,9 +85,7 @@ class OAuthProviderToken(models.Model):
             ]
         else:
             raise exceptions.UserError(
-                _("Invalid operator {operator} for  field active!").format(
-                    operator=operator
-                )
+                self.env._("Invalid operator %s for  field active!", operator)
             )
 
         return domain
