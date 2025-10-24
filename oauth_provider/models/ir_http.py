@@ -4,7 +4,7 @@
 import json
 
 import oauthlib
-from werkzeug.exceptions import BadRequest, Unauthorized
+from werkzeug.exceptions import Unauthorized
 
 from odoo import http, models
 
