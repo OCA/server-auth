@@ -246,7 +246,10 @@ class TestOAuthProviderToken(TransactionCase):
         )
 
     def test_active_search_not_in_true_false(self):
-        """Check the results of searching tokens with active notin (True,False) domain"""
+        """
+        Check the results of searching tokens
+        with active notin (True,False) domain
+        """
         token_obj = self.env["oauth.provider.token"]
         expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
 

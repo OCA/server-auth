@@ -71,7 +71,9 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
                         {
                             "name": "Profile",
                             "code": "profile",
-                            "description": "Access to your profile details (name, etc.)",
+                            "description": """
+                                Access to your profile details (name, etc.)
+                            """,
                             "model_id": self.env.ref("base.model_res_users").id,
                             "filter_id": self.filter.id,
                             "field_ids": [

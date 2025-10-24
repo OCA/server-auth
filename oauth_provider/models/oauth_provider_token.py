@@ -1,7 +1,7 @@
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class OAuthProviderToken(models.Model):
@@ -85,9 +85,7 @@ class OAuthProviderToken(models.Model):
             ]
         else:
             raise exceptions.UserError(
-                _("Invalid operator {operator} for  field active!").format(
-                    operator=operator
-                )
+                self.env._("Invalid operator %s for  field active!", operator)
             )
 
         return domain
