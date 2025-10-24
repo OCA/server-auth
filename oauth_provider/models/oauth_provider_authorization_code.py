@@ -37,10 +37,7 @@ class OAuthProviderAuthorizationCode(models.Model):
         default=True, help="When unchecked, the code is invalidated."
     )
 
-    _sql_constraints = [
-        (
-            "code_client_id_unique",
-            "UNIQUE (code, client_id)",
-            "The authorization code must be unique per client !",
-        ),
-    ]
+    _code_client_id_unique = models.Constraint(
+        "UNIQUE (code, client_id)",
+        "The authorization code must be unique per client !",
+    )
