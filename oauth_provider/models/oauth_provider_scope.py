@@ -46,9 +46,10 @@ class OAuthProviderScope(models.Model):
         help="Fields allowed by this scope.",
     )
 
-    _sql_constraints = [
-        ("code_unique", "UNIQUE (code)", "The code of the scopes must be unique !"),
-    ]
+    _code_unique = models.Constraint(
+        "UNIQUE (code)",
+        "The code of the scopes must be unique !",
+    )
 
     @api.model
     def _get_ir_filter_eval_context(self):

@@ -42,18 +42,14 @@ class OAuthProviderToken(models.Model):
         help="A token is active only if it has not yet expired.",
     )
 
-    _sql_constraints = [
-        (
-            "token_unique",
-            "UNIQUE (token, client_id)",
-            "The token must be unique per client !",
-        ),
-        (
-            "refresh_token_unique",
-            "UNIQUE (refresh_token, client_id)",
-            "The refresh token must be unique per client !",
-        ),
-    ]
+    _token_unique = models.Constraint(
+        "UNIQUE (token, client_id)",
+        "The token must be unique per client !",
+    )
+    _refresh_token_unique = models.Constraint(
+        "UNIQUE (refresh_token, client_id)",
+        "The refresh token must be unique per client !",
+    )
 
     @api.depends("expires_at")
     def _compute_active(self):
