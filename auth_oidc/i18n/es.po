@@ -44,6 +44,11 @@ msgid "Code Verifier"
 msgstr "Verificador del código"
 
 #. module: auth_oidc
+#: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__end_session_endpoint
+msgid "End Session URL"
+msgstr ""
+
+#. module: auth_oidc
 #: model:ir.model.fields,field_description:auth_oidc.field_auth_oauth_provider__jwks_uri
 msgid "JWKS URL"
 msgstr "URL JWKS"
