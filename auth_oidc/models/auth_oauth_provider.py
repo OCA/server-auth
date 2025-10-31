@@ -50,6 +50,7 @@ class AuthOauthProvider(models.Model):
         help="Additional parameters for the auth link. "
         "For example: {'prompt':'select_account'}"
     )
+    end_session_endpoint = fields.Char(string="End Session URL")
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):
