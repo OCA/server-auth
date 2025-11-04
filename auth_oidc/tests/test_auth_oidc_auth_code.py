@@ -106,24 +106,38 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         return user
 
     def _prepare_login_test_responses(
-        self, access_token="42", id_token_body=None, id_token_headers=None, keys=None
+        self,
+        access_token="42",
+        id_token_body=None,
+        id_token_headers=None,
+        keys=None,
+        token_response_without=None,
     ):
         if id_token_body is None:
             id_token_body = {}
         if id_token_headers is None:
             id_token_headers = {"kid": "the_key_id"}
+        if token_response_without is None:
+            token_response_without = []
+
+        token_response = {
+            "access_token": access_token,
+            "id_token": jwt.encode(
+                id_token_body,
+                self.rsa_key_pem,
+                algorithm="RS256",
+                headers=id_token_headers,
+            ),
+        }
+
+        # Voluntarily break the token response
+        for key in token_response_without:
+            if key in token_response:
+                del token_response[key]
         responses.add(
             responses.POST,
             KEYCLOAK_URL + "/auth/realms/master/protocol/openid-connect/token",
-            json={
-                "access_token": access_token,
-                "id_token": jwt.encode(
-                    id_token_body,
-                    self.rsa_key_pem,
-                    algorithm="RS256",
-                    headers=id_token_headers,
-                ),
-            },
+            json=token_response,
         )
         if keys is None:
             if "kid" in id_token_headers:
@@ -150,6 +164,44 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             )
         self.assertEqual(token, "42")
         self.assertEqual(login, user.login)
+
+    @responses.activate
+    def test_login_fails_if_no_access_token_is_returned(self):
+        """Test that login cannot proceed if no access_token is returned"""
+        self._prepare_login_test_responses(token_response_without=["access_token"])
+
+        with self.assertRaises(AccessDenied):
+            with MockRequest(self.env):
+                with self.assertLogs(level=logging.ERROR) as logs:
+                    self.env["res.users"].auth_oauth(
+                        self.provider_rec.id,
+                        {"state": json.dumps({})},
+                    )
+        self.assertEqual(len(logs.records), 1)
+        self.assertEqual(logs.records[0].levelno, logging.ERROR)
+        self.assertEqual(
+            "ERROR:odoo.addons.auth_oidc.models.res_users:No access_token in response.",
+            logs.output[0],
+        )
+
+    @responses.activate
+    def test_login_fails_if_no_id_token_is_returned(self):
+        """Test that login cannot proceed if no id_token is returned"""
+        self._prepare_login_test_responses(token_response_without=["id_token"])
+
+        with self.assertRaises(AccessDenied):
+            with MockRequest(self.env):
+                with self.assertLogs(level=logging.ERROR) as logs:
+                    self.env["res.users"].auth_oauth(
+                        self.provider_rec.id,
+                        {"state": json.dumps({})},
+                    )
+        self.assertEqual(len(logs.records), 1)
+        self.assertEqual(logs.records[0].levelno, logging.ERROR)
+        self.assertEqual(
+            "ERROR:odoo.addons.auth_oidc.models.res_users:No id_token in response.",
+            logs.output[0],
+        )
 
     @responses.activate
     def test_manager_login(self):
