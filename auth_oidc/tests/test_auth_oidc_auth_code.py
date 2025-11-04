@@ -411,6 +411,44 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         self.assertEqual(token, "122/3")
         self.assertEqual(login, user.login)
 
+    @responses.activate
+    def test_login_fetches_validation_and_data_endpoints(self):
+        """
+        Test that, if set, login will fetch the validation and data endpoints if set,
+        and merge data in the available token
+        """
+        for field, endpoint_url in [
+            (
+                "validation_endpoint",
+                KEYCLOAK_URL + "/auth/realms/master/protocol/openid-connect/userinfo",
+            ),
+            (
+                "data_endpoint",
+                KEYCLOAK_URL + "/me/data",
+            ),
+        ]:
+            self.env["auth.oauth.provider"].search(
+                [("name", "=", "keycloak:8080 on localhost")]
+            ).write({field: endpoint_url})
+            user = self._prepare_login_test_user()
+            # Make sure they're not a manager
+            user.write(
+                {
+                    "groups_id": [
+                        Command.unlink(self.env.ref("base.group_erp_manager").id)
+                    ]
+                }
+            )
+            self._prepare_login_test_responses(id_token_body={"user_id": user.login})
+            responses.add(responses.GET, endpoint_url, json={"groups": "erp_manager"})
+
+            with MockRequest(self.env):
+                db, login, token = self.env["res.users"].auth_oauth(
+                    self.provider_rec.id,
+                    {"state": json.dumps({})},
+                )
+            self.assertTrue(user.has_group("base.group_erp_manager"))
+
     def test_group_expression_empty_token(self):
         """Test that group expression with an empty token evaluate correctly"""
         group_line = self.env.ref("auth_oidc.local_keycloak").group_line_ids[:1]
