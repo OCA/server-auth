@@ -8,13 +8,12 @@ from odoo import api, models
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    @classmethod
-    def _login(cls, db, credential, user_agent_env):
+    def _login(self, credential, user_agent_env):
         """Overload _login to lowercase the `login` before passing to the
         super."""
         if isinstance(credential, dict) and credential.get("login"):
             credential["login"] = credential["login"].lower()
-        return super()._login(db, credential, user_agent_env=user_agent_env)
+        return super()._login(credential, user_agent_env=user_agent_env)
 
     @api.model_create_multi
     def create(self, vals_list):

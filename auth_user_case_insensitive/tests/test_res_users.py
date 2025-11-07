@@ -47,7 +47,6 @@ class TestResUsers(TransactionCase):
         rec_id = self.env.ref("base.user_admin")  # Get the admin user reference
         credentials = {"type": "password", "login": "AdMiN", "password": "admin"}
         res_id = self.model_obj._login(
-            self.env.cr.dbname,
             credentials,
             {"interactive": True},
         )
