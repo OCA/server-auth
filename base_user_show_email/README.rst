@@ -38,11 +38,6 @@ confusing.
 The goal of this module is to untangle (a bit) these two fields. Here
 are the changes:
 
--  In the res.users form view:
-
-   -  Display a "Login" label instead of "Email" on the login field
-   -  Show the currently invisible email field and its label
-
 -  In the res.users tree view:
 
    -  Display the email field next to the login field
