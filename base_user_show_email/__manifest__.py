@@ -6,7 +6,7 @@
     "version": "18.0.1.0.0",
     "category": "Tools",
     "website": "https://github.com/OCA/server-auth",
-    "author": "Camptocamp, " "Odoo Community Association (OCA)",
+    "author": "Camptocamp, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "installable": True,
     "application": False,
