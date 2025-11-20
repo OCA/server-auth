@@ -302,3 +302,38 @@ class TestImpersonateLogin(HttpCase):
         wizard = self.env["mail.wizard.invite"].browse(settings_id)
         self.assertIn("Hello", wizard.message)
         self.assertEqual(wizard.create_uid, self.demo_user)
+
+    def test_06_limit_access_to_admin(self):
+        """
+        Test restriction on impersonating admin users
+        with 'Administration: Settings' access rights.
+        """
+        config_settings = self.env["res.config.settings"].create(
+            {"restrict_impersonate_admin_settings": True}
+        )
+        config_settings.execute()
+
+        config_restrict = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("impersonate_login.restrict_impersonate_admin_settings")
+        )
+        self.assertTrue(config_restrict)
+
+        admin_settings_group = self.env.ref("base.group_system")
+        self.admin_user.groups_id += admin_settings_group
+
+        self.authenticate(user="demo", password="demo")
+        self.assertEqual(self.session.uid, self.demo_user.id)
+
+        self.demo_user.groups_id += self.env.ref(
+            "impersonate_login.group_impersonate_login"
+        )
+
+        with mute_logger("odoo.http"):
+            data = self._impersonate_user(self.admin_user)
+        self.assertEqual(
+            data["error"]["data"]["message"],
+            "You cannot impersonate users with "
+            "'Administration: Settings' access rights.",
+        )
