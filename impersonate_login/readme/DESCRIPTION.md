@@ -6,6 +6,7 @@ To ensure that any abuse of this feature will not go unnoticed, the following me
 * In the chatter, it is displayed who is the user that is logged as another user.
 * Mails and messages are sent from the original user.
 * Impersonated logins are logged and can be consulted through the Settings -> Technical menu.
-* 
+* You can optionally forbid impersonation of users with "Administration: Settings"
+  rights by enabling the related option in the settings.
 There is an alternative module to allow logins as another user (auth_admin_passkey),
 but it does not support these security mechanisms.

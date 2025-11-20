@@ -20,6 +20,7 @@
     "data": [
         "security/group.xml",
         "security/ir.model.access.csv",
+        "views/res_config_settings.xml",
         "views/res_users.xml",
         "views/impersonate_log.xml",
     ],
