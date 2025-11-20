@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_authentication_attempt_all,Authentication Attempt All Users,model_res_authentication_attempt,,1,0,0,0
+access_res_authentication_attempt_manager,Authentication Attempt Manager,model_res_authentication_attempt,base.group_system,1,1,1,1

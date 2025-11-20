@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Tree/List View -->
+    <record id="view_res_authentication_attempt_list" model="ir.ui.view">
+        <field name="model">res.authentication.attempt</field>
+        <field name="arch" type="xml">
+            <list decoration-warning="result == 'failed'"
+                  decoration-danger="result == 'banned'">
+                <field name="create_date" />
+                <field name="remote" />
+                <field name="login" />
+                <field name="result" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_res_authentication_attempt_form" model="ir.ui.view">
+        <field name="model">res.authentication.attempt</field>
+        <field name="arch" type="xml">
+            <form string="Authentication Attempt">
+                <header>
+                    <button name="action_unban"
+                            type="object"
+                            string="Set to Unbanned"
+                            invisible="result != 'banned'"
+                    />
+                    <button name="action_whitelist_add"
+                            type="object"
+                            string="Add Remote to Whitelist"
+                            invisible="whitelisted"
+                    />
+                    <button name="action_whitelist_remove"
+                            type="object"
+                            string="Remove Remote from Whitelist"
+                            invisible="not whitelisted"
+                    />
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="create_date" />
+                        <field name="result" />
+                        <field name="login" />
+                        <field name="remote" />
+                        <field name="remote_metadata" />
+                        <field name="whitelisted" invisible="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Graph View -->
+    <record id="view_res_authentication_attempt_graph" model="ir.ui.view">
+        <field name="model">res.authentication.attempt</field>
+        <field name="arch" type="xml">
+            <graph>
+                <field name="create_date" />
+                <field name="result" />
+            </graph>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_res_authentication_attempt_search" model="ir.ui.view">
+        <field name="model">res.authentication.attempt</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="login"/>
+                <filter name="filter_no_success"
+                        string="Without Success"
+                        domain="[('result', '!=', 'successful')]" />
+                <filter name="filter_banned"
+                        string="Banned"
+                        domain="[('result', '=', 'banned')]" />
+                <filter name="filter_failed"
+                        string="Failed"
+                        domain="[('result', '=', 'failed')]" />
+                <filter name="filter_unbanned"
+                        string="Unbanned"
+                        domain="[('result', '=', 'unbanned')]" />
+                <filter name="filter_successful"
+                        string="Successful"
+                        domain="[('result', '=', 'successful')]" />
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_res_authentication_attempt" model="ir.actions.act_window">
+        <field name="name">Authentication Attempts</field>
+        <field name="res_model">res.authentication.attempt</field>
+        <field name="view_mode">list,form,graph</field>
+        <field name="context">{"search_default_filter_no_success": 1}</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem
+        id="menu_res_authentication_attempt"
+        parent="base.menu_users"
+        action="action_res_authentication_attempt"
+        sequence="50" />
+</odoo>
