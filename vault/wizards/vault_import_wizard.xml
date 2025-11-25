@@ -32,18 +32,18 @@
                 </sheet>
                 <footer>
                     <button
-                        type="object"
-                        name="action_import"
-                        string="Import"
-                        class="oe_highlight"
-                        attrs="{'invisible': [('crypted_content', '=', False)]}"
-                    />
+                    type="object"
+                    name="action_import"
+                    string="Import"
+                    class="oe_highlight"
+                    attrs="{'invisible': [('crypted_content', '=', False)]}"
+                />
                     <button
-                        type="object"
-                        name="action_import"
-                        string="Import"
-                        attrs="{'invisible': [('crypted_content', '!=', False)]}"
-                    />
+                    type="object"
+                    name="action_import"
+                    string="Import"
+                    attrs="{'invisible': [('crypted_content', '!=', False)]}"
+                />
                     or
                     <button type="special" string="Cancel" special="cancel" />
                 </footer>

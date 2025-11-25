@@ -60,7 +60,6 @@
         </field>
     </record>
 
-
     <record id="action_res_users_keys" model="ir.actions.act_window">
         <field name="name">Manage my keys</field>
         <field name="type">ir.actions.act_window</field>
