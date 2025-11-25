@@ -25,11 +25,11 @@
                 </sheet>
                 <footer>
                     <button
-                        type="object"
-                        name="action_store"
-                        string="Store"
-                        class="oe_highlight"
-                    />
+                    type="object"
+                    name="action_store"
+                    string="Store"
+                    class="oe_highlight"
+                />
                     or
                     <button type="special" string="Cancel" special="cancel" />
                 </footer>

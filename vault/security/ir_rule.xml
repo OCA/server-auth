@@ -39,7 +39,7 @@
         <field name="perm_read" eval="1" />
     </record>
 
-     <record id="vault_field_access_default" model="ir.rule">
+    <record id="vault_field_access_default" model="ir.rule">
         <field name="name">vault.field.access.default</field>
         <field name="model_id" ref="vault.model_vault_field" />
         <field
