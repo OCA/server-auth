@@ -20,7 +20,7 @@ msgstr ""
 "%100==4 ? 2 : 3);\n"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Add remote to whitelist"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgid "Authentication Result"
 msgstr "Rezultati overjanja"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Banned"
 msgstr "Prepovedan"
@@ -57,7 +57,7 @@ msgid "Display Name"
 msgstr "Prikazni naziv"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Failed"
 msgstr "Neuspešno"
@@ -99,17 +99,17 @@ msgid "Remote IP metadata"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Remove remote from whitelist"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Set to unbanned"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Successful"
 msgstr "Uspešno"
@@ -120,7 +120,7 @@ msgid "Tried Login"
 msgstr "Poskusov prijave"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 #, fuzzy
 msgid "Unbanned"
@@ -137,7 +137,7 @@ msgid "Whitelisted"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 msgid "Without Success"
 msgstr "Brez uspeha"
 

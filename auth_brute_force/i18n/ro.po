@@ -22,7 +22,7 @@ msgstr ""
 "2:1));\n"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Add remote to whitelist"
 msgstr ""
 
@@ -38,7 +38,7 @@ msgid "Authentication Result"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Banned"
 msgstr ""
@@ -59,7 +59,7 @@ msgid "Display Name"
 msgstr "Nume Afişat"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Failed"
 msgstr ""
@@ -100,17 +100,17 @@ msgid "Remote IP metadata"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Remove remote from whitelist"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Set to unbanned"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Successful"
 msgstr ""
@@ -121,7 +121,7 @@ msgid "Tried Login"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Unbanned"
 msgstr ""
@@ -137,7 +137,7 @@ msgid "Whitelisted"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 msgid "Without Success"
 msgstr ""
 

@@ -10,18 +10,17 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-01-06 02:24+0000\n"
-"PO-Revision-Date: 2023-06-08 12:11+0000\n"
-"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"PO-Revision-Date: 2018-01-06 02:24+0000\n"
+"Last-Translator: Paolo Valier <paolo.valier@hotmail.it>, 2017\n"
 "Language-Team: Italian (https://www.transifex.com/oca/teams/23907/it/)\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.17\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Add remote to whitelist"
 msgstr ""
 
@@ -37,7 +36,7 @@ msgid "Authentication Result"
 msgstr "Risultato dell'Autenticazione"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Banned"
 msgstr "Interdetto"
@@ -55,10 +54,10 @@ msgstr "Creato il"
 #. module: auth_brute_force
 #: model:ir.model.fields,field_description:auth_brute_force.field_res_authentication_attempt_display_name
 msgid "Display Name"
-msgstr "Nome visualizzato"
+msgstr "Nome da visualizzare"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Failed"
 msgstr "Fallita"
@@ -76,12 +75,12 @@ msgstr "Ultima modifica il"
 #. module: auth_brute_force
 #: model:ir.model.fields,field_description:auth_brute_force.field_res_authentication_attempt_write_uid
 msgid "Last Updated by"
-msgstr "Ultimo aggiornamento di"
+msgstr "Last Updated by"
 
 #. module: auth_brute_force
 #: model:ir.model.fields,field_description:auth_brute_force.field_res_authentication_attempt_write_date
 msgid "Last Updated on"
-msgstr "Ultimo aggiornamento il"
+msgstr "Last Updated on"
 
 #. module: auth_brute_force
 #: model:ir.model.fields,help:auth_brute_force.field_res_authentication_attempt_remote_metadata
@@ -100,17 +99,17 @@ msgid "Remote IP metadata"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Remove remote from whitelist"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_form
 msgid "Set to unbanned"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 msgid "Successful"
 msgstr "Riuscito"
@@ -121,7 +120,7 @@ msgid "Tried Login"
 msgstr "Tentata Autenticazione"
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 #: selection:res.authentication.attempt,result:0
 #, fuzzy
 msgid "Unbanned"
@@ -138,7 +137,7 @@ msgid "Whitelisted"
 msgstr ""
 
 #. module: auth_brute_force
-#: model:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
+#: model_terms:ir.ui.view,arch_db:auth_brute_force.view_res_authentication_attempt_search
 msgid "Without Success"
 msgstr "Senza successo"
 

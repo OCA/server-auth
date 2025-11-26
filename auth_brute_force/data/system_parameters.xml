@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Ensure parameter exists with correct value -->
+    <function
+        model="ir.config_parameter"
+        name="set_param"
+        eval="('base.login_cooldown_duration', 0)"
+    />
+</odoo>
