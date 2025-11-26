@@ -13,7 +13,7 @@ class Http(models.AbstractModel):
         session_info = super().session_info()
         session_info.update(
             {
-                "is_impersonate_user": request.env.user._is_impersonate_user(),
+                "is_impersonate_user": self.env.user._is_impersonate_user(),
                 "impersonate_from_uid": request.session.impersonate_from_uid,
             }
         )
