@@ -182,16 +182,15 @@ class TestPySaml(HttpCase):
         self.saml_provider.sp_baseurl = temp
 
     def test_ensure_metadata_present(self):
-        response = self.url_open("/auth_saml/metadata?p=%d&d=%s")
+        url = f"/auth_saml/metadata?p={self.saml_provider.id}&d={self.env.cr.dbname}"
+        response = self.url_open(url)
 
         self.assertTrue(response.ok)
         self.assertTrue("xml" in response.headers.get("Content-Type"))
 
     def test_ensure_get_auth_request_redirects(self):
-        response = self.url_open(
-            "/auth_saml/get_auth_request?pid=%d",
-            allow_redirects=False,
-        )
+        url = f"/auth_saml/get_auth_request?pid={self.saml_provider.id}"
+        response = self.url_open(url, allow_redirects=False)
         self.assertTrue(response.ok)
         self.assertEqual(response.status_code, 303)
         self.assertIn(
