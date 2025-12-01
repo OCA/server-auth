@@ -18,13 +18,10 @@ class ResUserSaml(models.Model):
         help="The current SAML token in use",
     )
 
-    _sql_constraints = [
-        (
-            "uniq_users_saml_provider_saml_uid",
-            "unique(saml_provider_id, saml_uid)",
-            "SAML UID must be unique per provider",
-        )
-    ]
+    _unique_saml_uid_per_provider = models.Constraint(
+        "unique (saml_provider_id, saml_uid)",
+        "SAML UID must be unique per provider",
+    )
 
     @api.model_create_multi
     def create(self, vals_list):
