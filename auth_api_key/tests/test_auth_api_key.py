@@ -9,13 +9,24 @@ class TestAuthApiKey(TransactionCase):
     def setUpClass(cls, *args, **kwargs):
         super().setUpClass(*args, **kwargs)
         cls.AuthApiKey = cls.env["auth.api.key"]
-        cls.demo_user = cls.env.ref("base.user_demo")
+        cls.partner_demo = cls.env["res.partner"].create(
+            {
+                "name": "Demo Partner",
+            }
+        )
+        cls.demo_user = cls.env["res.users"].create(
+            {
+                "partner_id": cls.partner_demo.id,
+                "login": "demotest",
+                "password": "demotest",
+            }
+        )
         cls.api_key_good = cls.AuthApiKey.create(
             {"name": "good", "user_id": cls.demo_user.id, "key": "api_key"}
         )
 
     def test_lookup_key_from_db(self):
-        demo_user = self.env.ref("base.user_demo")
+        demo_user = self.demo_user
         self.assertEqual(
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"), demo_user.id
         )
@@ -46,7 +57,7 @@ class TestAuthApiKey(TransactionCase):
 
     def test_user_archived_unarchived_with_option_on(self):
         self.env.company.archived_user_disable_auth_api_key = True
-        demo_user = self.env.ref("base.user_demo")
+        demo_user = self.demo_user
         self.assertEqual(
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"), demo_user.id
         )
@@ -60,7 +71,7 @@ class TestAuthApiKey(TransactionCase):
 
     def test_user_archived_unarchived_with_option_off(self):
         self.env.company.archived_user_disable_auth_api_key = False
-        demo_user = self.env.ref("base.user_demo")
+        demo_user = self.demo_user
         self.assertEqual(
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"), demo_user.id
         )
