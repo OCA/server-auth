@@ -21,13 +21,13 @@ Auth Api Key
     :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
     :alt: License: LGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/18.0/auth_api_key
+    :target: https://github.com/OCA/server-auth/tree/19.0/auth_api_key
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-18-0/server-auth-18-0-auth_api_key
+    :target: https://translation.odoo-community.org/projects/server-auth-19-0/server-auth-19-0-auth_api_key
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=18.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=19.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
@@ -49,11 +49,11 @@ Odoo allows users to authenticate ``XMLRPC/JSONRPC`` calls using their
 API key instead of a password by native API keys (``res.users.apikey``).
 However, ``auth_api_key`` has some special features of its own such as:
 
-- API keys remain usable even when the user is inactive, if enabled via
-  settings (e.g., for system users in a shopinvader case).
-- Supports dual authentication via Basic Auth and API_KEY in separate
-  HTTP headers.
-- Admins can manage API keys for all users
+-  API keys remain usable even when the user is inactive, if enabled via
+   settings (e.g., for system users in a shopinvader case).
+-  Supports dual authentication via Basic Auth and API_KEY in separate
+   HTTP headers.
+-  Admins can manage API keys for all users
 
 Given these advantages, particularly in use case like system user
 authentication, we have decided to keep the ``auth_api_key`` module
@@ -94,7 +94,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_api_key%0Aversion:%2018.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_api_key%0Aversion:%2019.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -109,12 +109,12 @@ Authors
 Contributors
 ------------
 
-- Denis Robinet <denis.robinet@acsone.eu>
-- Laurent Mignon <laurent.mignon@acsone.eu>
-- Quentin Groulard <quentin.groulard@acsone.eu>
-- Sébastien Beau <sebastien.beau@akretion.com>
-- Chafique Delli <chafique.delli@akretion.com>
-- Thien Vo Hong <thienvh@trobz.com>
+-  Denis Robinet <denis.robinet@acsone.eu>
+-  Laurent Mignon <laurent.mignon@acsone.eu>
+-  Quentin Groulard <quentin.groulard@acsone.eu>
+-  Sébastien Beau <sebastien.beau@akretion.com>
+-  Chafique Delli <chafique.delli@akretion.com>
+-  Thien Vo Hong <thienvh@trobz.com>
 
 Other credits
 -------------
@@ -135,6 +135,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/18.0/auth_api_key>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/19.0/auth_api_key>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

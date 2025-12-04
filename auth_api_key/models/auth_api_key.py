@@ -29,7 +29,7 @@ class AuthApiKey(models.Model):
         compute="_compute_active", readonly=False, store=True, default=True
     )
 
-    _sql_constraints = [("name_uniq", "unique(name)", "Api Key name must be unique.")]
+    _name_uniq = models.Constraint("unique(name)", "Api Key name must be unique.")
 
     @api.model
     def _retrieve_api_key(self, key):
@@ -43,9 +43,7 @@ class AuthApiKey(models.Model):
         for api_key in self.search([], limit=None):
             if api_key.key and consteq(key, api_key.key):
                 return api_key.id
-        raise ValidationError(
-            self.env._("The key {key} is not allowed").format(key=key)
-        )
+        raise ValidationError(self.env._("The key '%s' is not allowed", key))
 
     @api.model
     @tools.ormcache("key")
