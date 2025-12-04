@@ -1,7 +1,7 @@
 # Copyright 2018 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import _, api, fields, models, tools
+from odoo import api, fields, models, tools
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tools import consteq
 
@@ -39,11 +39,13 @@ class AuthApiKey(models.Model):
     @tools.ormcache("key")
     def _retrieve_api_key_id(self, key):
         if not self.env.user.has_group("base.group_system"):
-            raise AccessError(_("User is not allowed"))
-        for api_key in self.search([]):
+            raise AccessError(self.env._("User is not allowed"))
+        for api_key in self.search([], limit=None):
             if api_key.key and consteq(key, api_key.key):
                 return api_key.id
-        raise ValidationError(_(f"The key {key} is not allowed"))
+        raise ValidationError(
+            self.env._("The key {key} is not allowed").format(key=key)
+        )
 
     @api.model
     @tools.ormcache("key")
