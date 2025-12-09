@@ -2,6 +2,8 @@
 # @author Florian Mounier <florian.mounier@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from urllib.parse import urlencode
+
 import requests
 
 from odoo import api, fields, models
@@ -98,7 +100,7 @@ class CrossConnectServer(models.Model):
         response.raise_for_status()
         return response.json()
 
-    def _get_cross_connect_url(self, redirect_url=None):
+    def _get_cross_connect_url(self, **params):
         self.ensure_one()
         groups = self.env.user.groups_id & self.group_ids
         if not groups:
@@ -115,8 +117,6 @@ class CrossConnectServer(models.Model):
             "lang": self.env.user.lang,
             "groups": [group.cross_connect_server_group_id for group in groups],
         }
-        if redirect_url:
-            data["redirect_url"] = redirect_url
 
         response = self._request("POST", "/access", data=data)
         client_id = response.get("client_id")
@@ -124,7 +124,11 @@ class CrossConnectServer(models.Model):
         if not token:
             raise UserError(self.env._("Missing token"))
 
-        return self._absolute_url_for(f"login/{client_id}/{token}")
+        url = f"login/{client_id}/{token}"
+        if params:
+            url += "?" + urlencode(params)
+
+        return self._absolute_url_for(url)
 
     def _sync_groups(self):
         self.ensure_one()
