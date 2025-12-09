@@ -72,6 +72,13 @@ class CrossConnectClient(models.Model):
         user = self.user_ids.filtered(
             lambda u: u.cross_connect_client_user_id == access_request.id
         )
+
+        # Fallback to default lang if not installed
+        if access_request.lang not in [
+            code for code, _name in self.env["res.lang"].get_installed()
+        ]:
+            access_request.lang = "en_US"
+
         vals = {
             "login": f"{self.id}_{access_request.id}_{access_request.login}",
             "email": access_request.email,
