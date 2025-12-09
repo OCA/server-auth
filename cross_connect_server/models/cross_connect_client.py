@@ -101,7 +101,6 @@ class CrossConnectClient(models.Model):
                 "exp": datetime.now(tz=timezone.utc) + timedelta(minutes=2),
                 "aud": str(self.id),
                 "id": user.id,
-                "redirect_url": access_request.redirect_url or "/web",
             },
             self.endpoint_id.cross_connect_secret_key,
             algorithm="HS256",
@@ -124,4 +123,10 @@ class CrossConnectClient(models.Model):
         if not user:
             raise AccessDenied(_("Invalid Token"))
 
-        return user, obj["redirect_url"]
+        return user
+
+    def _get_final_redirect_url(self, **params):
+        """Get the final redirect url after login.
+        Override this method to customize the local landing action.
+        """
+        return "/web"

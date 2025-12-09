@@ -4,7 +4,7 @@
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.responses import RedirectResponse
 
 from odoo import _, api
@@ -49,12 +49,14 @@ async def login(
     client_id: int,
     token: str,
     env: Annotated[api.Environment, Depends(odoo_env)],
+    request: Request,
 ) -> RedirectResponse:
     """Log user and redirect to odoo index."""
     cross_connect_client = env["cross.connect.client"].sudo().browse(client_id)
     if not cross_connect_client:
         raise MissingError(_("Client not found"))
-    user, redirect_url = cross_connect_client.sudo()._log_from_token(token)
+    params = request.query_params
+    user = cross_connect_client.sudo()._log_from_token(token)
     user = user.with_user(user)
     user._update_last_login()
     env = env(user=user.id)
@@ -68,7 +70,9 @@ async def login(
     session.session_token = user._compute_session_token(session.sid)
     root.session_store.save(session)
     # Redirect after login
-    response = RedirectResponse(url=redirect_url)
+    response = RedirectResponse(
+        url=cross_connect_client._get_final_redirect_url(**params)
+    )
     response.set_cookie(
         "session_id",
         session.sid,

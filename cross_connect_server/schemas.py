@@ -35,7 +35,6 @@ class AccessRequest(StrictExtendableBaseModel, extra="ignore"):
     email: str
     lang: str
     groups: list[int]
-    redirect_url: str = None
 
 
 class AccessResponse(StrictExtendableBaseModel):
