@@ -1,6 +1,7 @@
 # Copyright 2024 Akretion (http://www.akretion.com).
 # @author Florian Mounier <florian.mounier@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import re
 from datetime import datetime, timedelta, timezone
 from secrets import token_urlsafe
 
@@ -34,6 +35,14 @@ class CrossConnectClient(models.Model):
         related="endpoint_id.cross_connect_allowed_group_ids",
     )
 
+    bypass_user_mail_re = fields.Char(
+        string="Bypass Users Email Regexes",
+        help=(
+            "If set, users with an email matching one of these regex will bypass "
+            "the token user/login creation. The regexes are comma separated."
+        ),
+    )
+
     group_ids = fields.Many2many(
         "res.groups",
         string="Groups",
@@ -64,6 +73,12 @@ class CrossConnectClient(models.Model):
             record.user_count = len(record.user_ids)
 
     def _request_access(self, access_request):
+        if self.bypass_user_mail_re and any(
+            re.search(mail_re.strip(), access_request.email)
+            for mail_re in self.bypass_user_mail_re.split(",")
+        ):
+            return "bypass"
+
         # check groups
         groups = self.env["res.groups"].browse(access_request.groups)
         if groups - self.group_ids or not groups.exists():

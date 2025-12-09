@@ -56,6 +56,11 @@ async def login(
     if not cross_connect_client:
         raise MissingError(_("Client not found"))
     params = request.query_params
+    if token == "bypass":
+        return RedirectResponse(
+            url=cross_connect_client._get_final_redirect_url(bypass=True, **params)
+        )
+
     user = cross_connect_client.sudo()._log_from_token(token)
     user = user.with_user(user)
     user._update_last_login()

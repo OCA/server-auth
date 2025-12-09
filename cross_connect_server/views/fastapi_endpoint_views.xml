@@ -36,6 +36,7 @@
                                 widget="many2many_tags"
                                 options="{'no_create': True}"
                             />
+                            <field name="bypass_user_mail_re" />
                             <field name="user_count" />
                         </tree>
                     </field>
