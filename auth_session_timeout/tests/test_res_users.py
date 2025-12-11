@@ -14,9 +14,11 @@ class EndTestException(Exception):
 
 
 class TestResUsers(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.ResUsers = self.env["res.users"]
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
+        cls.ResUsers = cls.env["res.users"]
 
     @contextmanager
     def _mock_assets(self, assets=None):
