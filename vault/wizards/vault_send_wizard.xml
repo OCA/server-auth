@@ -24,12 +24,11 @@
                 </sheet>
                 <footer>
                     <button
-                    type="object"
-                    name="action_send"
-                    string="Send"
-                    class="oe_highlight"
-                />
-                    or
+                        type="object"
+                        name="action_send"
+                        string="Send"
+                        class="oe_highlight"
+                    />
                     <button type="special" string="Cancel" special="cancel" />
                 </footer>
             </form>

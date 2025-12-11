@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class VaultFile(models.Model):
     _name = "vault.file"
-    _description = _("File of a vault")
+    _description = "File of a vault"
     _order = "name"
     _inherit = ["vault.abstract.field", "vault.abstract"]
 
@@ -19,7 +19,5 @@ class VaultFile(models.Model):
     @api.model
     def search_read(self, *args, **kwargs):
         if self.env.context.get("vault_reencrypt"):
-            return super(VaultFile, self.with_context(bin_size=False)).search_read(
-                *args, **kwargs
-            )
+            self = self.with_context(bin_size=False)
         return super().search_read(*args, **kwargs)

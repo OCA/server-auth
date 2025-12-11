@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class VaultInboxLog(models.Model):
     _name = "vault.inbox.log"
-    _description = _("Vault inbox log")
+    _description = "Vault inbox log"
     _order = "create_date DESC"
 
     inbox_id = fields.Many2one(

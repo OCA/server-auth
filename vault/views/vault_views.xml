@@ -14,7 +14,7 @@
     <record id="action_open_entries" model="ir.actions.act_window">
         <field name="name">Entries</field>
         <field name="res_model">vault.entry</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[("vault_id", "=", active_id)]</field>
         <field name="context">{
             "default_vault_id": active_id,
@@ -26,11 +26,11 @@
     <record id="view_vault_tree" model="ir.ui.view">
         <field name="model">vault</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="user_id" />
                 <field name="note" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -55,13 +55,13 @@
                     <button
                         name="vault_reencrypt"
                         string="Re-encrypt"
-                        attrs="{'invisible': [('reencrypt_required', '=', True)]}"
+                        invisible="reencrypt_required"
                     />
                     <button
                         name="vault_reencrypt"
                         string="Re-encrypt"
                         class="oe_highlight"
-                        attrs="{'invisible': [('reencrypt_required', '=', False)]}"
+                        invisible="not reencrypt_required"
                     />
                 </header>
                 <sheet>
@@ -88,13 +88,10 @@
                     </group>
 
                     <notebook>
-                        <page
-                            string="Rights"
-                            attrs="{'invisible':[('allowed_share', '=', False)]}"
-                        >
+                        <page string="Rights" invisible="not allowed_share">
                             <field
                                 name="right_ids"
-                                context="{'default_vault_id': active_id}"
+                                context="{'default_vault_id': id}"
                                 options="{'create': [('allowed_share', '=', True)], 'delete': [('allowed_share', '=', True)]}"
                             />
                         </page>

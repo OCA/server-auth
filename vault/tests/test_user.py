@@ -3,12 +3,12 @@
 
 import logging
 
-from odoo.tests import TransactionCase
+from odoo.addons.base.tests.common import BaseCommon
 
 _logger = logging.getLogger(__name__)
 
 
-class TestShare(TransactionCase):
+class TestShare(BaseCommon):
     def test_user_inbox(self):
         user = self.env["res.users"].create(
             {"login": "test", "email": "test@test", "name": "test"}

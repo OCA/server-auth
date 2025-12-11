@@ -1,15 +1,17 @@
-/** @odoo-module alias=vault.inbox.field **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import VaultField from "vault.field";
-import VaultInboxMixin from "vault.inbox.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {VaultField, vaultField} from "./vault_field.esm";
+import VaultInboxMixin from "./vault_inbox_mixin.esm";
+import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
-import utils from "vault.utils";
-import vault from "vault";
 
-export default class VaultInboxField extends VaultInboxMixin(VaultField) {
+export class VaultInboxField extends VaultInboxMixin(VaultField) {
+    static defaultProps = {
+        ...VaultField.defaultProps,
+        fieldKey: "key",
+    };
+    static template = "vault.FieldVaultInbox";
     /**
      * Save the content in an entry of a vault
      *
@@ -27,23 +29,22 @@ export default class VaultInboxField extends VaultInboxMixin(VaultField) {
      * @returns the decrypted data
      */
     async _decrypt(data) {
-        if (!utils.supported()) return null;
+        if (!this.vault_utils.supported()) return null;
 
         const iv = this.props.record.data[this.props.fieldIV];
         const wrapped_key = this.props.record.data[this.props.fieldKey];
 
         if (!iv || !wrapped_key) return false;
 
-        const key = await vault.unwrap(wrapped_key);
-        return await utils.sym_decrypt(key, data, iv);
+        const key = await this.vault.unwrap(wrapped_key);
+        return await this.vault_utils.sym_decrypt(key, data, iv);
     }
 }
 
-VaultInboxField.defaultProps = {
-    ...VaultField.defaultProps,
-    fieldKey: "key",
+export const vaultInboxField = {
+    ...vaultField,
+    component: VaultInboxField,
+    displayName: _t("Vault Inbox Field"),
 };
-VaultInboxField.displayName = _lt("Vault Inbox Field");
-VaultInboxField.template = "vault.FieldVaultInbox";
 
-registry.category("fields").add("vault_inbox_field", VaultInboxField);
+registry.category("fields").add("vault_inbox_field", vaultInboxField);

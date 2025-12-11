@@ -4,25 +4,29 @@
 import logging
 
 from odoo.exceptions import AccessError
-from odoo.tests import TransactionCase
+from odoo.tests import new_test_user
+
+from odoo.addons.base.tests.common import BaseCommon
 
 _logger = logging.getLogger(__name__)
 
 
-class TestAccessRights(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.user = self.env["res.users"].create(
-            {"login": "user", "name": "tester", "email": "user@localhost"}
+class TestAccessRights(BaseCommon):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.user = new_test_user(
+            cls.env,
+            login="test-vault-user",
         )
-        self.vault = self.env["vault"].create({"name": "Vault"})
-        self.entry = self.env["vault.entry"].create(
-            {"vault_id": self.vault.id, "name": "Entry"}
+        cls.vault = cls.env["vault"].create({"name": "Vault"})
+        cls.entry = cls.env["vault.entry"].create(
+            {"vault_id": cls.vault.id, "name": "Entry"}
         )
-        self.field = self.env["vault.field"].create(
-            {"entry_id": self.entry.id, "name": "Field", "value": "Value"}
+        cls.field = cls.env["vault.field"].create(
+            {"entry_id": cls.entry.id, "name": "Field", "value": "Value"}
         )
-        self.vault.right_ids.write({"key": "Owner"})
+        cls.vault.right_ids.write({"key": "Owner"})
 
     def test_vault_reencrypt(self):
         right = self.env["vault.right"].create(
@@ -74,7 +78,7 @@ class TestAccessRights(TransactionCase):
 
         for obj in [self.field, self.entry, self.vault]:
             with self.assertRaises(AccessError):
-                obj.with_user(self.user).check_access_rule("create")
+                obj.with_user(self.user).check_access("create")
 
     def test_no_right(self):
         # No right defined for test user means access denied

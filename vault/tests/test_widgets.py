@@ -6,7 +6,8 @@ import logging
 from uuid import uuid4
 
 from odoo.exceptions import UserError
-from odoo.tests import TransactionCase
+
+from odoo.addons.base.tests.common import BaseCommon
 
 _logger = logging.getLogger(__name__)
 
@@ -64,13 +65,14 @@ TestData = [
 ]
 
 
-class TestWidgets(TransactionCase):
-    def setUp(self):
-        super().setUp()
+class TestWidgets(BaseCommon):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.vault = self.env["vault"].create({"name": "Vault"})
-        self.entry = self.env["vault.entry"].create(
-            {"vault_id": self.vault.id, "name": "Entry"}
+        cls.vault = cls.env["vault"].create({"name": "Vault"})
+        cls.entry = cls.env["vault.entry"].create(
+            {"vault_id": cls.vault.id, "name": "Entry"}
         )
 
     def test_path_generation(self):

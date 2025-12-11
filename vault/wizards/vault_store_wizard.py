@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class VaultStoreWizard(models.TransientModel):
     _name = "vault.store.wizard"
-    _description = _("Wizard store a shared secret in a vault")
+    _description = "Wizard store a shared secret in a vault"
 
     vault_id = fields.Many2one("vault", "Vault", required=True)
     entry_id = fields.Many2one(

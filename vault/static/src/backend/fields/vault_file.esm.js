@@ -1,16 +1,15 @@
-/** @odoo-module alias=vault.file **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {BinaryField} from "@web/views/fields/binary/binary_field";
-import VaultMixin from "vault.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {BinaryField, binaryField} from "@web/views/fields/binary/binary_field";
+import VaultMixin from "./vault_mixin.esm";
+import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
-import utils from "vault.utils";
 
-export default class VaultFile extends VaultMixin(BinaryField) {
+export class VaultFile extends VaultMixin(BinaryField) {
+    static template = "vault.FileVault";
     setup() {
         super.setup();
 
@@ -39,10 +38,10 @@ export default class VaultFile extends VaultMixin(BinaryField) {
     async onFileDownload() {
         if (!this.props.value) {
             this.do_warn(
-                _lt("Save As..."),
-                _lt("The field is empty, there's nothing to save!")
+                _t("Save As..."),
+                _t("The field is empty, there's nothing to save!")
             );
-        } else if (utils.supported()) {
+        } else if (this.vault_utils.supported()) {
             const decrypted = await this._decrypt(this.props.value);
             const base64 = atob(decrypted);
             const buffer = new ArrayBuffer(base64.length);
@@ -55,7 +54,10 @@ export default class VaultFile extends VaultMixin(BinaryField) {
     }
 }
 
-VaultFile.displayName = _lt("Vault File");
-VaultFile.template = "vault.FileVault";
+export const vaultFileField = {
+    ...binaryField,
+    component: VaultFile,
+    displayName: _t("Vault File"),
+};
 
-registry.category("fields").add("vault_file", VaultFile);
+registry.category("fields").add("vault_file", vaultFileField);
