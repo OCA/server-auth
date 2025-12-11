@@ -6,14 +6,13 @@ from odoo.tests import common
 
 
 class TestIrConfigParameter(common.TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.db = self.env.cr.dbname
-        self.param_obj = self.env["ir.config_parameter"]
-        self.data_obj = self.env["ir.model.data"]
-        self.delay = self.env.ref(
-            "auth_session_timeout.inactive_session_time_out_delay"
-        )
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.db = cls.env.cr.dbname
+        cls.param_obj = cls.env["ir.config_parameter"]
+        cls.data_obj = cls.env["ir.model.data"]
+        cls.delay = cls.env.ref("auth_session_timeout.inactive_session_time_out_delay")
 
     def test_check_session_param_delay(self):
         delay = self.param_obj._auth_timeout_get_parameter_delay()
