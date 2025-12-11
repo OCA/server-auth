@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 class ResUsersKey(models.Model):
     _name = "res.users.key"
-    _description = _("User data of a vault")
+    _description = "User data of a vault"
     _rec_name = "fingerprint"
     _order = "create_date DESC"
 

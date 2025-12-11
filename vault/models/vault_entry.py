@@ -14,7 +14,7 @@ _logger = logging.getLogger(__name__)
 
 class VaultEntry(models.Model):
     _name = "vault.entry"
-    _description = _("Entry inside a vault")
+    _description = "Entry inside a vault"
     _inherit = ["vault.abstract"]
     _order = "complete_name"
     _rec_name = "complete_name"
@@ -59,12 +59,12 @@ class VaultEntry(models.Model):
     )
 
     _sql_constraints = [
-        ("vault_uuid_uniq", "UNIQUE(vault_id, uuid)", _("The UUID must be unique.")),
+        ("vault_uuid_uniq", "UNIQUE(vault_id, uuid)", "The UUID must be unique."),
     ]
 
     @api.constrains("parent_id")
     def _check_parent_id(self):
-        if not self._check_recursion():
+        if self._has_cycle():
             raise ValidationError(_("You can not create recursive entries."))
 
     @api.depends("name", "parent_id.complete_name")

@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class VaultSendWizard(models.TransientModel):
     _name = "vault.send.wizard"
-    _description = _("Wizard to send another user a secret")
+    _description = "Wizard to send another user a secret"
 
     user_id = fields.Many2one(
         "res.users",
@@ -32,7 +32,7 @@ class VaultSendWizard(models.TransientModel):
         (
             "value_check",
             "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
-            _("No value found"),
+            "No value found",
         ),
     ]
 

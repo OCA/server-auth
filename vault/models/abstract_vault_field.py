@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class AbstractVaultField(models.AbstractModel):
     _name = "vault.abstract.field"
-    _description = _("Abstract model to implement basic fields for encryption")
+    _description = "Abstract model to implement basic fields for encryption"
 
     entry_id = fields.Many2one("vault.entry", ondelete="cascade", required=True)
     entry_name = fields.Char(related="entry_id.complete_name")

@@ -6,21 +6,23 @@ import logging
 from datetime import datetime
 
 from odoo.exceptions import ValidationError
-from odoo.tests import TransactionCase
+
+from odoo.addons.base.tests.common import BaseCommon
 
 _logger = logging.getLogger(__name__)
 
 
-class TestVault(TransactionCase):
-    def setUp(self):
-        super().setUp()
+class TestVault(BaseCommon):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.vault = self.env["vault"].create({"name": "Vault"})
-        self.entry = self.env["vault.entry"].create(
-            {"vault_id": self.vault.id, "name": "Entry"}
+        cls.vault = cls.env["vault"].create({"name": "Vault"})
+        cls.entry = cls.env["vault.entry"].create(
+            {"vault_id": cls.vault.id, "name": "Entry"}
         )
-        self.child = self.env["vault.entry"].create(
-            {"vault_id": self.vault.id, "name": "Child", "parent_id": self.entry.id}
+        cls.child = cls.env["vault.entry"].create(
+            {"vault_id": cls.vault.id, "name": "Child", "parent_id": cls.entry.id}
         )
 
     def test_entry_path(self):

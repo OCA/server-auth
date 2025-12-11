@@ -3,12 +3,12 @@
 
 import logging
 
-from odoo.tests import TransactionCase
+from odoo.addons.base.tests.common import BaseCommon
 
 _logger = logging.getLogger(__name__)
 
 
-class TestLog(TransactionCase):
+class TestLog(BaseCommon):
     def test_not_implemeneted(self):
         with self.assertRaises(NotImplementedError):
             self.env["vault.abstract"].log_entry("test")

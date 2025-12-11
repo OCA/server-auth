@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class VaultField(models.Model):
     _name = "vault.field"
-    _description = _("Field of a vault")
+    _description = "Field of a vault"
     _order = "name"
     _inherit = ["vault.abstract.field", "vault.abstract"]
 
