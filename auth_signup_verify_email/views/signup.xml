@@ -4,11 +4,14 @@
 <odoo>
     <template id="signup_fields" inherit_id="auth_signup.fields">
         <xpath expr="//div[hasclass('field-password')]" position="attributes">
-            <attribute name="t-if">only_passwords</attribute>
+            <attribute name="t-if">token</attribute>
         </xpath>
         <xpath expr="//div[hasclass('field-confirm_password')]" position="attributes">
-            <attribute name="t-if">only_passwords</attribute>
+            <attribute name="t-if">token</attribute>
         </xpath>
+    </template>
+
+    <template id="signup_form" inherit_id="auth_signup.signup">
         <xpath expr="//input[@name='login']" position="attributes">
             <attribute name="type">email</attribute>
         </xpath>
