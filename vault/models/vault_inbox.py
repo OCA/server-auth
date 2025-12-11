@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 
 class VaultInbox(models.Model):
     _name = "vault.inbox"
-    _description = _("Vault share incoming secrets")
+    _description = "Vault share incoming secrets"
 
     token = fields.Char(default=lambda self: uuid4(), readonly=True, copy=False)
     inbox_link = fields.Char(
@@ -48,7 +48,7 @@ class VaultInbox(models.Model):
         (
             "value_check",
             "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
-            _("No value found"),
+            "No value found",
         ),
     ]
 

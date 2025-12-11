@@ -5,14 +5,14 @@ import json
 import logging
 from datetime import datetime
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class ExportWizard(models.TransientModel):
     _name = "vault.export.wizard"
-    _description = _("Export wizard for vaults")
+    _description = "Export wizard for vaults"
 
     vault_id = fields.Many2one("vault", "Vault")
     entry_id = fields.Many2one(

@@ -20,7 +20,7 @@ class AbstractVault(models.AbstractModel):
     """
 
     _name = "vault.abstract"
-    _description = _("Abstract model to implement general access rights")
+    _description = "Abstract model to implement general access rights"
 
     @api.model
     def raise_access_error(self):
@@ -31,10 +31,10 @@ class AbstractVault(models.AbstractModel):
             )
         )
 
-    def check_access_rule(self, operation):
-        super().check_access_rule(operation)
+    def check_access(self, operation):
+        super().check_access(operation)
 
-        if self.env.su:
+        if not self or self.env.su:
             return
 
         # We have to recompute if the user of the environment changed

@@ -1,4 +1,3 @@
-/** @odoo-module **/
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import {_t} from "@web/core/l10n/translation";

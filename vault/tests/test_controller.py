@@ -5,9 +5,9 @@ import json
 import logging
 from unittest.mock import MagicMock
 
-from odoo.tests import TransactionCase
 from odoo.tools import mute_logger
 
+from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.website.tools import MockRequest
 
 from ..controllers import main
@@ -15,7 +15,7 @@ from ..controllers import main
 _logger = logging.getLogger(__name__)
 
 
-class TestController(TransactionCase):
+class TestController(BaseCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -50,7 +50,7 @@ class TestController(TransactionCase):
             }
         )
 
-    @mute_logger("odoo.sql_db")
+    @mute_logger("odoo.sql_db", "odoo.addons.vault.controllers.main")
     def test_vault_inbox(self):
         def return_context(template, context):
             self.assertEqual(template, "vault.inbox")
@@ -107,13 +107,9 @@ class TestController(TransactionCase):
                 raise TypeError()
 
             # Catch internal errors
-            try:
-                request_mock.httprequest.remote_addr = "127.0.0.1"
-                self.env["vault.inbox"]._patch_method("store_in_inbox", raise_error)
-                response = load(self.controller.vault_inbox(self.user.inbox_token))
-            finally:
-                self.env["vault.inbox"]._revert_method("store_in_inbox")
-
+            request_mock.httprequest.remote_addr = "127.0.0.1"
+            self.patch(type(self.env["vault.inbox"]), "store_in_inbox", raise_error)
+            response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertIn("error", response)
 
     @mute_logger("odoo.sql_db")
@@ -163,28 +159,20 @@ class TestController(TransactionCase):
             self.assertFalse(vault.reencrypt_required)
 
     @mute_logger("odoo.sql_db")
-    def test_vault_store(
-        self,
-    ):
+    def test_vault_store(self):
         with MockRequest(self.env):
             mock = MagicMock()
-            try:
-                self.env["res.users.key"]._patch_method("store", mock)
-                self.controller.vault_store_keys()
-                mock.assert_called_once()
-            finally:
-                self.env["res.users.key"]._revert_method("store")
+            self.patch(type(self.env["res.users.key"]), "store", mock)
+            self.controller.vault_store_keys()
+            mock.assert_called_once()
 
     @mute_logger("odoo.sql_db")
     def test_vault_keys_get(self):
         with MockRequest(self.env):
             mock = MagicMock()
-            try:
-                self.env["res.users"]._patch_method("get_vault_keys", mock)
-                self.controller.vault_get_keys()
-                mock.assert_called_once()
-            finally:
-                self.env["res.users"]._revert_method("get_vault_keys")
+            self.patch(type(self.env["res.users"]), "get_vault_keys", mock)
+            self.controller.vault_get_keys()
+            mock.assert_called_once()
 
     @mute_logger("odoo.sql_db")
     def test_vault_right_keys(self):

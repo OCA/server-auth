@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 
 class ImportWizardPath(models.TransientModel):
     _name = "vault.import.wizard.path"
-    _description = _("Import wizard path for vaults")
+    _description = "Import wizard path for vaults"
 
     name = fields.Char(required=True)
     uuid = fields.Char(required=True)
@@ -21,7 +21,7 @@ class ImportWizardPath(models.TransientModel):
 
 class ImportWizard(models.TransientModel):
     _name = "vault.import.wizard"
-    _description = _("Import wizard for vaults")
+    _description = "Import wizard for vaults"
 
     vault_id = fields.Many2one("vault", "Vault")
     parent_id = fields.Many2one(

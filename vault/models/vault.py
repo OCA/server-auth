@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class Vault(models.Model):
     _name = "vault"
-    _description = _("Vault")
+    _description = "Vault"
     _inherit = ["vault.abstract"]
     _order = "name"
 
@@ -53,7 +53,7 @@ class Vault(models.Model):
     note = fields.Text()
 
     _sql_constraints = [
-        ("uuid_uniq", "UNIQUE(uuid)", _("The UUID must be unique.")),
+        ("uuid_uniq", "UNIQUE(uuid)", "The UUID must be unique."),
     ]
 
     @api.depends("right_ids.user_id")

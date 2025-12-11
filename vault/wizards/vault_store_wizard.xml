@@ -17,7 +17,7 @@
                         />
                         <field
                             name="entry_id"
-                            attrs="{'invisible': [('vault_id', '=', False)]}"
+                            invisible="not vault_id"
                             options="{'no_create_edit': True, 'no_open': True, 'no_quick_create': true}"
                         />
                         <field name="name" />
@@ -25,12 +25,11 @@
                 </sheet>
                 <footer>
                     <button
-                    type="object"
-                    name="action_store"
-                    string="Store"
-                    class="oe_highlight"
-                />
-                    or
+                        type="object"
+                        name="action_store"
+                        string="Store"
+                        class="oe_highlight"
+                    />
                     <button type="special" string="Cancel" special="cancel" />
                 </footer>
             </form>

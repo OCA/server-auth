@@ -3,10 +3,10 @@
     <record id="view_vault_inbox_tree" model="ir.ui.view">
         <field name="model">vault.inbox</field>
         <field name="arch" type="xml">
-            <tree create="false">
+            <list create="false">
                 <field name="name" />
                 <field name="inbox_link" widget="url" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -27,22 +27,22 @@
                         <field
                             name="secret"
                             widget="vault_inbox_field"
-                            attrs="{'invisible': [('secret', '=', False)]}"
+                            invisible="not secret"
                         />
                         <field
                             name="secret_file"
                             filename="filename"
                             widget="vault_inbox_file"
-                            attrs="{'invisible': [('secret_file', '=', False)]}"
+                            invisible="not secret_file"
                         />
                     </group>
 
                     <label for="log_ids" />
                     <field name="log_ids" options="{'no_open': True}">
-                        <tree>
+                        <list>
                             <field name="name" />
                             <field name="create_date" />
-                        </tree>
+                        </list>
                     </field>
                 </sheet>
             </form>

@@ -1,12 +1,12 @@
 # © 2021 Florian Kantelberg - initOS GmbH
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 
 class VaultRight(models.Model):
     _name = "vault.right"
-    _description = _("Vault rights")
+    _description = "Vault rights"
     _inherit = ["vault.abstract"]
     _order = "user_id"
 
@@ -57,7 +57,7 @@ class VaultRight(models.Model):
     key = fields.Char()
 
     _sql_constraints = (
-        ("user_uniq", "UNIQUE(user_id, vault_id)", _("The user must be unique")),
+        ("user_uniq", "UNIQUE(user_id, vault_id)", "The user must be unique"),
     )
 
     def _get_is_owner(self):

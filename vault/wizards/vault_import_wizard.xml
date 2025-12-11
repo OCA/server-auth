@@ -25,26 +25,25 @@
                         />
                         <field
                             name="path"
-                            attrs="{'invisible': [('crypted_content', '=', False)]}"
+                            invisible="not crypted_content"
                             options="{'no_create_edit': True, 'no_open': True}"
                         />
                     </group>
                 </sheet>
                 <footer>
                     <button
-                    type="object"
-                    name="action_import"
-                    string="Import"
-                    class="oe_highlight"
-                    attrs="{'invisible': [('crypted_content', '=', False)]}"
-                />
+                        type="object"
+                        name="action_import"
+                        string="Import"
+                        class="oe_highlight"
+                        invisible="not crypted_content"
+                    />
                     <button
-                    type="object"
-                    name="action_import"
-                    string="Import"
-                    attrs="{'invisible': [('crypted_content', '!=', False)]}"
-                />
-                    or
+                        type="object"
+                        name="action_import"
+                        string="Import"
+                        invisible="crypted_content"
+                    />
                     <button type="special" string="Cancel" special="cancel" />
                 </footer>
             </form>

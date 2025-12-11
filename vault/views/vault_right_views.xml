@@ -3,17 +3,17 @@
     <record id="view_right_tree" model="ir.ui.view">
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
-            <tree editable="bottom" decoration-danger="not key">
-                <field name="vault_id" invisible="1" />
-                <field name="master_key" invisible="1" />
-                <field name="key" invisible="1" />
-                <field name="public_key" invisible="1" />
+            <list editable="bottom" decoration-danger="not key">
+                <field name="vault_id" column_invisible="1" />
+                <field name="master_key" column_invisible="1" />
+                <field name="key" column_invisible="1" />
+                <field name="public_key" column_invisible="1" />
                 <field name="user_id" />
                 <field name="perm_create" />
                 <field name="perm_write" />
                 <field name="perm_share" />
                 <field name="perm_delete" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -37,14 +37,14 @@
     <record id="view_vault_right_overview_tree" model="ir.ui.view">
         <field name="model">vault.right</field>
         <field name="arch" type="xml">
-            <tree create="false">
+            <list create="false">
                 <field name="vault_id" />
                 <field name="user_id" />
                 <field name="perm_create" />
                 <field name="perm_write" />
                 <field name="perm_share" />
                 <field name="perm_delete" />
-            </tree>
+            </list>
         </field>
     </record>
 

@@ -3,23 +3,23 @@
     <record id="view_vault_entry_tree" model="ir.ui.view">
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="expired">
-                <field name="expired" invisible="1" />
+            <list decoration-muted="expired">
+                <field name="expired" column_invisible="1" />
                 <field name="complete_name" />
                 <field name="tags" widget="many2many_tags" />
-            </tree>
+            </list>
         </field>
     </record>
 
     <record id="view_vault_entry_full_tree" model="ir.ui.view">
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="expired">
-                <field name="expired" invisible="1" />
+            <list decoration-muted="expired">
+                <field name="expired" column_invisible="1" />
                 <field name="vault_id" />
                 <field name="complete_name" />
                 <field name="tags" widget="many2many_tags" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -54,7 +54,7 @@
                                 name="vault_id"
                                 invisible="1"
                                 force_save="1"
-                                attrs="{'readonly': [('vault_id', '!=', False)]}"
+                                readonly="vault_id"
                             />
                             <field
                                 name="parent_id"
@@ -77,14 +77,14 @@
                             <label for="field_ids" />
                             <field
                                 name="field_ids"
-                                context="{'default_entry_id': active_id}"
+                                context="{'default_entry_id': id}"
                                 options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': true}"
                             >
-                                <tree editable="bottom">
-                                    <field name="vault_id" invisible="1" />
-                                    <field name="entry_id" invisible="1" />
-                                    <field name="iv" invisible="1" />
-                                    <field name="master_key" invisible="1" />
+                                <list editable="bottom">
+                                    <field name="vault_id" column_invisible="1" />
+                                    <field name="entry_id" column_invisible="1" />
+                                    <field name="iv" column_invisible="1" />
+                                    <field name="master_key" column_invisible="1" />
                                     <field name="name" />
                                     <field
                                         name="value"
@@ -92,28 +92,28 @@
                                         type="field_type"
                                     />
                                     <field name="write_date" />
-                                </tree>
+                                </list>
                             </field>
 
                             <label for="file_ids" />
                             <field
                                 name="file_ids"
-                                context="{'default_entry_id': active_id}"
+                                context="{'default_entry_id': id}"
                                 options="{'create': [('allowed_create', '=', True)], 'delete': [('allowed_delete', '=', True)], 'no_open': True}"
                             >
-                                <tree editable="bottom">
-                                    <field name="vault_id" invisible="1" />
-                                    <field name="entry_id" invisible="1" />
-                                    <field name="iv" invisible="1" />
-                                    <field name="master_key" invisible="1" />
-                                    <field name="name" invisible="1" />
+                                <list editable="bottom">
+                                    <field name="vault_id" column_invisible="1" />
+                                    <field name="entry_id" column_invisible="1" />
+                                    <field name="iv" column_invisible="1" />
+                                    <field name="master_key" column_invisible="1" />
+                                    <field name="name" column_invisible="1" />
                                     <field
                                         name="value"
                                         widget="vault_file"
                                         filename="name"
                                     />
                                     <field name="write_date" />
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Note">
@@ -122,7 +122,7 @@
                         <page string="Childs">
                             <field
                                 name="child_ids"
-                                context="{'default_parent_id': active_id, 'default_vault_id': vault_id}"
+                                context="{'default_parent_id': id, 'default_vault_id': vault_id}"
                             />
                         </page>
                         <page string="Log">

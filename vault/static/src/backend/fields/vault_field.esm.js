@@ -1,16 +1,15 @@
-/** @odoo-module alias=vault.field **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import {Component, useEffect, useRef, useState} from "@odoo/owl";
 import {useBus, useService} from "@web/core/utils/hooks";
-import VaultMixin from "vault.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import VaultMixin from "./vault_mixin.esm";
+import {_t} from "@web/core/l10n/translation";
 import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
 import {registry} from "@web/core/registry";
-import utils from "vault.utils";
 
-export default class VaultField extends VaultMixin(Component) {
+export class VaultField extends VaultMixin(Component) {
+    static template = "vault.FieldVault";
     setup() {
         super.setup();
 
@@ -44,7 +43,7 @@ export default class VaultField extends VaultMixin(Component) {
 
         useEffect(() => {
             const isInvalid = self.props.record
-                ? self.props.record.isInvalid(self.props.name)
+                ? self.props.record.isFieldInvalid(self.props.name)
                 : false;
 
             if (self.input.el && !self.state.isDirty && !isInvalid) {
@@ -58,17 +57,19 @@ export default class VaultField extends VaultMixin(Component) {
                 self.state.lastSetValue = self.input.el.value;
             }
         });
-
-        useBus(self.env.bus, "RELATIONAL_MODEL:WILL_SAVE_URGENTLY", () =>
-            self.commitChanges(true)
-        );
-        useBus(self.env.bus, "RELATIONAL_MODEL:NEED_LOCAL_CHANGES", (ev) =>
+        const {model} = this.props.record;
+        useBus(model.bus, "WILL_SAVE_URGENTLY", () => self.commitChanges(true));
+        useBus(model.bus, "NEED_LOCAL_CHANGES", (ev) =>
             ev.detail.proms.push(self.commitChanges())
         );
-        useBus(self.env.bus, "RELATIONAL_MODEL:ENCRYPT_FIELDS", () => {
+        useBus(model.bus, "ENCRYPT_FIELDS", () => {
             this.state.decrypted = false;
             this.showValue();
         });
+    }
+
+    get value() {
+        return this.props.record.data[this.props.name];
     }
 
     /**
@@ -79,7 +80,7 @@ export default class VaultField extends VaultMixin(Component) {
     async _onGenerateValue(ev) {
         ev.stopPropagation();
 
-        const password = await utils.generate_pass();
+        const password = await this.vault_utils.generate_pass();
         await this.storeValue(password);
     }
 
@@ -93,7 +94,7 @@ export default class VaultField extends VaultMixin(Component) {
 
         this.state.decrypted = !this.state.decrypted;
         if (this.state.decrypted) {
-            this.state.decryptedValue = await this._decrypt(this.props.value);
+            this.state.decryptedValue = await this._decrypt(this.value);
         } else {
             this.state.decryptedValue = "";
         }
@@ -109,7 +110,7 @@ export default class VaultField extends VaultMixin(Component) {
     async _onCopyValue(ev) {
         ev.stopPropagation();
 
-        const value = await this._decrypt(this.props.value);
+        const value = await this._decrypt(this.value);
         await navigator.clipboard.writeText(value);
     }
 
@@ -121,7 +122,7 @@ export default class VaultField extends VaultMixin(Component) {
     async _onSendValue(ev) {
         ev.stopPropagation();
 
-        await this.sendValue(this.props.value, "");
+        await this.sendValue(this.value, "");
     }
 
     /**
@@ -130,7 +131,7 @@ export default class VaultField extends VaultMixin(Component) {
      * @returns the decrypted value or a placeholder
      */
     get formattedValue() {
-        if (!this.props.value) return "";
+        if (!this.value) return "";
         if (this.state.decrypted) return this.state.decryptedValue || "*******";
         return "*******";
     }
@@ -141,7 +142,7 @@ export default class VaultField extends VaultMixin(Component) {
      * @returns decrypted value
      */
     async getValue() {
-        return await this._decrypt(this.props.value);
+        return await this._decrypt(this.value);
     }
 
     /**
@@ -158,9 +159,9 @@ export default class VaultField extends VaultMixin(Component) {
      */
     onInput(ev) {
         ev.stopPropagation();
-
-        this.state.isDirty = ev.target.value !== this.lastSetValue;
-        if (this.props.setDirty) this.props.setDirty(this.state.isDirty);
+        this.state.isDirty = ev.target.value !== this.state.lastSetValue;
+        if (this.state.isDirty)
+            this.props.record.model.bus.trigger("FIELD_IS_DIRTY", this.state.isDirty);
     }
 
     /**
@@ -171,7 +172,7 @@ export default class VaultField extends VaultMixin(Component) {
     async commitChanges(urgent) {
         if (!this.input.el) return;
 
-        this.state.isDirty = this.input.el.value !== this.lastSetValue;
+        this.state.isDirty = this.input.el.value !== this.state.lastSetValue;
         if (this.state.isDirty || urgent) {
             this.state.isDirty = false;
 
@@ -180,7 +181,10 @@ export default class VaultField extends VaultMixin(Component) {
                 this.state.lastSetValue = this.input.el.value;
                 this.state.decryptedValue = this.input.el.value;
                 await this.storeValue(val);
-                this.props.setDirty(this.state.isDirty);
+                this.props.record.model.bus.trigger(
+                    "FIELD_IS_DIRTY",
+                    this.state.isDirty
+                );
             }
         }
     }
@@ -198,8 +202,10 @@ export default class VaultField extends VaultMixin(Component) {
     }
 }
 
-VaultField.displayName = _lt("Vault Field");
-VaultField.supportedTypes = ["char"];
-VaultField.template = "vault.FieldVault";
+export const vaultField = {
+    component: VaultField,
+    displayName: _t("Vault Field"),
+    supportedTypes: ["char"],
+};
 
-registry.category("fields").add("vault_field", VaultField);
+registry.category("fields").add("vault_field", vaultField);

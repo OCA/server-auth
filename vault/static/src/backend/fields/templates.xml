@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates id="template" xml:space="preserve">
-    <t t-name="vault.Field.buttons.send" owl="1">
+    <t t-name="vault.Field.buttons.send">
         <button
             t-if="sendButton"
             t-on-click="_onSendValue"
@@ -10,7 +10,7 @@
         />
     </t>
 
-    <t t-name="vault.Field.buttons" owl="1">
+    <t t-name="vault.Field.buttons">
         <button
             t-if="!state.decrypted &amp;&amp; showButton"
             t-on-click="_onShowValue"
@@ -35,7 +35,7 @@
         <t t-call="vault.Field.buttons.send" />
     </t>
 
-    <t t-name="vault.FieldVault" owl="1">
+    <t t-name="vault.FieldVault">
         <div class="o_vault o_vault_error" t-if="!supported()">
             <span>*******</span>
         </div>
@@ -59,22 +59,17 @@
         </div>
     </t>
 
-    <t
-        t-name="vault.FileVault"
-        t-inherit="web.BinaryField"
-        t-inherit-mode="primary"
-        owl="1"
-    >
+    <t t-name="vault.FileVault" t-inherit="web.BinaryField" t-inherit-mode="primary">
         <xpath expr="//button[hasclass('o_clear_file_button')]" position="after">
             <t t-call="vault.Field.buttons.send" />
         </xpath>
     </t>
 
-    <t t-name="vault.FieldVaultInbox" owl="1">
+    <t t-name="vault.FieldVaultInbox">
         <div class="o_vault o_vault_error" t-if="!supported()">
             <span>*******</span>
         </div>
-        <div class="o_vault" t-elif="props.value">
+        <div class="o_vault" t-elif="value">
             <span class="o_vault_buttons">
                 <t t-call="vault.Field.buttons" />
                 <button
@@ -90,11 +85,11 @@
         </div>
     </t>
 
-    <t t-name="vault.FileVaultInbox" owl="1">
+    <t t-name="vault.FileVaultInbox">
         <div class="o_vault o_vault_error" t-if="!supported()">
             <span>*******</span>
         </div>
-        <div class="o_vault" t-elif="props.value">
+        <div class="o_vault" t-elif="value">
             <span class="o_vault_buttons">
                 <button
                     t-if="saveButton"
@@ -112,7 +107,7 @@
         </div>
     </t>
 
-    <t t-name="vault.FileVaultExport" owl="1">
+    <t t-name="vault.FileVaultExport">
         <a class="o_form_uri" href="#" t-on-click.prevent="onFileDownload">
             <span class="fa fa-download me-2" />
             <t t-if="state.fileName" t-esc="state.fileName" />

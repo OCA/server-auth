@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 class VaultLog(models.Model):
     _name = "vault.log"
-    _description = _("Log entry of a vault")
+    _description = "Log entry of a vault"
     _order = "create_date DESC"
     _rec_name = "message"
 

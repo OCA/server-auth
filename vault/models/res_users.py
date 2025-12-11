@@ -38,8 +38,9 @@ class ResUsers(models.Model):
 
     @api.model
     def action_get_vault(self):
-        action = self.sudo().env.ref("vault.action_res_users_keys")
-        result = action.read()[0]
+        result = self.env["ir.actions.act_window"]._for_xml_id(
+            "vault.action_res_users_keys"
+        )
         result["res_id"] = self.env.uid
         return result
 
