@@ -1,5 +1,5 @@
 # Do NOT update manually; changes here will be overwritten by Copier
-_commit: v1.29
+_commit: v1.35
 _src_path: git+https://github.com/OCA/oca-addons-repo-template
 additional_ruff_rules: []
 ci: GitHub
@@ -18,7 +18,7 @@ odoo_version: 18.0
 org_name: Odoo Community Association (OCA)
 org_slug: OCA
 rebel_module_groups:
-  - password_security
+- password_security
 repo_description: server-auth
 repo_name: server-auth
 repo_slug: server-auth
