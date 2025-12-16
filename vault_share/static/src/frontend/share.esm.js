@@ -1,8 +1,7 @@
-/** @odoo-module **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import utils from "vault.utils";
+import utils from "@vault/common/utils.esm";
 
 const data = {};
 

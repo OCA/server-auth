@@ -5,14 +5,14 @@ import logging
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class VaultShare(models.Model):
     _name = "vault.share"
-    _description = _("Vault share outgoing secrets")
+    _description = "Vault share outgoing secrets"
 
     user_id = fields.Many2one("res.users", default=lambda self: self.env.uid)
     name = fields.Char(required=True)
@@ -45,7 +45,7 @@ class VaultShare(models.Model):
         (
             "value_check",
             "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
-            _("No value found"),
+            "No value found",
         ),
     ]
 
@@ -63,7 +63,7 @@ class VaultShare(models.Model):
 
         if datetime.now() < rec.expiration and rec.accesses > 0:
             rec.accesses -= 1
-            log = _("The share was accessed by %(name)s via %(ip)s")
+            log = self.env._("The share was accessed by %(name)s via %(ip)s")
             rec.log_ids = [
                 (0, 0, {"name": log % {"name": self.env.user.name, "ip": ip or "n/a"}})
             ]
@@ -74,7 +74,7 @@ class VaultShare(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
-        log = _("The share was created by %(name)s")
+        log = self.env._("The share was created by %(name)s")
         for rec in res:
             rec.log_ids = [(0, 0, {"name": log % {"name": self.env.user.name}})]
         return res

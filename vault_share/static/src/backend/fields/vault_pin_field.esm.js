@@ -1,17 +1,15 @@
-/** @odoo-module **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import {Component, useRef, useState} from "@odoo/owl";
-import VaultMixin from "vault.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import VaultMixin from "@vault/backend/fields/vault_mixin.esm";
+import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
-import sh_utils from "vault.share.utils";
+import sh_utils from "../../common/utils.esm";
 import {useService} from "@web/core/utils/hooks";
-import utils from "vault.utils";
-import vault from "vault";
 
-export default class VaultPinField extends VaultMixin(Component) {
+export class VaultPinField extends VaultMixin(Component) {
+    static template = "vault.FieldPinVault";
     setup() {
         super.setup();
 
@@ -35,6 +33,9 @@ export default class VaultPinField extends VaultMixin(Component) {
     get saveButton() {
         return false;
     }
+    get value() {
+        return this.props.record.data[this.props.name];
+    }
 
     /**
      * Get the decrypted value or a placeholder
@@ -42,7 +43,7 @@ export default class VaultPinField extends VaultMixin(Component) {
      * @returns the decrypted value or a placeholder
      */
     get formattedValue() {
-        if (!this.props.value) return "";
+        if (!this.value) return "";
         if (this.state.decrypted) return this.state.decryptedValue || "*******";
         return "*******";
     }
@@ -60,8 +61,8 @@ export default class VaultPinField extends VaultMixin(Component) {
 
         const pin_size = this.context.pin_size || sh_utils.PinSize;
 
-        const private_key = await vault.get_private_key();
-        const plain = await utils.asym_decrypt(private_key, data);
+        const private_key = await this.vault.get_private_key();
+        const plain = await this.vault_utils.asym_decrypt(private_key, data);
         return plain.slice(0, pin_size);
     }
 
@@ -73,7 +74,7 @@ export default class VaultPinField extends VaultMixin(Component) {
     async _onCopyValue(ev) {
         ev.stopPropagation();
 
-        const value = await this._decrypt(this.props.value);
+        const value = await this._decrypt(this.value);
         await navigator.clipboard.writeText(value);
     }
 
@@ -87,7 +88,7 @@ export default class VaultPinField extends VaultMixin(Component) {
 
         this.state.decrypted = !this.state.decrypted;
         if (this.state.decrypted) {
-            this.state.decryptedValue = await this._decrypt(this.props.value);
+            this.state.decryptedValue = await this._decrypt(this.value);
         } else {
             this.state.decryptedValue = "";
         }
@@ -103,8 +104,10 @@ export default class VaultPinField extends VaultMixin(Component) {
     }
 }
 
-VaultPinField.displayName = _lt("Vault Pin Field");
-VaultPinField.supportedTypes = ["char"];
-VaultPinField.template = "vault.FieldPinVault";
+export const vaultPinField = {
+    component: VaultPinField,
+    displayName: _t("Vault Pin Field"),
+    supportedTypes: ["char"],
+};
 
-registry.category("fields").add("vault_pin", VaultPinField);
+registry.category("fields").add("vault_pin", vaultPinField);

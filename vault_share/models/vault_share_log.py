@@ -3,14 +3,14 @@
 
 import logging
 
-from odoo import _, fields, models
+from odoo import fields, models
 
 _logger = logging.getLogger(__name__)
 
 
 class VaultShareLog(models.Model):
     _name = "vault.share.log"
-    _description = _("Vault share log")
+    _description = "Vault share log"
     _order = "create_date DESC"
 
     share_id = fields.Many2one(
