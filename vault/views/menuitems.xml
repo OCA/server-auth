@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="action_vault" model="ir.actions.act_window">
+        <field name="name">Vault</field>
+        <field name="res_model">vault</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_vault_entry" model="ir.actions.act_window">
+        <field name="name">All Entries</field>
+        <field name="res_model">vault.entry</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_vault': 1}</field>
+        <field
+            name="view_ids"
+            eval="[(5,0,0),
+            (0,0,{'view_mode':'list', 'view_id': ref('view_vault_entry_full_tree')}),
+            (0,0,{'view_mode':'form', 'view_id': ref('view_vault_entry_overview_form')})]"
+        />
+    </record>
+
+    <record id="action_vault_inbox" model="ir.actions.act_window">
+        <field name="name">Inbox</field>
+        <field name="res_model">vault.inbox</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_vault_right" model="ir.actions.act_window">
+        <field name="name">Rights</field>
+        <field name="res_model">vault.right</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_vault_right_overview_tree" />
+        <field name="search_view_id" ref="view_vault_right_overview_search" />
+    </record>
+
+    <menuitem
+        id="menu_vault"
+        groups="base.group_user"
+        action="action_vault"
+        web_icon="vault,static/description/icon.png"
+    />
+    <menuitem
+        id="menu_vault_entry"
+        groups="base.group_user"
+        parent="menu_vault"
+        action="action_vault_entry"
+        sequence="30"
+    />
+    <menuitem
+        id="menu_vault_inbox"
+        groups="base.group_user"
+        parent="vault.menu_vault"
+        action="action_vault_inbox"
+        sequence="40"
+    />
+    <menuitem
+        id="menu_vault_right"
+        groups="base.group_user"
+        parent="vault.menu_vault"
+        action="action_vault_right"
+        sequence="50"
+    />
+</odoo>

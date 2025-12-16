@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_right_tree" model="ir.ui.view">
+        <field name="model">vault.right</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" decoration-danger="not key">
+                <field name="vault_id" column_invisible="1" />
+                <field name="master_key" column_invisible="1" />
+                <field name="key" column_invisible="1" />
+                <field name="public_key" column_invisible="1" />
+                <field name="user_id" />
+                <field name="perm_create" />
+                <field name="perm_write" />
+                <field name="perm_share" />
+                <field name="perm_delete" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_right_form" model="ir.ui.view">
+        <field name="model">vault.right</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="user_id" />
+                        <field name="perm_create" />
+                        <field name="perm_write" />
+                        <field name="perm_share" />
+                        <field name="perm_delete" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vault_right_overview_tree" model="ir.ui.view">
+        <field name="model">vault.right</field>
+        <field name="arch" type="xml">
+            <list create="false">
+                <field name="vault_id" />
+                <field name="user_id" />
+                <field name="perm_create" />
+                <field name="perm_write" />
+                <field name="perm_share" />
+                <field name="perm_delete" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vault_right_overview_search" model="ir.ui.view">
+        <field name="name">vault.right.overview.search</field>
+        <field name="model">vault.right</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id" operator="ilike" />
+                <field name="vault_id" operator="ilike" />
+                <group expand="0" string="Grouped">
+                    <filter
+                        name="user_id"
+                        string="By user"
+                        context="{'group_by': 'user_id'}"
+                    />
+                    <filter
+                        name="vault_id"
+                        string="By vault"
+                        context="{'group_by': 'vault_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

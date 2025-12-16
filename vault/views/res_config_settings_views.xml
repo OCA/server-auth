@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block id="user_default_rights" position="after">
+                <block title="Vault" id="vault">
+                    <setting
+                        string="Vault Share"
+                        help="Allow the usage to share secrets with external users"
+                        id="vault_share"
+                    >
+                        <field name="module_vault_share" />
+                    </setting>
+                    <setting
+                        help="Allow all users to import vaults accessible to them"
+                        id="vault_share"
+                    >
+                        <field name="group_vault_import" />
+                    </setting>
+                    <setting
+                        help="Allow all users to export vaults accessible to them"
+                        id="vault_share"
+                    >
+                        <field name="group_vault_import" />
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>
