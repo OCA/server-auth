@@ -1,18 +1,15 @@
-/** @odoo-module **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import VaultField from "vault.field";
-import {_lt} from "@web/core/l10n/translation";
+import {VaultField} from "@vault/backend/fields/vault_field.esm";
+import {_t} from "@web/core/l10n/translation";
 import {patch} from "@web/core/utils/patch";
-import sh_utils from "vault.share.utils";
-import utils from "vault.utils";
-import vault from "vault";
+import sh_utils from "../../common/utils.esm";
 
 // Extend the widget to share
-patch(VaultField.prototype, "vault_share", {
+patch(VaultField.prototype, {
     get shareButton() {
-        return this.props.value;
+        return this.value;
     },
     /**
      * Share the value for an external user
@@ -21,28 +18,34 @@ patch(VaultField.prototype, "vault_share", {
      */
     async _onShareValue(ev) {
         ev.stopPropagation();
-        const iv = await utils.generate_iv_base64();
+        const iv = await this.vault_utils.generate_iv_base64();
         const pin = sh_utils.generate_pin(sh_utils.PinSize);
-        const salt = utils.generate_bytes(utils.SaltLength).buffer;
-        const key = await utils.derive_key(pin, salt, utils.Derive.iterations);
-        const public_key = await vault.get_public_key();
-        const value = await this._decrypt(this.props.value);
+        const salt = this.vault_utils.generate_bytes(
+            this.vault_utils.SaltLength
+        ).buffer;
+        const key = await this.vault_utils.derive_key(
+            pin,
+            salt,
+            this.vault_utils.Derive.iterations
+        );
+        const public_key = await this.vault.get_public_key();
+        const value = await this._decrypt(this.value);
 
         this.action.doAction({
             type: "ir.actions.act_window",
-            title: _lt("Share the secret"),
+            title: _t("Share the secret"),
             target: "new",
             res_model: "vault.share",
             views: [[false, "form"]],
             context: {
-                default_secret: await utils.sym_encrypt(key, value, iv),
-                default_pin: await utils.asym_encrypt(
+                default_secret: await this.vault_utils.sym_encrypt(key, value, iv),
+                default_pin: await this.vault_utils.asym_encrypt(
                     public_key,
-                    pin + utils.generate_iv_base64()
+                    pin + this.vault_utils.generate_iv_base64()
                 ),
-                default_iterations: utils.Derive.iterations,
+                default_iterations: this.vault_utils.Derive.iterations,
                 default_iv: iv,
-                default_salt: utils.toBase64(salt),
+                default_salt: this.vault_utils.toBase64(salt),
             },
         });
     },

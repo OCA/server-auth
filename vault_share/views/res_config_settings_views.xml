@@ -5,14 +5,12 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="vault.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <div id="vault_share" position="after">
-                <div class="col-xs-12 col-md-6 o_setting_box" id="vault_share">
-                    <div class="o_setting_right_pane">
-                        <div class="o_form_label">Delay the deletion of shares</div>
-                        <field name="vault_share_delay" /> Days
-                    </div>
-                </div>
-            </div>
+            <setting id="vault_share" position="after">
+                <setting id="vault_share">
+                    <div class="o_form_label">Delay the deletion of shares</div>
+                    <field name="vault_share_delay" /> Days
+                </setting>
+            </setting>
         </field>
     </record>
 </odoo>

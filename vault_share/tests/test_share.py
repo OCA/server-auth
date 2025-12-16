@@ -6,9 +6,9 @@ import logging
 from datetime import datetime
 from uuid import uuid4
 
-from odoo.tests import TransactionCase
 from odoo.tools import mute_logger
 
+from odoo.addons.base.tests.common import BaseCommon
 from odoo.addons.website.tools import MockRequest
 
 from ..controllers import main
@@ -16,7 +16,7 @@ from ..controllers import main
 _logger = logging.getLogger(__name__)
 
 
-class TestShare(TransactionCase):
+class TestShare(BaseCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

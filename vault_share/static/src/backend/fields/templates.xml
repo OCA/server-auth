@@ -4,7 +4,6 @@
         t-name="vault.FieldShareVault"
         t-inherit="vault.FieldVault"
         t-inherit-mode="primary"
-        owl="1"
     >
         <xpath expr="//div[@t-elif='props.readonly']" position="attributes">
             <attribute name="t-elif">!isNew</attribute>
@@ -15,14 +14,13 @@
         t-name="vault.FileShareVault"
         t-inherit="web.BinaryField"
         t-inherit-mode="primary"
-        owl="1"
     >
         <xpath expr="//t[@t-if='!props.readonly']" position="attributes">
             <attribute name="t-if">isNew</attribute>
         </xpath>
     </t>
 
-    <t t-name="vault.FieldPinVault" owl="1">
+    <t t-name="vault.FieldPinVault">
         <div class="o_vault o_vault_error" t-if="!supported()">
             <span>*******</span>
         </div>
@@ -32,7 +30,7 @@
         </div>
     </t>
 
-    <t t-inherit="vault.FieldVault" t-inherit-mode="extension" owl="1">
+    <t t-inherit="vault.FieldVault" t-inherit-mode="extension">
         <xpath expr="//span[hasclass('o_vault_buttons')]" position="inside">
             <button
                 t-if="shareButton"

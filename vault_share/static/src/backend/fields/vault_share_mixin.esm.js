@@ -1,17 +1,29 @@
-/** @odoo-module alias=vault.share.mixin **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import sh_utils from "vault.share.utils";
-import utils from "vault.utils";
-import vault from "vault";
+import sh_utils from "../../common/utils.esm";
+import {useService} from "@web/core/utils/hooks";
 
 export default (x) => {
     class Extended extends x {
+        static defaultProps = {
+            ...x.defaultProps,
+            fieldPin: "pin",
+            fieldSalt: "salt",
+            fieldIterations: "iterations",
+        };
+        static props = {
+            ...x.props,
+            fieldIterations: {type: String, optional: true},
+            fieldPin: {type: String, optional: true},
+            fieldSalt: {type: String, optional: true},
+        };
         setup() {
             super.setup();
 
             this.context = this.env.searchModel.context;
+            this.vault_utils = useService("vault_utils");
+            this.vault = useService("vault");
         }
 
         get shareButton() {
@@ -23,6 +35,9 @@ export default (x) => {
         get isNew() {
             return this.props.record.isNew;
         }
+        get value() {
+            return this.props.record.data[this.props.name];
+        }
 
         /**
          * Encrypt the pin with a random salt to make it hard to guess him by
@@ -33,9 +48,9 @@ export default (x) => {
          * @param {String} pin
          */
         async _storePin(pin) {
-            const salt = utils.generate_iv_base64();
-            const crypted_pin = await utils.asym_encrypt(
-                await vault.get_public_key(),
+            const salt = this.vault_utils.generate_iv_base64();
+            const crypted_pin = await this.vault_utils.asym_encrypt(
+                await this.vault.get_public_key(),
                 pin + salt
             );
             await this._setFieldValue(this.props.fieldPin, crypted_pin);
@@ -48,8 +63,9 @@ export default (x) => {
          */
         async _getIterations() {
             const record = this.props.record;
-            if (!record) return utils.Derive.iterations;
-            const iterations = record.data.iterations || utils.Derive.iterations;
+            if (!record) return this.vault_utils.Derive.iterations;
+            const iterations =
+                record.data.iterations || this.vault_utils.Derive.iterations;
             await this._setFieldValue(this.props.fieldIterations, iterations);
             return iterations;
         }
@@ -70,8 +86,8 @@ export default (x) => {
             let pin = record.data[this.props.fieldPin];
             if (pin) {
                 // Decrypt the pin and slice him to the configured pin size
-                const private_key = await vault.get_private_key();
-                const plain = await utils.asym_decrypt(private_key, pin);
+                const private_key = await this.vault.get_private_key();
+                const plain = await this.vault_utils.asym_decrypt(private_key, pin);
                 if (!plain) return null;
 
                 pin = plain.slice(0, pin_size);
@@ -99,7 +115,9 @@ export default (x) => {
             if (salt) return salt;
 
             // Generate a new salt and store him
-            salt = utils.toBase64(utils.generate_bytes(utils.SaltLength).buffer);
+            salt = this.vault_utils.toBase64(
+                this.vault_utils.generate_bytes(this.vault_utils.SaltLength).buffer
+            );
             await this._setFieldValue(this.props.fieldSalt, salt);
             return salt;
         }
@@ -112,19 +130,19 @@ export default (x) => {
          * @returns the decrypted secret
          */
         async _decrypt(crypted) {
-            if (!utils.supported()) return null;
+            if (!this.vault_utils.supported()) return null;
 
             if (crypted === false) return false;
 
-            if (!this.props.value) return this.props.value;
+            if (!this.value) return this.value;
 
             const iv = await this._getIV();
             const pin = await this._getPin();
-            const salt = utils.fromBase64(await this._getSalt());
+            const salt = this.vault_utils.fromBase64(await this._getSalt());
             const iterations = await this._getIterations();
 
-            const key = await utils.derive_key(pin, salt, iterations);
-            return await utils.sym_decrypt(key, crypted, iv);
+            const key = await this.vault_utils.derive_key(pin, salt, iterations);
+            return await this.vault_utils.sym_decrypt(key, crypted, iv);
         }
 
         /**
@@ -135,30 +153,17 @@ export default (x) => {
          * @returns the encrypted secret
          */
         async _encrypt(data) {
-            if (!utils.supported()) return null;
+            if (!this.vault_utils.supported()) return null;
 
             const iv = await this._getIV();
             const pin = await this._getPin();
-            const salt = utils.fromBase64(await this._getSalt());
+            const salt = this.vault_utils.fromBase64(await this._getSalt());
             const iterations = await this._getIterations();
 
-            const key = await utils.derive_key(pin, salt, iterations);
-            return await utils.sym_encrypt(key, data, iv);
+            const key = await this.vault_utils.derive_key(pin, salt, iterations);
+            return await this.vault_utils.sym_encrypt(key, data, iv);
         }
     }
-
-    Extended.defaultProps = {
-        ...x.defaultProps,
-        fieldPin: "pin",
-        fieldSalt: "salt",
-        fieldIterations: "iterations",
-    };
-    Extended.props = {
-        ...x.props,
-        fieldIterations: {type: String, optional: true},
-        fieldPin: {type: String, optional: true},
-        fieldSalt: {type: String, optional: true},
-    };
 
     return Extended;
 };

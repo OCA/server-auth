@@ -1,15 +1,19 @@
-/** @odoo-module alias=vault.share.file **/
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import VaultFile from "vault.file";
-import VaultShareMixin from "vault.share.mixin";
-import {_lt} from "@web/core/l10n/translation";
+import {VaultFile, vaultFileField} from "@vault/backend/fields/vault_file.esm";
+import VaultShareMixin from "./vault_share_mixin.esm";
+import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 
-export default class VaultShareFile extends VaultShareMixin(VaultFile) {}
+export class VaultShareFile extends VaultShareMixin(VaultFile) {
+    static template = "vault.FileShareVault";
+}
 
-VaultShareFile.displayName = _lt("Vault Share Field");
-VaultShareFile.template = "vault.FileShareVault";
+export const vaultShareFileField = {
+    ...vaultFileField,
+    component: VaultShareFile,
+    displayName: _t("Vault Share Field"),
+};
 
-registry.category("fields").add("vault_share_file", VaultShareFile);
+registry.category("fields").add("vault_share_file", vaultShareFileField);

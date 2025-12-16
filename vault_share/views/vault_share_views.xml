@@ -3,10 +3,10 @@
     <record id="view_vault_share_tree" model="ir.ui.view">
         <field name="model">vault.share</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name" />
                 <field name="share_link" widget="url" />
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -37,10 +37,10 @@
 
                     <label for="log_ids" />
                     <field name="log_ids" options="{'no_open': True}">
-                        <tree>
+                        <list>
                             <field name="name" />
                             <field name="create_date" />
-                        </tree>
+                        </list>
                     </field>
                 </sheet>
             </form>
