@@ -1,6 +1,6 @@
 [project]
 name = "odoo-addons-oca-server-auth"
-version = "18.0.20251216.0"
+version = "18.0.20251217.0"
 dependencies = [
     "odoo-addon-auth_admin_passkey==18.0.*",
     "odoo-addon-auth_api_key==18.0.*",
@@ -23,6 +23,7 @@ dependencies = [
     "odoo-addon-user_log_view==18.0.*",
     "odoo-addon-users_ldap_mail==18.0.*",
     "odoo-addon-vault==18.0.*",
+    "odoo-addon-vault_share==18.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
