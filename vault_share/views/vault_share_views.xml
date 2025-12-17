@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_share_tree" model="ir.ui.view">
+        <field name="model">vault.share</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="share_link" widget="url" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vault_share_form" model="ir.ui.view">
+        <field name="model">vault.share</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="token" invisible="1" />
+                        <field name="iv" invisible="1" />
+                        <field name="salt" invisible="1" />
+                        <field name="iterations" invisible="1" />
+                        <field name="filename" invisible="1" />
+
+                        <field name="name" />
+                        <field name="share_link" widget="url" />
+                        <field name="pin" widget="vault_pin" />
+                        <field name="expiration" />
+                        <field name="accesses" />
+                        <field name="secret" widget="vault_share_field" />
+                        <field
+                            name="secret_file"
+                            filename="filename"
+                            widget="vault_share_file"
+                        />
+                    </group>
+
+                    <label for="log_ids" />
+                    <field name="log_ids" options="{'no_open': True}">
+                        <list>
+                            <field name="name" />
+                            <field name="create_date" />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
