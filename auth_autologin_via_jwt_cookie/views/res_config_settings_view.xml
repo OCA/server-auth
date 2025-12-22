@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record
+        id="res_config_settings_view_form_auth_autologin_via_jwt_cookie"
+        model="ir.ui.view"
+    >
+        <field
+            name="name"
+        >res.config.settings.view.form.auth.autologin.jwt.cookie</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <div
+                class="row mt16 o_settings_container"
+                name="integration"
+                position="after"
+            >
+                <h2>JWT Cookie Autologin</h2>
+
+                <div class="row mt16 o_settings_container" name="jWT_cookie_autologin">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <label for="auth_autologin_jwt_cookie_name" />
+                            <div class="text-muted">
+                                Shared cookie name
+                            </div>
+                            <field name="auth_autologin_jwt_cookie_name" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <label for="auth_autologin_jwks_url" />
+                            <div class="text-muted">
+                                JWKS endpoint used to validate the cookie JWT signature.
+                            </div>
+                            <field name="auth_autologin_jwks_url" />
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <label for="auth_autologin_userinfo_url" />
+                            <div class="text-muted">
+                                Userinfo endpoint returning email, called with <code
+                                >Authorization: Bearer &lt;JWT&gt;</code>.
+                            </div>
+                            <field name="auth_autologin_userinfo_url" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </field>
+    </record>
+</odoo>
