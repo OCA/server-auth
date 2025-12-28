@@ -14,6 +14,7 @@ class Message(models.Model):
         comodel_name="res.partner",
         compute="_compute_impersonated_author_id",
         store=True,
+        index=True,
     )
 
     body = fields.Html(
