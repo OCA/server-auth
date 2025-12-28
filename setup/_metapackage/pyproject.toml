@@ -1,8 +1,9 @@
 [project]
 name = "odoo-addons-oca-server-auth"
-version = "19.0.20251221.0"
+version = "19.0.20251228.0"
 dependencies = [
     "odoo-addon-auth_session_timeout==19.0.*",
+    "odoo-addon-impersonate_login==19.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
