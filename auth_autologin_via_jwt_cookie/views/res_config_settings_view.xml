@@ -10,49 +10,30 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <div
-                class="row mt16 o_settings_container"
-                name="integration"
-                position="after"
-            >
-                <h2>JWT Cookie Autologin</h2>
+            <block name="integration" position="after">
+                <block title="JWT Cookie Autologin" name="jwt_cookie_autologin">
+                    <setting
+                        id="auth_autologin_jwt_cookie_name_setting"
+                        help="Shared cookie name"
+                    >
+                        <field name="auth_autologin_jwt_cookie_name" />
+                    </setting>
 
-                <div class="row mt16 o_settings_container" name="jWT_cookie_autologin">
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane" />
-                        <div class="o_setting_right_pane">
-                            <label for="auth_autologin_jwt_cookie_name" />
-                            <div class="text-muted">
-                                Shared cookie name
-                            </div>
-                            <field name="auth_autologin_jwt_cookie_name" />
-                        </div>
-                    </div>
+                    <setting
+                        id="auth_autologin_jwks_url_setting"
+                        help="JWKS endpoint used to validate the cookie JWT signature."
+                    >
+                        <field name="auth_autologin_jwks_url" />
+                    </setting>
 
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane" />
-                        <div class="o_setting_right_pane">
-                            <label for="auth_autologin_jwks_url" />
-                            <div class="text-muted">
-                                JWKS endpoint used to validate the cookie JWT signature.
-                            </div>
-                            <field name="auth_autologin_jwks_url" />
-                        </div>
-                    </div>
-
-                    <div class="col-12 col-lg-6 o_setting_box">
-                        <div class="o_setting_left_pane" />
-                        <div class="o_setting_right_pane">
-                            <label for="auth_autologin_userinfo_url" />
-                            <div class="text-muted">
-                                Userinfo endpoint returning email, called with <code
-                            >Authorization: Bearer &lt;JWT&gt;</code>.
-                            </div>
-                            <field name="auth_autologin_userinfo_url" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <setting
+                        id="auth_autologin_userinfo_url_setting"
+                        help="Userinfo endpoint returning email, called with Authorization: Bearer &lt;JWT&gt;."
+                    >
+                        <field name="auth_autologin_userinfo_url" />
+                    </setting>
+                </block>
+            </block>
         </field>
     </record>
 </odoo>

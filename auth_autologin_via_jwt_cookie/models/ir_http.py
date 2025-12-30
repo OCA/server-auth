@@ -97,7 +97,8 @@ class IrHttp(models.AbstractModel):
 
         if not (cookie_name and jwks_url and userinfo_url):
             _logger.debug(
-                "JWT autologin config incomplete: cookie_name=%s, jwks_url=%s, userinfo_url=%s",
+                "JWT autologin config incomplete: cookie_name=%s, jwks_url=%s, "
+                "userinfo_url=%s",
                 bool(cookie_name),
                 bool(jwks_url),
                 bool(userinfo_url),
