@@ -46,7 +46,7 @@
                             <label for="auth_autologin_userinfo_url" />
                             <div class="text-muted">
                                 Userinfo endpoint returning email, called with <code
-                                >Authorization: Bearer &lt;JWT&gt;</code>.
+                            >Authorization: Bearer &lt;JWT&gt;</code>.
                             </div>
                             <field name="auth_autologin_userinfo_url" />
                         </div>
