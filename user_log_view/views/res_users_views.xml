@@ -16,15 +16,11 @@
         <field name="name">res.users.log.search</field>
         <field name="model">res.users.log</field>
         <field name="arch" type="xml">
-            <search string="Test Search">
+            <search>
                 <field name="create_uid" />
                 <field name="create_date" />
-                <group expand="0" string="Group By">
-                    <filter
-                        string="Date"
-                        name="groupby_date"
-                        context="{'group_by':'create_date:day'}"
-                    />
+               <group>
+                    <filter string="Date" name="groupby_date" context="{'group_by': 'create_date:day'}"/>
                 </group>
             </search>
         </field>
