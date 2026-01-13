@@ -80,11 +80,12 @@ class OAuthProviderScope(models.Model):
             records = self.env[model].with_user(user).search(filter_domain)
             for record_data in records.read(scope.field_ids.mapped("name")):
                 for field, value in record_data.items():
-                    if isinstance(value, tuple):
-                        # Return only the name for a many2one
-                        data[record_data["id"]][field] = value[1]
-                    else:
-                        data[record_data["id"]][field] = value
+                    data[record_data["id"]][field] = value
+                    # if isinstance(value, tuple):
+                    #     # Return only the name for a many2one
+                    #     data[record_data["id"]][field] = value[1]
+                    # else:
+                    #     data[record_data["id"]][field] = value
 
             # Keep a list of records that match all scopes
             if all_scopes_records is None:
