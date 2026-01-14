@@ -93,6 +93,25 @@
                                     />
                                     <field name="write_date" />
                                 </list>
+                                <kanban can_open="0" create="0">
+                                    <field name="vault_id" />
+                                    <field name="entry_id" />
+                                    <field name="iv" />
+                                    <field name="master_key" />
+                                    <templates>
+                                        <t t-name="card">
+                                            <h2>
+                                                <field name="name" />
+                                            </h2>
+                                            <field
+                                                name="value"
+                                                widget="vault_field"
+                                                type="field_type"
+                                            />
+                                            <field name="write_date" />
+                                        </t>
+                                    </templates>
+                                </kanban>
                             </field>
 
                             <label for="file_ids" />
