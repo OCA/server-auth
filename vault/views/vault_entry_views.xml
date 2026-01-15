@@ -93,7 +93,7 @@
                                     />
                                     <field name="write_date" />
                                 </list>
-                                <kanban can_open="0" create="0">
+                                <kanban delete="0">
                                     <field name="vault_id" />
                                     <field name="entry_id" />
                                     <field name="iv" />
@@ -112,6 +112,25 @@
                                         </t>
                                     </templates>
                                 </kanban>
+                                <form>
+                                    <sheet>
+                                        <group>
+                                            <field name="vault_id" invisible="1" />
+                                            <field name="entry_id" invisible="1" />
+                                            <field name="iv" invisible="1" />
+                                            <field name="master_key" invisible="1" />
+                                        </group>
+                                        <h2>
+                                            <field name="name" />
+                                        </h2>
+                                        <field
+                                            name="value"
+                                            widget="vault_field"
+                                            type="field_type"
+                                        />
+                                        <field name="write_date" />
+                                    </sheet>
+                                </form>
                             </field>
 
                             <label for="file_ids" />
