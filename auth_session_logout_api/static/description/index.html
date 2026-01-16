@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Force User Session Logout</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1, h2, h3 { color: #875A7B; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+        .badge-beta { background: #ffc107; color: #333; }
+        .badge-license { background: #007bff; color: #fff; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Force User Session Logout</h1>
+
+    <p>
+        <span class="badge badge-beta">Beta</span>
+        <span class="badge badge-license">AGPL-3</span>
+    </p>
+
+    <p>This module provides a secure API endpoint to force logout user sessions remotely.</p>
+
+    <h2>Features</h2>
+    <ul>
+        <li>Token-based authentication for API security</li>
+        <li>Lookup users by login or email (case insensitive)</li>
+        <li>Comprehensive audit logging</li>
+        <li>Session invalidation via Odoo's session token mechanism</li>
+    </ul>
+
+    <h2>API Usage</h2>
+    <pre><code>GET /web/session/force_logout?token=TOKEN&amp;user=LOGIN_OR_EMAIL</code></pre>
+
+    <h3>Example</h3>
+    <pre><code>curl "https://your-odoo.com/web/session/force_logout?token=abc123&amp;user=demo"</code></pre>
+
+    <h3>Response Codes</h3>
+    <ul>
+        <li><strong>200</strong> - User successfully logged out</li>
+        <li><strong>401</strong> - Invalid or missing token</li>
+        <li><strong>404</strong> - User not found</li>
+        <li><strong>500</strong> - Server error</li>
+    </ul>
+
+    <h2>Configuration</h2>
+    <ol>
+        <li>Go to <strong>Settings</strong> → <strong>General Settings</strong></li>
+        <li>Find the <strong>Force Session Logout</strong> section</li>
+        <li>Click <strong>Generate Token</strong> to create a new secure token</li>
+    </ol>
+
+    <h2>Credits</h2>
+    <h3>Contributors</h3>
+    <ul>
+        <li><a href="https://trobz.com">Trobz</a></li>
+    </ul>
+
+    <h3>Maintainer</h3>
+    <p>
+        This module is maintained by the
+        <a href="https://odoo-community.org">Odoo Community Association (OCA)</a>.
+    </p>
+</body>
+</html>

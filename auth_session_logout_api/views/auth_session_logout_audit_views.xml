@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- # Copyright 2026 Kencove (https://www.kencove.com).
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Audit Log Views -->
+        <record id="auth_session_logout_audit_view_tree" model="ir.ui.view">
+            <field name="name">auth.session.logout.audit.tree</field>
+            <field name="model">auth.session.logout.audit</field>
+            <field name="arch" type="xml">
+                <tree create="0" edit="0" delete="0">
+                    <field name="create_date" string="Date" />
+                    <field name="target_user_id" />
+                    <field name="target_user_login" />
+                    <field name="request_ip" />
+                    <field
+                    name="status"
+                    decoration-success="status == 'success'"
+                    decoration-danger="status in ('unauthorized', 'error')"
+                    decoration-warning="status == 'user_not_found'"
+                    widget="badge"
+                />
+                    <field name="error_message" optional="hide" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="auth_session_logout_audit_view_form" model="ir.ui.view">
+            <field name="name">auth.session.logout.audit.form</field>
+            <field name="model">auth.session.logout.audit</field>
+            <field name="arch" type="xml">
+                <form string="Force Logout Audit" create="0" edit="0" delete="0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field
+                                name="create_date"
+                                string="Date"
+                                readonly="True"
+                            />
+                                <field name="target_user_id" readonly="True" />
+                                <field name="target_user_login" readonly="True" />
+                                <field name="status" readonly="True" />
+                            </group>
+                            <group>
+                                <field name="request_ip" readonly="True" />
+                                <field name="user_agent" readonly="True" />
+                            </group>
+                        </group>
+                        <group
+                        string="Error Details"
+                        attrs="{'invisible': [('error_message', '=', False)]}"
+                    >
+                            <field name="error_message" nolabel="1" readonly="1" />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="auth_session_logout_audit_view_search" model="ir.ui.view">
+            <field name="name">auth.session.logout.audit.search</field>
+            <field name="model">auth.session.logout.audit</field>
+            <field name="arch" type="xml">
+                <search string="Search Audit Logs">
+                    <field name="target_user_id" />
+                    <field name="target_user_login" />
+                    <field name="request_ip" />
+                    <filter
+                    name="filter_success"
+                    string="Success"
+                    domain="[('status', '=', 'success')]"
+                />
+                    <filter
+                    name="filter_failed"
+                    string="Failed"
+                    domain="[('status', '!=', 'success')]"
+                />
+                    <separator />
+                    <filter
+                    name="filter_today"
+                    string="Today"
+                    domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]"
+                />
+                    <group expand="0" string="Group By">
+                        <filter
+                        name="groupby_user"
+                        string="Target User"
+                        context="{'group_by': 'target_user_id'}"
+                    />
+                        <filter
+                        name="groupby_status"
+                        string="Status"
+                        context="{'group_by': 'status'}"
+                    />
+                        <filter
+                        name="groupby_date"
+                        string="Date"
+                        context="{'group_by': 'create_date:day'}"
+                    />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_auth_session_logout_audit" model="ir.actions.act_window">
+            <field name="name">Force Logout Audit</field>
+            <field name="res_model">auth.session.logout.audit</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_filter_today': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No force logout audit logs yet
+                </p>
+                <p>
+                    Audit logs will be created when force logout operations are performed.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menu -->
+        <menuitem
+        id="menu_auth_session_logout_audit"
+        name="Force Logout Audit"
+        parent="base.menu_security"
+        action="action_auth_session_logout_audit"
+        sequence="20"
+        groups="base.group_system"
+    />
+</odoo>

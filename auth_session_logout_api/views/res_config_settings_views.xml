@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- # Copyright 2026 Kencove (https://www.kencove.com).
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Setting-->
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field
+            name="name"
+        >res.config.settings.view.form.inherit.auth.session.logout</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='user_default_rights']" position="after">
+                <h2 groups="base.group_system">Force Session Logout</h2>
+                <div class="row mt16 o_settings_container" groups="base.group_system">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane" />
+                        <div class="o_setting_right_pane">
+                            <label
+                                for="auth_session_logout_token"
+                                string="Force Logout API Token"
+                            />
+                            <div
+                                class="text-muted"
+                            >Secure token for force logout API requests</div>
+                            <div class="content-group mt16">
+                                <div class="row">
+                                    <label
+                                        for="auth_session_logout_token"
+                                        class="col-lg-5 o_light_label"
+                                    />
+                                    <field
+                                        name="auth_session_logout_token"
+                                        readonly="1"
+                                        class="col-lg-4"
+                                    />
+                                </div>
+                                <div class="mt8">
+                                    <button
+                                        name="action_generate_token"
+                                        type="object"
+                                        class="btn btn-primary"
+                                        attrs="{'invisible': [('auth_session_logout_token', '!=', False)]}"
+                                    >
+                                        <i class="fa fa-key" /> Generate Token
+                                    </button>
+                                    <button
+                                        name="action_generate_token"
+                                        type="object"
+                                        class="btn btn-secondary"
+                                        attrs="{'invisible': [('auth_session_logout_token', '=', False)]}"
+                                    >
+                                        <i class="fa fa-refresh" /> Regenerate Token
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="alert alert-info mt16 mb-0" role="status">
+                                <strong>API:</strong>
+                                <code
+                                >POST /web/session/force_logout?user=LOGIN_OR_EMAIL</code>
+                                <br />
+                                <small class="text-muted">
+                                    Header: <code>X-Force-Logout-Token: TOKEN</code>
+                                    or <code>Authorization: Bearer TOKEN</code>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

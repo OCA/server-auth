@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_auth_session_logout_audit_admin,auth.session.logout.audit.admin,model_auth_session_logout_audit,base.group_system,1,1,1,1
