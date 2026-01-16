@@ -1,0 +1,42 @@
+<odoo>
+    <record id="demo_validator" model="auth.jwt.validator">
+        <field name="name">demo</field>
+        <field name="audience">auth_jwt_test_api</field>
+        <field name="issuer">theissuer</field>
+        <field name="signature_type">secret</field>
+        <field name="secret_algorithm">HS256</field>
+        <field name="secret_key">thesecret</field>
+        <field name="user_id_strategy">static</field>
+        <field name="static_user_id" ref="base.user_demo" />
+        <field name="partner_id_strategy">email</field>
+        <field name="partner_id_required" eval="False" />
+    </record>
+    <record id="demo_cookie_validator" model="auth.jwt.validator">
+        <field name="name">demo_cookie</field>
+        <field name="audience">auth_jwt_test_api</field>
+        <field name="issuer">theissuer</field>
+        <field name="signature_type">secret</field>
+        <field name="secret_algorithm">HS256</field>
+        <field name="secret_key">thesecret</field>
+        <field name="user_id_strategy">static</field>
+        <field name="static_user_id" ref="base.user_demo" />
+        <field name="partner_id_strategy">email</field>
+        <field name="partner_id_required" eval="False" />
+        <field name="cookie_enabled" eval="True" />
+        <field name="cookie_name">demo_auth</field>
+    </record>
+    <record id="demo_keycloak_validator" model="auth.jwt.validator">
+        <field name="name">demo_keycloak</field>
+        <field name="audience">auth_jwt_test_api</field>
+        <field name="issuer">http://localhost:8080/auth/realms/master</field>
+        <field name="signature_type">public_key</field>
+        <field name="public_key_algorithm">RS256</field>
+        <field
+            name="public_key_jwk_uri"
+        >http://localhost:8080/auth/realms/master/protocol/openid-connect/certs</field>
+        <field name="user_id_strategy">static</field>
+        <field name="static_user_id">1</field>
+        <field name="partner_id_strategy">email</field>
+        <field name="partner_id_required" eval="False" />
+    </record>
+</odoo>

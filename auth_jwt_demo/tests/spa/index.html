@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>SPA OIDC Sample</title>
+  </head>
+
+  <body>
+    <h2>SPA OIDC Authentication Sample</h2>
+    <p>Welcome to our page <span id="txt-email"></span>!</p>
+    <button id="btn-login" disabled>Log in</button>
+    <button id="btn-logout" disabled>Log out</button>
+    <button id="btn-whoami">Who am I? (api call)</button>
+    <button id="btn-whoami-public-or-jwt">Who am I (public or auth)? (api call)</button>
+    <script type="module">
+      import {onload, login, logout, whoami, whoami_public_or_jwt} from "./js/app.js";
+
+      window.onload = onload;
+      document.getElementById("btn-login").onclick = login;
+      document.getElementById("btn-logout").onclick = logout;
+      document.getElementById("btn-whoami").onclick = whoami;
+      document.getElementById("btn-whoami-public-or-jwt").onclick =
+        whoami_public_or_jwt;
+    </script>
+  </body>
+</html>
