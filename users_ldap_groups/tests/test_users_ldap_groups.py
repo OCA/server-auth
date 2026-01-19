@@ -110,17 +110,20 @@ class TestUsersLdapGroups(TransactionCase):
             only_ldap_groups=True,
         )
         # _login does its work in a new cursor, so we need to mock it
-        with mock.patch(
-            _company_ldap_class + "._connect",
-            return_value=FakeLdapConnection(
-                {
-                    "dc=users_ldap_groups,dc=example,dc=com": {
-                        "cn": [b"User Name"],
-                        "name": [b"hello", b"hello2"],
+        with (
+            mock.patch(
+                _company_ldap_class + "._connect",
+                return_value=FakeLdapConnection(
+                    {
+                        "dc=users_ldap_groups,dc=example,dc=com": {
+                            "cn": [b"User Name"],
+                            "name": [b"hello", b"hello2"],
+                        }
                     }
-                }
+                ),
             ),
-        ), mock_cursor(self.cr):
+            mock_cursor(self.cr),
+        ):
             user_id = (
                 self.env["res.users"]
                 .sudo()
@@ -155,17 +158,20 @@ class TestUsersLdapGroups(TransactionCase):
             ],
             only_ldap_groups=False,
         )
-        with mock.patch(
-            _company_ldap_class + "._connect",
-            return_value=FakeLdapConnection(
-                {
-                    "dc=users_ldap_groups,dc=example,dc=com": {
-                        "cn": [b"User Name"],
-                        "name": [b"hello", b"hello2"],
+        with (
+            mock.patch(
+                _company_ldap_class + "._connect",
+                return_value=FakeLdapConnection(
+                    {
+                        "dc=users_ldap_groups,dc=example,dc=com": {
+                            "cn": [b"User Name"],
+                            "name": [b"hello", b"hello2"],
+                        }
                     }
-                }
+                ),
             ),
-        ), mock_cursor(self.cr):
+            mock_cursor(self.cr),
+        ):
             user_id = (
                 self.env["res.users"]
                 .sudo()
@@ -210,17 +216,20 @@ class TestUsersLdapGroups(TransactionCase):
             ],
             only_ldap_groups=True,
         )
-        with mock.patch(
-            _company_ldap_class + "._connect",
-            return_value=FakeLdapConnection(
-                {
-                    "dc=users_ldap_groups,dc=example,dc=com": {
-                        "cn": [b"User Name"],
-                        "name": [b"hello", b"hello2"],
+        with (
+            mock.patch(
+                _company_ldap_class + "._connect",
+                return_value=FakeLdapConnection(
+                    {
+                        "dc=users_ldap_groups,dc=example,dc=com": {
+                            "cn": [b"User Name"],
+                            "name": [b"hello", b"hello2"],
+                        }
                     }
-                }
+                ),
             ),
-        ), mock_cursor(self.cr):
+            mock_cursor(self.cr),
+        ):
             with self.assertRaises(UserError):
                 self.env["res.users"].sudo().authenticate(
                     self.env.cr.dbname, "users_ldap_groups-username", "password", {}
@@ -262,21 +271,24 @@ class TestUsersLdapGroups(TransactionCase):
             ],
             only_ldap_groups=True,
         )
-        with mock.patch(
-            _company_ldap_class + "._connect",
-            return_value=FakeLdapConnection(
-                {
-                    "dc=users_ldap_groups,dc=example,dc=com": {
-                        "cn": [b"User Name"],
-                        "name": [b"hello", b"hello2"],
-                        "thumbnailPhoto": [
-                            b"GIF89a\x01\x00\x01\x00\x00\xff\x00,"
-                            b"\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;"
-                        ],
+        with (
+            mock.patch(
+                _company_ldap_class + "._connect",
+                return_value=FakeLdapConnection(
+                    {
+                        "dc=users_ldap_groups,dc=example,dc=com": {
+                            "cn": [b"User Name"],
+                            "name": [b"hello", b"hello2"],
+                            "thumbnailPhoto": [
+                                b"GIF89a\x01\x00\x01\x00\x00\xff\x00,"
+                                b"\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x00;"
+                            ],
+                        }
                     }
-                }
+                ),
             ),
-        ), mock_cursor(self.cr):
+            mock_cursor(self.cr),
+        ):
             user_id = (
                 self.env["res.users"]
                 .sudo()
