@@ -4,6 +4,7 @@
 from contextlib import contextmanager
 from unittest import mock
 
+from odoo import _
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 
@@ -47,7 +48,7 @@ class FakeLdapConnection:
 
     def __getattr__(self, name):
         def wrapper():
-            raise Exception("'%s' is not mocked" % name)
+            raise Exception(_("%s is not mocked") % name)
 
         return wrapper
 
@@ -128,11 +129,17 @@ class TestUsersLdapGroups(TransactionCase):
                 self.env["res.users"]
                 .sudo()
                 .authenticate(
-                    self.env.cr.dbname, "users_ldap_groups-username", "password", {}
+                    self.env.cr.dbname,
+                    {
+                        "login": "users_ldap_groups-username",
+                        "password": "password",
+                        "type": "password",
+                    },
+                    {},
                 )
             )
         # this asserts group mappings from demo data
-        user = self.env["res.users"].sudo().browse(user_id)
+        user = self.env["res.users"].sudo().browse(user_id["uid"])
         groups = user.groups_id
         self.assertIn(self.group_contains, groups)
         self.assertIn(self.group_user, groups)
@@ -176,17 +183,23 @@ class TestUsersLdapGroups(TransactionCase):
                 self.env["res.users"]
                 .sudo()
                 .authenticate(
-                    self.env.cr.dbname, "users_ldap_groups-username", "password", {}
+                    self.env.cr.dbname,
+                    {
+                        "login": "users_ldap_groups-username",
+                        "password": "password",
+                        "type": "password",
+                    },
+                    {},
                 )
             )
         # this asserts group mappings from demo data
-        user = self.env["res.users"].sudo().browse(user_id)
+        user = self.env["res.users"].sudo().browse(user_id["uid"])
         groups = user.groups_id
         self.assertIn(self.group_contains, groups)
         self.assertIn(self.group_equals, groups)
         self.assertGreater(len(groups), 2)  # user should keep default groups
 
-    def _test_users_ldap_groups_not_user_type(self):
+    def test_users_ldap_groups_not_user_type(self):
         self._create_ldap_config(
             groups=[
                 {
@@ -232,7 +245,13 @@ class TestUsersLdapGroups(TransactionCase):
         ):
             with self.assertRaises(UserError):
                 self.env["res.users"].sudo().authenticate(
-                    self.env.cr.dbname, "users_ldap_groups-username", "password", {}
+                    self.env.cr.dbname,
+                    {
+                        "login": "users_ldap_groups-username",
+                        "password": "password",
+                        "type": "password",
+                    },
+                    {},
                 )
 
     def test_users_ldap_groups_ldap_returns_binary_data(self):
@@ -293,11 +312,17 @@ class TestUsersLdapGroups(TransactionCase):
                 self.env["res.users"]
                 .sudo()
                 .authenticate(
-                    self.env.cr.dbname, "users_ldap_groups-username", "password", {}
+                    self.env.cr.dbname,
+                    {
+                        "login": "users_ldap_groups-username",
+                        "password": "password",
+                        "type": "password",
+                    },
+                    {},
                 )
             )
         # this asserts group mappings from demo data
-        user = self.env["res.users"].sudo().browse(user_id)
+        user = self.env["res.users"].sudo().browse(user_id["uid"])
         groups = user.groups_id
         self.assertIn(self.group_contains, groups)
         self.assertIn(self.group_user, groups)

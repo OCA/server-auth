@@ -6,3 +6,5 @@
   - João Marques
   - Carolina Fernandez
 - Dhara Solanki \<<dhara.solanki@initos.com>\>
+- Invitu \<<https://www.invitu.com>\>
+  - Cyril Vinh-Tung \<<cyril@invitu.com>\>
