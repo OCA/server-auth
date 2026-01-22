@@ -142,3 +142,16 @@ class TestMultiToken(TransactionCase):
         self.user.action_oauth_clear_token()
         active_token = self.user.oauth_access_token_ids
         self.assertEqual(len(active_token), 0)
+
+    def test_clean_tokens_not_authorised(self):
+        self._test_one_token()
+        user_new = self.user_model.create(
+            {
+                "name": "John Doe 2",
+                "login": "johndoe2",
+                "oauth_uid": "oauth_uid_johndoe2",
+                "oauth_provider_id": self.provider_google.id,
+            }
+        )
+        with self.assertRaises(exceptions.AccessError):
+            self.user.with_user(user_new).action_oauth_clear_token()

@@ -4,30 +4,50 @@
         <field name="name">auth_oauth_multi_token user form</field>
         <field name="model">res.users</field>
         <field name="type">form</field>
-        <field name="inherit_id" ref="auth_oauth.view_users_form" />
+        <field name="inherit_id" ref="base.view_users_form" />
         <field name="arch" type="xml">
-            <field name="oauth_uid" position="after">
-                <field name="oauth_access_max_token" />
-            </field>
-            <xpath expr="//field[@name='oauth_provider_id']/.." position="after">
-                <group name="multi_token_info" string="Latest Tokens">
-                    <label for="oauth_access_token_ids" />
-                    <field
-                        name="oauth_access_token_ids"
-                        nolabel="1"
-                        options="{'no_create': True, 'no_open': True}"
-                    >
-                        <list limit="10">
-                            <field name="create_date" />
-                        </list>
-                    </field>
-                    <button
-                        string="Clear Tokens"
-                        type="object"
-                        name="action_oauth_clear_token"
-                        class="oe_highlight"
-                    />
-                </group>
+            <xpath expr="//page[@name='page_security']" position="inside">
+                <separator string="OAuth Tokens" colspan="4" />
+                <div
+                    name="oauth_access_max_token"
+                    invisible="id != uid"
+                    class="d-md-flex mt-3"
+                >
+                    <div class="col-md-6 col-lg-3 d-flex flex-column">
+                        <label for="oauth_access_max_token" class="o_form_label" />
+                        <span class="text-muted">
+                            Recommended for extra security.
+                        </span>
+                    </div>
+                    <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                        <field name="oauth_access_max_token" />
+                    </div>
+                </div>
+                <div
+                    name="multi_token_info"
+                    invisible="id != uid"
+                    class="d-md-flex mt-3"
+                >
+                    <div class="col-md-6 col-lg-3 d-flex flex-column" />
+                    <div class="w-md-50 w-lg-75 d-flex flex-column my-auto">
+                        <field
+                            name="oauth_access_token_ids"
+                            options="{'no_create': True, 'no_open': True}"
+                        >
+                            <list limit="10">
+                                <field name="create_date" />
+                            </list>
+                        </field>
+                        <div>
+                            <button
+                                string="Clear Tokens"
+                                type="object"
+                                name="action_oauth_clear_token"
+                                class="btn btn-secondary h-100"
+                            />
+                        </div>
+                    </div>
+                </div>
             </xpath>
         </field>
     </record>

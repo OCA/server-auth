@@ -69,9 +69,14 @@ class ResUsers(models.Model):
 
     def action_oauth_clear_token(self):
         """Inactivate current user tokens."""
+        user = self.env.user
+        if not (user.has_group("base.group_erp_manager") or self == user):
+            raise exceptions.AccessError(
+                self.env._("You do not have permissions to remove the access token")
+            )
         self.mapped("oauth_access_token_ids")._oauth_clear_token()
         for res in self:
-            res.oauth_access_token = self._generate_oauth_master_uuid()
+            res.sudo().oauth_access_token = self._generate_oauth_master_uuid()
 
     @api.model
     def _check_credentials(self, credential, env):
