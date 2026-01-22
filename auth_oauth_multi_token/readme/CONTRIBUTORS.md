@@ -9,3 +9,5 @@
 - [Kencove](https://www.kencove.com/):
   - Mohamed Alkobrosli
 - Christopher Rogos
+- [Digiteasy](https://www.digiteasy.at/)
+  - Alvaro Estebanez
