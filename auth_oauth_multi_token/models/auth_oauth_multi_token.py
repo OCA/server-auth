@@ -49,6 +49,7 @@ class AuthOauthMultiToken(models.Model):
                 # clear tokens beyond the max
                 user_tokens[max_token:]._oauth_clear_token()
 
+    @api.private
     def _oauth_clear_token(self):
         """Disable current token records."""
         self.unlink()
