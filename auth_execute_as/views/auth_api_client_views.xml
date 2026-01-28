@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="auth_api_client_view_form" model="ir.ui.view">
+        <field name="name">auth.api.client.form</field>
+        <field name="model">auth.api.client</field>
+        <field name="arch" type="xml">
+            <form string="Client">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="action_regenerate_token"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-refresh"
+                            string="Regenerate Token"
+                            confirm="Are you sure you want to regenerate the token? Existing integrations will stop working."
+                        />
+                    </div>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="whitelist_id" />
+                            <field name="active" />
+                        </group>
+                        <group>
+                            <field name="secret_token" readonly="True" />
+                            <field name="last_rotated" readonly="True" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Security" name="security">
+                            <group>
+                                <group string="Token Settings">
+                                    <field name="token_expires_at" />
+                                </group>
+                            </group>
+                            <group string="IP Restrictions">
+                                <field
+                                    name="allowed_ips"
+                                    placeholder="192.168.1.1, 10.0.0.0/8, 172.16.0.0/12"
+                                />
+                            </group>
+                            <group string="User Restrictions">
+                                <field
+                                    name="allowed_user_ids"
+                                    widget="many2many_tags"
+                                />
+                                <field
+                                    name="allowed_group_ids"
+                                    widget="many2many_tags"
+                                />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="auth_api_client_view_tree" model="ir.ui.view">
+        <field name="name">auth.api.client.tree</field>
+        <field name="model">auth.api.client</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="whitelist_id" />
+                <field name="token_expires_at" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="auth_api_client_action" model="ir.actions.act_window">
+        <field name="name">Auth API Clients</field>
+        <field name="res_model">auth.api.client</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_auth_api_client"
+        name="Clients"
+        parent="menu_auth_execute_as_root"
+        action="auth_api_client_action"
+        sequence="30"
+    />
+</odoo>

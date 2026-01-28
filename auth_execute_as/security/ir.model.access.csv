@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_auth_api_whitelist_admin,auth.api.whitelist admin,model_auth_api_whitelist,base.group_system,1,1,1,1
+access_auth_api_whitelist_line_admin,auth.api.whitelist.line admin,model_auth_api_whitelist_line,base.group_system,1,1,1,1
+access_auth_api_client_admin,auth.api.client admin,model_auth_api_client,base.group_system,1,1,1,1
+access_auth_api_log_admin,auth.api.log admin,model_auth_api_log,base.group_system,1,1,1,1

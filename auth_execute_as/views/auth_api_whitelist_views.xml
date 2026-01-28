@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="auth_api_whitelist_view_form" model="ir.ui.view">
+        <field name="name">auth.api.whitelist.form</field>
+        <field name="model">auth.api.whitelist</field>
+        <field name="arch" type="xml">
+            <form string="Whitelist">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="description" />
+                    </group>
+                    <notebook>
+                        <page string="Whitelist Lines" name="lines">
+                            <field name="line_ids" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="auth_api_whitelist_view_tree" model="ir.ui.view">
+        <field name="name">auth.api.whitelist.tree</field>
+        <field name="model">auth.api.whitelist</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="description" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="auth_api_whitelist_action" model="ir.actions.act_window">
+        <field name="name">Whitelist</field>
+        <field name="res_model">auth.api.whitelist</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_auth_execute_as_root"
+        name="Execute As API"
+        parent="base.menu_custom"
+        groups="base.group_system"
+        sequence="90"
+    />
+
+    <menuitem
+        id="menu_auth_api_whitelist"
+        name="Whitelist"
+        parent="menu_auth_execute_as_root"
+        action="auth_api_whitelist_action"
+        sequence="10"
+    />
+</odoo>

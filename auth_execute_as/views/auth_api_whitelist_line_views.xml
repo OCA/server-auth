@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="auth_api_whitelist_line_view_form" model="ir.ui.view">
+        <field name="name">auth.api.whitelist.line.form</field>
+        <field name="model">auth.api.whitelist.line</field>
+        <field name="arch" type="xml">
+            <form string="Whitelist Line">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="model_id" />
+                            <field name="method" />
+                        </group>
+                        <group string="Response Options">
+                            <field name="clean_response" widget="boolean_toggle" />
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Logging Options">
+                            <field name="log_call" widget="boolean_toggle" />
+                            <field name="log_response" widget="boolean_toggle" />
+                            <field name="truncate_response" widget="boolean_toggle" />
+                        </group>
+                    </group>
+                    <group string="Allowed Fields">
+                        <field
+                            name="field_ids"
+                            widget="many2many_tags"
+                            domain="[('model_id', '=', model_id)]"
+                            nolabel="1"
+                            colspan="2"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="auth_api_whitelist_line_view_tree" model="ir.ui.view">
+        <field name="name">auth.api.whitelist.line.tree</field>
+        <field name="model">auth.api.whitelist.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="model_id" />
+                <field name="method" />
+                <field name="clean_response" />
+                <field name="log_call" widget="boolean_toggle" />
+                <field name="log_response" widget="boolean_toggle" />
+                <field name="truncate_response" widget="boolean_toggle" />
+                <field name="field_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="auth_api_log_view_form" model="ir.ui.view">
+        <field name="name">auth.api.log.form</field>
+        <field name="model">auth.api.log</field>
+        <field name="arch" type="xml">
+            <form string="Log" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="client_id" />
+                            <field name="user_id" />
+                            <field name="create_date" />
+                        </group>
+                        <group>
+                            <field name="model_name" />
+                            <field name="method" />
+                            <field name="status_code" />
+                            <field name="execution_time_ms" />
+                            <field name="request_size_bytes" />
+                            <field name="response_size_bytes" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Request" name="request">
+                            <field name="request_payload" nolabel="1" />
+                        </page>
+                        <page string="Response" name="response">
+                            <field name="response_payload" nolabel="1" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="auth_api_log_view_tree" model="ir.ui.view">
+        <field name="name">auth.api.log.tree</field>
+        <field name="model">auth.api.log</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="create_date" />
+                <field name="client_id" />
+                <field name="user_id" />
+                <field name="model_name" />
+                <field name="method" />
+                <field name="execution_time_ms" string="Time (ms)" />
+                <field
+                    name="status_code"
+                    decoration-success="status_code == 200"
+                    decoration-danger="status_code >= 400"
+                />
+            </tree>
+        </field>
+    </record>
+
+    <record id="auth_api_log_view_search" model="ir.ui.view">
+        <field name="name">auth.api.log.search</field>
+        <field name="model">auth.api.log</field>
+        <field name="arch" type="xml">
+            <search string="Logs">
+                <field name="client_id" />
+                <field name="user_id" />
+                <field name="model_name" />
+                <field name="method" />
+                <filter
+                    name="filter_success"
+                    string="Success"
+                    domain="[('status_code', '=', 200)]"
+                />
+                <filter
+                    name="filter_error"
+                    string="Errors"
+                    domain="[('status_code', '>=', 400)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_client"
+                        string="Client"
+                        context="{'group_by': 'client_id'}"
+                    />
+                    <filter
+                        name="group_user"
+                        string="User"
+                        context="{'group_by': 'user_id'}"
+                    />
+                    <filter
+                        name="group_model"
+                        string="Model"
+                        context="{'group_by': 'model_name'}"
+                    />
+                    <filter
+                        name="group_status"
+                        string="Status"
+                        context="{'group_by': 'status_code'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="auth_api_log_action" model="ir.actions.act_window">
+        <field name="name">Logs</field>
+        <field name="res_model">auth.api.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_auth_api_log"
+        name="Logs"
+        parent="menu_auth_execute_as_root"
+        action="auth_api_log_action"
+        sequence="40"
+    />
+</odoo>
