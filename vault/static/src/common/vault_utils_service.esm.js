@@ -43,7 +43,6 @@ export class AskPassDialog extends Component {
     }
 
     onCancel() {
-        this.props.onReject(_t("Cancelled"));
         this.props.close();
     }
 }
@@ -88,7 +87,6 @@ export class GeneratePassDialog extends Component {
     }
 
     onCancel() {
-        this.props.onReject(_t("Cancelled"));
         this.props.close();
     }
 
@@ -111,22 +109,20 @@ export const vaultUtilsService = {
                 title,
                 confirm: Boolean(options.confirm),
             };
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 dialog.add(AskPassDialog, {
                     ...props,
                     onResolve: resolve,
-                    onReject: reject,
                 });
             });
         }
 
         function generate_pass(title, options = {}) {
             const props = {title, ...options};
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 dialog.add(GeneratePassDialog, {
                     ...props,
                     onResolve: resolve,
-                    onReject: reject,
                 });
             });
         }
