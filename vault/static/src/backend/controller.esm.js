@@ -71,37 +71,42 @@ patch(FormController.prototype, {
      * @private
      */
     async _newVaultKeyPair() {
-        // Get the current private key
-        const private_key = await this.vault.get_private_key();
+        this.uuid = await this.vault._check_database();
+        if (this.uuid) {
+            // The user has a private key so get it
+            const private_key = await this.vault.get_private_key();
 
-        // Generate new keys
-        await this.vault.generate_keys();
+            // Generate new keys
+            await this.vault.generate_keys();
 
-        const public_key = await this.vault.get_public_key();
+            const public_key = await this.vault.get_public_key();
 
-        // Re-encrypt the master keys
-        const master_keys = await rpc("/vault/rights/get");
-        let result = {};
-        for (const uuid in master_keys) {
-            result[uuid] = await this.vault_utils.wrap(
-                await this.vault_utils.unwrap(master_keys[uuid], private_key),
-                public_key
-            );
+            // Re-encrypt the master keys
+            const master_keys = await rpc("/vault/rights/get");
+            let result = {};
+            for (const uuid in master_keys) {
+                result[uuid] = await this.vault_utils.wrap(
+                    await this.vault_utils.unwrap(master_keys[uuid], private_key),
+                    public_key
+                );
+            }
+
+            await rpc("/vault/rights/store", {keys: result});
+
+            // Re-encrypt the inboxes to not loose it
+            const inbox_keys = await rpc("/vault/inbox/get");
+            result = {};
+            for (const uuid in inbox_keys) {
+                result[uuid] = await this.vault_utils.wrap(
+                    await this.vault_utils.unwrap(inbox_keys[uuid], private_key),
+                    public_key
+                );
+            }
+
+            await rpc("/vault/inbox/store", {keys: result});
+        } else {
+            await this.vault._initialize_keys();
         }
-
-        await rpc("/vault/rights/store", {keys: result});
-
-        // Re-encrypt the inboxes to not loose it
-        const inbox_keys = await rpc("/vault/inbox/get");
-        result = {};
-        for (const uuid in inbox_keys) {
-            result[uuid] = await this.vault_utils.wrap(
-                await this.vault_utils.unwrap(inbox_keys[uuid], private_key),
-                public_key
-            );
-        }
-
-        await rpc("/vault/inbox/store", {keys: result});
     },
 
     /**
