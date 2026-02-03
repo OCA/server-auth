@@ -45,24 +45,6 @@ const vaultService = {
 
         class Vault {
             /**
-             * Check if the user actually has keys otherwise generate them on init
-             *
-             * @override
-             */
-            constructor() {
-                const self = this;
-
-                function waitAndCheck() {
-                    if (!vault_utils.supported()) return null;
-
-                    if (odoo.isReady) self._initialize_keys();
-                    else setTimeout(waitAndCheck, 500);
-                }
-
-                setTimeout(waitAndCheck, 500);
-            }
-
-            /**
              * Generate a new key pair and export to database and object store
              */
             async generate_keys() {
