@@ -1,0 +1,14 @@
+[project]
+name = "odoo-addons-oca-server-auth"
+version = "19.0.20260205.0"
+dependencies = [
+    "odoo-addon-auth_oidc==19.0.*",
+    "odoo-addon-auth_session_timeout==19.0.*",
+    "odoo-addon-auth_user_case_insensitive==19.0.*",
+    "odoo-addon-impersonate_login==19.0.*",
+]
+classifiers=[
+    "Programming Language :: Python",
+    "Framework :: Odoo",
+    "Framework :: Odoo :: 19.0",
+]
