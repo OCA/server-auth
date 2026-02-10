@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -12,6 +12,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: auth_oauth_multi_token
+#: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
+msgid ""
+"<span class=\"text-muted\">\n"
+"                            Recommended for extra security.\n"
+"                        </span>"
+msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
@@ -30,11 +38,13 @@ msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__display_name
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__display_name
 msgid "Display Name"
 msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__id
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__id
 msgid "ID"
 msgstr ""
 
@@ -49,23 +59,23 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: auth_oauth_multi_token
-#: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
-msgid "Latest Tokens"
-msgstr ""
-
-#. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_max_token
 msgid "Max Number of Simultaneous Connections"
 msgstr ""
 
 #. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__oauth_access_token
-#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_token
 msgid "OAuth Access Token"
 msgstr ""
 
 #. module: auth_oauth_multi_token
+#: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_token
+msgid "OAuth Access Token Store"
+msgstr ""
+
+#. module: auth_oauth_multi_token
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_res_users__oauth_access_token_ids
+#: model_terms:ir.ui.view,arch_db:auth_oauth_multi_token.view_users_form
 msgid "OAuth Tokens"
 msgstr ""
 
@@ -78,4 +88,10 @@ msgstr ""
 #: model:ir.model,name:auth_oauth_multi_token.model_res_users
 #: model:ir.model.fields,field_description:auth_oauth_multi_token.field_auth_oauth_multi_token__user_id
 msgid "User"
+msgstr ""
+
+#. module: auth_oauth_multi_token
+#. odoo-python
+#: code:addons/auth_oauth_multi_token/models/res_users.py:0
+msgid "You do not have permissions to remove the access token"
 msgstr ""
