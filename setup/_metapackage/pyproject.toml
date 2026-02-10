@@ -1,7 +1,8 @@
 [project]
 name = "odoo-addons-oca-server-auth"
-version = "19.0.20260205.0"
+version = "19.0.20260210.0"
 dependencies = [
+    "odoo-addon-auth_oauth_multi_token==19.0.*",
     "odoo-addon-auth_oidc==19.0.*",
     "odoo-addon-auth_session_timeout==19.0.*",
     "odoo-addon-auth_user_case_insensitive==19.0.*",
