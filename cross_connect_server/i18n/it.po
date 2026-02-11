@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-05-20 10:26+0000\n"
+"PO-Revision-Date: 2026-02-11 09:31+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__api_key
@@ -29,7 +29,7 @@ msgstr "Applicazione"
 #. module: cross_connect_server
 #: model:ir.model.fields,field_description:cross_connect_server.field_cross_connect_client__bypass_user_mail_re
 msgid "Bypass Users Email Regexes"
-msgstr ""
+msgstr "Baypassa espressione regolare e-mail utenti"
 
 #. module: cross_connect_server
 #. odoo-python
@@ -126,6 +126,9 @@ msgid ""
 "If set, users with an email matching one of these regex will bypass the "
 "token user/login creation. The regexes are comma separated."
 msgstr ""
+"Se impostato, gli utenti con un indirizzo e-mail corrispondente a una di "
+"queste espressioni regolari ignoreranno la creazione del token utente/"
+"accesso. Le espressioni regolari sono separate da virgole."
 
 #. module: cross_connect_server
 #. odoo-python
