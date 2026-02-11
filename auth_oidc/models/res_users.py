@@ -27,6 +27,11 @@ class ResUsers(models.Model):
         auth = None
         if oauth_provider.client_secret:
             auth = (oauth_provider.client_id, oauth_provider.client_secret)
+        verify = True
+        if oauth_provider.disable_certificate_check:
+            verify = False
+        elif oauth_provider.ca_bundle:
+            verify = oauth_provider.ca_bundle
         response = requests.post(
             oauth_provider.token_endpoint,
             data=dict(
@@ -38,6 +43,7 @@ class ResUsers(models.Model):
             ),
             auth=auth,
             timeout=10,
+            verify=verify,
         )
         response.raise_for_status()
         response_json = response.json()

@@ -47,10 +47,22 @@ class AuthOauthProvider(models.Model):
     )
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
     end_session_endpoint = fields.Char(string="End Session URL")
+    ca_bundle = fields.Char(
+        string="CA bundle", help="Path to CA bundles to use for verification."
+    )
+    disable_certificate_check = fields.Boolean(
+        string="Disable certificate check",
+        help="Disable certificate check. This is a security risk. Use with caution.",
+    )
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):
-        r = requests.get(self.jwks_uri, timeout=10)
+        verify = True
+        if self.disable_certificate_check:
+            verify = False
+        elif self.ca_bundle:
+            verify = self.ca_bundle
+        r = requests.get(self.jwks_uri, timeout=10, verify=verify)
         r.raise_for_status()
         response = r.json()
         # the keys returned here should follow

@@ -20,6 +20,10 @@
                 <field name="jwks_uri" />
                 <field name="end_session_endpoint" />
             </field>
+            <field name="data_endpoint" position="after">
+                <field name="disable_certificate_check" />
+                <field name="ca_bundle" invisible="disable_certificate_check" />
+            </field>
         </field>
     </record>
 </odoo>
