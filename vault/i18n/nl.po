@@ -192,12 +192,6 @@ msgstr "Annuleer"
 
 #. module: vault
 #. odoo-javascript
-#: code:addons/vault/static/src/common/vault_utils_service.esm.js:0
-msgid "Cancelled"
-msgstr "Geannuleerd"
-
-#. module: vault
-#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 msgid "Characters:"
 msgstr "Karakters:"
@@ -1341,6 +1335,9 @@ msgstr "a-z"
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 msgid "of entry"
 msgstr ""
+
+#~ msgid "Cancelled"
+#~ msgstr "Geannuleerd"
 
 #~ msgid "Last Modified on"
 #~ msgstr "Laatst gewijzigd op"

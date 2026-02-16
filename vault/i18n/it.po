@@ -197,12 +197,6 @@ msgstr "Annulla"
 
 #. module: vault
 #. odoo-javascript
-#: code:addons/vault/static/src/common/vault_utils_service.esm.js:0
-msgid "Cancelled"
-msgstr "Annullato"
-
-#. module: vault
-#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 msgid "Characters:"
 msgstr "Caratteri:"
@@ -1362,6 +1356,9 @@ msgstr "a-z"
 #: code:addons/vault/static/src/backend/controller.esm.js:0
 msgid "of entry"
 msgstr "dell'ingresso"
+
+#~ msgid "Cancelled"
+#~ msgstr "Annullato"
 
 #, python-format
 #~ msgid "%s '%s' of entry '%s'"
