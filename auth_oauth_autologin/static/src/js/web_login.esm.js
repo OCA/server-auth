@@ -12,14 +12,15 @@ publicWidget.registry.login.include({
     start: async function () {
         const def = this._super.apply(this, arguments);
         let url = window.location.href;
-        if (url.includes("/web/login")) {
+        const parsed_url = new URL(url);
+        if (parsed_url.pathname === "/web/login") {
             url = url.replace("/web/login", "/web");
-        }
-        this._result = await this._rpc("/auth/auto_login_redirect_link", {
-            redirect: url,
-        });
-        if (this._result) {
-            window.location = this._result;
+            this._result = await this._rpc("/auth/auto_login_redirect_link", {
+                redirect: url,
+            });
+            if (this._result) {
+                window.location = this._result;
+            }
         }
         return def;
     },
