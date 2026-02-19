@@ -29,6 +29,7 @@ addon | version | maintainers | summary
 [auth_jwt](auth_jwt/) | 18.0.1.0.1 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | JWT bearer token authentication.
 [auth_jwt_demo](auth_jwt_demo/) | 18.0.1.0.1 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | Test/demo module for auth_jwt.
 [auth_oauth_filter_by_domain](auth_oauth_filter_by_domain/) | 18.0.1.0.0 | <a href='https://github.com/natuan9'><img src='https://github.com/natuan9.png' width='32' height='32' style='border-radius:50%;' alt='natuan9'/></a> | Filter OAuth providers by domain
+[auth_oauth_login_field](auth_oauth_login_field/) | 18.0.1.0.0 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | Handle the login field in OAuth signup
 [auth_oauth_multi_token](auth_oauth_multi_token/) | 18.0.2.0.0 |  | Allow multiple connection with the same OAuth account
 [auth_oidc](auth_oidc/) | 18.0.1.1.0 | <a href='https://github.com/sbidoul'><img src='https://github.com/sbidoul.png' width='32' height='32' style='border-radius:50%;' alt='sbidoul'/></a> | Allow users to login through OpenID Connect Provider
 [auth_oidc_environment](auth_oidc_environment/) | 18.0.1.0.0 |  | This module allows to use server env for OIDC configuration
