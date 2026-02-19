@@ -51,7 +51,7 @@ class TestAuthMethod(TransactionCase):
 
     def _create_token(
         self,
-        key="thesecret",
+        key="thesecret012345678901234567890123456789",
         audience="me",
         issuer="http://the.issuer",
         exp_delta=100,
@@ -71,7 +71,7 @@ class TestAuthMethod(TransactionCase):
         name,
         audience="me",
         issuer="http://the.issuer",
-        secret_key="thesecret",
+        secret_key="thesecret012345678901234567890123456789",
         partner_id_required=False,
         static_user_id=1,
     ):
@@ -192,7 +192,7 @@ class TestAuthMethod(TransactionCase):
             ) as validator2,
             self._create_validator(
                 "validator3",
-                secret_key="bad key",
+                secret_key="bad key 012345678901234567890123456789",
             ) as validator3,
             self._create_validator(
                 "validator4",
@@ -202,18 +202,18 @@ class TestAuthMethod(TransactionCase):
             self._create_validator(
                 "validator5",
                 issuer="http://other.issuer",
-                secret_key="bad key",
+                secret_key="bad key 012345678901234567890123456789",
             ) as validator5,
             self._create_validator(
                 "validator6",
                 audience="bad audience",
-                secret_key="bad key",
+                secret_key="bad key 012345678901234567890123456789",
             ) as validator6,
             self._create_validator(
                 "validator7",
                 issuer="http://other.issuer",
                 audience="bad audience",
-                secret_key="bad key",
+                secret_key="bad key 012345678901234567890123456789",
             ) as validator7,
         ):
             validator1.next_validator_id = validator2
@@ -357,7 +357,7 @@ class TestAuthMethod(TransactionCase):
 
     def test_bad_tokens(self):
         with self._create_validator("validator") as validator:
-            token = self._create_token(key="badsecret")
+            token = self._create_token(key="badsecret 012345678901234567890123456789")
             with self.assertRaises(UnauthorizedInvalidToken):
                 validator._decode(token)
             token = self._create_token(audience="badaudience")
