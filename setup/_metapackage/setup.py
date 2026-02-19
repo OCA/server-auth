@@ -13,6 +13,7 @@ setuptools.setup(
         'odoo-addon-auth_api_key_group>=15.0dev,<15.1dev',
         'odoo-addon-auth_api_key_server_env>=15.0dev,<15.1dev',
         'odoo-addon-auth_ldaps>=15.0dev,<15.1dev',
+        'odoo-addon-auth_oauth_autologin>=15.0dev,<15.1dev',
         'odoo-addon-auth_oauth_multi_token>=15.0dev,<15.1dev',
         'odoo-addon-auth_oidc>=15.0dev,<15.1dev',
         'odoo-addon-auth_saml>=15.0dev,<15.1dev',
