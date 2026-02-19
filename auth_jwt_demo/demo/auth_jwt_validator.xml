@@ -5,7 +5,7 @@
         <field name="issuer">theissuer</field>
         <field name="signature_type">secret</field>
         <field name="secret_algorithm">HS256</field>
-        <field name="secret_key">thesecret</field>
+        <field name="secret_key">thesecret 012345678901234567890123456789</field>
         <field name="user_id_strategy">static</field>
         <field name="static_user_id" ref="base.user_demo" />
         <field name="partner_id_strategy">email</field>
@@ -17,7 +17,7 @@
         <field name="issuer">theissuer</field>
         <field name="signature_type">secret</field>
         <field name="secret_algorithm">HS256</field>
-        <field name="secret_key">thesecret</field>
+        <field name="secret_key">thesecret 012345678901234567890123456789</field>
         <field name="user_id_strategy">static</field>
         <field name="static_user_id" ref="base.user_demo" />
         <field name="partner_id_strategy">email</field>
