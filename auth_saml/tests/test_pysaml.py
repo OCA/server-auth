@@ -3,8 +3,10 @@
 import base64
 import html
 import os
-import urllib
 from unittest.mock import patch
+from urllib.parse import urlencode, urljoin, urlparse
+
+from saml2.validate import ResponseLifetimeExceed
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.tests import HttpCase, tagged
@@ -127,10 +129,8 @@ class TestPySaml(HttpCase):
         temp = self.saml_provider.sp_baseurl
         self.saml_provider.sp_baseurl = "http://example.com"
         self.saml_provider._compute_sp_metadata_url()
-        expected_qs = urllib.parse.urlencode(
-            {"p": self.saml_provider.id, "d": self.env.cr.dbname}
-        )
-        expected_url = urllib.parse.urljoin(
+        expected_qs = urlencode({"p": self.saml_provider.id, "d": self.env.cr.dbname})
+        expected_url = urljoin(
             "http://example.com", ("/auth_saml/metadata?%s" % expected_qs)
         )
         # Assert that sp_metadata_url is set correctly
@@ -479,6 +479,74 @@ class TestPySaml(HttpCase):
             self.base_url()
             + "/web#action=37&model=ir.module.module&view_type=kanban&menu_id=5",
         )
+
+    def test_auth_errors(self):
+        self.add_provider_to_user()
+
+        auth_request = self.saml_provider._get_auth_request()
+        response = self.idp.fake_login(auth_request)
+        unpacked_response = response._unpack()
+
+        for key in unpacked_response:
+            unpacked_response[key] = html.unescape(unpacked_response[key])
+        self.user.active = False
+        with mute_logger("odoo.addons.auth_saml.controllers"):
+            response = self.url_open(
+                "/auth_saml/signin",
+                data=unpacked_response,
+                allow_redirects=True,
+            )
+        self.assertEqual(
+            response.url, f"{self.base_url()}/web/login?saml_error=expired"
+        )
+        self.user.active = True
+        # invalidate saml response
+        unpacked_response["SAMLResponse"] = ""
+        with mute_logger("odoo.addons.auth_saml.controllers"):
+            response = self.url_open(
+                "/auth_saml/signin",
+                data=unpacked_response,
+                allow_redirects=True,
+            )
+        self.assertEqual(
+            response.url, f"{self.base_url()}/web/login?saml_error=access-denied"
+        )
+        self.browse_ref(
+            "auth_saml.saml_error_page_config_parameter"
+        ).value = "/web/login/saml_error"
+        with mute_logger("odoo.addons.auth_saml.controllers"):
+            response = self.url_open(
+                "/auth_saml/signin",
+                data=unpacked_response,
+                allow_redirects=True,
+            )
+        self.assertEqual(
+            response.url,
+            f"{self.base_url()}/web/login/saml_error?saml_error=access-denied",
+        )
+
+        # Not an error easy to reproduce so use a patch to raise it.
+        def auth_saml(*args, **kwargs):
+            raise ResponseLifetimeExceed()
+
+        with mute_logger("odoo.addons.auth_saml.controllers"), patch(
+            "odoo.addons.auth_saml.models.res_users.ResUser.auth_saml", auth_saml
+        ):
+            response = self.url_open(
+                "/auth_saml/signin",
+                data=unpacked_response,
+                allow_redirects=True,
+            )
+        self.assertEqual(
+            response.url,
+            f"{self.base_url()}/web/login/saml_error?saml_error=response-lifetime-exceed",
+        )
+
+    def test_saml_error_page_redirect(self):
+        """Test that accessing the page without an error redirects to root page."""
+        response = self.url_open("/web/login/saml_error")
+        path = urlparse(response.url).path
+        self.assertEqual(path, "/web/login")
 
     def test_disallow_user_password_when_changing_settings(self):
         """Test that disabling the setting will remove passwords from related users"""

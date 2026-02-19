@@ -1,5 +1,5 @@
 # Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016, 2022 XCG SAS <https://orbeet.io/>
+# Copyright (C) 2010-2016, 2022, 2026 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
@@ -21,6 +21,7 @@
     "data": [
         "data/ir_config_parameter.xml",
         "security/ir.model.access.csv",
+        "templates/webclient.xml",
         "views/auth_saml.xml",
         "views/res_config_settings.xml",
         "views/res_users.xml",
