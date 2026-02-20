@@ -1,6 +1,6 @@
 # docker-compose example for keycloak container
 
-version: '2'
+version: "2"
 services:
   keycloak:
     image: jboss/keycloak

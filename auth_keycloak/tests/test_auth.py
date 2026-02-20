@@ -3,9 +3,8 @@
 
 import responses
 
-from .common import TestKeycloakBase
 from ..exceptions import OAuthError
-
+from .common import TestKeycloakBase
 
 VALIDATE_RESP_BODY = {
     "jti": "36acb399-31ed-4b0b-8f2e-4f645ab6d8c7",
@@ -25,51 +24,24 @@ VALIDATE_RESP_BODY = {
     "preferred_username": "c2c",
     "email": "foo@camptocamp.com",
     "acr": "1",
-    "allowed-origins": [
-        "*"
-    ],
-    "realm_access": {
-        "roles": [
-            "uma_authorization"
-        ]
-    },
+    "allowed-origins": ["*"],
+    "realm_access": {"roles": ["uma_authorization"]},
     "resource_access": {
-        "my-company": {
-            "roles": [
-                "user"
-            ]
-        },
-        "odoo": {
-            "roles": [
-                "user"
-            ]
-        },
-        "api-gateway": {
-            "roles": [
-                "user"
-            ]
-        },
-        "user-service": {
-            "roles": [
-                "reader"
-            ]
-        },
+        "my-company": {"roles": ["user"]},
+        "odoo": {"roles": ["user"]},
+        "api-gateway": {"roles": ["user"]},
+        "user-service": {"roles": ["reader"]},
         "account": {
-            "roles": [
-                "manage-account",
-                "manage-account-links",
-                "view-profile"
-            ]
-        }
+            "roles": ["manage-account", "manage-account-links", "view-profile"]
+        },
     },
     "client_id": "odoo",
     "username": "c2c",
-    "active": True
+    "active": True,
 }
 
 
 class TestAuth(TestKeycloakBase):
-
     @responses.activate
     def test_validate_auth(self):
         """Validate request has basic auth header."""
@@ -78,11 +50,10 @@ class TestAuth(TestKeycloakBase):
             self.provider.validation_endpoint,
             json=VALIDATE_RESP_BODY,
             status=200,
-            content_type='application/json',
+            content_type="application/json",
         )
-        access_token = 'XXXXXXX'
-        self.env['res.users']._auth_oauth_validate(
-            self.provider.id, access_token)
+        access_token = "XXXXXXX"
+        self.env["res.users"]._auth_oauth_validate(self.provider.id, access_token)
         self.assertEqual(len(responses.calls), 1)
         request = responses.calls[0].request
         self._assert_request_auth_header(request)
@@ -94,18 +65,15 @@ class TestAuth(TestKeycloakBase):
             self.provider.validation_endpoint,
             json=VALIDATE_RESP_BODY,
             status=200,
-            content_type='application/json',
+            content_type="application/json",
         )
-        access_token = 'XXXXXXX'
-        result = self.env['res.users']._auth_oauth_validate(
-            self.provider.id, access_token)
+        access_token = "XXXXXXX"
+        result = self.env["res.users"]._auth_oauth_validate(
+            self.provider.id, access_token
+        )
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            result['sub'], 'df5ab747-2b80-4c18-bd03-5f3d3b2c0fd6'
-        )
-        self.assertEqual(
-            result['user_id'], 'df5ab747-2b80-4c18-bd03-5f3d3b2c0fd6'
-        )
+        self.assertEqual(result["sub"], "df5ab747-2b80-4c18-bd03-5f3d3b2c0fd6")
+        self.assertEqual(result["user_id"], "df5ab747-2b80-4c18-bd03-5f3d3b2c0fd6")
 
     @responses.activate
     def test_validate_error(self):
@@ -114,10 +82,9 @@ class TestAuth(TestKeycloakBase):
             self.provider.validation_endpoint,
             json={"error": "Something bad happened"},
             status=200,
-            content_type='application/json',
+            content_type="application/json",
         )
-        access_token = 'XXXXXXX'
+        access_token = "XXXXXXX"
         with self.assertRaises(OAuthError):
-            self.env['res.users']._auth_oauth_validate(
-                self.provider.id, access_token)
+            self.env["res.users"]._auth_oauth_validate(self.provider.id, access_token)
         self.assertEqual(len(responses.calls), 1)
