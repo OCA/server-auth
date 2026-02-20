@@ -36,29 +36,19 @@
   "quickLoginCheckMilliSeconds": 1000,
   "maxDeltaTimeSeconds": 43200,
   "failureFactor": 30,
-  "defaultRoles": [
-    "offline_access",
-    "uma_authorization"
-  ],
-  "requiredCredentials": [
-    "password"
-  ],
+  "defaultRoles": ["offline_access", "uma_authorization"],
+  "requiredCredentials": ["password"],
   "otpPolicyType": "totp",
   "otpPolicyAlgorithm": "HmacSHA1",
   "otpPolicyInitialCounter": 0,
   "otpPolicyDigits": 6,
   "otpPolicyLookAheadWindow": 1,
   "otpPolicyPeriod": 30,
-  "otpSupportedApplications": [
-    "FreeOTP",
-    "Google Authenticator"
-  ],
+  "otpSupportedApplications": ["FreeOTP", "Google Authenticator"],
   "scopeMappings": [
     {
       "clientScope": "offline_access",
-      "roles": [
-        "offline_access"
-      ]
+      "roles": ["offline_access"]
     }
   ],
   "clients": [
@@ -71,13 +61,8 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "defaultRoles": [
-        "view-profile",
-        "manage-account"
-      ],
-      "redirectUris": [
-        "/auth/realms/master/account/*"
-      ],
+      "defaultRoles": ["view-profile", "manage-account"],
+      "redirectUris": ["/auth/realms/master/account/*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -93,16 +78,8 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
+      "defaultClientScopes": ["role_list", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"]
     },
     {
       "id": "33c77f07-0bf9-4e71-9fe8-faac33c3594e",
@@ -128,16 +105,8 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": 0,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ],
+      "defaultClientScopes": ["role_list", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"],
       "authorizationSettings": {
         "allowRemoteResourceManagement": false,
         "policyEnforcementMode": "ENFORCING",
@@ -292,16 +261,8 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
+      "defaultClientScopes": ["role_list", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"]
     },
     {
       "id": "1cfb9b85-017f-4080-a17d-f74d059fdbff",
@@ -311,9 +272,7 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [
-        "localhost*"
-      ],
+      "redirectUris": ["localhost*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -343,16 +302,8 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": true,
       "nodeReRegistrationTimeout": -1,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
+      "defaultClientScopes": ["role_list", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"]
     },
     {
       "id": "fb7f4cf5-07ea-4061-94ff-32ebb573c87e",
@@ -363,9 +314,7 @@
       "enabled": true,
       "clientAuthenticatorType": "client-secret",
       "secret": "**********",
-      "redirectUris": [
-        "/auth/admin/master/console/*"
-      ],
+      "redirectUris": ["/auth/admin/master/console/*"],
       "webOrigins": [],
       "notBefore": 0,
       "bearerOnly": false,
@@ -398,16 +347,8 @@
           }
         }
       ],
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
+      "defaultClientScopes": ["role_list", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"]
     },
     {
       "id": "8811ae16-f535-48af-9278-719a2f26b789",
@@ -433,16 +374,8 @@
       "authenticationFlowBindingOverrides": {},
       "fullScopeAllowed": false,
       "nodeReRegistrationTimeout": 0,
-      "defaultClientScopes": [
-        "role_list",
-        "profile",
-        "email"
-      ],
-      "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access"
-      ]
+      "defaultClientScopes": ["role_list", "profile", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access"]
     }
   ],
   "clientScopes": [
@@ -814,16 +747,8 @@
       }
     }
   ],
-  "defaultDefaultClientScopes": [
-    "role_list",
-    "profile",
-    "email"
-  ],
-  "defaultOptionalClientScopes": [
-    "offline_access",
-    "address",
-    "phone"
-  ],
+  "defaultDefaultClientScopes": ["role_list", "profile", "email"],
+  "defaultOptionalClientScopes": ["offline_access", "address", "phone"],
   "browserSecurityHeaders": {
     "contentSecurityPolicyReportOnly": "",
     "xContentTypeOptions": "nosniff",
@@ -835,9 +760,7 @@
   },
   "smtpServer": {},
   "eventsEnabled": false,
-  "eventsListeners": [
-    "jboss-logging"
-  ],
+  "eventsListeners": ["jboss-logging"],
   "enabledEventTypes": [],
   "adminEventsEnabled": false,
   "adminEventsDetailsEnabled": false,
@@ -850,9 +773,7 @@
         "subType": "authenticated",
         "subComponents": {},
         "config": {
-          "allow-default-scopes": [
-            "true"
-          ]
+          "allow-default-scopes": ["true"]
         }
       },
       {
@@ -862,9 +783,7 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "max-clients": [
-            "200"
-          ]
+          "max-clients": ["200"]
         }
       },
       {
@@ -874,9 +793,7 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "allow-default-scopes": [
-            "true"
-          ]
+          "allow-default-scopes": ["true"]
         }
       },
       {
@@ -886,12 +803,8 @@
         "subType": "anonymous",
         "subComponents": {},
         "config": {
-          "host-sending-registration-request-must-match": [
-            "true"
-          ],
-          "client-uris-must-match": [
-            "true"
-          ]
+          "host-sending-registration-request-must-match": ["true"],
+          "client-uris-must-match": ["true"]
         }
       },
       {
@@ -956,9 +869,7 @@
         "providerId": "rsa-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       },
       {
@@ -967,12 +878,8 @@
         "providerId": "hmac-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ],
-          "algorithm": [
-            "HS256"
-          ]
+          "priority": ["100"],
+          "algorithm": ["HS256"]
         }
       },
       {
@@ -981,9 +888,7 @@
         "providerId": "aes-generated",
         "subComponents": {},
         "config": {
-          "priority": [
-            "100"
-          ]
+          "priority": ["100"]
         }
       }
     ]
