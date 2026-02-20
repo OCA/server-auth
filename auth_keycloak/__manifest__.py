@@ -4,18 +4,18 @@
 {
     "name": "Keycloak auth integration",
     "summary": "Integrate Keycloak into your SSO",
-    "version": "11.0.1.0.0",
+    "version": "16.0.1.0.0",
     "category": "Tools",
     "website": "https://github.com/OCA/server-auth",
     "author": "Camptocamp, Odoo Community Association (OCA)",
     "license": "AGPL-3",
     "depends": [
-        "auth_oauth",
+        "auth_oidc",
     ],
     "data": [
-        "data/auth_oauth_provider.xml",
-        "wizard/keycloak_sync_wiz.xml",
-        "wizard/keycloak_create_wiz.xml",
+        "security/ir.model.access.csv",
+        "wizard/auth_keycloak_sync_wiz.xml",
+        "wizard/auth_keycloak_create_wiz.xml",
         "views/auth_oauth_views.xml",
         "views/res_users_views.xml",
     ],

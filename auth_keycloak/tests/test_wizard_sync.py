@@ -14,7 +14,7 @@ class TestWizard(TestKeycloakWizBase):
     wiz_model = "auth.keycloak.sync.wiz"
 
     def setUp(self):
-        super(TestWizard, self).setUp()
+        super().setUp()
         responses.add(
             responses.GET,
             self.wiz.endpoint,
@@ -30,7 +30,7 @@ class TestWizard(TestKeycloakWizBase):
         self.assertDictEqual(responses.calls[0].response.json(), FAKE_TOKEN_RESPONSE)
         self.assertEqual(token, FAKE_TOKEN_RESPONSE["access_token"])
         request = responses.calls[0].request
-        self.assertEqual(request.url, self.provider.auth_endpoint)
+        self.assertEqual(request.url, self.provider.token_endpoint)
         expected = [
             ("grant_type", "password"),
             ("username", "admin"),

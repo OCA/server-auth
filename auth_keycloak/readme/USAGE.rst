@@ -1,12 +1,3 @@
-Frontend
-~~~~~~~~
-
-When the provider is enabled you'll see an extra login button on login form.
-Click on it to get redirected to Keycloak.
-
-Backend
-~~~~~~~
-
 **Link existing users from Keycloak**
 
 If you have existing users in Odoo and they are not linked to Keycloak yet
@@ -18,7 +9,7 @@ you can:
 4. select the matching key
 5. submit
 
-Once the it's done all matching and updated users will be listed in a list view.
+Once it's done all matching and updated users will be listed in a list view.
 Now your users will be able to log in on Keycloak
 
 

@@ -9,8 +9,9 @@
           <field name="management_enabled" invisible="1" />
           <group name="main" string="Synchronize users">
             <group name="provider">
-              <field name="provider_id" />
+              <field name="provider_id" required="1" />
               <div
+                                colspan="2"
                                 class="alert alert-warning"
                                 role="alert"
                                 attrs="{'invisible': [('management_enabled', '=', True)]}"
@@ -18,6 +19,7 @@
                 <strong>Users managerment not enabled!</strong>
                 You must configure "Users management" parameters on selected provider.
               </div>
+              <field name="login_match_key" />
             </group>
             <group
                             name="metadata"
@@ -25,18 +27,18 @@
                         >
               <field name="endpoint" />
               <field name="user" />
-              <field name="pwd" />
-              <field name="login_match_key" />
+              <field name="pwd" password="True" />
             </group>
           </group>
           <footer>
             <button
                             name="button_sync"
+                            class="btn btn-primary"
                             string="Sync"
                             attrs="{'invisible': [('management_enabled', '=', False)]}"
                             type="object"
                         />
-            <button string="Cancel" class="btn-default" special="cancel" />
+            <button string="Cancel" class="btn btn-secondary" special="cancel" />
           </footer>
         </sheet>
       </form>
@@ -46,7 +48,6 @@
   <record id="keycloak_sync_users" model="ir.actions.act_window">
     <field name="name">Keycloak sync users</field>
     <field name="res_model">auth.keycloak.sync.wiz</field>
-    <field name="view_type">form</field>
     <field name="view_mode">tree,form</field>
     <field name="view_id" ref="auth_keycloak_sync_wiz" />
     <field name="target">new</field>
