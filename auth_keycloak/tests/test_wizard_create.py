@@ -153,3 +153,41 @@ class TestWizard(TestKeycloakWizBase):
             self.wiz._get_or_create_user("TOKEN", self.user_mickey)
         self.assertEqual(len(responses.calls), 2)
         self.assertIn("Conflict on user values.", str(err.exception))
+
+    @responses.activate
+    def test_wizard_action(self):
+        responses.add(
+            responses.GET,
+            self.wiz.endpoint,
+            json=[],
+            status=200,
+            content_type="application/json",
+        )
+        responses.add(
+            responses.POST,
+            self.wiz.endpoint,
+            body="",
+            status=200,
+            content_type="application/json",
+        )
+        responses.add(
+            responses.GET,
+            self.wiz.endpoint,
+            json=[
+                FAKE_NEW_USER,
+            ],
+            status=200,
+            content_type="application/json",
+        )
+        responses.add(
+            responses.PUT,
+            self.wiz.endpoint + "/" + FAKE_NEW_USER["id"] + "/execute-actions-email",
+            body="",
+            status=200,
+            content_type="application/json",
+        )
+        self.provider.send_password_email = True
+        wizard_action = self.user_mickey.button_push_to_keycloak()
+        wizard = self.env[wizard_action["res_model"]].browse(wizard_action["res_id"])
+        wizard.button_create_user()
+        self.assertEqual(self.user_mickey.oauth_provider_id, self.provider)
