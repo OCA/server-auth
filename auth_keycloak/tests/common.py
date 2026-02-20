@@ -8,14 +8,14 @@ import responses
 import odoo.tests.common as common
 
 
-class TestKeycloakBase(common.SavepointCase):
+class TestKeycloakBase(common.TransactionCase):
 
     base_auth_url = "https://keycloak/auth"
     base_openid_url = base_auth_url + "/realms/Odoo/protocol/openid-connect"
 
     @classmethod
     def setUpClass(cls):
-        super(TestKeycloakBase, cls).setUpClass()
+        super().setUpClass()
         cls.env = cls.env(
             context=dict(cls.env.context, tracking_disable=True, no_reset_password=True)
         )
@@ -24,21 +24,11 @@ class TestKeycloakBase(common.SavepointCase):
                 "name": "Keycloak",
                 "client_id": "odoo",
                 "client_secret": "c35a795e-65ef-432d-97fb-6ef4bea84bb8",
-                "auth_endpoint": cls.base_openid_url + "/token",
-                "validation_endpoint": cls.base_openid_url + "/token/introspect",
+                "auth_endpoint": cls.base_openid_url + "/auth",
+                "token_endpoint": cls.base_openid_url + "/token",
                 "body": "foo",
                 "enabled": True,
             }
-        )
-
-    def _assert_request_auth_header(self, request):
-        """Validate request has basic auth header."""
-        auth = request.headers["Authorization"].replace("Basic ", "")
-        self.assertEqual(
-            base64.decodebytes(auth.encode()),
-            "{}:{}".format(
-                self.provider.client_id, self.provider.client_secret
-            ).encode(),
         )
 
 
@@ -50,9 +40,7 @@ FAKE_TOKEN_RESPONSE = {
     "refresh_expires_in": 1800,
     "scope": "profile email",
     "access_token": base64.encodebytes(b"my nice token").decode("utf-8"),
-    "refresh_token": base64.encodebytes(b"my nice refresh token").decode(
-        "utf-8"
-    ),
+    "refresh_token": base64.encodebytes(b"my nice refresh token").decode("utf-8"),
 }
 FAKE_USERS_RESPONSE = [
     {
@@ -104,7 +92,7 @@ class TestKeycloakWizBase(TestKeycloakBase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestKeycloakWizBase, cls).setUpClass()
+        super().setUpClass()
         cls.users_endpoint = cls.base_auth_url + "/admin/realms/Odoo/users"
         cls.provider.update(
             {
@@ -135,10 +123,10 @@ class TestKeycloakWizBase(TestKeycloakBase):
         )
 
     def setUp(self):
-        super(TestKeycloakWizBase, self).setUp()
+        super().setUp()
         responses.add(
             responses.POST,
-            self.provider.auth_endpoint,
+            self.provider.token_endpoint,
             json=FAKE_TOKEN_RESPONSE,
             status=200,
             content_type="application/json",

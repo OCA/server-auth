@@ -1,13 +1,7 @@
-Settings -> Users -> OAuth Providers -> Keycloak
+Settings -> Users & Companies -> OAuth Providers
 
-Adjust endpoints according to your setup.
+In the `Users management (Keycloak)` section, fill in your user admin endpoint, this will be in
+the form $keycloak_url/admin/realms/$realm/users. Also fill in the name of a keycloak user that
+is allowed to create users, and its password.
 
-Enable it: tick "Allowed".
-
-Official docs: https://www.keycloak.org/docs
-
-
-.. note:: You must make sure your settings are correct.
-   Testing scripts are provided by this module in the folder `examples`.
-
-   Please follow instructions contained in its README.
+This user must be allowed to query and manage users.

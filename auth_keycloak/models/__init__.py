@@ -1,2 +1,2 @@
-from . import auth_oauth
+from . import auth_oauth_provider
 from . import res_users

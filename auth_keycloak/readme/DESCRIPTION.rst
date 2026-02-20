@@ -1,1 +1,1 @@
-This module adds support for SSO authentication via `Keycloak <https://www.keycloak.org/>`_
+This module adds support for user creation when using `Keycloak <https://www.keycloak.org/>`_

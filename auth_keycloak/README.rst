@@ -17,18 +17,18 @@ Keycloak auth integration
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/11.0/auth_keycloak
+    :target: https://github.com/OCA/server-auth/tree/16.0/auth_keycloak
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-11-0/server-auth-11-0-auth_keycloak
+    :target: https://translation.odoo-community.org/projects/server-auth-16-0/server-auth-16-0-auth_keycloak
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=11.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=16.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
 
-This module adds support for SSO authentication via `Keycloak <https://www.keycloak.org/>`_
+This module adds support for user creation when using `Keycloak <https://www.keycloak.org/>`_
 
 **Table of contents**
 
@@ -38,31 +38,16 @@ This module adds support for SSO authentication via `Keycloak <https://www.keycl
 Configuration
 =============
 
-Settings -> Users -> OAuth Providers -> Keycloak
+Settings -> Users & Companies -> OAuth Providers
 
-Adjust endpoints according to your setup.
+In the `Users management (Keycloak)` section, fill in your user admin endpoint, this will be in
+the form $keycloak_url/admin/realms/$realm/users. Also fill in the name of a keycloak user that
+is allowed to create users, and its password.
 
-Enable it: tick "Allowed".
-
-Official docs: https://www.keycloak.org/docs
-
-
-.. note:: You must make sure your settings are correct.
-   Testing scripts are provided by this module in the folder `examples`.
-
-   Please follow instructions contained in its README.
+This user must be allowed to query and manage users.
 
 Usage
 =====
-
-Frontend
-~~~~~~~~
-
-When the provider is enabled you'll see an extra login button on login form.
-Click on it to get redirected to Keycloak.
-
-Backend
-~~~~~~~
 
 **Link existing users from Keycloak**
 
@@ -75,7 +60,7 @@ you can:
 4. select the matching key
 5. submit
 
-Once the it's done all matching and updated users will be listed in a list view.
+Once it's done all matching and updated users will be listed in a list view.
 Now your users will be able to log in on Keycloak
 
 
@@ -104,6 +89,11 @@ or
 Changelog
 =========
 
+16.0.1.0.0 2026-02-20
+~~~~~~~~~~~~~~~~~~~~~
+
+* v16 migration only implementing user creation, everything else is done by auth_oidc
+
 10.0.1.0.0 2018-10-17
 ~~~~~~~~~~~~~~~~~~~~~
 
@@ -115,7 +105,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_keycloak%0Aversion:%2011.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_keycloak%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -151,6 +141,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/11.0/auth_keycloak>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/16.0/auth_keycloak>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

@@ -6,20 +6,17 @@ from odoo import api, fields, models
 class OAuthProvider(models.Model):
     _inherit = "auth.oauth.provider"
 
-    client_secret = fields.Char()
     users_endpoint = fields.Char(
-        help="User endpoint",
-        placeholder="http://keycloak.mycompany.com" "/auth/admin/realms/{realm}/users",
+        help="User endpoint, ie "
+        "http://keycloak.mycompany.com/auth/admin/realms/{realm}/users",
         required=False,
     )
     superuser = fields.Char(
-        help="A super power user that is able to CRUD users on KC.",
-        placeholder="admin",
+        help="A super power user that is able to CRUD users on KC, ie admin",
         required=False,
     )
     superuser_pwd = fields.Char(
         help='"Superuser" user password',
-        placeholder='I hope is not "admin"',
         required=False,
     )
     users_management_enabled = fields.Boolean(

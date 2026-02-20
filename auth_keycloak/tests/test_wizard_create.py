@@ -1,7 +1,8 @@
 # Copyright 2018 Camptocamp SA
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html)
 
-import mock
+from unittest import mock
+
 import responses
 
 from odoo import exceptions
@@ -37,7 +38,7 @@ class TestWizard(TestKeycloakWizBase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestWizard, cls).setUpClass()
+        super().setUpClass()
         cls.user_mickey = cls.env["res.users"].create(
             {
                 "name": "Mickey Mouse",
@@ -151,4 +152,4 @@ class TestWizard(TestKeycloakWizBase):
         with self.assertRaises(exceptions.UserError) as err:
             self.wiz._get_or_create_user("TOKEN", self.user_mickey)
         self.assertEqual(len(responses.calls), 2)
-        self.assertTrue(err.exception.name.startswith("Conflict on user values."))
+        self.assertIn("Conflict on user values.", str(err.exception))
