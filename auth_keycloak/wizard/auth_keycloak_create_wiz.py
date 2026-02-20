@@ -72,7 +72,22 @@ class KeycloakCreateWiz(models.TransientModel):
         else:
             values = self._create_user_values(odoo_user)
             keycloak_user = self._create_user(token, **values)
+
+            if self.provider_id.send_password_email:
+                self._send_update_password_mail(token, odoo_user, keycloak_user)
+
         return keycloak_user
+
+    def _send_update_password_mail(self, token, odoo_user, keycloak_user):
+        """Trigger a passwort reset mail sent by keycloak"""
+        url = f"{self.endpoint}/{keycloak_user['id']}/execute-actions-email"
+        headers = {
+            "Authorization": "Bearer %s" % token,
+        }
+        resp = requests.put(
+            url, headers=headers, json=["UPDATE_PASSWORD"], timeout=KEYCLOAK_TIMEOUT
+        )
+        self._validate_response(resp, no_json=True)
 
     def _create_user_values(self, odoo_user):
         """Prepare Keycloak values for given Odoo user."""
