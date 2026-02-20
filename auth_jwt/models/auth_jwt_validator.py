@@ -13,6 +13,7 @@ from werkzeug.exceptions import InternalServerError
 
 from odoo import _, api, fields, models, tools
 from odoo.exceptions import ValidationError
+from odoo.tools import mute_logger
 
 from ..exceptions import (
     AmbiguousJwtValidator,
@@ -251,19 +252,21 @@ class AuthJwtValidator(models.Model):
 
     def _register_auth_method(self):
         IrHttp = self.env["ir.http"]
-        for rec in self:
-            setattr(
-                IrHttp.__class__,
-                f"_auth_method_jwt_{rec.name}",
-                partial(IrHttp.__class__._auth_method_jwt, validator_name=rec.name),
-            )
-            setattr(
-                IrHttp.__class__,
-                f"_auth_method_public_or_jwt_{rec.name}",
-                partial(
-                    IrHttp.__class__._auth_method_public_or_jwt, validator_name=rec.name
-                ),
-            )
+        with mute_logger("odoo.tests.common"):  # Mute patch checker during tests
+            for rec in self:
+                setattr(
+                    IrHttp.__class__,
+                    f"_auth_method_jwt_{rec.name}",
+                    partial(IrHttp.__class__._auth_method_jwt, validator_name=rec.name),
+                )
+                setattr(
+                    IrHttp.__class__,
+                    f"_auth_method_public_or_jwt_{rec.name}",
+                    partial(
+                        IrHttp.__class__._auth_method_public_or_jwt,
+                        validator_name=rec.name,
+                    ),
+                )
 
     def _unregister_auth_method(self):
         IrHttp = self.env["ir.http"]
