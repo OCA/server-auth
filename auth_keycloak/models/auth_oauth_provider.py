@@ -22,6 +22,10 @@ class OAuthProvider(models.Model):
     users_management_enabled = fields.Boolean(
         compute="_compute_users_management_enabled"
     )
+    send_password_email = fields.Boolean(
+        help="Send email with password reset link through keycloak",
+        default=False,
+    )
 
     @api.depends(
         "enabled",

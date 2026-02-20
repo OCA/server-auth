@@ -15,6 +15,7 @@
                     />
           <field name="superuser" />
           <field name="superuser_pwd" password="True" />
+          <field name="send_password_email" />
           <field name="users_management_enabled" />
           <button
                         colspan="2"
