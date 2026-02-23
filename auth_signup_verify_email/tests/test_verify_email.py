@@ -8,6 +8,7 @@ try:
 except ImportError:
     from unittest.mock import patch
 
+from odoo.exceptions import UserError
 from odoo.tests.common import HttpCase
 from odoo.tools.misc import mute_logger
 
@@ -51,3 +52,38 @@ class UICase(HttpCase):
         self.data["login"] = "contributors@odoo-community.org"
         doc = self.html_doc(data=self.data)
         self.assertTrue(doc.xpath('//p[@class="alert alert-success"]'))
+
+    @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
+    def test_good_email_with_captcha_fields(self):
+        """Test acceptance when captcha fields are present in POST data."""
+        self.data["login"] = "contributors@odoo-community.org"
+        self.data["turnstile_captcha"] = "dummy-turnstile-token"
+        self.data["recaptcha_token_response"] = "dummy-recaptcha-token"
+        doc = self.html_doc(data=self.data)
+        self.assertTrue(doc.xpath('//p[@class="alert alert-success"]'))
+
+    @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
+    def test_captcha_verification_error(self):
+        """Test rejection when captcha verification raises an error."""
+        self.data["login"] = "contributors@odoo-community.org"
+        with patch.object(
+            type(self.env["ir.http"]),
+            "_verify_request_recaptcha_token",
+            side_effect=UserError("Captcha failed"),
+            create=True,
+        ):
+            doc = self.html_doc(data=self.data)
+        self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
+
+    @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
+    def test_captcha_verification_false(self):
+        """Test rejection when captcha verification returns False."""
+        self.data["login"] = "contributors@odoo-community.org"
+        with patch.object(
+            type(self.env["ir.http"]),
+            "_verify_request_recaptcha_token",
+            return_value=False,
+            create=True,
+        ):
+            doc = self.html_doc(data=self.data)
+        self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))

@@ -6,6 +6,7 @@ import logging
 from email_validator import EmailSyntaxError, EmailUndeliverableError, validate_email
 
 from odoo import _
+from odoo.exceptions import UserError, ValidationError
 from odoo.http import request, route
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
@@ -21,8 +22,22 @@ class SignupVerifyEmail(AuthSignupHome):
         return super().web_auth_signup(*args, **kw)
 
     def passwordless_signup(self):
-        values = request.params
+        values = dict(request.params)
         qcontext = self.get_auth_signup_qcontext()
+
+        verify_captcha = getattr(
+            request.env["ir.http"], "_verify_request_recaptcha_token", None
+        )
+        if verify_captcha:
+            try:
+                if not verify_captcha("signup"):
+                    qcontext["error"] = _(
+                        "Suspicious activity detected by human verification."
+                    )
+                    return request.render("auth_signup.signup", qcontext)
+            except (UserError, ValidationError) as error:
+                qcontext["error"] = str(error)
+                return request.render("auth_signup.signup", qcontext)
 
         # Check good format of e-mail
         try:
@@ -44,8 +59,16 @@ class SignupVerifyEmail(AuthSignupHome):
             values["email"] = values.get("login")
 
         # remove values that could raise "Invalid field '*' on model 'res.users'"
-        values.pop("redirect", "")
-        values.pop("token", "")
+        for key in (
+            "redirect",
+            "token",
+            "csrf_token",
+            "confirm_password",
+            "turnstile_captcha",
+            "recaptcha_token_response",
+            "g-recaptcha-response",
+        ):
+            values.pop(key, "")
 
         # Remove password
         values["password"] = ""
