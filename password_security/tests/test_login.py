@@ -12,18 +12,19 @@ from odoo.tests.common import HOST, HttpCase, Opener, get_db_name, new_test_user
 
 @tagged("-at_install", "post_install")
 class TestPasswordSecurityLogin(HttpCase):
-    def setUp(self):
-        super().setUp()
-        self.username = "jackoneill"
-        self.passwd = "!asdQWE12345_3"
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.username = "jackoneill"
+        cls.passwd = "!asdQWE12345_3"
 
         # Create user with strong password: no error raised
-        new_test_user(self.env, self.username, password=self.passwd)
+        new_test_user(cls.env, cls.username, password=cls.passwd)
 
     def login(self, username, password):
         """Log in with provided credentials."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:

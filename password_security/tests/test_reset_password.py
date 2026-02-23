@@ -10,16 +10,20 @@ from odoo.tests.common import HOST, HttpCase, Opener, get_db_name, new_test_user
 
 @tagged("-at_install", "post_install")
 class TestPasswordSecurityReset(HttpCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
         # Create user with strong password: no error raised
-        new_test_user(self.env, "jackoneill", password="!asdQWE12345_3")
+        new_test_user(cls.env, "jackoneill", password="!asdQWE12345_3")
+        cls.demo_user = new_test_user(
+            cls.env, name="Mark Demo", login="demo", password="Demo@1234"
+        )
 
     def reset_password(self, username):
         """Reset user password"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -87,7 +91,7 @@ class TestPasswordSecurityReset(HttpCase):
         self.env["res.users"].reset_password("demo")
 
         # Executed by non-admin user: error is raised
-        self.env = self.env(user=self.env.ref("base.user_demo"))
+        self.env = self.env(user=self.demo_user)
         self.assertFalse(self.env.user._is_admin())
         with self.assertRaises(UserError):
             self.env["res.users"].reset_password("demo")

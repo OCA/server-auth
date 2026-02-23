@@ -6,7 +6,7 @@
 import re
 from datetime import datetime, timedelta
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -83,27 +83,37 @@ class ResUsers(models.Model):
         pwd_params = self._get_all_password_params()
         if pwd_params["lower"]:
             message.append(
-                _("\n* Lowercase letter (at least %s characters)") % pwd_params["lower"]
+                self.env._(
+                    "\n* Lowercase letter (at least %s characters)", pwd_params["lower"]
+                )
             )
         if pwd_params["upper"]:
             message.append(
-                _("\n* Uppercase letter (at least %s characters)") % pwd_params["upper"]
+                self.env._(
+                    "\n* Uppercase letter (at least %s characters)", pwd_params["upper"]
+                )
             )
         if pwd_params["numeric"]:
             message.append(
-                _("\n* Numeric digit (at least %s characters)") % pwd_params["numeric"]
+                self.env._(
+                    "\n* Numeric digit (at least %s characters)", pwd_params["numeric"]
+                )
             )
         if pwd_params["special"]:
             message.append(
-                _("\n* Special character (at least %s characters)")
-                % pwd_params["special"]
+                self.env._(
+                    "\n* Special character (at least %s characters)",
+                    pwd_params["special"],
+                )
             )
         if message:
-            message = [_("Must contain the following:")] + message
+            message = [self.env._("Must contain the following:")] + message
 
         if pwd_params["minlength"]:
             message = [
-                _("Password must be %d characters or more.") % pwd_params["minlength"]
+                self.env._(
+                    "Password must be %d characters or more.", pwd_params["minlength"]
+                )
             ] + message
         return "\r".join(message)
 
@@ -123,7 +133,7 @@ class ResUsers(models.Model):
             "(?=.*?[A-Z]){" + str(pwd_params["upper"]) + ",}",
             "(?=.*?\\d){" + str(pwd_params["numeric"]) + ",}",
             r"(?=.*?[\W_]){" + str(pwd_params["special"]) + ",}",
-            ".{%d,}$" % pwd_params["minlength"],
+            f".{{{pwd_params['minlength']},}}$",
         ]
         if not re.search("".join(password_regex), password):
             raise ValidationError(self.password_match_message())
@@ -159,11 +169,11 @@ class ResUsers(models.Model):
             delta = timedelta(hours=pwd_params["minimum_hours"])
             if write_date + delta > datetime.now():
                 raise UserError(
-                    _(
+                    self.env._(
                         "Passwords can only be reset every %d hour(s). "
-                        "Please contact an administrator for assistance."
+                        "Please contact an administrator for assistance.",
+                        pwd_params["minimum_hours"],
                     )
-                    % pwd_params["minimum_hours"]
                 )
         return True
 
@@ -173,18 +183,22 @@ class ResUsers(models.Model):
         """
         crypt = self._crypt_context()
         pwd_params = self._get_all_password_params()
+        password_history = self.env["res.users.pass.history"].sudo()
         for user in self:
+            password_history_ids = password_history.search([("user_id", "=", user.id)])
             if not pwd_params["history"]:  # disabled
-                recent_passes = self.env["res.users.pass.history"]
+                recent_passes = password_history
             elif pwd_params["history"] < 0:  # unlimited
-                recent_passes = user.password_history_ids
+                recent_passes = password_history_ids
             else:
-                recent_passes = user.password_history_ids[: pwd_params["history"]]
+                recent_passes = password_history_ids[: pwd_params["history"]]
             if recent_passes.filtered(
                 lambda r: crypt.verify(password, r.password_crypt)
             ):
                 raise UserError(
-                    _("Cannot use the most recent %d passwords") % pwd_params["history"]
+                    self.env._(
+                        "Cannot use the most recent %d passwords", pwd_params["history"]
+                    )
                 )
 
     def _set_encrypted_password(self, uid, pw):

@@ -15,11 +15,11 @@ _logger = logging.getLogger(__name__)
 
 
 class PasswordSecurityHome(AuthSignupHome):
-    def do_signup(self, qcontext):
+    def do_signup(self, qcontext, do_login=True):
         password = qcontext.get("password")
         user = request.env.user
         user._check_password(password)
-        return super().do_signup(qcontext)
+        return super().do_signup(qcontext, do_login=do_login)
 
     @http.route()
     def web_login(self, *args, **kw):
@@ -34,6 +34,7 @@ class PasswordSecurityHome(AuthSignupHome):
         if not (request.session.uid and request.env.user._password_has_expired()):
             return response
         # My password is expired, kick me out
+        request.env["res.users"].invalidate_model()
         request.env.user.action_expire_password()
         request.session.logout(keep_db=True)
         # I was kicked out, so set login_success in request params to False

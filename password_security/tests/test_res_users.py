@@ -4,25 +4,34 @@
 import time
 
 from odoo.exceptions import UserError
+from odoo.tests import new_test_user
 from odoo.tests.common import TransactionCase
 
 
 class TestResUsers(TransactionCase):
-    def setUp(self):
-        super().setUp()
-        self.login = "foslabs@example.com"
-        self.partner_vals = {
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.login = "foslabs@example.com"
+        cls.partner_vals = {
             "name": "Partner",
             "is_company": False,
-            "email": self.login,
+            "email": cls.login,
         }
-        self.password = "asdQWE123$%^"
-        self.vals = {
+        cls.password = "asdQWE123$%^"
+        cls.vals = {
             "name": "User",
-            "login": self.login,
-            "password": self.password,
+            "login": cls.login,
+            "password": cls.password,
         }
-        self.model_obj = self.env["res.users"]
+        cls.model_obj = cls.env["res.users"]
+        cls.demo_user = new_test_user(
+            cls.env,
+            name="Mark Demo",
+            login="demo",
+            password="Demo@1234",
+            group_ids=cls.env.ref("base.group_system").ids,
+        )
 
     def _new_record(self):
         partner_id = self.env["res.partner"].create(self.partner_vals)
@@ -150,8 +159,8 @@ class TestResUsers(TransactionCase):
         rec_id._check_password("asdQWE12345_3")
 
     def test_user_with_admin_rights_can_create_users(self):
-        demo = self.env.ref("base.user_demo")
-        demo.groups_id |= self.env.ref("base.group_erp_manager")
+        demo = self.demo_user
+        demo.group_ids |= self.env.ref("base.group_erp_manager")
         test1 = self.model_obj.with_user(demo).create(
             {
                 "login": "test1",

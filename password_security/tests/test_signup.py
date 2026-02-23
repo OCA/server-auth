@@ -22,7 +22,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def signup(self, username, password):
         """Signup user"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -116,7 +116,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_05_web_auth_signup_invalid_qcontext(self):
         """It should catch EndTestException on signup qcontext"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch(
@@ -130,7 +130,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_06_web_auth_signup_invalid_render(self):
         """It should render & return signup form on invalid"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:

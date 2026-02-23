@@ -3,14 +3,26 @@
 
 
 from odoo.tests import HttpCase, tagged
+from odoo.tests.common import new_test_user
 
 
 @tagged("post_install", "-at_install")
 class TestTOTP(HttpCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.demo_user = new_test_user(
+            cls.env,
+            name="Mark Demo",
+            login="demo",
+            password="Demo@1234",
+            group_ids=cls.env.ref("base.group_system").ids,
+        )
+
     def test_totp(self):
         # 1. Login with demo user
-        uid = self.env.ref("base.user_demo").id
-        self.assertEqual(uid, self.env.ref("base.user_demo").id)
+        uid = self.demo_user.id
+        self.assertEqual(uid, self.demo_user.id)
 
         # 2. Check that we are logged in
         self.authenticate(user="demo", password="demo")
