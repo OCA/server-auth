@@ -1,6 +1,6 @@
 [project]
 name = "odoo-addons-oca-server-auth"
-version = "17.0.20250821.0"
+version = "17.0.20260223.0"
 dependencies = [
     "odoo-addon-apikey_scope_editable>=17.0dev,<17.1dev",
     "odoo-addon-auth_admin_passkey>=17.0dev,<17.1dev",
@@ -21,6 +21,7 @@ dependencies = [
     "odoo-addon-password_security>=17.0dev,<17.1dev",
     "odoo-addon-user_log_view>=17.0dev,<17.1dev",
     "odoo-addon-users_ldap_groups>=17.0dev,<17.1dev",
+    "odoo-addon-users_ldap_mail>=17.0dev,<17.1dev",
     "odoo-addon-users_ldap_populate>=17.0dev,<17.1dev",
 ]
 classifiers=[

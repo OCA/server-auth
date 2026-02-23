@@ -40,6 +40,7 @@ addon | version | maintainers | summary
 [password_security](password_security/) | 17.0.2.0.0 |  | Allow admin to set password security requirements.
 [user_log_view](user_log_view/) | 17.0.1.0.0 | <a href='https://github.com/trojikman'><img src='https://github.com/trojikman.png' width='32' height='32' style='border-radius:50%;' alt='trojikman'/></a> | Allow to see user's actions log
 [users_ldap_groups](users_ldap_groups/) | 17.0.1.0.0 |  | Adds user accounts to groups based on rules defined by the administrator.
+[users_ldap_mail](users_ldap_mail/) | 17.0.1.0.0 | <a href='https://github.com/joao-p-marques'><img src='https://github.com/joao-p-marques.png' width='32' height='32' style='border-radius:50%;' alt='joao-p-marques'/></a> | LDAP mapping for user name and e-mail
 [users_ldap_populate](users_ldap_populate/) | 17.0.1.0.1 | <a href='https://github.com/joao-p-marques'><img src='https://github.com/joao-p-marques.png' width='32' height='32' style='border-radius:50%;' alt='joao-p-marques'/></a> | LDAP Populate
 
 [//]: # (end addons)
