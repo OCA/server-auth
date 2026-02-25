@@ -5,7 +5,6 @@ import logging
 
 from email_validator import EmailSyntaxError, EmailUndeliverableError, validate_email
 
-from odoo import _
 from odoo.http import request, route
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
@@ -31,7 +30,7 @@ class SignupVerifyEmail(AuthSignupHome):
             qcontext["error"] = getattr(
                 error,
                 "message",
-                _("That does not seem to be an email address."),
+                self.env._("That does not seem to be an email address."),
             )
             return request.render("auth_signup.signup", qcontext)
         except EmailUndeliverableError as error:
@@ -52,7 +51,7 @@ class SignupVerifyEmail(AuthSignupHome):
         sudo_users = request.env["res.users"].with_context(create_user=True).sudo()
 
         try:
-            with request.cr.savepoint():
+            with request.env.cr.savepoint():
                 sudo_users.signup(values, qcontext.get("token"))
                 sudo_users.reset_password(values.get("login"))
         except Exception as error:
@@ -63,15 +62,15 @@ class SignupVerifyEmail(AuthSignupHome):
                 .sudo()
                 .search([("login", "=", qcontext.get("login"))])
             ):
-                qcontext["error"] = _(
+                qcontext["error"] = self.env._(
                     "Another user is already registered using this email address."
                 )
             else:
                 # Agnostic message for security
-                qcontext["error"] = _(
+                qcontext["error"] = self.env._(
                     "Something went wrong, please try again later or contact us."
                 )
             return request.render("auth_signup.signup", qcontext)
 
-        qcontext["message"] = _("Check your email to activate your account!")
+        qcontext["message"] = self.env._("Check your email to activate your account!")
         return request.render("auth_signup.reset_password", qcontext)
