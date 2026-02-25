@@ -9,6 +9,9 @@
         <xpath expr="//div[hasclass('field-confirm_password')]" position="attributes">
             <attribute name="t-if">only_passwords</attribute>
         </xpath>
+    </template>
+
+    <template id="signup_login_fields" inherit_id="auth_signup.signup">
         <xpath expr="//input[@name='login']" position="attributes">
             <attribute name="type">email</attribute>
         </xpath>
