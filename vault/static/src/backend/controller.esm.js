@@ -159,7 +159,7 @@ patch(FormController.prototype, {
             );
 
             for (const rec of records) {
-                const val = await this.vault_utils.sym_decrypt(
+                const val = await self.vault_utils.sym_decrypt(
                     current_key,
                     rec.value,
                     rec.iv
@@ -176,8 +176,8 @@ patch(FormController.prototype, {
                     continue;
                 }
 
-                const iv = this.vault_utils.generate_iv_base64();
-                const encrypted = await this.vault_utils.sym_encrypt(
+                const iv = self.vault_utils.generate_iv_base64();
+                const encrypted = await self.vault_utils.sym_encrypt(
                     master_key,
                     val,
                     iv
