@@ -20,7 +20,7 @@ class Message(models.Model):
     body = fields.Html(
         compute="_compute_message_body",
         inverse="_inverse_message_body",
-        store=True,
+        store=False,
         readonly=False,
     )
 
