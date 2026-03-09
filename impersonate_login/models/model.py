@@ -12,7 +12,12 @@ class BaseModel(models.AbstractModel):
     def _keep_real_user_on_create_write(self):
         # Avoid overriding the create_uid and write_uid
         # when the model is abstract or transient
-        if self._abstract or self._transient:
+        # Keep core attachment access semantics intact.
+        # For temporary/generated attachments (often without res_model/res_id),
+        # read access falls back to creator ownership. Rewriting create_uid to
+        # the original impersonator can make the active impersonated user lose
+        # access immediately in the same flow (e.g. compose email after report).
+        if self._abstract or self._transient or self._name == "ir.attachment":
             return True
         return False
 
