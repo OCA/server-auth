@@ -27,16 +27,21 @@ class ResUsers(models.Model):
         auth = None
         if oauth_provider.client_secret:
             auth = (oauth_provider.client_id, oauth_provider.client_secret)
+
+        post_data = dict(
+            client_id=oauth_provider.client_id,
+            grant_type="authorization_code",
+            code=code,
+            code_verifier=oauth_provider.code_verifier,  # PKCE
+            redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
+        )
+
+        if oauth_provider.client_secret_post:
+            post_data["client_secret"] = oauth_provider.client_secret
+
         response = requests.post(
             oauth_provider.token_endpoint,
-            data=dict(
-                client_id=oauth_provider.client_id,
-                client_secret=oauth_provider.client_secret,
-                grant_type="authorization_code",
-                code=code,
-                code_verifier=oauth_provider.code_verifier,  # PKCE
-                redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
-            ),
+            data=post_data,
             auth=auth,
             timeout=10,
         )

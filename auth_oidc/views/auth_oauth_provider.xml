@@ -14,6 +14,7 @@
             </field>
             <field name="client_id" position="after">
                 <field name="client_secret" />
+                <field name="client_secret_post" />
             </field>
             <field name="validation_endpoint" position="after">
                 <field name="token_endpoint" />
