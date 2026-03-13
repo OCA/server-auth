@@ -31,6 +31,7 @@ class ResUsers(models.Model):
             oauth_provider.token_endpoint,
             data=dict(
                 client_id=oauth_provider.client_id,
+                client_secret=oauth_provider.client_secret,
                 grant_type="authorization_code",
                 code=code,
                 code_verifier=oauth_provider.code_verifier,  # PKCE
