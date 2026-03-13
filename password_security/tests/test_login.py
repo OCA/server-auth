@@ -22,7 +22,8 @@ class TestPasswordSecurityLogin(HttpCase):
     def login(self, username, password):
         """Authentification avec les identifiants fournis."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        # Odoo 19 : Opener prend l'instance HttpCase, pas un cursor
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:

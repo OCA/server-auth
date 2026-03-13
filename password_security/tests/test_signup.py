@@ -22,7 +22,8 @@ class TestPasswordSecuritySignup(HttpCase):
     def signup(self, username, password):
         """Inscription d'un utilisateur via le formulaire web."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        # Odoo 19 : Opener prend l'instance HttpCase, pas un cursor
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -105,7 +106,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_05_web_auth_signup_invalid_qcontext(self):
         """Doit lever EndTestException sur le qcontext."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch(
@@ -118,7 +119,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_06_web_auth_signup_invalid_render(self):
         """Doit afficher le formulaire d'inscription en cas d'erreur."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:

@@ -19,7 +19,8 @@ class TestPasswordSecurityResetPassword(HttpCase):
     def reset_password(self, username):
         """Réinitialisation du mot de passe via le formulaire web."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        # Odoo 19 : Opener prend l'instance HttpCase, pas un cursor
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -43,7 +44,7 @@ class TestPasswordSecurityResetPassword(HttpCase):
             "password_security.minimum_hours", min_hours
         )
 
-        response = self.reset_password("jackoneill")
+        response = self.reset_password(self.username)
 
         self.assertEqual(response.request.path_url, "/web/reset_password")
         self.assertEqual(response.status_code, 200)
@@ -59,7 +60,7 @@ class TestPasswordSecurityResetPassword(HttpCase):
             "password_security.minimum_hours", 0
         )
 
-        response = self.reset_password("jackoneill")
+        response = self.reset_password(self.username)
 
         self.assertEqual(response.request.path_url, "/web/reset_password")
         self.assertEqual(response.status_code, 200)
@@ -69,15 +70,22 @@ class TestPasswordSecurityResetPassword(HttpCase):
         )
 
     def test_03_reset_password_admin(self):
-        """Doit réussir si l'admin réinitialise."""
+        """Doit réussir si l'admin réinitialise, échouer pour un non-admin."""
         self.env["ir.config_parameter"].sudo().set_param(
             "password_security.minimum_hours", 24
         )
 
+        # Admin peut réinitialiser sans restriction
         self.assertTrue(self.env.user._is_admin())
-        self.env["res.users"].reset_password("demo")
+        self.env["res.users"].reset_password(self.username)
 
-        self.env = self.env(user=self.env.ref("base.user_demo"))
-        self.assertFalse(self.env.user._is_admin())
+        # Utilisateur non-admin : erreur levée
+        non_admin = self.env["res.users"].create(
+            {
+                "login": "test_non_admin",
+                "name": "Test Non Admin",
+                "password": "!asdQWE12345_4",
+            }
+        )
         with self.assertRaises(UserError):
-            self.env["res.users"].reset_password("demo")
+            self.env["res.users"].with_user(non_admin).reset_password(self.username)
