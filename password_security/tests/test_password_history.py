@@ -20,18 +20,14 @@ class TestPasswordHistory(TransactionCase):
 
     def test_02_history_is_limited(self):
         """Doit limiter la vérification à l'historique configuré."""
-        self.env["ir.config_parameter"].sudo().set_param(
-            "password_security.history", 1
-        )
+        self.env["ir.config_parameter"].sudo().set_param("password_security.history", 1)
         self.user.password = "!asdQWE12345_4"
         # Le premier mot de passe n'est plus dans l'historique actif
         self.user.password = self.passwd
 
     def test_03_history_disabled(self):
         """Doit désactiver la vérification d'historique si history=0."""
-        self.env["ir.config_parameter"].sudo().set_param(
-            "password_security.history", 0
-        )
+        self.env["ir.config_parameter"].sudo().set_param("password_security.history", 0)
         self.user.password = self.passwd
 
     def test_04_history_unlimited(self):
