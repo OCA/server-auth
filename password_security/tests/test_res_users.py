@@ -150,9 +150,16 @@ class TestResUsers(TransactionCase):
         rec_id._check_password("asdQWE12345_3")
 
     def test_user_with_admin_rights_can_create_users(self):
-        demo = self.env.ref("base.user_demo")
-        demo.groups_id |= self.env.ref("base.group_erp_manager")
-        test1 = self.model_obj.with_user(demo).create(
+        """Un utilisateur ERP Manager peut créer des utilisateurs sans mot de passe."""
+        manager = self.model_obj.create(
+            {
+                "login": "test_erp_manager",
+                "name": "Test ERP Manager",
+                "password": "asdQWE123$%^",
+                "groups_id": [(4, self.env.ref("base.group_erp_manager").id)],
+            }
+        )
+        test1 = self.model_obj.with_user(manager).create(
             {
                 "login": "test1",
                 "name": "test1",

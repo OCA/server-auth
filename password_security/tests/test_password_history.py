@@ -16,13 +16,16 @@ class TestPasswordHistory(TransactionCase):
         """Doit sauvegarder l'historique des mots de passe."""
         self.assertEqual(len(self.user.password_history_ids), 1)
         self.user.password = "!asdQWE12345_4"
+        self.user.invalidate_recordset()
         self.assertEqual(len(self.user.password_history_ids), 2)
 
     def test_02_history_is_limited(self):
         """Doit limiter la vérification à l'historique configuré."""
         self.env["ir.config_parameter"].sudo().set_param("password_security.history", 1)
         self.user.password = "!asdQWE12345_4"
-        # Le premier mot de passe n'est plus dans l'historique actif
+        # Forcer le rafraîchissement du cache ORM après _set_encrypted_password
+        self.user.invalidate_recordset()
+        # Le premier mot de passe n'est plus dans l'historique actif (history=1)
         self.user.password = self.passwd
 
     def test_03_history_disabled(self):
