@@ -1,8 +1,9 @@
 # Copyright 2024 Akretion (http://www.akretion.com).
 # @author Florian Mounier <florian.mounier@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+from collections.abc import Callable
 from secrets import token_urlsafe
-from typing import Annotated, Callable, Dict, List
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import APIKeyHeader
@@ -47,7 +48,7 @@ class FastapiEndpoint(models.Model):
         # generate random ~64 chars secret key
         return token_urlsafe(64)
 
-    def _get_fastapi_routers(self) -> List[APIRouter]:
+    def _get_fastapi_routers(self) -> list[APIRouter]:
         routers = super()._get_fastapi_routers()
 
         if self.app == "cross_connect":
@@ -55,13 +56,13 @@ class FastapiEndpoint(models.Model):
 
         return routers
 
-    def _get_app_dependencies_overrides(self) -> Dict[Callable, Callable]:
+    def _get_app_dependencies_overrides(self) -> dict[Callable, Callable]:
         overrides = super()._get_app_dependencies_overrides()
 
         if self.app == "cross_connect":
-            overrides[
-                authenticated_cross_connect_client
-            ] = api_key_based_authenticated_cross_connect_client
+            overrides[authenticated_cross_connect_client] = (
+                api_key_based_authenticated_cross_connect_client
+            )
 
         return overrides
 
