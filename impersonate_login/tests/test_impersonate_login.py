@@ -297,3 +297,42 @@ class TestImpersonateLogin(HttpCase):
         self.assertEqual(contact.id, contact_id)
         self.assertEqual(contact.ref, "abc")
         self.assertEqual(contact.write_uid, self.admin_user)
+
+    def test_05_create_uid_on_transient_model(self):
+        """Check the create_uid of records created
+        during an impersonated session on a transient model"""
+        # Login as admin
+        self.authenticate(user="admin", password="admin")
+
+        # Impersonate demo user and create a wizard record
+        self._impersonate_user(self.demo_user)
+
+        response = self.url_open(
+            "/web/dataset/call_kw/mail.followers.edit/web_save",
+            data=json.dumps(
+                {
+                    "params": {
+                        "model": "mail.followers.edit",
+                        "method": "web_save",
+                        "args": [
+                            [],
+                            {
+                                "res_model": "res.partner",
+                                "message": "Hello",
+                            },
+                            {},
+                        ],
+                        "kwargs": {},
+                    },
+                }
+            ),
+            headers={"Content-Type": "application/json"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        result = data["result"]
+        settings_id = result[0]["id"]
+
+        wizard = self.env["mail.followers.edit"].browse(settings_id)
+        self.assertIn("Hello", wizard.message)
+        self.assertEqual(wizard.create_uid, self.demo_user)
