@@ -9,8 +9,17 @@ from odoo.http import request
 class BaseModel(models.AbstractModel):
     _inherit = "base"
 
+    def _keep_real_user_on_create_write(self):
+        # Avoid overriding the create_uid and write_uid
+        # when the model is abstract or transient
+        if self._abstract or self._transient:
+            return True
+        return False
+
     def _prepare_create_values(self, vals_list):
         result_vals_list = super()._prepare_create_values(vals_list)
+        if self._keep_real_user_on_create_write():
+            return result_vals_list
         if (
             request
             and request.session.impersonate_from_uid
@@ -23,6 +32,8 @@ class BaseModel(models.AbstractModel):
     def write(self, vals):
         """Overwrite the write_uid with the impersonating user"""
         res = super().write(vals)
+        if self._keep_real_user_on_create_write():
+            return res
         if (
             request
             and request.session.impersonate_from_uid
