@@ -10,15 +10,13 @@
         <field name="inherit_id" ref="fastapi.fastapi_endpoint_form_view" />
         <field name="arch" type="xml">
             <field name="save_http_session" position="attributes">
-                <attribute name="attrs">
-                    {'invisible': [('app', '==', 'cross_connect')]}
-                </attribute>
+                <attribute name="invisible">app == 'cross_connect'</attribute>
             </field>
             <span name="configuration" position="after">
                 <group
                     name="cross_connect"
                     title="Cross Connect Configuration"
-                    attrs="{'invisible': [('app', '!=', 'cross_connect')]}"
+                    invisible="app != 'cross_connect'"
                     groups="cross_connect_server.group_cross_connect_manager"
                 >
                     <field
@@ -27,7 +25,7 @@
                         options="{'open': True}"
                     />
                     <field name="cross_connect_client_ids">
-                        <tree editable="bottom">
+                        <list editable="bottom">
                             <field name="name" />
                             <field name="api_key" />
                             <field name="allowed_group_ids" invisible="True" />
@@ -38,7 +36,7 @@
                             />
                             <field name="bypass_user_mail_re" />
                             <field name="user_count" />
-                        </tree>
+                        </list>
                     </field>
                 </group>
             </span>

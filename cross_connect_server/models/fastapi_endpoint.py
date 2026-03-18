@@ -67,7 +67,7 @@ class FastapiEndpoint(models.Model):
         return overrides
 
     def _get_routing_info(self):
-        if self.app == "cross_connect":
+        if self.app == "cross_connect" and self.save_http_session:
             # Force to not save the HTTP session for the login to work correctly
             self.save_http_session = False
         return super()._get_routing_info()

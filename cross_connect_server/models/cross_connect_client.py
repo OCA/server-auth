@@ -7,7 +7,7 @@ from secrets import token_urlsafe
 
 import jwt
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import AccessDenied
 
 
@@ -82,7 +82,9 @@ class CrossConnectClient(models.Model):
         # check groups
         groups = self.env["res.groups"].browse(access_request.groups)
         if groups - self.group_ids or not groups.exists():
-            raise AccessDenied(_("You are not allowed to access this endpoint."))
+            raise AccessDenied(
+                self.env._("You are not allowed to access this endpoint.")
+            )
 
         user = self.user_ids.filtered(
             lambda u: u.cross_connect_client_user_id == access_request.id
@@ -131,12 +133,12 @@ class CrossConnectClient(models.Model):
                 algorithms=["HS256"],
             )
         except jwt.PyJWTError as e:
-            raise AccessDenied(_("Invalid Token")) from e
+            raise AccessDenied(self.env._("Invalid Token")) from e
 
         user = self.env["res.users"].browse(obj["id"])
 
         if not user:
-            raise AccessDenied(_("Invalid Token"))
+            raise AccessDenied(self.env._("Invalid Token"))
 
         return user
 
