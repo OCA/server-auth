@@ -19,10 +19,12 @@
             </div>
         </t>
     </template>
-    <template id="auth_saml.login" inherit_id="web.login" name="Samlv2 Login buttons">
+    <template id="auth_saml.login" inherit_id="web.login" name="Samlv2 Login">
         <xpath expr="//form" position="before">
             <t t-set="form_small" t-value="len(saml_providers) &gt; 2" />
         </xpath>
+    </template>
+    <template id="auth_saml.login_oauth" inherit_id="web.login_oauth" name="Samlv2 Login buttons">
         <xpath expr="//div[hasclass('o_login_auth')]" position="inside">
             <t t-call="auth_saml.providers" />
         </xpath>

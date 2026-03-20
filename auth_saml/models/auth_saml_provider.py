@@ -7,7 +7,7 @@ import json
 import logging
 import os
 import tempfile
-import urllib
+import urllib.parse
 
 import requests
 
@@ -20,6 +20,7 @@ from saml2.sigver import SignatureError
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.urls import urljoin
 
 _logger = logging.getLogger(__name__)
 
@@ -165,7 +166,7 @@ class AuthSamlProvider(models.Model):
         )
 
         for record in self:
-            if isinstance(record.id, models.NewId):
+            if not record.id:
                 record.sp_metadata_url = False
                 continue
 
@@ -175,7 +176,7 @@ class AuthSamlProvider(models.Model):
 
             qs = urllib.parse.urlencode({"p": record.id, "d": self.env.cr.dbname})
 
-            record.sp_metadata_url = urllib.parse.urljoin(
+            record.sp_metadata_url = urljoin(
                 base_url, (f"/auth_saml/metadata?{qs}")
             )
 
@@ -217,7 +218,7 @@ class AuthSamlProvider(models.Model):
                 self.env["ir.config_parameter"].sudo().get_param("web.base.url", "")
             )
 
-        acs_url = urllib.parse.urljoin(base_url, "/auth_saml/signin")
+        acs_url = urljoin(base_url, "/auth_saml/signin")
         settings = {
             "metadata": {"inline": [self.idp_metadata]},
             "entityid": self.entity_id,

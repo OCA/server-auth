@@ -11,7 +11,6 @@ from werkzeug.exceptions import BadRequest
 from werkzeug.urls import url_quote_plus
 
 from odoo import (
-    SUPERUSER_ID,
     _,
     api,
     exceptions,
@@ -19,6 +18,7 @@ from odoo import (
     models,
     modules,
 )
+from odoo.api import SUPERUSER_ID
 from odoo.http import request
 from odoo.tools.misc import clean_context
 
@@ -246,7 +246,7 @@ class AuthSAMLController(http.Controller):
                 "token": credentials[2],
                 "type": "saml_token",
             }
-            auth_info = request.session.authenticate(dbname, credentials_dict)
+            auth_info = request.session.authenticate(request.env, credentials_dict)
             resp = request.redirect(_get_login_redirect_url(auth_info["uid"], url), 303)
             resp.autocorrect_location_header = False
             return resp

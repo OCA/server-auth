@@ -7,7 +7,8 @@ from typing import Set  # noqa
 
 import passlib
 
-from odoo import SUPERUSER_ID, _, api, fields, models, modules, tools
+from odoo import _, api, fields, models, modules, tools
+from odoo.api import SUPERUSER_ID
 from odoo.exceptions import AccessDenied, ValidationError
 
 from .ir_config_parameter import ALLOW_SAML_UID_AND_PASSWORD
