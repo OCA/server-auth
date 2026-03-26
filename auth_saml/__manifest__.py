@@ -1,10 +1,10 @@
 # Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016, 2022 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016, 2022 XCG Consulting <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
     "name": "SAML2 Authentication",
-    "version": "18.0.1.1.0",
+    "version": "19.0.1.0.0",
     "category": "Tools",
     "author": "XCG Consulting, Odoo Community Association (OCA)",
     "maintainers": ["vincent-hatakeyama"],
@@ -12,7 +12,7 @@
     "license": "AGPL-3",
     "depends": ["base_setup", "web"],
     "external_dependencies": {
-        "python": ["pysaml2"],
+        "python": ["pysaml2", "responses"],
         "bin": ["xmlsec1"],
         # special definition used by OCA to install packages
         "deb": ["xmlsec1"],

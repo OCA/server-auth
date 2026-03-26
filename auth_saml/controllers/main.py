@@ -2,7 +2,6 @@
 # Copyright (C) 2010-2016, 2022-2023 XCG Consulting <https://xcg-consulting.fr/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import functools
 import json
 import logging
 
@@ -12,14 +11,13 @@ from werkzeug.urls import url_quote_plus
 
 from odoo import (
     SUPERUSER_ID,
-    _,
     api,
     exceptions,
     http,
     models,
     modules,
 )
-from odoo.http import request
+from odoo.http import fragment_to_query_string, request
 from odoo.tools.misc import clean_context
 
 from odoo.addons.web.controllers.home import Home
@@ -29,37 +27,13 @@ _logger = logging.getLogger(__name__)
 
 
 # ----------------------------------------------------------
-# helpers
-# ----------------------------------------------------------
-
-
-def fragment_to_query_string(func):
-    @functools.wraps(func)
-    def wrapper(self, **kw):
-        if not kw:
-            return """<html><head><script>
-                var l = window.location;
-                var q = l.hash.substring(1);
-                var r = '/' + l.search;
-                if(q.length !== 0) {
-                    var s = l.search ? (l.search === '?' ? '' : '&') : '?';
-                    r = l.pathname + l.search + s + q;
-                }
-                window.location = r;
-            </script></head><body></body></html>"""
-        return func(self, **kw)
-
-    return wrapper
-
-
-# ----------------------------------------------------------
 # Controller
 # ----------------------------------------------------------
 
 
 class SAMLLogin(Home):
     # Disable pylint self use as the method is meant to be reused in other modules
-    def _list_saml_providers_domain(self):  # pylint: disable=no-self-use
+    def _list_saml_providers_domain(self):
         return []
 
     def list_saml_providers(self, with_autoredirect: bool = False) -> models.Model:
@@ -131,11 +105,11 @@ class SAMLLogin(Home):
         if response.is_qweb:
             error = request.params.get("saml_error")
             if error == "no-signup":
-                error = _("Sign up is not allowed on this database.")
+                error = request.env._("Sign up is not allowed on this database.")
             elif error == "access-denied":
-                error = _("Access Denied")
+                error = request.env._("Access Denied")
             elif error == "expired":
-                error = _(
+                error = request.env._(
                     "You do not have access to this database. Please contact support."
                 )
             else:
@@ -147,6 +121,11 @@ class SAMLLogin(Home):
                 response.qcontext["error"] = error
 
         return response
+
+    def get_auth_signup_qcontext(self):
+        result = super().get_auth_signup_qcontext()
+        result["saml_providers"] = self.list_saml_providers()
+        return result
 
 
 class AuthSAMLController(http.Controller):
@@ -179,8 +158,10 @@ class AuthSAMLController(http.Controller):
         )
         if not redirect_url:
             raise Exception(
-                "Failed to get auth request from provider. "
-                "Either misconfigured SAML provider or unknown provider."
+                request.env._(
+                    "Failed to get auth request from provider. "
+                    "Either misconfigured SAML provider or unknown provider."
+                )
             )
 
         redirect = werkzeug.utils.redirect(redirect_url, 303)
@@ -227,25 +208,28 @@ class AuthSAMLController(http.Controller):
                     request.httprequest.url_root.rstrip("/"),
                 )
             )
+            # The response needs to be saved otherwise login does not work.
+            # auth_oauth has a similar code
+            request.env.cr.commit()
             action = state.get("a")
             menu = state.get("m")
             redirect = (
                 werkzeug.urls.url_unquote_plus(state["r"]) if state.get("r") else False
             )
-            url = "/web"
+            url = "/odoo"
             if redirect:
                 url = redirect
             elif action:
-                url = f"/#action={action}"
+                url = f"/odoo/action-{action}"
             elif menu:
-                url = f"/#menu_id={menu}"
+                url = f"/odoo?menu_id={menu}"
 
             credentials_dict = {
                 "login": credentials[1],
                 "token": credentials[2],
                 "type": "saml_token",
             }
-            auth_info = request.session.authenticate(dbname, credentials_dict)
+            auth_info = request.session.authenticate(request.env, credentials_dict)
             resp = request.redirect(_get_login_redirect_url(auth_info["uid"], url), 303)
             resp.autocorrect_location_header = False
             return resp
@@ -277,7 +261,7 @@ class AuthSAMLController(http.Controller):
 
         if not dbname or not provider:
             _logger.debug("Metadata page asked without database name or provider id")
-            raise request.not_found(_("Missing parameters"))
+            raise request.not_found(request.env._("Missing parameters"))
 
         provider = int(provider)
 
@@ -285,7 +269,7 @@ class AuthSAMLController(http.Controller):
             env = api.Environment(cr, SUPERUSER_ID, {})
             client = env["auth.saml.provider"].sudo().browse(provider)
             if not client.exists():
-                raise request.not_found(_("Unknown provider"))
+                raise request.not_found(request.env._("Unknown provider"))
 
             return request.make_response(
                 client._metadata_string(
