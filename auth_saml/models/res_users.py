@@ -7,7 +7,7 @@ from typing import Set  # noqa
 
 import passlib
 
-from odoo import SUPERUSER_ID, _, api, fields, models, modules, tools
+from odoo import SUPERUSER_ID, api, fields, models, modules, tools
 from odoo.exceptions import AccessDenied, ValidationError
 
 from .ir_config_parameter import ALLOW_SAML_UID_AND_PASSWORD
@@ -153,21 +153,22 @@ class ResUser(models.Model):
         # And also to be able to set password to a blank value
         if not self.allow_saml_and_password():
             saml_users = self.filtered(
-                lambda user: user.sudo().saml_ids
-                and user.id not in self._saml_allowed_user_ids()
-                and user.password
+                lambda user: (
+                    user.sudo().saml_ids
+                    and user.id not in self._saml_allowed_user_ids()
+                    and user.password
+                )
             )
             if saml_users:
                 # same error as an api.constrains because it is a constraint.
                 # a standard constrains would require the use of SQL as the password
                 # field is obfuscated by the base module.
                 raise ValidationError(
-                    _(
-                        "This database disallows users to "
-                        "have both passwords and SAML IDs. "
-                        "Error for logins %s"
+                    self.env._(
+                        "This database disallows users to have both "
+                        "passwords and SAML IDs. Error for logins %s",
+                        saml_users.mapped("login"),
                     )
-                    % saml_users.mapped("login")
                 )
         # handle setting password to NULL
         blank_password_users = self.filtered(lambda user: user.password is False)
@@ -185,11 +186,12 @@ class ResUser(models.Model):
         # mail module) to end users.
         _logger.debug("Removing password from %s user(s)", len(self.ids))
         # similar to what Odoo does in Users._set_encrypted_password
-        self.env.cr.execute(
-            "UPDATE res_users SET password = NULL WHERE id IN %s",
-            (tuple(self.ids),),
-        )
-        self.invalidate_recordset(fnames=["password"])
+        if self:
+            self.env.cr.execute(
+                "UPDATE res_users SET password = NULL WHERE id IN %s",
+                (tuple(self.ids),),
+            )
+            self.invalidate_recordset(fnames=["password"])
 
     def allow_saml_and_password_changed(self):
         """Called after the parameter is changed."""
