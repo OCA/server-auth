@@ -5,6 +5,7 @@ import os
 import os.path as osp
 import urllib
 from copy import deepcopy
+from unittest import SkipTest
 from unittest.mock import patch
 
 import responses
@@ -49,7 +50,7 @@ class TestPySaml(HttpCase):
             }
         )
         self.url_saml_request = (
-            "/auth_saml/get_auth_request?pid=%d" % self.saml_provider.id
+            f"/auth_saml/get_auth_request?pid={self.saml_provider.id}"
         )
 
         self.idp = FakeIDP([self.saml_provider._metadata_string()])
@@ -102,8 +103,7 @@ class TestPySaml(HttpCase):
     def test_ensure_provider_appears_on_login_with_redirect_param(self):
         """Test that SAML provider is listed in the login page keeping the redirect"""
         response = self.url_open(
-            "/web/login?redirect=%2Fweb%23action%3D37%26model%3Dir.module.module%26view"
-            "_type%3Dkanban%26menu_id%3D5"
+            "/web/login?redirect=%2Fweb%23action%3D37%26model%3Dir.module.module%26view_type%3Dkanban%26menu_id%3D5"
         )
         self.assertIn("Login with Authentic", response.text)
         self.assertIn(
@@ -184,8 +184,7 @@ class TestPySaml(HttpCase):
 
     def test_ensure_metadata_present(self):
         response = self.url_open(
-            "/auth_saml/metadata?p=%d&d=%s"
-            % (self.saml_provider.id, self.env.cr.dbname)
+            f"/auth_saml/metadata?p={self.saml_provider.id}&d={self.env.cr.dbname}"
         )
 
         self.assertTrue(response.ok)
@@ -193,7 +192,7 @@ class TestPySaml(HttpCase):
 
     def test_ensure_get_auth_request_redirects(self):
         response = self.url_open(
-            "/auth_saml/get_auth_request?pid=%d" % self.saml_provider.id,
+            f"/auth_saml/get_auth_request?pid={self.saml_provider.id}",
             allow_redirects=False,
         )
         self.assertTrue(response.ok)
@@ -209,15 +208,20 @@ class TestPySaml(HttpCase):
         against the user
         """
         # Standard login using password
-        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
-        self.assertEqual(self.session.uid, self.user.id)
-
-        self.logout()
+        self.user.with_user(self.user)._check_credentials(
+            {"type": "password", "password": "Lu,ums-7vRU>0i]=YDLa"},
+            {"interactive": True},
+        )
+        with self.assertRaises(AccessDenied):
+            self.user.with_user(self.user)._check_credentials(
+                {"type": "password", "password": "incorrect_password"},
+                {"interactive": True},
+            )
 
         # Try to log in with a non-existing SAML token
         with self.assertRaises(AccessDenied):
             self.user._check_credentials(
-                {"type": "password", "password": "test_saml_token"},
+                {"type": "saml_token", "token": "test_saml_token"},
                 {"interactive": True},
             )
 
@@ -273,13 +277,16 @@ class TestPySaml(HttpCase):
 
         # We should not be able to log in with the wrong token
         with self.assertRaises(AccessDenied):
-            self.user._check_credentials(
-                {"type": "password", "password": "WRONG_TOKEN"},
+            self.user.with_user(self.user)._check_credentials(
+                {"type": "saml_token", "token": "WRONG_TOKEN"},
                 {"interactive": True},
             )
 
         # User should now be able to log in with the token
-        self.authenticate(user="test@example.com", password=token)
+        self.user.with_user(self.user)._check_credentials(
+            {"type": "saml_token", "token": token},
+            {"interactive": True},
+        )
 
     def test_login_with_saml_mapping_attributes(self):
         """Test login with SAML on a provider with mapping attributes"""
@@ -369,7 +376,10 @@ class TestPySaml(HttpCase):
     def test_disallow_user_password_on_option_disable(self):
         """Test that existing user password is deleted when adding an SAML provider when
         the disallow option is set."""
-        self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
+        self.user.with_user(self.user)._check_credentials(
+            {"type": "password", "password": "Lu,ums-7vRU>0i]=YDLa"},
+            {"interactive": False},
+        )
         # change the option
         self.browse_ref(
             "auth_saml.allow_saml_uid_and_internal_password"
@@ -443,7 +453,10 @@ class TestPySaml(HttpCase):
         ).execute()
 
         # Test the user can login with the password
-        self.authenticate(user="user@example.com", password="NesTNSte9340D720te>/-A")
+        self.user2.with_user(self.user2)._check_credentials(
+            {"type": "password", "password": "NesTNSte9340D720te>/-A"},
+            {"interactive": True},
+        )
 
         self.env["res.config.settings"].create(
             {
@@ -452,7 +465,7 @@ class TestPySaml(HttpCase):
         ).execute()
 
         with self.assertRaises(AccessDenied):
-            self.user._check_credentials(
+            self.user2.with_user(self.user2)._check_credentials(
                 {"type": "password", "password": "NesTNSte9340D720te>/-A"},
                 {"interactive": True},
             )
@@ -460,17 +473,20 @@ class TestPySaml(HttpCase):
     def test_fragment_to_query_string_no_kw(self):
         """Test the case where no keyword arguments are passed."""
         response = self.decorated_function(self)
-        expected_html = """<html><head><script>
+        expected_html = b"""<html><head><script>
                 var l = window.location;
                 var q = l.hash.substring(1);
-                var r = '/' + l.search;
+                var r = l.pathname + l.search;
                 if(q.length !== 0) {
                     var s = l.search ? (l.search === '?' ? '' : '&') : '?';
                     r = l.pathname + l.search + s + q;
                 }
+                if (r == l.pathname) {
+                    r = '/';
+                }
                 window.location = r;
             </script></head><body></body></html>"""
-        self.assertEqual(response.strip(), expected_html.strip())
+        self.assertEqual(response.data, expected_html)
 
     def test_fragment_to_query_string_with_kw(self):
         """Test the case where keyword arguments are passed."""
@@ -648,9 +664,13 @@ class TestPySaml(HttpCase):
 
     def test_signin_redirect_mfa(self):
         """Test redirect to mfa url"""
+        if not self.env["ir.module.module"].search(
+            [("name", "=", "auth_totp"), ("state", "=", "installed")]
+        ):
+            raise SkipTest("auth_totp not installed")
         self.add_provider_to_user()
 
-        redirect_url = self.saml_provider._get_auth_request({"a": "action"})
+        redirect_url = self.saml_provider._get_auth_request({"a": "42"})
         response = self.idp.fake_login(redirect_url)
         unpacked_response = response._unpack()
 
@@ -668,7 +688,7 @@ class TestPySaml(HttpCase):
         self.assertTrue(response.ok)
         self.assertEqual(
             response.url,
-            self.base_url() + "/web/login/totp?redirect=%2F%23action%3Daction",
+            self.base_url() + "/web/login/totp?redirect=%2Fodoo%2Faction-42",
         )
 
     def test_action_redirect(self):
@@ -690,7 +710,7 @@ class TestPySaml(HttpCase):
         self.assertTrue(response.ok)
         self.assertEqual(
             response.url,
-            self.base_url() + "/odoo#action=action",
+            self.base_url() + "/odoo/action-action",
         )
 
     def test_menu_redirect(self):
@@ -712,7 +732,7 @@ class TestPySaml(HttpCase):
         self.assertTrue(response.ok)
         self.assertEqual(
             response.url,
-            self.base_url() + "/odoo#menu_id=12",
+            self.base_url() + "/odoo?menu_id=12",
         )
 
     @responses.activate

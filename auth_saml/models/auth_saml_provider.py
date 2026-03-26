@@ -10,8 +10,6 @@ import tempfile
 import urllib
 
 import requests
-
-# dependency name is pysaml2 # pylint: disable=W7936
 import saml2
 import saml2.xmldsig as ds
 from saml2.client import Saml2Client
@@ -165,7 +163,7 @@ class AuthSamlProvider(models.Model):
         )
 
         for record in self:
-            if isinstance(record.id, models.NewId):
+            if not record.id:
                 record.sp_metadata_url = False
                 continue
 
@@ -335,8 +333,12 @@ class AuthSamlProvider(models.Model):
 
             if not matching_value:
                 raise Exception(
-                    f"Matching attribute {self.matching_attribute} not found "
-                    f"in user attrs: {attrs}"
+                    self.env._(
+                        "Matching attribute %(matching_attribute)s"
+                        " not found in user attrs: %(attrs)s",
+                        matching_attribute=self.matching_attribute,
+                        attrs=attrs,
+                    )
                 )
 
         if matching_value and isinstance(matching_value, list):
@@ -417,8 +419,12 @@ class AuthSamlProvider(models.Model):
             document = requests.get(provider.idp_metadata_url, timeout=5)
             if document.status_code != 200:
                 raise UserError(
-                    "Unable to download the metadata for "
-                    f"{provider.name}: {document.reason}"
+                    self.env._(
+                        "Unable to download the metadata for"
+                        " %(provider_name)s: %(reason)s",
+                        provider_name=provider.name,
+                        reason=document.reason,
+                    )
                 )
             if document.text != provider.idp_metadata:
                 providers_to_update[provider.id] = document.text
