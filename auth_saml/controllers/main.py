@@ -136,8 +136,7 @@ class SAMLLogin(Home):
                 error = _("Access Denied")
             elif error == "expired":
                 error = _(
-                    "You do not have access to this database. Please contact"
-                    " support."
+                    "You do not have access to this database. Please contact support."
                 )
             else:
                 error = None
