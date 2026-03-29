@@ -2,3 +2,4 @@
 - Stéphane Bidoul \<<stephane.bidoul@acsone.eu>\>
 - David Jaen \<<david.jaen.revert@gmail.com>\>
 - Andreas Perhab \<<andreas.perhab@wt-io-it.at>\>
+- Mohamed Alkobrosli \<<mohamed@kobros-tech.com>\>

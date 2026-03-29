@@ -36,6 +36,7 @@ class ResUsers(models.Model):
                 code_verifier=oauth_provider.code_verifier,  # PKCE
                 redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
             ),
+            headers={"Accept": "application/json"},
             auth=auth,
             timeout=10,
         )
