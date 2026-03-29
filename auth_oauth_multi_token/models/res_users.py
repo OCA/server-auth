@@ -57,6 +57,10 @@ class ResUsers(models.Model):
         # this by the existing oauth_access_token which acts as oauth_master_uuid
         params["access_token"] = user.oauth_access_token
         res = super()._auth_oauth_signin(provider, validation, params)
+        # re-fetch AFTER signup
+        user = self.search(
+            [("oauth_uid", "=", oauth_uid), ("oauth_provider_id", "=", provider)]
+        )
 
         if not user:
             raise exceptions.AccessDenied()
