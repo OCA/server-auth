@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <!--
+        Force Odoo to use the 'Authorization: Bearer' header
+        instead of the URL query parameter for UserInfo validation.
+        This is a strict requirement for GitHub and modern OAuth2 providers.
+    -->
+    <record id="auth_oauth_authorization_header" model="ir.config_parameter">
+        <field name="key">auth_oauth.authorization_header</field>
+        <field name="value">1</field>
+    </record>
+</odoo>
