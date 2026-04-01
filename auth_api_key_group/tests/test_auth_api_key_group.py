@@ -2,38 +2,38 @@
 # @author: Simone Orsi <simone.orsi@camptocamp.com>
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+from odoo import Command
 
-from odoo.tests.common import TransactionCase
+from odoo.addons.base.tests.common import TransactionCaseWithUserDemo
 
 
-class TestAuthApiKey(TransactionCase):
+class TestAuthApiKey(TransactionCaseWithUserDemo):
     @classmethod
     def setUpClass(cls, *args, **kwargs):
         super().setUpClass(*args, **kwargs)
         cls.AuthApiKey = cls.env["auth.api.key"]
         cls.AuthApiKeyGroup = cls.env["auth.api.key.group"]
-        cls.demo_user = cls.env.ref("base.user_demo")
         cls.api_key1 = cls.AuthApiKey.create(
-            {"name": "One", "user_id": cls.demo_user.id, "key": "one"}
+            {"name": "One", "user_id": cls.user_demo.id, "key": "one"}
         )
         cls.api_key2 = cls.AuthApiKey.create(
-            {"name": "Two", "user_id": cls.demo_user.id, "key": "two"}
+            {"name": "Two", "user_id": cls.user_demo.id, "key": "two"}
         )
         cls.api_key3 = cls.AuthApiKey.create(
-            {"name": "Three", "user_id": cls.demo_user.id, "key": "three"}
+            {"name": "Three", "user_id": cls.user_demo.id, "key": "three"}
         )
         cls.api_key_group1 = cls.AuthApiKeyGroup.create(
             {
                 "name": "G One",
                 "code": "g-one",
-                "auth_api_key_ids": [(6, 0, (cls.api_key1 + cls.api_key2).ids)],
+                "auth_api_key_ids": [Command.set((cls.api_key1 + cls.api_key2).ids)],
             }
         )
         cls.api_key_group2 = cls.AuthApiKeyGroup.create(
             {
                 "name": "G Two",
                 "code": "g-two",
-                "auth_api_key_ids": [(6, 0, cls.api_key3.ids)],
+                "auth_api_key_ids": [Command.set(cls.api_key3.ids)],
             }
         )
 
