@@ -6,170 +6,173 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2026-04-08 12:45+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: cross_connect_client
 #: model:ir.model,name:cross_connect_client.model_res_groups
 msgid "Access Groups"
-msgstr ""
+msgstr "Gruppi di accesso"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__api_key
 msgid "Api Key"
-msgstr ""
+msgstr "Chiave API"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__x_api_key_env_default
 msgid "Api Key Env Default"
-msgstr ""
+msgstr "Chiave API predefinita dell'ambiente"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Creato da"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Creato il"
 
 #. module: cross_connect_client
 #: model:ir.ui.menu,name:cross_connect_client.menu_cross_connect_server_category
 msgid "Cross Connect"
-msgstr ""
+msgstr "Cross connect"
 
 #. module: cross_connect_client
 #: model:ir.model,name:cross_connect_client.model_cross_connect_server
 msgid "Cross Connect Server"
-msgstr ""
+msgstr "Server cross connect"
 
 #. module: cross_connect_client
 #: model:ir.model.constraint,message:cross_connect_client.constraint_res_groups_cross_connect_server_group_id_cross_connect_server_id_unique
 msgid "Cross Connect Server Group ID must be unique per Cross Connect Server"
 msgstr ""
+"L'ID gruppo server cross connect deve essere univoco per server cross connect"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__group_ids
 msgid "Cross Connect Server Groups"
-msgstr ""
+msgstr "Gruppi server cross connect"
 
 #. module: cross_connect_client
 #: model:ir.actions.act_window,name:cross_connect_client.cross_connect_server_action
 #: model:ir.ui.menu,name:cross_connect_client.menu_cross_connect_server
 msgid "Cross Connect Servers"
-msgstr ""
+msgstr "Server cross connect"
 
 #. module: cross_connect_client
 #: model_terms:ir.ui.view,arch_db:cross_connect_client.cross_connect_server_view_form
 msgid "Disable"
-msgstr ""
+msgstr "Disabilita"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nome visualizzato"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Ultimo aggiornamento di"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Ultimo aggiornamento il"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__menu_id
 msgid "Menu"
-msgstr ""
+msgstr "Menù"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,help:cross_connect_client.field_cross_connect_server__menu_id
 msgid "Menu to display the Cross Connect Server in the menu"
-msgstr ""
+msgstr "Menu per visualizzare il server cross connect nel menu"
 
 #. module: cross_connect_client
 #. odoo-python
 #: code:addons/cross_connect_client/models/cross_connect_server.py:0
 msgid "Missing token"
-msgstr ""
+msgstr "Token mancante"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__name
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_res_groups__cross_connect_server_id
 msgid "Originating Cross Connect Server"
-msgstr ""
+msgstr "Generazione server cross connect"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_res_groups__cross_connect_server_group_id
 msgid "Originating Cross Connect Server Group ID"
-msgstr ""
+msgstr "Generazione ID gruppo server cross connect"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__server_env_defaults
 msgid "Server Env Defaults"
-msgstr ""
+msgstr "Server ambiente predefinito"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__server_url
 msgid "Server Url"
-msgstr ""
+msgstr "URL server"
 
 #. module: cross_connect_client
 #. odoo-python
 #: code:addons/cross_connect_client/controllers/cross_connect.py:0
 msgid "Server not found"
-msgstr ""
+msgstr "Server non trovato"
 
 #. module: cross_connect_client
 #: model_terms:ir.ui.view,arch_db:cross_connect_client.cross_connect_server_view_form
 msgid "Sync Cross Connection"
-msgstr ""
+msgstr "Sincronizza cross connect"
 
 #. module: cross_connect_client
 #: model_terms:ir.ui.view,arch_db:cross_connect_client.cross_connect_server_view_form
 msgid "Sync Required"
-msgstr ""
+msgstr "Richiesta sincronizzazione"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,help:cross_connect_client.field_cross_connect_server__name
 msgid "This name will be used for the new created app"
-msgstr ""
+msgstr "Questo nome verrà usato per la nuova app creata"
 
 #. module: cross_connect_client
 #. odoo-python
 #: code:addons/cross_connect_client/models/cross_connect_server.py:0
 msgid "User email is required"
-msgstr ""
+msgstr "È richiesta l'e-mail utente"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__web_icon_data
 msgid "Web Icon Data"
-msgstr ""
+msgstr "Dati icona web"
 
 #. module: cross_connect_client
 #: model:ir.model.fields,field_description:cross_connect_client.field_cross_connect_server__x_api_key_env_is_editable
 msgid "X Api Key Env Is Editable"
-msgstr ""
+msgstr "La chiave API X ambiente è modificabile"
 
 #. module: cross_connect_client
 #. odoo-python
 #: code:addons/cross_connect_client/models/cross_connect_server.py:0
 msgid "You are not allowed to access this server"
-msgstr ""
+msgstr "Non si è autorizzati ad accedere a questo server"
