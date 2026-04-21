@@ -1,0 +1,160 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_api_key
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 15.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2024-10-13 18:06+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6.2\n"
+
+#. module: auth_api_key
+#: model:ir.model,name:auth_api_key.model_auth_api_key
+msgid "API Key"
+msgstr "Chiave API"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__active
+msgid "Active"
+msgstr "Attiva"
+
+#. module: auth_api_key
+#: model:ir.model.constraint,message:auth_api_key.constraint_auth_api_key_name_uniq
+msgid "Api Key name must be unique."
+msgstr "La chiave API deve essere univoca."
+
+#. module: auth_api_key
+#: model_terms:ir.ui.view,arch_db:auth_api_key.auth_api_key_form_view
+msgid "Archived"
+msgstr "In archivio"
+
+#. module: auth_api_key
+#: model:ir.actions.act_window,name:auth_api_key.auth_api_key_act_window
+#: model:ir.ui.menu,name:auth_api_key.auth_api_key_menu
+msgid "Auth Api Key"
+msgstr "Chiave API di autenticazione"
+
+#. module: auth_api_key
+#: model:ir.model,name:auth_api_key.model_res_company
+msgid "Companies"
+msgstr "Aziende"
+
+#. module: auth_api_key
+#: model:ir.model,name:auth_api_key.model_res_config_settings
+msgid "Config Settings"
+msgstr "Impostazioni configurazione"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_uid
+msgid "Created by"
+msgstr "Creato da"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__create_date
+msgid "Created on"
+msgstr "Creato il"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_res_company__archived_user_disable_auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__archived_user_disable_auth_api_key
+msgid "Disable API key for archived user"
+msgstr "Disabilita chiave API per utenti archiviati"
+
+#. module: auth_api_key
+#: model_terms:ir.ui.view,arch_db:auth_api_key.res_config_settings_view_form
+msgid "Disable API key when archiving user"
+msgstr "Disabilita la chiave API quando si archivia un utente"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
+msgid "Display Name"
+msgstr "Nome visualizzato"
+
+#. module: auth_api_key
+#: model:ir.model,name:auth_api_key.model_ir_http
+msgid "HTTP Routing"
+msgstr "Instradamento HTTP"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__id
+msgid "ID"
+msgstr "ID"
+
+#. module: auth_api_key
+#: model:ir.model.fields,help:auth_api_key.field_res_company__archived_user_disable_auth_api_key
+#: model:ir.model.fields,help:auth_api_key.field_res_config_settings__archived_user_disable_auth_api_key
+msgid ""
+"If checked, when a user is archived/unactivated the same change is "
+"propagated to his related api key. It is not retroactive (nothing is done  "
+"when enabling/disabling this option)."
+msgstr ""
+"Se selezionata, quando un utente viene archiviato/disattivato, la stessa "
+"modifica viene propagata alla sua chiave API correlata. Non è retroattivo ("
+"non viene fatto nulla quando si abilita/disabilita questa opzione)."
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key
+msgid "Key"
+msgstr "Chiave"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_uid
+msgid "Last Updated by"
+msgstr "Ultimo aggiornamento di"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__write_date
+msgid "Last Updated on"
+msgstr "Ultimo aggiornamento il"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__name
+msgid "Name"
+msgstr "Nome"
+
+#. module: auth_api_key
+#: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
+msgid ""
+"The API key. Enter a dummy value in this field if it is\n"
+"        obtained from the server environment configuration."
+msgstr ""
+"Chiave API. Se viene acquisita dalla configurazione\n"
+"        ambiente del server, inserire nel campo un valore fittizio."
+
+#. module: auth_api_key
+#: model:ir.model.fields,help:auth_api_key.field_auth_api_key__user_id
+msgid ""
+"The user used to process the requests authenticated by\n"
+"        the api key"
+msgstr ""
+"Utente utilizzato per elaborare le richieste autenticate\n"
+"        dalla chiave API"
+
+#. module: auth_api_key
+#: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__user_id
+msgid "User"
+msgstr "Utente"
+
+#. module: auth_api_key
+#. odoo-python
+#: code:addons/auth_api_key/models/auth_api_key.py:0
+msgid "User is not allowed"
+msgstr "Utente non autorizzato"
+
+#, python-format
+#~ msgid "The key %s is not allowed"
+#~ msgstr "Chiave %s non autorizzata"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
+
+#~ msgid "Server Env Defaults"
+#~ msgstr "Variabili ambiente predefinite del server"

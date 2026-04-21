@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2019 ACSONE SA/NV
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record model="ir.ui.view" id="auth_api_key_form_view">
+        <field name="name">auth.api.key.form (in auth_api_key)</field>
+        <field name="model">auth.api.key</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="active" invisible="1" />
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        invisible="active"
+                    />
+                    <label for="name" class="oe_edit_only" />
+                    <h1>
+                        <field name="name" class="oe_inline" />
+                    </h1>
+                    <group name="config" colspan="4" col="4">
+                        <field name="user_id" colspan="4" />
+                        <field name="key" colspan="4" password="True" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="auth_api_key_tree_view">
+        <field name="name">auth.api.key.list (in auth_api_key)</field>
+        <field name="model">auth.api.key</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="user_id" />
+            </list>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="auth_api_key_act_window">
+        <field name="name">Auth Api Key</field>
+        <field name="res_model">auth.api.key</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <record model="ir.ui.menu" id="auth_api_key_menu">
+        <field name="name">Auth Api Key</field>
+        <field name="parent_id" ref="base.menu_custom" />
+        <field name="action" ref="auth_api_key_act_window" />
+        <field name="sequence" eval="100" />
+    </record>
+</odoo>

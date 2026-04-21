@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 Camptocamp SA
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.form.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='user_default_rights']" position="inside">
+                <setting
+                    groups="base.group_no_one"
+                    id="api_key_archive_with_user"
+                    string="Disable API key when archiving user"
+                >
+                    <field name="archived_user_disable_auth_api_key" />
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
