@@ -165,13 +165,9 @@ patch(FormController.prototype, {
                     rec.iv
                 );
                 if (val === null) {
+                    const fixed_text = _t("of entry");
                     problems.push(
-                        _.str.sprintf(
-                            _t("%s '%s' of entry '%s'"),
-                            type,
-                            rec.name,
-                            rec.entry_name
-                        )
+                        `${type} '${rec.name}' ${fixed_text} '${rec.entry_name}'`
                     );
                     continue;
                 }
