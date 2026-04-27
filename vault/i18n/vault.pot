@@ -20,12 +20,6 @@ msgid "%(action)s entry %(name)s by %(user)s"
 msgstr ""
 
 #. module: vault
-#. odoo-javascript
-#: code:addons/vault/static/src/backend/controller.esm.js:0
-msgid "%s '%s' of entry '%s'"
-msgstr ""
-
-#. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 msgid "%s (copy)"
@@ -1335,4 +1329,10 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 msgid "a-z"
+msgstr ""
+
+#. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
+msgid "of entry"
 msgstr ""
