@@ -255,7 +255,7 @@ class AuthSamlProvider(models.Model):
             # Retry after refresh metadata
             self.action_refresh_metadata_from_url()
             return self.with_context(
-                saml2_retry_after_refresh_metatata=1
+                saml2_retry_after_refresh_metadata=1
             )._get_config_for_provider(base_url)
 
     def _get_client_for_provider(self, base_url: str = None) -> Saml2Client:
