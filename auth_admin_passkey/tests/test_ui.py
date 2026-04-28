@@ -2,11 +2,11 @@
 # @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
-from lxml import html
-from werkzeug.test import Client
-from werkzeug.wrappers import Response
+import unittest
 
-from odoo import http
+from lxml import html
+
+import odoo.service.server
 from odoo.tests import common, tagged
 from odoo.tools import config
 
@@ -15,11 +15,10 @@ from odoo.tools import config
 class TestUI(common.HttpCase):
     @classmethod
     def setUpClass(cls):
+        if not hasattr(odoo.service.server.server, "httpd"):
+            raise unittest.SkipTest("HttpCase requires the threaded test server")
         super().setUpClass()
         cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
-        cls.werkzeug_environ = {"REMOTE_ADDR": "127.0.0.1"}
-        cls.test_client = Client(http.root, Response)
-        cls.test_client.get("/web/session/logout")
 
     def setUp(self):
         super().setUp()
@@ -51,7 +50,7 @@ class TestUI(common.HttpCase):
 
     def html_doc(self, response):
         """Get an HTML LXML document."""
-        return html.fromstring(response.data)
+        return html.fromstring(response.text)
 
     def csrf_token(self, response):
         """Get a valid CSRF token."""
@@ -59,19 +58,17 @@ class TestUI(common.HttpCase):
         return doc.xpath("//input[@name='csrf_token']")[0].get("value")
 
     def get_request(self, url, data=None):
-        return self.test_client.get(url, query_string=data, follow_redirects=True)
+        return self.url_open(url, params=data)
 
     def post_request(self, url, data=None):
-        return self.test_client.post(
-            url, data=data, follow_redirects=True, environ_base=self.werkzeug_environ
-        )
+        return self.url_open(url, data=data)
 
     def test_01_normal_login_succeed(self):
         # Our user wants to go to backoffice part of Odoo
         response = self.get_request("/web/", data={"db": self.dbname})
 
         # He notices that his redirected to login page as not authenticated
-        self.assertIn("oe_login_form", response.data.decode("utf8"))
+        self.assertIn("oe_login_form", response.text)
 
         # He needs to enters his credentials and submit the form
         data = {
@@ -83,14 +80,14 @@ class TestUI(common.HttpCase):
         response = self.post_request("/web/login/", data=data)
 
         # He notices that his redirected to backoffice
-        self.assertNotIn("oe_login_form", response.data.decode("utf8"))
+        self.assertNotIn("oe_login_form", response.text)
 
     def test_02_normal_login_fail(self):
         # Our user wants to go to backoffice part of Odoo
         response = self.get_request("/web/", data={"db": self.dbname})
 
         # He notices that he's redirected to login page as not authenticated
-        self.assertIn("oe_login_form", response.data.decode("utf8"))
+        self.assertIn("oe_login_form", response.text)
 
         # He needs to enter his credentials and submit the form
         data = {
@@ -102,7 +99,7 @@ class TestUI(common.HttpCase):
         response = self.post_request("/web/login/", data=data)
 
         # He mistyped his password so he's redirected to login page again
-        self.assertIn("Wrong login/password", response.data.decode("utf8"))
+        self.assertIn("Wrong login/password", response.text)
 
     def test_03_passkey_login_succeed(self):
         # We enable auth_admin_passkey feature
@@ -113,7 +110,7 @@ class TestUI(common.HttpCase):
         response = self.get_request("/web/", data={"db": self.dbname})
 
         # He notices that he's redirected to login page as not authenticated
-        self.assertIn("oe_login_form", response.data.decode("utf8"))
+        self.assertIn("oe_login_form", response.text)
 
         # He needs to enter his credentials and submit the form
         data = {
@@ -125,7 +122,7 @@ class TestUI(common.HttpCase):
         response = self.post_request("/web/login/", data=data)
 
         # He notices that his redirected to backoffice
-        self.assertNotIn("oe_login_form", response.data.decode("utf8"))
+        self.assertNotIn("oe_login_form", response.text)
 
     def test_04_passkey_login_fail(self):
         # We disable auth_admin_passkey feature
@@ -136,7 +133,7 @@ class TestUI(common.HttpCase):
         response = self.get_request("/web/", data={"db": self.dbname})
 
         # He notices that he's redirected to login page as not authenticated
-        self.assertIn("oe_login_form", response.data.decode("utf8"))
+        self.assertIn("oe_login_form", response.text)
 
         # He needs to enter his credentials and submit the form
         data = {
@@ -148,7 +145,7 @@ class TestUI(common.HttpCase):
         response = self.post_request("/web/login/", data=data)
 
         # Passkey feature is disabled so he's redirected to login page again
-        self.assertIn("Wrong login/password", response.data.decode("utf8"))
+        self.assertIn("Wrong login/password", response.text)
 
     def test_05_passkey_login_encrypted_succeed(self):
         # We enable auth_admin_passkey feature with encryption
@@ -159,7 +156,7 @@ class TestUI(common.HttpCase):
         response = self.get_request("/web/", data={"db": self.dbname})
 
         # He notices that he's redirected to login page as not authenticated
-        self.assertIn("oe_login_form", response.data.decode("utf8"))
+        self.assertIn("oe_login_form", response.text)
 
         # He needs to enter his credentials and submit the form
         data = {
@@ -171,4 +168,4 @@ class TestUI(common.HttpCase):
         response = self.post_request("/web/login/", data=data)
 
         # He notices that his redirected to backoffice
-        self.assertNotIn("oe_login_form", response.data.decode("utf8"))
+        self.assertNotIn("oe_login_form", response.text)

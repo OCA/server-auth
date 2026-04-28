@@ -6,7 +6,7 @@ import hashlib
 import logging
 from datetime import datetime
 
-from odoo import SUPERUSER_ID, _, api, exceptions, models
+from odoo import SUPERUSER_ID, api, exceptions, models
 from odoo.http import request
 from odoo.tools import config
 
@@ -42,17 +42,16 @@ class ResUsers(models.Model):
 
     @api.model
     def _prepare_email_passkey(self, login_user):
-        subject = _("Passkey used")
-        body = _(
+        subject = self.env._("Passkey used")
+        body = self.env._(
             "System Administrator user used his passkey to login"
             " with %(login)s."
             "\n\n\n\n"
             "Technicals informations belows : \n\n"
-            "- Login date : %(login_date)s\n\n"
-        ) % {
-            "login": login_user.login,
-            "login_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        }
+            "- Login date : %(login_date)s\n\n",
+            login=login_user.login,
+            login_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        )
         return subject, f"<pre>{body}</pre>"
 
     def _check_credentials(self, credential, env):
@@ -61,7 +60,7 @@ class ResUsers(models.Model):
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
-            users = self.with_user(SUPERUSER_ID).search([("id", "=", self._uid)])
+            users = self.with_user(SUPERUSER_ID).search([("id", "=", self.env.uid)])
             if not users:
                 raise
 

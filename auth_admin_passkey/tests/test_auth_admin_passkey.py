@@ -2,9 +2,13 @@
 # @author Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
+from contextlib import contextmanager
+from types import SimpleNamespace
+
 from odoo import exceptions
+from odoo.http import _request_stack, get_default_session
 from odoo.tests import common, tagged
-from odoo.tools import config
+from odoo.tools import DotDict, config
 
 
 @tagged("post_install", "-at_install")
@@ -42,44 +46,49 @@ class TestAuthAdminPasskey(common.TransactionCase):
         )
         cls.user = user.with_user(user)
 
+    @contextmanager
+    def mock_request(self):
+        session = DotDict(get_default_session())
+        session.sid = "auth_admin_passkey_test"
+        request = SimpleNamespace(env=self.env, session=session)
+        _request_stack.push(request)
+        try:
+            yield
+        finally:
+            _request_stack.pop()
+
+    def _check_credentials(self, password):
+        with self.mock_request():
+            return self.user._check_credentials(
+                {"type": "password", "password": password},
+                {"interactive": True},
+            )
+
     def test_01_normal_login_succeed(self):
-        self.user._check_credentials(
-            {"type": "password", "password": self.user_password},
-            {"interactive": True},
-        )
+        self._check_credentials(self.user_password)
 
     def test_02_normal_login_fail(self):
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(
-                {"type": "password", "password": self.bad_password},
-                {"interactive": True},
-            )
+            self._check_credentials(self.bad_password)
 
     def test_03_normal_login_passkey_fail(self):
         # This should failed, because feature is disabled
         config["auth_admin_passkey_password"] = False
         config["auth_admin_passkey_password_sha512_encrypted"] = False
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(
-                {"type": "password", "password": self.sysadmin_passkey},
-                {"interactive": True},
-            )
+            self._check_credentials(self.sysadmin_passkey)
 
     def test_04_normal_login_passkey_succeed(self):
         # This should succeed, because feature is enabled
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
         config["auth_admin_passkey_password_sha512_encrypted"] = False
-        self.user._check_credentials(
-            {"type": "password", "password": self.sysadmin_passkey},
-            {"interactive": True},
-        )
+        self._check_credentials(self.sysadmin_passkey)
 
     def test_05_passkey_login_passkey_succeed(self):
         """[Bug #1319391]
         Test the correct behaviour of login with 'bad_login' / 'admin'"""
         with self.assertRaises(exceptions.AccessDenied):
             self.ResUsers.authenticate(
-                self.db,
                 {
                     "login": self.bad_login,
                     "password": self.sysadmin_passkey,
@@ -92,10 +101,7 @@ class TestAuthAdminPasskey(common.TransactionCase):
         # This should succeed, because feature is enabled
         config["auth_admin_passkey_password"] = self.sysadmin_passkey_encrypted
         config["auth_admin_passkey_password_sha512_encrypted"] = True
-        self.user._check_credentials(
-            {"type": "password", "password": self.sysadmin_passkey},
-            {"interactive": True},
-        )
+        self._check_credentials(self.sysadmin_passkey)
 
     def test_07_email_notification_logic(self):
         """Test that the email notification logic works correctly."""
@@ -104,10 +110,11 @@ class TestAuthAdminPasskey(common.TransactionCase):
         self.user.email = "user@example.com"
 
         with self.env.cr.savepoint():
+            Mail = self.env["mail.mail"]
+            domain = [("email_to", "in", ["admin@example.com", "user@example.com"])]
+            existing_ids = Mail.search(domain).ids
             self.user._send_email_passkey(self.user)
-            mail_ids = self.env["mail.mail"].search(
-                [("email_to", "in", ["admin@example.com", "user@example.com"])]
-            )
+            mail_ids = Mail.search(domain + [("id", "not in", existing_ids)])
             self.assertEqual(
                 len(mail_ids), 2, "Emails should be sent to both admin and user."
             )
@@ -118,19 +125,13 @@ class TestAuthAdminPasskey(common.TransactionCase):
         """Test behavior when no passkey is configured."""
         config["auth_admin_passkey_password"] = False
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(
-                {"type": "password", "password": self.sysadmin_passkey},
-                {"interactive": True},
-            )
+            self._check_credentials(self.sysadmin_passkey)
 
     def test_09_empty_passkey_fails(self):
         """Test behavior when an empty passkey is provided."""
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(
-                {"type": "password", "password": ""},
-                {"interactive": True},
-            )
+            self._check_credentials("")
 
     def test_10_prepare_email_passkey(self):
         """Test email preparation logic."""
@@ -144,7 +145,4 @@ class TestAuthAdminPasskey(common.TransactionCase):
         config["auth_admin_passkey_password"] = self.sysadmin_passkey_encrypted
         config["auth_admin_passkey_password_sha512_encrypted"] = True
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(
-                {"type": "password", "password": "WrongEncryptedPassword"},
-                {"interactive": True},
-            )
+            self._check_credentials("WrongEncryptedPassword")
