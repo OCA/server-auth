@@ -15,11 +15,11 @@ _logger = logging.getLogger(__name__)
 
 
 class PasswordSecurityHome(AuthSignupHome):
-    def do_signup(self, qcontext):
+    def do_signup(self, qcontext, **kw):
         password = qcontext.get("password")
         user = request.env.user
         user._check_password(password)
-        return super().do_signup(qcontext)
+        return super().do_signup(qcontext, **kw)
 
     @http.route()
     def web_login(self, *args, **kw):
