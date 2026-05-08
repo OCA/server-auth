@@ -267,8 +267,10 @@ class TestAuthUserRolesSaml(TransactionCase):
     def test_15_default_strict_sync_from_config(self):
         """Test that a new SAML provider inherits the global strict_sync parameter."""
 
-        # Set the global parameter to True
-        self.env["ir.config_parameter"].set_param("auth_user_role.strict_sync", "True")
+        # Ensure the global parameter is missing to test the fallback
+        self.env["ir.config_parameter"].sudo().search(
+            [("key", "=", "auth_user_role.strict_sync")]
+        ).unlink()
 
         # Create a new provider WITHOUT explicitly setting sync_roles_strictly
         provider_true = self.env["auth.saml.provider"].create(

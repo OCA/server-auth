@@ -57,12 +57,12 @@ To configure SAML role synchronization:
 4. Under the provider settings, you will find a **Strict Role
    Synchronization** checkbox:
 
-   - **Unchecked (Default):** Additive mode. Mapped roles are granted,
-     but manually assigned roles in Odoo are left completely untouched.
-   - **Checked:** Strict mode. Odoo becomes a strict mirror of the IdP.
-     Any roles the user possesses in Odoo that are *not* explicitly
-     granted by the current SAML payload will be automatically removed
-     upon login.
+   - **Checked (Default):** Strict mode. Odoo becomes a strict mirror of
+     the IdP. Any roles the user possesses in Odoo that are *not*
+     explicitly granted by the current SAML payload will be
+     automatically removed upon login.
+   - **Unchecked:** Additive mode. Mapped roles are granted, but
+     manually assigned roles in Odoo are left completely untouched.
 
 Usage
 =====
