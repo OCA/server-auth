@@ -27,6 +27,13 @@ class ResUser(models.Model):
                 provider_record = self.env["auth.saml.provider"].browse(provider)
                 strict_sync = provider_record.sync_roles_strictly
 
+                # If strict_sync is True but the database has NO mappings,
+                # applying it will inadvertently wipe all roles from the logging-in user
+                if strict_sync and not self.env[
+                    "auth.user.role.mapping"
+                ].sudo().search_count([], limit=1):
+                    strict_sync = False
+
                 # Pass strict_sync to the evaluation engine
                 user.sudo().evaluate_and_apply_auth_roles(
                     identity_payload, strict_sync=strict_sync
