@@ -26,6 +26,11 @@ msgid "Base"
 msgstr ""
 
 #. module: impersonate_login
+#: model:ir.model,name:impersonate_login.model_res_config_settings
+msgid "Config Settings"
+msgstr ""
+
+#. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_mail__body
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__body
 msgid "Contents"
@@ -67,6 +72,13 @@ msgid "ID"
 msgstr ""
 
 #. module: impersonate_login
+#: model:ir.model.fields,help:impersonate_login.field_res_config_settings__restrict_impersonate_admin_settings
+msgid ""
+"If enabled, users with the 'Administration: Settings' access right cannot be"
+" impersonated."
+msgstr ""
+
+#. module: impersonate_login
 #: model:ir.actions.act_window,name:impersonate_login.impersonate_log_action
 msgid "Impersonate Login Logs"
 msgstr ""
@@ -90,6 +102,11 @@ msgstr ""
 #. module: impersonate_login
 #: model:ir.ui.menu,name:impersonate_login.menu_impersonate_log
 msgid "Impersonated Logs"
+msgstr ""
+
+#. module: impersonate_login
+#: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
+msgid "Impersonation Login"
 msgstr ""
 
 #. module: impersonate_login
@@ -133,6 +150,19 @@ msgid "Message"
 msgstr ""
 
 #. module: impersonate_login
+#: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
+msgid ""
+"Prevents impersonating users that have the\n"
+"                                    \"Administration: Settings\" access rights."
+msgstr ""
+
+#. module: impersonate_login
+#: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__restrict_impersonate_admin_settings
+#: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
+msgid "Restrict Impersonation of 'Administration: Settings' Users"
+msgstr ""
+
+#. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_start
 msgid "Start Date"
 msgstr ""
@@ -156,4 +186,12 @@ msgstr ""
 #: code:addons/impersonate_login/models/res_users.py:0
 #, python-format
 msgid "You are already Logged as another user."
+msgstr ""
+
+#. module: impersonate_login
+#. odoo-python
+#: code:addons/impersonate_login/models/res_users.py:0
+#, python-format
+msgid ""
+"You cannot impersonate users with 'Administration: Settings' access rights."
 msgstr ""
