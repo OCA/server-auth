@@ -6,34 +6,37 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2026-05-23 07:50+0000\n"
+"Last-Translator: Pablo Castelo <pablocv@gmx.es>\n"
 "Language-Team: none\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Another user is already registered using this email address."
 msgstr ""
+"Xa hai outro usuario rexistrado con esta dirección de correo electrónico."
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Check your email to activate your account!"
-msgstr ""
+msgstr "Revise o seu correo para activar a súa conta!"
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "Something went wrong, please try again later or contact us."
-msgstr ""
+msgstr "Algo foi mal, por favor ténteo de novo máis tarde ou contáctar."
 
 #. module: auth_signup_verify_email
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
 #, python-format
 msgid "That does not seem to be an email address."
-msgstr ""
+msgstr "Iso non parece unha dirección de email válida."
