@@ -11,6 +11,7 @@
     "website": "https://github.com/OCA/server-auth",
     "development_status": "Production/Stable",
     "depends": ["base_setup"],
+    "post_load": "post_load_hook",
     "data": [
         "security/ir.model.access.csv",
         "views/auth_api_key.xml",
