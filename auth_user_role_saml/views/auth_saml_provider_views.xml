@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_saml_provider_form_inherit_strict_sync" model="ir.ui.view">
+        <field name="name">auth.saml.provider.form.inherit.strict.sync</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="inherit_id" ref="auth_saml.view_saml_provider_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//label[@for='autoredirect']" position="before">
+                <label for="sync_roles_strictly" />
+                <div>
+                    <field name="sync_roles_strictly" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
