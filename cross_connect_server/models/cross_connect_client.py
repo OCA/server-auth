@@ -97,7 +97,6 @@ class CrossConnectClient(models.Model):
             access_request.lang = "en_US"
 
         vals = {
-            "login": f"{self.id}_{access_request.id}_{access_request.login}",
             "email": access_request.email,
             "name": access_request.name,
             "lang": access_request.lang,
@@ -105,6 +104,10 @@ class CrossConnectClient(models.Model):
             "cross_connect_client_id": self.id,
             "cross_connect_client_user_id": access_request.id,
         }
+        login = f"{self.id}_{access_request.id}_{access_request.login}"
+        # Avoid write of login if uncessary because it triggers an email
+        if not user or user.login != login:
+            vals["login"] = login
         # Create user if not exists
         if not user:
             user = (
