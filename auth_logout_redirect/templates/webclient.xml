@@ -51,8 +51,8 @@
                             >Powered by <span>Odoo</span></a>
                         </div>
                     </div>
-                    </div>
                 </div>
+            </div>
         </t>
     </template>
 </odoo>
