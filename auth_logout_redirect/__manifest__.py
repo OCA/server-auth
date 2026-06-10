@@ -3,9 +3,9 @@
 {
     "name": "Logout Redirect",
     "summary": "Redirect on logout",
-    "version": "17.0.1.0.0",
+    "version": "19.0.1.0.0",
     "development_status": "Alpha",
-    "category": "Tools",
+    "category": "Hidden/Tools",
     "website": "https://github.com/OCA/server-auth",
     "author": "XCG SAS, Odoo Community Association (OCA)",
     "maintainers": ["vincent-hatakeyama"],
