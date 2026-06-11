@@ -12,7 +12,6 @@ class AuthApiKey(models.Model):
 
     name = fields.Char(required=True)
     key = fields.Char(
-        required=True,
         help="""The API key. Enter a dummy value in this field if it is
         obtained from the server environment configuration.""",
     )
@@ -31,6 +30,12 @@ class AuthApiKey(models.Model):
 
     _name_uniq = models.Constraint("unique(name)", "Api Key name must be unique.")
 
+    @api.constrains("key")
+    def _check_key_required(self):
+        for api_key in self:
+            if not api_key.key:
+                raise ValidationError(self.env._("The API key is required."))
+
     @api.model
     def _retrieve_api_key(self, key):
         return self.browse(self._retrieve_api_key_id(key))
@@ -40,7 +45,7 @@ class AuthApiKey(models.Model):
     def _retrieve_api_key_id(self, key):
         if not self.env.user.has_group("base.group_system"):
             raise AccessError(self.env._("User is not allowed"))
-        for api_key in self.search([], limit=None):
+        for api_key in self.search([("key", "!=", False)], limit=None):
             if api_key.key and consteq(key, api_key.key):
                 return api_key.id
         raise ValidationError(self.env._("The key '%s' is not allowed", key))

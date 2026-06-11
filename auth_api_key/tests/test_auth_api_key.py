@@ -35,6 +35,14 @@ class TestAuthApiKey(TransactionCase):
         with self.assertRaises(ValidationError), self.env.cr.savepoint():
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_wrong_key")
 
+    def test_empty_key_is_rejected(self):
+        with self.assertRaises(ValidationError), self.env.cr.savepoint():
+            self.AuthApiKey.create(
+                {"name": "empty", "user_id": self.demo_user.id, "key": ""}
+            )
+        with self.assertRaises(ValidationError), self.env.cr.savepoint():
+            self.api_key_good.key = False
+
     def test_user_not_allowed(self):
         # only system users can check for key
         with self.assertRaises(AccessError), self.env.cr.savepoint():
