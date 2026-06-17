@@ -119,10 +119,10 @@ class ResUsers(models.Model):
         pwd_params = self._get_all_password_params()
         password_regex = [
             "^",
-            "(?=.*?[a-z]){" + str(pwd_params["lower"]) + ",}",
-            "(?=.*?[A-Z]){" + str(pwd_params["upper"]) + ",}",
-            "(?=.*?\\d){" + str(pwd_params["numeric"]) + ",}",
-            r"(?=.*?[\W_]){" + str(pwd_params["special"]) + ",}",
+            "(?=(?:.*?[a-z]){" + str(pwd_params["lower"]) + ",})",
+            "(?=(?:.*?[A-Z]){" + str(pwd_params["upper"]) + ",})",
+            "(?=(?:.*?\\d){" + str(pwd_params["numeric"]) + ",})",
+            r"(?=(?:.*?[\W_]){" + str(pwd_params["special"]) + ",})",
             ".{%d,}$" % pwd_params["minlength"],
         ]
         if not re.search("".join(password_regex), password):

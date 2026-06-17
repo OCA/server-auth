@@ -149,6 +149,17 @@ class TestResUsers(TransactionCase):
         rec_id = self._new_record()
         rec_id._check_password("asdQWE12345_3")
 
+    def test_check_password_enforces_class_count(self):
+        """It should require the configured *count* of a character class"""
+        rec_id = self._new_record()
+        # Require two uppercase letters
+        self.env["ir.config_parameter"].sudo().set_param("password_security.upper", 2)
+        # Only one uppercase letter: must be rejected
+        with self.assertRaises(UserError):
+            rec_id._check_password("aSdqwe123$%^")
+        # Two uppercase letters: accepted
+        rec_id._check_password("aSDqwe123$%^")
+
     def test_user_with_admin_rights_can_create_users(self):
         demo = self.env.ref("base.user_demo")
         demo.groups_id |= self.env.ref("base.group_erp_manager")
