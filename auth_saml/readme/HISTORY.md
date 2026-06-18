@@ -12,7 +12,7 @@
 - Avoid redirecting when there is a SAML error.
 
 
-## 17.0.1.1.0
+## 17.0.1.0.1
 
 When using attribute mapping, only write value that changes.
 No writing the value systematically avoids getting security mail on login/email

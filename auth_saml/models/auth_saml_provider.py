@@ -1,5 +1,5 @@
 # Copyright (C) 2020 Glodo UK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016, 2022 XCG Consulting <https://xcg-consulting.fr/>
+# Copyright (C) 2010-2016, 2022, 2025-2026 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import base64
@@ -81,6 +81,7 @@ class AuthSamlProvider(models.Model):
         "auth.saml.attribute.mapping",
         "provider_id",
         string="Attribute Mapping",
+        copy=True,
     )
     active = fields.Boolean(default=True)
     sequence = fields.Integer(index=True)
@@ -135,6 +136,28 @@ class AuthSamlProvider(models.Model):
     sign_metadata = fields.Boolean(
         default=True,
         help="Whether metadata should be signed or not",
+    )
+    # User creation fields
+    create_user = fields.Boolean(
+        default=False,
+        help="Create user if not found. The login and name will defaults to the SAML "
+        "user matching attribute. Use the mapping attributes to change the value "
+        "used. If a deactivated user has a matching saml uid, activate it rather than"
+        "create a new one.",
+    )
+    create_user_template_id = fields.Many2one(
+        comodel_name="res.users",
+        # Template users, like base.default_user, are disabled by default so allow them
+        domain="[('active', 'in', (True, False))]",
+        default=lambda self: self.env.ref("base.default_user"),
+        help="When creating user, this user is used as a template",
+    )
+    create_user_reactivate = fields.Boolean(
+        "Reactivate when Creating Users",
+        default=False,
+        help="If a deactivated user has a matching SAML uid when trying to create the "
+        "user, and this is checked, then the user is reactivated. Otherwise,"
+        "access is denied.",
     )
 
     @api.model
@@ -256,9 +279,7 @@ class AuthSamlProvider(models.Model):
         }
         state.update(extra_state)
 
-        sig_alg = ds.SIG_RSA_SHA1
-        if self.sig_alg:
-            sig_alg = getattr(ds, self.sig_alg)
+        sig_alg = getattr(ds, self.sig_alg)
 
         saml_client = self._get_client_for_provider(url_root)
         reqid, info = saml_client.prepare_for_authenticate(
@@ -272,6 +293,7 @@ class AuthSamlProvider(models.Model):
         for key, value in info["headers"]:
             if key == "Location":
                 redirect_url = value
+                break
 
         self._store_outstanding_request(reqid)
 
@@ -287,27 +309,15 @@ class AuthSamlProvider(models.Model):
             saml2.entity.BINDING_HTTP_POST,
             self._get_outstanding_requests_dict(),
         )
-        matching_value = None
-
-        if self.matching_attribute == "subject.nameId":
-            matching_value = response.name_id.text
-        else:
-            attrs = response.get_identity()
-
-            for k, v in attrs.items():
-                if k == self.matching_attribute:
-                    matching_value = v
-                    break
-
-            if not matching_value:
-                raise Exception(
-                    f"Matching attribute {self.matching_attribute} not found "
-                    f"in user attrs: {attrs}"
-                )
-
-        if matching_value and isinstance(matching_value, list):
-            matching_value = next(iter(matching_value), None)
-
+        try:
+            matching_value = self._get_attribute_value(
+                response, self.matching_attribute
+            )
+        except KeyError:
+            raise KeyError(
+                f"Matching attribute {self.matching_attribute} not found "
+                f"in user attrs: {response.get_identity()}"
+            ) from None
         if isinstance(matching_value, str) and self.matching_attribute_to_lower:
             matching_value = matching_value.lower()
 
@@ -349,24 +359,59 @@ class AuthSamlProvider(models.Model):
             sign=self.sign_metadata,
         )
 
+    @staticmethod
+    def _get_attribute_value(response, attribute_name: str):
+        """
+
+        :raise: KeyError if attribute is not in the response
+        :param response:
+        :param attribute_name:
+        :return: value of the attribute. if the value is an empty list, return None
+                 otherwise return the first element of the list
+        """
+        if attribute_name == "subject.nameId":
+            return response.name_id.text
+        attrs = response.get_identity()
+        attribute_value = attrs[attribute_name]
+        if isinstance(attribute_value, list):
+            attribute_value = next(iter(attribute_value), None)
+        return attribute_value
+
     def _hook_validate_auth_response(self, response, matching_value):
         self.ensure_one()
         vals = {}
-        attrs = response.get_identity()
 
         for attribute in self.attribute_mapping_ids:
-            if attribute.attribute_name not in attrs:
-                _logger.debug(
+            try:
+                vals[attribute.field_name] = self._get_attribute_value(
+                    response, attribute.attribute_name
+                )
+            except KeyError:
+                _logger.warning(
                     "SAML attribute '%s' not found in response %s",
                     attribute.attribute_name,
-                    attrs,
+                    response.get_identity(),
                 )
-                continue
-
-            attribute_value = attrs[attribute.attribute_name]
-            if isinstance(attribute_value, list):
-                attribute_value = attribute_value[0]
-
-            vals[attribute.field_name] = attribute_value
 
         return {"mapped_attrs": vals}
+
+    def _user_copy_defaults(self, validation):
+        """
+        Returns defaults when copying the template user.
+
+        Can be overridden with extra information.
+        :param validation: validation result
+        :return: a dictionary for copying template user, empty to avoid copying
+        """
+        self.ensure_one()
+        if not self.create_user:
+            return {}
+        saml_uid = validation["user_id"]
+        return {
+            "name": saml_uid,
+            "login": saml_uid,
+            "active": True,
+            # if signature is not provided by mapped_attrs, it will be computed
+            # due to call to compute method in calling method.
+            "signature": None,
+        } | validation.get("mapped_attrs", {})
