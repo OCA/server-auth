@@ -1,3 +1,10 @@
+## 17.0.1.0.5 (2026-06-18)
+
+### Bugfixes
+
+- Fix sending a mail when configuring SAML for a user.
+
+
 ## 17.0.1.0.2 (2025-05-13)
 
 ### Bugfixes
