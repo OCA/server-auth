@@ -134,6 +134,25 @@ msgstr ""
 "proveedor, en formato XML."
 
 #. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__create_user
+msgid "Create User"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__create_user_template_id
+msgid "Create User Template"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__create_user
+msgid ""
+"Create user if not found. The login and name will defaults to the SAML user "
+"matching attribute. Use the mapping attributes to change the value used. If "
+"a deactivated user has a matching saml uid, activate it rather thancreate a "
+"new one."
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__create_uid
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__create_uid
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__create_uid
@@ -223,6 +242,14 @@ msgstr "Configuración del proveedor de identidades"
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__matching_attribute
 msgid "Identity Provider matching attribute"
 msgstr "Atributo de coincidencia del proveedor de identidad"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__create_user_reactivate
+msgid ""
+"If a deactivated user has a matching SAML uid when trying to create the "
+"user, and this is checked, then the user is reactivated. Otherwise,access is "
+"denied."
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__authn_requests_signed
@@ -378,6 +405,23 @@ msgid "Providers"
 msgstr "Proveedores"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Reactivate"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__create_user_reactivate
+msgid "Reactivate when Creating Users"
+msgstr ""
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/controllers/main.py:0
+#, python-format
+msgid "Response Lifetime Exceeded"
+msgstr ""
+
+#. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_users_form
 msgid "SAML"
@@ -517,6 +561,16 @@ msgid "User"
 msgstr "Usuario"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "User Creation Settings"
+msgstr ""
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "User Template"
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model,name:auth_saml.model_res_users_saml
 msgid "User to SAML Provider Mapping"
 msgstr "Asignación de usuario a proveedor SAML"
@@ -535,6 +589,11 @@ msgstr "Desea que se firmen las afirmaciones"
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_response_signed
 msgid "Want Response Signed"
 msgstr "Quiere respuesta firmada"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__create_user_template_id
+msgid "When creating user, this user is used as a template"
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__sign_metadata
