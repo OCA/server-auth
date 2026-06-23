@@ -15,21 +15,38 @@ export class VaultExportFile extends VaultMixin(BinaryField) {
         this.exporter = useService("vault_export");
         this.vault_utils = useService("vault_utils");
     }
+
+    /**
+     * Get the value saved on db because the system is showing just the
+     * size on the props.
+     *
+     * @param {Object} ev
+     */
+    async _getCryptedValue() {
+        const crypted = await this.orm.read(
+            this.props.record.resModel,
+            [this.props.record.resId],
+            [this.props.name]
+        );
+        return crypted[0][this.props.name];
+    }
+
     /**
      * Call the exporter and download the finalized file
      */
     async onFileDownload() {
-        if (!this.props.value) {
-            this.do_warn(
-                _t("Save As..."),
-                _t("The field is empty, there's nothing to save!")
-            );
+        const cryptedValue = await this._getCryptedValue();
+        if (!cryptedValue) {
+            this.notification.add(_t("The field is empty, there's nothing to save!"), {
+                title: _t("Save As..."),
+                type: "danger",
+            });
         } else if (this.vault_utils.supported()) {
             const content = JSON.stringify(
                 await this.exporter.export(
                     await this._getMasterKey(),
-                    this.state.fileName,
-                    this.props.value
+                    this.fileName,
+                    cryptedValue
                 )
             );
 
@@ -38,7 +55,7 @@ export class VaultExportFile extends VaultMixin(BinaryField) {
             for (let i = 0; i < content.length; i++) arr[i] = content.charCodeAt(i);
 
             const blob = new Blob([arr]);
-            await downloadFile(blob, this.state.fileName || "");
+            await downloadFile(blob, this.fileName || "");
         }
     }
 }
