@@ -44,10 +44,11 @@ following measures are in place:
 - Mails and messages are sent from the original user.
 - Impersonated logins are logged and can be consulted through the
   Settings -> Technical menu.
-- 
-
-There is an alternative module to allow logins as another user
-(auth_admin_passkey), but it does not support these security mechanisms.
+- You can optionally forbid impersonation of users with "Administration:
+  Settings" rights by enabling the related option in the settings. There
+  is an alternative module to allow logins as another user
+  (auth_admin_passkey), but it does not support these security
+  mechanisms.
 
 **Table of contents**
 
@@ -58,6 +59,10 @@ Configuration
 =============
 
 The impersonating user must belong to group "Impersonate Users".
+
+If you want to prevent impersonation of users with the *Administration:
+Settings* rights, enable the *Restrict Impersonation of "Administration:
+Settings" Users* option in the settings.
 
 Usage
 =====

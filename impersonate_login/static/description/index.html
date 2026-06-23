@@ -386,10 +386,12 @@ another user.</li>
 <li>Mails and messages are sent from the original user.</li>
 <li>Impersonated logins are logged and can be consulted through the
 Settings -&gt; Technical menu.</li>
-<li></li>
+<li>You can optionally forbid impersonation of users with “Administration:
+Settings” rights by enabling the related option in the settings. There
+is an alternative module to allow logins as another user
+(auth_admin_passkey), but it does not support these security
+mechanisms.</li>
 </ul>
-<p>There is an alternative module to allow logins as another user
-(auth_admin_passkey), but it does not support these security mechanisms.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -407,6 +409,9 @@ Settings -&gt; Technical menu.</li>
 <div class="section" id="configuration">
 <h2><a class="toc-backref" href="#toc-entry-1">Configuration</a></h2>
 <p>The impersonating user must belong to group “Impersonate Users”.</p>
+<p>If you want to prevent impersonation of users with the <em>Administration:
+Settings</em> rights, enable the <em>Restrict Impersonation of “Administration:
+Settings” Users</em> option in the settings.</p>
 </div>
 <div class="section" id="usage">
 <h2><a class="toc-backref" href="#toc-entry-2">Usage</a></h2>

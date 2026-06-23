@@ -297,3 +297,77 @@ class TestImpersonateLogin(HttpCase):
         self.assertEqual(contact.id, contact_id)
         self.assertEqual(contact.ref, "abc")
         self.assertEqual(contact.write_uid, self.admin_user)
+
+    def test_05_create_uid_on_transient_model(self):
+        """Check the create_uid of records created
+        during an impersonated session on a transient model"""
+        # Login as admin
+        self.authenticate(user="admin", password="admin")
+
+        # Impersonate demo user and create a wizard record
+        self._impersonate_user(self.demo_user)
+
+        response = self.url_open(
+            "/web/dataset/call_kw/mail.followers.edit/web_save",
+            data=json.dumps(
+                {
+                    "params": {
+                        "model": "mail.followers.edit",
+                        "method": "web_save",
+                        "args": [
+                            [],
+                            {
+                                "res_model": "res.partner",
+                                "message": "Hello",
+                            },
+                            {},
+                        ],
+                        "kwargs": {},
+                    },
+                }
+            ),
+            headers={"Content-Type": "application/json"},
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        result = data["result"]
+        settings_id = result[0]["id"]
+
+        wizard = self.env["mail.followers.edit"].browse(settings_id)
+        self.assertIn("Hello", wizard.message)
+        self.assertEqual(wizard.create_uid, self.demo_user)
+
+    def test_06_limit_access_to_admin(self):
+        """
+        Test restriction on impersonating admin users
+        with 'Administration: Settings' access rights.
+        """
+        config_settings = self.env["res.config.settings"].create(
+            {"restrict_impersonate_admin_settings": True}
+        )
+        config_settings.execute()
+
+        config_restrict = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("impersonate_login.restrict_impersonate_admin_settings")
+        )
+        self.assertTrue(config_restrict)
+
+        admin_settings_group = self.env.ref("base.group_system")
+        self.admin_user.group_ids += admin_settings_group
+
+        self.authenticate(user=self.demo_login, password=self.demo_password)
+        self.assertEqual(self.session.uid, self.demo_user.id)
+
+        self.demo_user.group_ids += self.env.ref(
+            "impersonate_login.group_impersonate_login"
+        )
+
+        with mute_logger("odoo.http"):
+            data = self._impersonate_user(self.admin_user)
+        self.assertEqual(
+            data["error"]["data"]["message"],
+            "You cannot impersonate users with "
+            "'Administration: Settings' access rights.",
+        )
