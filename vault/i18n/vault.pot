@@ -188,12 +188,6 @@ msgstr ""
 
 #. module: vault
 #. odoo-javascript
-#: code:addons/vault/static/src/common/vault_utils_service.esm.js:0
-msgid "Cancelled"
-msgstr ""
-
-#. module: vault
-#. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 msgid "Characters:"
 msgstr ""
