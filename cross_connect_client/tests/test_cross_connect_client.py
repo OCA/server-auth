@@ -107,7 +107,7 @@ class TestCrossConnectClient(TransactionCase):
             self.server.menu_id.web_icon,
             "cross_connect_client,static/description/web_icon_data.png",
         )
-        self.assertEqual(self.server.menu_id.groups_id, self.server.group_ids)
+        self.assertEqual(self.server.menu_id.group_ids, self.server.group_ids)
         self.assertTrue(self.server.menu_id.action.name, "Test Server")
         self.assertEqual(
             self.server.menu_id.action.url, f"/cross_connect_server/{self.server.id}"
@@ -177,7 +177,7 @@ class TestCrossConnectClient(TransactionCase):
             }
         )
         group = self.server.group_ids[0]
-        user.write({"groups_id": [(4, group.id)]})
+        user.write({"group_ids": [(4, group.id)]})
 
         req.reset_mock()
         req.return_value = _mock_json({"client_id": 1, "token": "test-token"})
@@ -266,7 +266,7 @@ class TestCrossConnectClientController(HttpCase):
             }
         )
         group = server.group_ids[0]
-        user.write({"groups_id": [(4, group.id)]})
+        user.write({"group_ids": [(4, group.id)]})
         self.authenticate("test_user", "user_pas$w0rd")
         with patch(
             "requests.request",
@@ -284,4 +284,4 @@ class TestCrossConnectClientController(HttpCase):
         self.assertFalse(self.env["cross.connect.server"].search([]))
         with mute_logger("odoo.http"):
             resp = self.url_open("/cross_connect_server/1", allow_redirects=False)
-        self.assertEqual(resp.status_code, 400)
+        self.assertEqual(resp.status_code, 422)

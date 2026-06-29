@@ -67,13 +67,13 @@ class CrossConnectServer(models.Model):
                         "name": record.name,
                         "action": f"ir.actions.act_url,{action.id}",  # noqa
                         "web_icon": icon,
-                        "groups_id": [(6, 0, menu_groups.ids)],
+                        "group_ids": [(6, 0, menu_groups.ids)],
                         "sequence": 100,
                     }
                 )
             else:
                 record.menu_id.name = record.name
-                record.menu_id.groups_id = [(6, 0, menu_groups.ids)]
+                record.menu_id.group_ids = [(6, 0, menu_groups.ids)]
 
     @api.depends("menu_id")
     def _compute_web_icon_data(self):
@@ -102,7 +102,7 @@ class CrossConnectServer(models.Model):
 
     def _get_cross_connect_url(self, **params):
         self.ensure_one()
-        groups = self.env.user.groups_id & self.group_ids
+        groups = self.env.user.group_ids & self.group_ids
         if not groups:
             raise UserError(self.env._("You are not allowed to access this server"))
 

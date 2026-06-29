@@ -15,10 +15,7 @@ class ResGroups(models.Model):
         string="Originating Cross Connect Server Group ID"
     )
 
-    _sql_constraints = [
-        (
-            "cross_connect_server_group_id_cross_connect_server_id_unique",
-            "unique (cross_connect_server_group_id, cross_connect_server_id)",
-            "Cross Connect Server Group ID must be unique per Cross Connect Server",
-        )
-    ]
+    _check_unique_cross_server_group = models.Constraint(
+        "unique (cross_connect_server_group_id, cross_connect_server_id)",
+        "Cross Connect Server Group ID must be unique per Cross Connect Server",
+    )
