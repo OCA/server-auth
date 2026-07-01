@@ -1,0 +1,65 @@
+<odoo>
+    <record id="group_subcontractor" model="res.groups">
+        <field name="name">Subcontractor</field>
+        <field name="category_id" ref="base.module_category_user_type" />
+    </record>
+    <!-- Standard views additions -->
+    <record id="web_editor.colorpicker" model="ir.ui.view">
+        <field
+            name="groups_id"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <!-- Standard record rules additions -->
+    <record id="base.res_company_rule_employee" model="ir.rule">
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <record id="mail.ir_rule_discuss_channel_all" model="ir.rule">
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <record id="mail.ir_rule_discuss_channel_member_is_self_all" model="ir.rule">
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <record id="mail.ir_rule_discuss_channel_member_read_all" model="ir.rule">
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <record
+        id="mail.ir_rule_discuss_channel_member_create_is_group_matching_all"
+        model="ir.rule"
+    >
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <record
+        id="mail.ir_rule_discuss_channel_member_create_is_group_matching_group_user"
+        model="ir.rule"
+    >
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+    <record
+        id="mail.ir_rule_discuss_channel_member_create_is_member_group_user"
+        model="ir.rule"
+    >
+        <field
+            name="groups"
+            eval="[Command.link(ref('base_group_subcontractor.group_subcontractor'))]"
+        />
+    </record>
+</odoo>
