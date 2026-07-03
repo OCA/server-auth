@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2026-05-25 20:11+0000\n"
+"PO-Revision-Date: 2026-06-22 17:49+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -168,7 +168,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__restrict_impersonate_admin_settings
 #: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
 msgid "Restrict Impersonation of 'Administration: Settings' Users"
-msgstr "Limita accesso con utente \"Amministrazione: impostazioni\""
+msgstr "Limita accesso ad utenti 'Amministrazione: impostazioni'"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_start
