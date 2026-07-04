@@ -37,6 +37,7 @@ addon | version | maintainers | summary
 [auth_session_timeout](auth_session_timeout/) | 18.0.1.0.0 |  | This module disable all inactive sessions since a given delay
 [auth_signup_verify_email](auth_signup_verify_email/) | 18.0.1.0.0 |  | Force uninvited users to use a good email for signup
 [auth_user_case_insensitive](auth_user_case_insensitive/) | 18.0.1.0.0 |  | Makes the user login field case insensitive
+[base_group_subcontractor](base_group_subcontractor/) | 18.0.1.0.0 | <a href='https://github.com/pedrobaeza'><img src='https://github.com/pedrobaeza.png' width='32' height='32' style='border-radius:50%;' alt='pedrobaeza'/></a> | Extra user type group for restricted access to backend
 [base_user_empty_password](base_user_empty_password/) | 18.0.1.0.0 | <a href='https://github.com/grindtildeath'><img src='https://github.com/grindtildeath.png' width='32' height='32' style='border-radius:50%;' alt='grindtildeath'/></a> | Allows to empty password of users
 [base_user_show_email](base_user_show_email/) | 18.0.1.0.0 |  | Untangle user login and email
 [cross_connect_client](cross_connect_client/) | 18.0.1.0.0 | <a href='https://github.com/paradoxxxzero'><img src='https://github.com/paradoxxxzero.png' width='32' height='32' style='border-radius:50%;' alt='paradoxxxzero'/></a> | Cross Connect Client allows to connect to a Cross Connect Server enabled odoo instance.
