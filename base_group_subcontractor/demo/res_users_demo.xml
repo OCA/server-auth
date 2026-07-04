@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="partner_subcontractor" model="res.partner">
+        <field name="name">John Smith</field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="street">C/ Smith, 17</field>
+        <field name="city">Alicante</field>
+        <field name="state_id" ref="base.state_es_a" />
+        <field name="zip">03008</field>
+        <field name="country_id" ref="base.es" />
+        <field name="tz">Europe/Madrid</field>
+        <field name="email">john.smith@example.com</field>
+    </record>
+    <record
+        id="user_subcontractor"
+        model="res.users"
+        context="{'no_reset_password': True}"
+    >
+        <field name="partner_id" ref="partner_subcontractor" />
+        <field name="login">subcontractor</field>
+        <field name="password">subcontractor</field>
+        <field name="signature" type="html">
+            <span>-- <br />+Mr Subcontractor</span>
+        </field>
+        <field name="company_id" ref="base.main_company" />
+        <field name="groups_id" eval="[Command.clear()]" />
+        <!-- Avoid auto-including this user in any default group -->
+        <field
+            name="image_1920"
+            type="base64"
+            file="base_group_subcontractor/static/img/user_subcontractor-image.png"
+        />
+    </record>
+    <!-- oca-hooks:disable=xml-duplicate-record-id -->
+    <record id="partner_subcontractor" model="res.partner">
+        <field name="user_id" ref="user_subcontractor" />
+    </record>
+    <!-- Add the subcontractor user to the subcontractor group -->
+    <record id="group_subcontractor" model="res.groups">
+        <field name="users" eval="[Command.link(ref('user_subcontractor'))]" />
+    </record>
+</odoo>
