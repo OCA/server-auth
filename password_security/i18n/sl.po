@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Odoo Server 10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-22 00:55+0000\n"
-"PO-Revision-Date: 2026-07-09 06:15+0000\n"
+"PO-Revision-Date: 2026-07-09 08:43+0000\n"
 "Last-Translator: Matjaz Mozetic <matjaz@luxim.si>\n"
 "Language-Team: Slovenian (https://www.transifex.com/oca/teams/23907/sl/)\n"
 "Language: sl\n"
@@ -28,6 +28,8 @@ msgid ""
 "\n"
 "* Lowercase letter (at least %s characters)"
 msgstr ""
+"\n"
+"* Mala črka (najmanj %s znakov)"
 
 #. module: password_security
 #. odoo-python
@@ -37,6 +39,8 @@ msgid ""
 "\n"
 "* Numeric digit (at least %s characters)"
 msgstr ""
+"\n"
+"* Števka (najmanj %s znakov)"
 
 #. module: password_security
 #. odoo-python
@@ -46,6 +50,8 @@ msgid ""
 "\n"
 "* Special character (at least %s characters)"
 msgstr ""
+"\n"
+"* Poseben znak (najmanj %s znakov)"
 
 #. module: password_security
 #. odoo-python
@@ -55,6 +61,8 @@ msgid ""
 "\n"
 "* Uppercase letter (at least %s characters)"
 msgstr ""
+"\n"
+"* Velika črka (najmanj %s znakov)"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -63,6 +71,9 @@ msgid ""
 "                               Minimum number of characters\n"
 "                          </span>"
 msgstr ""
+"<span id=\"minlength\">\n"
+"                               Minimalno število znakov\n"
+"                          </span>"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_minimum
@@ -111,7 +122,7 @@ msgstr "Dni"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Disallow reuse of"
-msgstr ""
+msgstr "Prepovej ponovno uporabo"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_history
@@ -120,6 +131,8 @@ msgid ""
 "Disallow reuse of this many previous passwords - use negative number for "
 "infinite, or 0 to disable"
 msgstr ""
+"Prepovej ponovno uporabo tolikšnega števila prejšnjih gesel - uporabite "
+"negativno število za neomejeno ali 0 za onemogočanje"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_users_pass_history__display_name
@@ -250,25 +263,25 @@ msgstr ""
 #: model:ir.model.fields,help:password_security.field_res_company__password_lower
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_lower
 msgid "Require number of lowercase letters"
-msgstr ""
+msgstr "Zahtevano število malih črk"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_numeric
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_numeric
 msgid "Require number of numeric digits"
-msgstr ""
+msgstr "Zahtevano število števk"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_special
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_special
 msgid "Require number of unique special characters"
-msgstr ""
+msgstr "Zahtevano število unikatnih posebnih znakov"
 
 #. module: password_security
 #: model:ir.model.fields,help:password_security.field_res_company__password_upper
 #: model:ir.model.fields,help:password_security.field_res_config_settings__password_upper
 msgid "Require number of uppercase letters"
-msgstr ""
+msgstr "Zahtevano število velikih črk"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users_pass_history
@@ -279,7 +292,7 @@ msgstr "Zgodovina gesel uporabnikov"
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_special
 #: model:ir.model.fields,field_description:password_security.field_res_config_settings__password_special
 msgid "Special"
-msgstr ""
+msgstr "Posebni znaki"
 
 #. module: password_security
 #: model:ir.model.fields,field_description:password_security.field_res_company__password_upper
@@ -290,7 +303,7 @@ msgstr "Velike črke"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "Use negative number for infinite, or 0 to disable"
-msgstr ""
+msgstr "Uporabite negativno število za neomejeno ali 0 za onemogočanje"
 
 #. module: password_security
 #: model:ir.model,name:password_security.model_res_users
@@ -301,7 +314,7 @@ msgstr "Uporabnik"
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "User can change password in"
-msgstr ""
+msgstr "Uporabnik lahko ponovno spremeni geslo čez"
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
@@ -311,12 +324,12 @@ msgstr "dni."
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "hours again."
-msgstr ""
+msgstr "ur."
 
 #. module: password_security
 #: model_terms:ir.ui.view,arch_db:password_security.res_config_settings_view_form
 msgid "previous passwords."
-msgstr ""
+msgstr "prejšnjih gesel."
 
 #~ msgid "Users"
 #~ msgstr "Uporabniki"
