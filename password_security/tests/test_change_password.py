@@ -1,6 +1,6 @@
 # Copyright 2023 Onestein (<https://www.onestein.eu>)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
-
+import re
 from unittest import mock
 
 from odoo import http
@@ -134,3 +134,14 @@ class TestPasswordSecurityChange(HttpCase):
         # Log in with new password: ensure we end up on the right page
         res_login2 = self.login("admin", "!asdQWE12345_4")
         self.assertEqual(res_login2.request.path_url, "/web")
+
+    def test_20_write_password(self):
+        """Detects expected singleton errors writing passwords for more than one user"""
+        users = self.env["res.users"].search([], limit=2)
+        self.assertEqual(len(users), 2)
+        res = users.write({"password": "!asdQWE12345"})
+        self.assertTrue(res)
+
+        msg = re.escape(users[0].password_match_message())
+        with self.assertRaisesRegex(ValidationError, msg):
+            users.write({"password": "12345678"})
