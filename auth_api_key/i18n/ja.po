@@ -122,6 +122,12 @@ msgid "Name"
 msgstr ""
 
 #. module: auth_api_key
+#. odoo-python
+#: code:addons/auth_api_key/models/auth_api_key.py:0
+msgid "The API key is required."
+msgstr ""
+
+#. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
 msgid ""
 "The API key. Enter a dummy value in this field if it is\n"
