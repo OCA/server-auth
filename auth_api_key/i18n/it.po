@@ -75,6 +75,9 @@ msgstr "Disabilita la chiave API quando si archivia un utente"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__display_name
+#: model:ir.model.fields,field_description:auth_api_key.field_ir_http__display_name
+#: model:ir.model.fields,field_description:auth_api_key.field_res_company__display_name
+#: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__display_name
 msgid "Display Name"
 msgstr "Nome visualizzato"
 
@@ -85,6 +88,9 @@ msgstr "Instradamento HTTP"
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__id
+#: model:ir.model.fields,field_description:auth_api_key.field_ir_http__id
+#: model:ir.model.fields,field_description:auth_api_key.field_res_company__id
+#: model:ir.model.fields,field_description:auth_api_key.field_res_config_settings__id
 msgid "ID"
 msgstr "ID"
 
@@ -97,8 +103,8 @@ msgid ""
 "when enabling/disabling this option)."
 msgstr ""
 "Se selezionata, quando un utente viene archiviato/disattivato, la stessa "
-"modifica viene propagata alla sua chiave API correlata. Non è retroattivo ("
-"non viene fatto nulla quando si abilita/disabilita questa opzione)."
+"modifica viene propagata alla sua chiave API correlata. Non è retroattivo "
+"(non viene fatto nulla quando si abilita/disabilita questa opzione)."
 
 #. module: auth_api_key
 #: model:ir.model.fields,field_description:auth_api_key.field_auth_api_key__key
@@ -121,6 +127,12 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: auth_api_key
+#. odoo-python
+#: code:addons/auth_api_key/models/auth_api_key.py:0
+msgid "The API key is required."
+msgstr ""
+
+#. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__key
 msgid ""
 "The API key. Enter a dummy value in this field if it is\n"
@@ -128,6 +140,12 @@ msgid ""
 msgstr ""
 "Chiave API. Se viene acquisita dalla configurazione\n"
 "        ambiente del server, inserire nel campo un valore fittizio."
+
+#. module: auth_api_key
+#. odoo-python
+#: code:addons/auth_api_key/models/auth_api_key.py:0
+msgid "The key '%s' is not allowed"
+msgstr ""
 
 #. module: auth_api_key
 #: model:ir.model.fields,help:auth_api_key.field_auth_api_key__user_id
