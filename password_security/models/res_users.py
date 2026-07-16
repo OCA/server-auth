@@ -32,6 +32,16 @@ class ResUsers(models.Model):
             vals["password_write_date"] = fields.Datetime.now()
         return super().write(vals)
 
+    def _password_security_exempt_expiration(self):
+        self.ensure_one()
+        group = "password_security.group_password_security_exempt_expiration"
+        return self._has_group(group)
+
+    def _password_security_exempt_rules(self):
+        self.ensure_one()
+        group = "password_security.group_password_security_exempt_rules"
+        return self._has_group(group)
+
     @api.model
     def _get_all_password_params(self):
         params = self.env["ir.config_parameter"].sudo()
@@ -116,6 +126,8 @@ class ResUsers(models.Model):
         self.ensure_one()
         if not password:
             return True
+        if self._password_security_exempt_rules():
+            return True
         pwd_params = self._get_all_password_params()
         password_regex = [
             "^",
@@ -127,14 +139,14 @@ class ResUsers(models.Model):
         ]
         if not re.search("".join(password_regex), password):
             raise ValidationError(self.password_match_message())
-
         return True
 
     def _password_has_expired(self):
         self.ensure_one()
         if not self.password_write_date:
             return True
-
+        if self._password_security_exempt_expiration():
+            return False
         pwd_params = self._get_all_password_params()
         if not pwd_params["expiration_days"]:
             return False
@@ -153,6 +165,8 @@ class ResUsers(models.Model):
         """
         pwd_params = self._get_all_password_params()
         for user in self:
+            if user._password_security_exempt_expiration():
+                continue
             if pwd_params["minimum_hours"] <= 0:
                 continue
             write_date = user.password_write_date
@@ -174,6 +188,8 @@ class ResUsers(models.Model):
         crypt = self._crypt_context()
         pwd_params = self._get_all_password_params()
         for user in self:
+            if user._password_security_exempt_rules():
+                continue
             if not pwd_params["history"]:  # disabled
                 recent_passes = self.env["res.users.pass.history"]
             elif pwd_params["history"] < 0:  # unlimited
