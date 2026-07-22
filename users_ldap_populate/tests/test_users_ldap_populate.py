@@ -66,6 +66,9 @@ def get_fake_ldap(self):
 class TestUsersLdapPopulate(TransactionCase):
     def test_users_ldap_populate(self):
         previous_users_count = self.env["res.users"].search_count([])
+        previous_portal_users_count = self.env["res.users"].search_count(
+            [("share", "=", True)]
+        )
         with patch_ldap(
             self,
             [
@@ -82,10 +85,12 @@ class TestUsersLdapPopulate(TransactionCase):
             )
             self.assertEqual(ldap_populate_wizard.users_created, 1)
             self.assertEqual(
-                ldap_populate_wizard.users_deactivated, previous_users_count - 1
-            )  # Admin is not deactivated
+                ldap_populate_wizard.users_deactivated,
+                previous_users_count - 1 - previous_portal_users_count,
+            )  # Admin is not deactivated, portal users are not deactivated
             self.assertFalse(self.env.ref("base.user_demo").active)
             self.assertTrue(self.env.ref("base.user_admin").active)
+            self.assertTrue(self.env.ref("base.public_user").active)
             self.assertTrue(self.env["res.users"].search([("login", "=", "fake")]))
 
     def test_users_ldap_populate_reactivate(self):
