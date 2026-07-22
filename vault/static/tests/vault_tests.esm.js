@@ -130,6 +130,21 @@ QUnit.module(
             is_keypair(vault.keys, assert);
         });
 
+        QUnit.test(
+            "vault: Test key generation on first usage",
+            async function (assert) {
+                assert.expect(4);
+
+                const env = await makeTestEnv({activateMockServer: true});
+                var vault = env.services.vault;
+
+                // A first-time user has no keys yet. Accessing the public key
+                // must generate them instead of throwing.
+                await vault.get_public_key();
+                is_keypair(vault.keys, assert);
+            }
+        );
+
         QUnit.test("vault: Importer/exporter", async function (assert) {
             // The exporter won't skip empty keys
             const child = {

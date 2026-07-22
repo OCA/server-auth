@@ -119,9 +119,12 @@ const vaultService = {
                 const store = await this._get_object_store();
                 store.clear();
 
-                // Import the keys from the database
-                if (!(await this._import_from_database()))
-                    throw Error(_t("Failed to import keys from database"));
+                // Import the keys from the database or generate them if missing
+                if (!(await this._import_from_database())) {
+                    if (await this._check_database())
+                        throw Error(_t("Failed to import keys from database"));
+                    return await this.generate_keys();
+                }
 
                 // Store the imported keys in the object store for the next calls
                 if (!(await this._export_to_store()))
