@@ -39,8 +39,12 @@ FAKE_TOKEN_RESPONSE = {
     "token_type": "bearer",
     "refresh_expires_in": 1800,
     "scope": "profile email",
-    "access_token": base64.encodebytes(b"my nice token").decode("utf-8"),
-    "refresh_token": base64.encodebytes(b"my nice refresh token").decode("utf-8"),
+    "access_token": base64.encodebytes(b"my nice token")
+    .decode("utf-8")
+    .replace("\n", ""),
+    "refresh_token": base64.encodebytes(b"my nice refresh token")
+    .decode("utf-8")
+    .replace("\n", ""),
 }
 FAKE_USERS_RESPONSE = [
     {
