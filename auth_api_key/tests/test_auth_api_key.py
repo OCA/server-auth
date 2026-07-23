@@ -25,6 +25,25 @@ class TestAuthApiKey(TransactionCase):
             {"name": "good", "user_id": cls.demo_user.id, "key": "api_key"}
         )
 
+    def test_create_without_key_generates_random_key(self):
+        """Test API key creation generates an API key when no key is provided."""
+        api_key = self.AuthApiKey.create(
+            {"name": "generated", "user_id": self.demo_user.id}
+        )
+        self.assertTrue(api_key.key)
+        self.assertEqual(
+            self.AuthApiKey._retrieve_uid_from_api_key(api_key.key),
+            self.demo_user.id,
+        )
+
+    def test_generate_random_key_keeps_existing_key(self):
+        """Test random key generation does not overwrite an existing key."""
+        api_key = self.AuthApiKey.create(
+            {"name": "existing", "user_id": self.demo_user.id, "key": "existing_key"}
+        )
+        api_key.generate_random_key()
+        self.assertEqual(api_key.key, "existing_key")
+
     def test_lookup_key_from_db(self):
         demo_user = self.demo_user
         self.assertEqual(

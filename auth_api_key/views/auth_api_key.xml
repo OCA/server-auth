@@ -21,7 +21,18 @@
                     </h1>
                     <group name="config" colspan="4" col="4">
                         <field name="user_id" colspan="4" />
-                        <field name="key" colspan="4" password="True" />
+                        <label for="key" />
+                        <div class="o_row" colspan="3">
+                            <!-- The password widget masks the key and provides a reveal button. -->
+                            <field name="key" widget="password" required="1" />
+                            <button
+                                name="generate_random_key"
+                                string="Generate Random Token"
+                                type="object"
+                                class="btn-secondary"
+                                invisible="key"
+                            />
+                        </div>
                     </group>
                 </sheet>
             </form>
