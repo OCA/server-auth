@@ -80,6 +80,11 @@ msgid "Display Name"
 msgstr ""
 
 #. module: auth_api_key
+#: model_terms:ir.ui.view,arch_db:auth_api_key.auth_api_key_form_view
+msgid "Generate Random Token"
+msgstr ""
+
+#. module: auth_api_key
 #: model:ir.model,name:auth_api_key.model_ir_http
 msgid "HTTP Routing"
 msgstr ""
