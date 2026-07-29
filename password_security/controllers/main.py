@@ -56,7 +56,9 @@ class PasswordSecurityHome(AuthSignupHome):
         except Exception as e:
             # Here we catch any generic exception since UserError is already
             # handled in parent method web_auth_signup()
-            _logger.exception("Error while processing web_auth_signup")
+            # Keep traceback for debugging, but avoid ERROR level because this
+            # path is used to return controlled validation feedback to users.
+            _logger.debug("Handled web_auth_signup exception", exc_info=True)
             qcontext["error"] = str(e)
             response = request.render("auth_signup.signup", qcontext)
             response.headers["X-Frame-Options"] = "SAMEORIGIN"
