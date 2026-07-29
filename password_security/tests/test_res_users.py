@@ -4,7 +4,7 @@
 import time
 
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 class TestResUsers(TransactionCase):
@@ -150,9 +150,13 @@ class TestResUsers(TransactionCase):
         rec_id._check_password("asdQWE12345_3")
 
     def test_user_with_admin_rights_can_create_users(self):
-        demo = self.env.ref("base.user_demo")
-        demo.group_ids |= self.env.ref("base.group_erp_manager")
-        test1 = self.model_obj.with_user(demo).create(
+        regular_user = new_test_user(
+            self.env,
+            "ps_manager_user",
+            password="!asdQWE12345_5",
+        )
+        regular_user.group_ids |= self.env.ref("base.group_erp_manager")
+        test1 = self.model_obj.with_user(regular_user).create(
             {
                 "login": "test1",
                 "name": "test1",

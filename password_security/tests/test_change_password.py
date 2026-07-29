@@ -13,7 +13,7 @@ class TestPasswordSecurityChange(HttpCase):
     def login(self, username, password):
         """Log in with provided credentials."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:

@@ -15,11 +15,16 @@ class TestPasswordSecurityReset(HttpCase):
 
         # Create user with strong password: no error raised
         new_test_user(self.env, "jackoneill", password="!asdQWE12345_3")
+        self.regular_user = new_test_user(
+            self.env,
+            "ps_regular_user",
+            password="!asdQWE12345_4",
+        )
 
     def reset_password(self, username):
         """Reset user password"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -84,10 +89,10 @@ class TestPasswordSecurityReset(HttpCase):
 
         # Executed by Admin: no error is raised
         self.assertTrue(self.env.user._is_admin())
-        self.env["res.users"].reset_password("demo")
+        self.env["res.users"].reset_password("jackoneill")
 
         # Executed by non-admin user: error is raised
-        self.env = self.env(user=self.env.ref("base.user_demo"))
+        self.env = self.env(user=self.regular_user)
         self.assertFalse(self.env.user._is_admin())
         with self.assertRaises(UserError):
-            self.env["res.users"].reset_password("demo")
+            self.env["res.users"].reset_password("jackoneill")
