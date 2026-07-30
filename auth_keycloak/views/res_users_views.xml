@@ -13,7 +13,7 @@
                     name="button_push_to_keycloak"
                     class="btn btn-primary"
                     help="Create this user on Keycloak too."
-                    attrs="{'invisible': [('oauth_uid', '=', True)]}"
+                    attrs="{'invisible': [('oauth_uid', '!=', False)]}"
                 />
       </header>
     </field>
