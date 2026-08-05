@@ -14,5 +14,8 @@
         "security/res_groups.xml",
         "views/templates.xml",
     ],
+    "demo": [
+        "demo/res_groups_demo.xml",
+    ],
     "installable": True,
 }
