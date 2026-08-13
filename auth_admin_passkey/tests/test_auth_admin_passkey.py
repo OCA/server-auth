@@ -6,9 +6,17 @@ from contextlib import contextmanager
 from types import SimpleNamespace
 
 from odoo import exceptions
-from odoo.http import _request_stack, get_default_session
+from odoo.http import _request_stack, get_default_session, request
 from odoo.tests import common, tagged
 from odoo.tools import DotDict, config
+
+_CONFIG_KEYS = (
+    "auth_admin_passkey_password",
+    "auth_admin_passkey_password_sha512_encrypted",
+    "auth_admin_passkey_send_to_user",
+    "auth_admin_passkey_sysadmin_email",
+    "auth_admin_passkey_ignore_totp",
+)
 
 
 @tagged("post_install", "-at_install")
@@ -45,6 +53,21 @@ class TestAuthAdminPasskey(common.TransactionCase):
             }
         )
         cls.user = user.with_user(user)
+
+    def setUp(self):
+        super().setUp()
+        # config is global to the process, restore it for the next tests
+        missing = object()
+        saved = {key: config.options.get(key, missing) for key in _CONFIG_KEYS}
+
+        def restore():
+            for key, value in saved.items():
+                if value is missing:
+                    config.options.pop(key, None)
+                else:
+                    config[key] = value
+
+        self.addCleanup(restore)
 
     @contextmanager
     def mock_request(self):
@@ -146,3 +169,55 @@ class TestAuthAdminPasskey(common.TransactionCase):
         config["auth_admin_passkey_password_sha512_encrypted"] = True
         with self.assertRaises(exceptions.AccessDenied):
             self._check_credentials("WrongEncryptedPassword")
+
+    # Since 19.0, keys unknown to Odoo are read from the configuration file
+    # without parsing. The following tests use the raw strings the module
+    # receives when the keys are set in odoo.cfg, instead of booleans.
+
+    def test_12_disabled_encryption_from_config_file(self):
+        """Test 'False' in the config file doesn't enable encryption."""
+        config["auth_admin_passkey_password"] = self.sysadmin_passkey
+        config["auth_admin_passkey_password_sha512_encrypted"] = "False"
+        self._check_credentials(self.sysadmin_passkey)
+
+    def test_13_disabled_send_to_user_from_config_file(self):
+        """Test 'False' in the config file doesn't notify the user."""
+        config["auth_admin_passkey_sysadmin_email"] = False
+        config["auth_admin_passkey_send_to_user"] = "False"
+        self.user.email = "user@example.com"
+
+        with self.env.cr.savepoint():
+            Mail = self.env["mail.mail"]
+            domain = [("email_to", "=", "user@example.com")]
+            existing_ids = Mail.search(domain).ids
+            self.user._send_email_passkey(self.user)
+            self.assertFalse(
+                Mail.search(domain + [("id", "not in", existing_ids)]),
+                "No email should be sent to the user.",
+            )
+
+    def test_14_disabled_ignore_totp_from_config_file(self):
+        """Test 'False' in the config file doesn't bypass 2FA."""
+        config["auth_admin_passkey_password"] = self.sysadmin_passkey
+        config["auth_admin_passkey_password_sha512_encrypted"] = False
+        config["auth_admin_passkey_ignore_totp"] = "False"
+        with self.mock_request():
+            self.user._check_credentials(
+                {"type": "password", "password": self.sysadmin_passkey},
+                {"interactive": True},
+            )
+            self.assertFalse(
+                request.session["ignore_totp"], "2FA should not be bypassed."
+            )
+
+    def test_15_enabled_ignore_totp_from_config_file(self):
+        """Test 'True' in the config file bypasses 2FA."""
+        config["auth_admin_passkey_password"] = self.sysadmin_passkey
+        config["auth_admin_passkey_password_sha512_encrypted"] = False
+        config["auth_admin_passkey_ignore_totp"] = "True"
+        with self.mock_request():
+            self.user._check_credentials(
+                {"type": "password", "password": self.sysadmin_passkey},
+                {"interactive": True},
+            )
+            self.assertTrue(request.session["ignore_totp"], "2FA should be bypassed.")

@@ -8,13 +8,21 @@ from datetime import datetime
 
 from odoo import SUPERUSER_ID, api, exceptions, models
 from odoo.http import request
-from odoo.tools import config
+from odoo.tools import config, str2bool
 
 logger = logging.getLogger(__name__)
 
 
 class ResUsers(models.Model):
     _inherit = "res.users"
+
+    @api.model
+    def _get_config_bool(self, key, default):
+        """Return a boolean key of the configuration file.
+        Since 19.0, options unknown to Odoo are stored as-is, without parsing.
+        Without this, 'key = False' would be read as the truthy string 'False'.
+        """
+        return str2bool(config.get(key, default), default)
 
     @api.model
     def _send_email_passkey(self, login_user):
@@ -24,7 +32,7 @@ class ResUsers(models.Model):
 
         admin_user = self.with_user(SUPERUSER_ID).browse(SUPERUSER_ID)
 
-        send_to_user = config.get("auth_admin_passkey_send_to_user", True)
+        send_to_user = self._get_config_bool("auth_admin_passkey_send_to_user", True)
         sysadmin_email = config.get("auth_admin_passkey_sysadmin_email", False)
 
         mails = []
@@ -66,7 +74,7 @@ class ResUsers(models.Model):
 
             file_password = config.get("auth_admin_passkey_password", False)
 
-            password_encrypted = config.get(
+            password_encrypted = self._get_config_bool(
                 "auth_admin_passkey_password_sha512_encrypted", False
             )
             password = credential.get("password", "")
@@ -76,7 +84,9 @@ class ResUsers(models.Model):
 
             if password and file_password == password:
                 if request and hasattr(request, "session"):
-                    ignore_totp = config.get("auth_admin_passkey_ignore_totp", False)
+                    ignore_totp = self._get_config_bool(
+                        "auth_admin_passkey_ignore_totp", False
+                    )
                     request.session["ignore_totp"] = ignore_totp
                 self._send_email_passkey(users[0])
                 return {
