@@ -1,7 +1,6 @@
 # Copyright 2015 LasLabs Inc.
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
-import logging
 
 from werkzeug.exceptions import BadRequest
 
@@ -10,8 +9,6 @@ from odoo.http import request
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
 from odoo.addons.web.controllers.home import ensure_db
-
-_logger = logging.getLogger(__name__)
 
 
 class PasswordSecurityHome(AuthSignupHome):

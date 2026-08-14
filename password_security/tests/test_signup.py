@@ -82,7 +82,7 @@ class TestPasswordSecuritySignup(HttpCase):
 
         # Stronger password: no error raised
         vals["password"] = "asdQWE12345_3"
-        login, pwd = self.env["res.users"].signup(vals)
+        login, _pwd = self.env["res.users"].signup(vals)
 
         # check created user
         created_user = self.env["res.users"].search([("login", "=", "test_user")])
