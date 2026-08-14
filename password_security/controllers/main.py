@@ -12,11 +12,11 @@ from odoo.addons.web.controllers.home import ensure_db
 
 
 class PasswordSecurityHome(AuthSignupHome):
-    def do_signup(self, qcontext):
+    def do_signup(self, qcontext, *args, **kwargs):
         password = qcontext.get("password")
         user = request.env.user
         user._check_password(password)
-        return super().do_signup(qcontext)
+        return super().do_signup(qcontext, *args, **kwargs)
 
     @http.route()
     def web_login(self, *args, **kw):
@@ -35,6 +35,11 @@ class PasswordSecurityHome(AuthSignupHome):
         request.session.logout(keep_db=True)
         # I was kicked out, so set login_success in request params to False
         request.params["login_success"] = False
+        # res.users._login() loaded login_date into this env's cache before
+        # _update_last_login() created the new res.users.log, so the cached
+        # value is stale. _generate_signup_token() signs login_date into the
+        # token, and a stale one is rejected as an invalid signup token.
+        request.env.user.invalidate_recordset(["login_date", "log_ids"])
         redirect = request.env.user.partner_id._get_signup_url()
         return request.redirect(redirect)
 

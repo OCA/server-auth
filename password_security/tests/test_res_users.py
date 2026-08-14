@@ -4,7 +4,7 @@
 import time
 
 from odoo.exceptions import UserError
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import TransactionCase, new_test_user
 
 
 class TestResUsers(TransactionCase):
@@ -150,9 +150,15 @@ class TestResUsers(TransactionCase):
         rec_id._check_password("asdQWE12345_3")
 
     def test_user_with_admin_rights_can_create_users(self):
-        demo = self.env.ref("base.user_demo")
-        demo.groups_id |= self.env.ref("base.group_erp_manager")
-        test1 = self.model_obj.with_user(demo).create(
+        # Demo data is not loaded on the OCA CI, so base.user_demo cannot be
+        # relied upon; provide an equivalent user instead.
+        manager = new_test_user(
+            self.env,
+            "manager",
+            groups="base.group_user,base.group_partner_manager,base.group_erp_manager",
+            password=self.password,
+        )
+        test1 = self.model_obj.with_user(manager).create(
             {
                 "login": "test1",
                 "name": "test1",

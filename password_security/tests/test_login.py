@@ -12,18 +12,19 @@ from odoo.tests.common import HOST, HttpCase, Opener, get_db_name, new_test_user
 
 @tagged("-at_install", "post_install")
 class TestPasswordSecurityLogin(HttpCase):
-    def setUp(self):
-        super().setUp()
-        self.username = "jackoneill"
-        self.passwd = "!asdQWE12345_3"
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.username = "jackoneill"
+        cls.passwd = "!asdQWE12345_3"
 
         # Create user with strong password: no error raised
-        new_test_user(self.env, self.username, password=self.passwd)
+        new_test_user(cls.env, cls.username, password=cls.passwd)
 
     def login(self, username, password):
         """Log in with provided credentials."""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -152,3 +153,70 @@ class TestPasswordSecurityLogin(HttpCase):
         req_page = self.url_open("/web")
         self.assertTrue(req_page.request.path_url.startswith("/web/login"))
         self.assertEqual(req_page.status_code, 200)
+
+    def test_08_web_login_expire_pass_reset_token_is_valid(self):
+        """The expiry bounce should land on a usable reset password page
+
+        Regression test for an "Invalid signup token" error on that page. In
+        19.0 res.users._login() is an instance method running on the request
+        env. When the user already has a timezone, the browser ``tz`` cookie
+        makes ``not user.login_date`` evaluate, which loads login_date (a
+        related field on log_ids.create_date) into the env cache *before*
+        _update_last_login() creates the new res.users.log. That stale value
+        is then signed into the signup token by _generate_signup_token(), and
+        validating the token against the fresh login_date rejects it.
+        """
+        tz = "Europe/Brussels"
+
+        with Registry(get_db_name()).cursor() as cr:
+            env = self.env(cr)
+            user = env["res.users"].search([("login", "=", self.username)])
+            # A timezone must already be set: `not user.tz or not
+            # user.login_date` only reaches login_date when user.tz is truthy.
+            user.tz = tz
+            # Expire the password so that web_login() bounces to the reset page
+            user.password_write_date = datetime.now() - timedelta(days=3)
+            env["ir.config_parameter"].sudo().set_param(
+                "password_security.expiration_days", 1
+            )
+            # A previous login, backdated so the stale and the fresh
+            # login_date really differ: create_date is truncated to the second
+            # and both would otherwise collapse into the same value.
+            # It is filled from cr.now(), a PostgreSQL NOW() cached for the
+            # whole transaction, so freezing the clock with freezegun does not
+            # move it, and it cannot be passed in the create values either
+            # since LOG_ACCESS_COLUMNS are dropped from them. Patch the cursor
+            # clock around the create instead.
+            two_days_ago = datetime.now() - timedelta(days=2)
+            with mock.patch.object(type(cr), "now", return_value=two_days_ago):
+                # sudo() keeps env.uid, so create_uid is still the user,
+                # while granting the admin-only create on res.users.log.
+                log = env["res.users.log"].with_user(user).sudo().create({})
+            self.assertEqual(log.create_uid, user)
+            self.assertAlmostEqual(
+                log.create_date, two_days_ago, delta=timedelta(minutes=1)
+            )
+
+        self.session = http.root.session_store.new()
+        self.opener = Opener(self)
+        self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
+        # Only a real browser sends this cookie, which is why the rest of the
+        # suite never reaches the faulty branch.
+        self.opener.cookies.set("tz", tz, domain=HOST, path="/")
+
+        with mock.patch("odoo.http.db_filter") as db_filter:
+            db_filter.side_effect = lambda dbs, host=None: [get_db_name()]
+            response = self.url_open(
+                "/web/login",
+                data={
+                    "login": self.username,
+                    "password": self.passwd,
+                    "csrf_token": http.Request.csrf_token(self),
+                },
+            )
+        response.raise_for_status()
+
+        # We got kicked out to the reset password page...
+        self.assertIn("/web/reset_password", response.request.path_url)
+        # ...and the token it was given must actually be usable
+        self.assertNotIn("Invalid signup token", response.text)

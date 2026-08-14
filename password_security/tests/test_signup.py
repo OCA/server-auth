@@ -22,7 +22,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def signup(self, username, password):
         """Signup user"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
@@ -116,11 +116,17 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_05_web_auth_signup_invalid_qcontext(self):
         """It should catch EndTestException on signup qcontext"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
+        # autospec is required: a plain MagicMock fabricates any attribute on
+        # access, including original_routing, which makes Odoo mistake this
+        # helper for a routed endpoint while building the routing map and log
+        # "is a controller endpoint without any route, skipping".
         with mock.patch(
-            "odoo.addons.auth_signup.controllers.main.AuthSignupHome.get_auth_signup_qcontext"
+            "odoo.addons.auth_signup.controllers.main.AuthSignupHome"
+            ".get_auth_signup_qcontext",
+            autospec=True,
         ) as qcontext:
             qcontext.side_effect = EndTestException
             with self.assertRaises(HTTPError):
@@ -130,7 +136,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_06_web_auth_signup_invalid_render(self):
         """It should render & return signup form on invalid"""
         self.session = http.root.session_store.new()
-        self.opener = Opener(self.env.cr)
+        self.opener = Opener(self)
         self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
 
         with mock.patch("odoo.http.db_filter") as db_filter:
