@@ -18,7 +18,7 @@ class TestUI(common.HttpCase):
     """
 
     def setUp(self):
-        super(TestUI, self).setUp()
+        super().setUp()
 
         with self.registry.cursor() as test_cursor:
             env = self.env(test_cursor)
