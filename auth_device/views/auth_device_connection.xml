@@ -2,20 +2,22 @@
 <!-- Copyright 2023 ACSONE SA/NV
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <template id="login" inherit_id="web.login" name="Device Login buttons">
-        <xpath expr="//div[hasclass('o_login_auth')]" position="inside">
-            <em t-attf-class="d-block text-center text-muted small">- or -</em>
-            <div class="o_auth_device list-group mt-1 mb-1 text-left">
-                <a
-                    class="list-group-item list-group-item-action py-2"
-                    data-toggle="modal"
-                    data-target="#loginDevice"
-                >
-                    <i class="fa fa-credit-card" />
-                    Log in with your Device
-                </a>
-            </div>
+    <template
+        id="auth_device_login_oauth"
+        inherit_id="web.login_oauth"
+        name="Device Login buttons"
+    >
+        <xpath expr="//t[@t-set='auth_btns']" position="after">
+            <!-- device_body set in plain HTML for translations -->
+            <t t-set="device_body">Log in with your Device</t>
+            <t
+                t-set="device_btn"
+                t-value="[{'css_class': 'fa fa-credit-card', 'body': device_body, 'list_item_class': 'o_auth_device_login'}]"
+            />
+            <t t-set="auth_btns" t-value="auth_btns + device_btn" />
         </xpath>
+    </template>
+    <template id="login" inherit_id="web.login" name="Device Login buttons">
         <xpath expr="//form" position="after">
             <div
                 class="modal fade"
@@ -34,10 +36,10 @@
                             >Log in with your device</h5>
                             <button
                                 type="button"
-                                class="close"
-                                data-dismiss="modal"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
                                 aria-label="Close"
-                            >×</button>
+                            />
                         </div>
                         <form
                             id="login_device"
@@ -78,7 +80,7 @@
                                 <button
                                     type="button"
                                     class="btn btn-secondary"
-                                    data-dismiss="modal"
+                                    data-bs-dismiss="modal"
                                 >Close</button>
                                 <button
                                     id="submit_device_code"

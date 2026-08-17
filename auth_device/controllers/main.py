@@ -4,12 +4,12 @@
 
 import werkzeug.utils
 
-from odoo import _, http
+from odoo import http
 from odoo.exceptions import AccessDenied
 from odoo.http import request
 
 from odoo.addons.portal.controllers.web import Home
-from odoo.addons.web.controllers.main import ensure_db, login_and_redirect
+from odoo.addons.web.controllers.utils import ensure_db
 
 
 class DeviceController(Home):
@@ -28,11 +28,11 @@ class DeviceController(Home):
         if response.is_qweb:
             error = request.params.get("auth_device_error")
             if error == "1":
-                error = _("Access Denied")
+                error = self.env._("Access Denied")
             elif error == "2":
-                error = _("Missing Device Code")
+                error = self.env._("Missing Device Code")
             elif error == "3":
-                error = _("Internal Error")
+                error = self.env._("Internal Error")
             else:
                 error = None
             if error:
@@ -42,7 +42,7 @@ class DeviceController(Home):
 
 
 class AuthDeviceController(http.Controller):
-    @http.route("/auth_device/login", type="http", auth="none")
+    @http.route("/auth_device/login", type="http", auth="none", readonly=False)
     def device_login(self, redirect="/web", **kw):
         ensure_db()
         if request.httprequest.method == "GET" or request.session.uid:
@@ -70,12 +70,13 @@ class AuthDeviceController(http.Controller):
             url = "/web/login?auth_device_error=3"
         elif user and request.httprequest.method == "POST":
             try:
-                return login_and_redirect(
-                    db=request.session.db,
-                    login=user.login,
-                    key=request.params["device_code"],
-                    redirect_url=redirect,
-                )
+                credential = {
+                    "login": user.login,
+                    "password": request.params["device_code"],
+                    "type": "password",
+                }
+                request.session.authenticate(request.env, credential)
+                return request.redirect(redirect or "/web")
             except AccessDenied:
                 url = "/web/login?auth_device_error=1"
         return werkzeug.utils.redirect(url, 303)

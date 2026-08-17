@@ -6,24 +6,22 @@ from odoo import exceptions, fields, models
 
 class ResUsers(models.Model):
     _inherit = "res.users"
-    _sql_constraints = [
-        (
-            "device_code_uniq",
-            "UNIQUE(device_code)",
-            "The device code should be unique.",
-        )
-    ]
 
-    device_code = fields.Char("Device Code", copy=False)
+    _device_code_uniq = models.Constraint(
+        "UNIQUE(device_code)",
+        "The device code should be unique.",
+    )
+
+    device_code = fields.Char(copy=False)
 
     is_allowed_to_connect_with_device = fields.Boolean(
         string="Is allowed to connect with the external device?"
     )
 
     # pylint: disable=missing-return
-    def _check_credentials(self, password, env):
+    def _check_credentials(self, credential, env):
         try:
-            super()._check_credentials(password, env)
+            return super()._check_credentials(credential, env)
 
         except exceptions.AccessDenied:
             # Just be sure that parent methods aren't wrong
@@ -32,10 +30,16 @@ class ResUsers(models.Model):
                 .sudo()
                 .search(
                     [
-                        ("device_code", "=", password),
+                        ("device_code", "=", credential["password"]),
                         ("is_allowed_to_connect_with_device", "=", True),
                     ]
                 )
             )
             if not user or len(user) > 1:
                 raise
+
+            return {
+                "uid": self.env.user.id,
+                "auth_method": "passkey",
+                "mfa": "skip",
+            }

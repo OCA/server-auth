@@ -4,7 +4,7 @@
 {
     "name": "Auth Device",
     "summary": "Allows users to log in through an external device.",
-    "version": "14.0.1.0.0",
+    "version": "19.0.1.0.0",
     "license": "AGPL-3",
     "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
     "maintainers": ["FrancoMaxime"],
@@ -13,8 +13,12 @@
         "web",
     ],
     "data": [
-        "views/assets_frontend.xml",
         "views/auth_device_connection.xml",
         "views/res_users_views.xml",
     ],
+    "assets": {
+        "web.assets_frontend": [
+            "auth_device/static/src/interactions/*",
+        ],
+    },
 }

@@ -6,11 +6,11 @@ from psycopg2.errors import UniqueViolation
 
 from odoo import exceptions
 from odoo.tests import tagged
-from odoo.tests.common import SavepointCase
+from odoo.tests.common import TransactionCase
 
 
 @tagged("post_install", "-at_install")
-class TestAuthDevice(SavepointCase):
+class TestAuthDevice(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -37,16 +37,29 @@ class TestAuthDevice(SavepointCase):
         )
         cls.user = cls.user.with_user(cls.user)
 
+    def _device_credential(self, device_code):
+        return {
+            "login": self.user.login,
+            "password": device_code,
+            "type": "password",
+        }
+
     def test_01_normal_login_succeed(self):
-        self.user._check_credentials(self.user_device_code, {"interactive": True})
+        self.user._check_credentials(
+            self._device_credential(self.user_device_code), {"interactive": True}
+        )
 
     def test_02_normal_login_fail(self):
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(self.bad_device_code, {"interactive": True})
+            self.user._check_credentials(
+                self._device_credential(self.bad_device_code), {"interactive": True}
+            )
 
     def test_03_missing_device_code(self):
-        with self.assertRaises(AssertionError):
-            self.user._check_credentials("", {"interactive": True})
+        with self.assertRaises(exceptions.AccessDenied):
+            self.user._check_credentials(
+                self._device_credential(""), {"interactive": True}
+            )
 
     def test_04_duplicate_device_code(self):
         partner_2 = self.partner_user = self.ResPartner.create(
@@ -71,4 +84,6 @@ class TestAuthDevice(SavepointCase):
     def test_05_not_allowed_to_connect(self):
         self.user.sudo().is_allowed_to_connect_with_device = False
         with self.assertRaises(exceptions.AccessDenied):
-            self.user._check_credentials(self.user_device_code, {"interactive": True})
+            self.user._check_credentials(
+                self._device_credential(self.user_device_code), {"interactive": True}
+            )
