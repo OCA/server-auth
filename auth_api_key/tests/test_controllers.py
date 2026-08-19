@@ -17,7 +17,9 @@ class TestControllers(HttpCase):
             cls.env,
             name="Test User",
             login="test",
-            password="test",
+            # Strong enough for password_security, which lands in the same
+            # database on the CI and enforces its policy on every user.
+            password="Test!2345",
             email="test@test.com",
             group_ids=[cls.env.ref("base.group_user").id],
             company_id=cls.env.company.id,

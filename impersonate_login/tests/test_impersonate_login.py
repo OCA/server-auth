@@ -15,7 +15,9 @@ class TestImpersonateLogin(HttpCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.demo_login = "impersonate_demo"
-        cls.demo_password = "demo"
+        # Strong enough for password_security, which lands in the same
+        # database on the CI and enforces its policy on every user.
+        cls.demo_password = "Demo!2345"
         # Admin always exists; ensure it can impersonate and has a known password
         cls.admin_user = cls.env.ref("base.user_admin")
         # Make sure admin can use the feature (group check in session info)
