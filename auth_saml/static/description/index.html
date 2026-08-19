@@ -1,0 +1,183 @@
+<a
+  class="reference external image-reference"
+  href="http://www.gnu.org/licenses/agpl-3.0-standalone.html"
+  ><object
+    data="https://img.shields.io/badge/licence-AGPL--3-blue.svg"
+    type="image/svg+xml"
+  >
+    License: AGPL-3
+  </object></a
+>
+<div class="section" id="saml2-authentication">
+  <h1>SAML2 authentication</h1>
+  <p>Let users log into Odoo via an SAML2 identity provider.</p>
+  <p>
+    This module allows to deport the management of users and passwords in an external
+    authentication system to provide SSO functionality (Single Sign On) between Odoo and
+    other applications of your ecosystem.
+  </p>
+  <div class="section" id="benefits">
+    <h2>Benefits</h2>
+    <ul class="simple">
+      <li>
+        Reducing the time spent typing different passwords for different accounts.
+      </li>
+      <li>Reducing the time spent in IT support for password oversights.</li>
+      <li>Centralizing authentication systems.</li>
+      <li>
+        Securing all input levels / exit / access to multiple systems without prompting
+        users.
+      </li>
+      <li>
+        The centralization of access control information for compliance testing to
+        different standards.
+      </li>
+    </ul>
+  </div>
+  <div class="section" id="installation">
+    <h2>Installation</h2>
+    <p>Install as you would install any Odoo addon.</p>
+    <div class="section" id="dependencies">
+      <h3>Dependencies</h3>
+      <p>This addon requires pysaml2 and xmlsec1.</p>
+    </div>
+  </div>
+  <div class="section" id="configuration">
+    <h2>Configuration</h2>
+    <p>To use this module, you need an IDP server, properly set up.</p>
+
+    <ol>
+      <li>
+        Configure the module according to your IdP’s instructions (Settings > Users &
+        Companies > SAML Providers).
+      </li>
+      <li>Pre-create your users and set the SAML information against the user.</li>
+    </ol>
+
+    <p>
+      By default, the module let users have both a password and SAML ids. To increase
+      security, disable passwords by using the option in Settings. Note that the admin
+      account can still have a password, even if the option is activated.
+    </p>
+
+    <p>
+      If all the users have a SAML id in a single provider, you can set automatic
+      redirection in the provider settings. It is still possible to access the login
+      without redirection by using the query parameter
+      <code>disable_autoredirect</code>, as in
+      <code>https://example.com/web/login?disable_autoredirect=</code> The login is also
+      displayed if there is an error with SAML login, in order to display any error
+      message.
+    </p>
+  </div>
+  <div class="section" id="usage">
+    <h2>Usage</h2>
+    <p>
+      Users can login with the configured SAML IdP with buttons added in the login
+      screen.
+    </p>
+  </div>
+  <div class="section" id="demo">
+    <h2>Demo</h2>
+    <a
+      class="reference external image-reference"
+      href="https://runbot.odoo-community.org/runbot/149/15.0"
+      ><img
+        alt="Try me on Runbot"
+        src="https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas"
+    /></a>
+  </div>
+  <div class="section" id="known-issues-roadmap">
+    <h2>Known issues / Roadmap</h2>
+    <p>None for now.</p>
+  </div>
+  <div class="section" id="bug-tracker">
+    <h2>Bug Tracker</h2>
+    <p>
+      Bugs are tracked on
+      <a class="reference external" href="https://github.com/OCA/server-auth/issues"
+        >GitHub Issues</a
+      >. In case of trouble, please check there if your issue has already been reported.
+      If you spotted it first, help us smash it by providing a detailed and welcomed
+      feedback
+      <a
+        class="reference external"
+        href="https://github.com/OCA/server-auth/issues/new?body=module:%20auth_saml%0Aversion:%2011.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**"
+        >here</a
+      >.
+    </p>
+  </div>
+  <div class="section" id="credits">
+    <h2>Credits</h2>
+    <div class="section" id="contributors">
+      <h3>Contributors</h3>
+      <p>In order of appearance:</p>
+      <blockquote>
+        <ul class="simple">
+          <li>
+            Florent Aide, &lt;<a
+              class="reference external"
+              href="mailto:florent.aide&#64;xcg-consulting.fr"
+              >florent.aide&#64;xcg-consulting.fr</a
+            >&gt;
+          </li>
+          <li>
+            Vincent Hatakeyama, &lt;<a
+              class="reference external"
+              href="mailto:vincent.hatakeyama&#64;xcg-consulting.fr"
+              >vincent.hatakeyama&#64;xcg-consulting.fr</a
+            >&gt;
+          </li>
+          <li>
+            Alexandre Brun, &lt;<a
+              class="reference external"
+              href="mailto:alexandre.brun&#64;xcg-consulting.fr"
+              >alexandre.brun&#64;xcg-consulting.fr</a
+            >&gt;
+          </li>
+          <li>
+            Jeremy Co Kim Len, &lt;<a
+              class="reference external"
+              href="mailto:jeremy.cokimlen&#64;vinci-concessions.com"
+              >jeremy.cokimlen&#64;vinci-concessions.com</a
+            >&gt;
+          </li>
+          <li>
+            Houzéfa Abbasbhay &lt;<a
+              class="reference external"
+              href="mailto:houzefa.abba&#64;xcg-consulting.fr"
+              >houzefa.abba&#64;xcg-consulting.fr</a
+            >&gt;
+          </li>
+          <li>
+            Bhavesh Odedra &lt;<a
+              class="reference external"
+              href="mailto:houzefa.abba&#64;xcg-consulting.fr"
+              >bodedra&#64;opensourceintegrators.com</a
+            >&gt;
+          </li>
+        </ul>
+      </blockquote>
+    </div>
+    <div class="section" id="maintainer">
+      <h3>Maintainer</h3>
+      <a class="reference external image-reference" href="https://odoo-community.org"
+        ><img
+          alt="Odoo Community Association"
+          src="https://odoo-community.org/logo.png"
+      /></a>
+      <p>This module is maintained by the OCA.</p>
+      <p>
+        OCA, or the Odoo Community Association, is a nonprofit organization whose
+        mission is to support the collaborative development of Odoo features and promote
+        its widespread use.
+      </p>
+      <p>
+        To contribute to this module, please visit
+        <a class="reference external" href="http://odoo-community.org"
+          >http://odoo-community.org</a
+        >.
+      </p>
+    </div>
+  </div>
+</div>
