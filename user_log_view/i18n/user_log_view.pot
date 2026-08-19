@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 18.0\n"
+"Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -22,14 +22,4 @@ msgstr ""
 #. module: user_log_view
 #: model_terms:ir.ui.view,arch_db:user_log_view.res_users_log_view_search
 msgid "Date"
-msgstr ""
-
-#. module: user_log_view
-#: model_terms:ir.ui.view,arch_db:user_log_view.res_users_log_view_search
-msgid "Group By"
-msgstr ""
-
-#. module: user_log_view
-#: model_terms:ir.ui.view,arch_db:user_log_view.res_users_log_view_search
-msgid "Test Search"
 msgstr ""
