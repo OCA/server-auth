@@ -88,7 +88,7 @@ class VaultRight(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
-        if not res.allowed_share and not res.env.su:
+        if not res.env.su and res.filtered(lambda r: not r.allowed_share):
             self.raise_access_error()
 
         res.log_access()
