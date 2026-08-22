@@ -157,3 +157,42 @@ class TestAccessRights(BaseCommon):
         right.with_user(self.user).create({"vault_id": self.vault.id, "user_id": 2})
 
         right.unlink()
+
+    def test_batch_create(self):
+        # Batched create must not raise a singleton error
+        other_user = new_test_user(self.env, login="test-vault-user-2")
+        rights = self.env["vault.right"].create(
+            [
+                {"vault_id": self.vault.id, "user_id": self.user.id},
+                {"vault_id": self.vault.id, "user_id": other_user.id},
+            ]
+        )
+        self.assertEqual(len(rights), 2)
+
+    def test_batch_create_no_permission(self):
+        # Batched create by a user without share permission must be denied
+        self.env["vault.right"].create(
+            {"vault_id": self.vault.id, "user_id": self.user.id, "perm_share": False}
+        )
+        with self.assertRaises(AccessError):
+            self.env["vault.right"].with_user(self.user).create(
+                [
+                    {"vault_id": self.vault.id, "user_id": 2},
+                    {"vault_id": self.vault.id, "user_id": 3},
+                ]
+            )
+
+    def test_sudo_create_bypasses_share_check(self):
+        # As superuser the share-permission guard is bypassed
+        right = (
+            self.env["vault.right"]
+            .sudo()
+            .create(
+                {
+                    "vault_id": self.vault.id,
+                    "user_id": self.user.id,
+                    "perm_share": False,
+                }
+            )
+        )
+        self.assertTrue(right)
