@@ -67,6 +67,9 @@ class ResUsers(models.Model):
         return data
 
     def _check_password_policy(self, passwords):
+        # Skip the check when installing a module, to avoid blocking any installation
+        if self.env.context.get("install_mode"):
+            return
         result = super()._check_password_policy(passwords)
 
         for password in passwords:
