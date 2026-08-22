@@ -11,7 +11,7 @@ _logger = logging.getLogger(__name__)
 
 
 class Controller(http.Controller):
-    @http.route("/vault/inbox/<string:token>", type="http", auth="public")
+    @http.route("/vault/inbox/<string:token>", type="http", auth="public", website=True)
     def vault_inbox(self, token):
         ctx = {"disable_footer": True, "token": token}
         # Find the right token
