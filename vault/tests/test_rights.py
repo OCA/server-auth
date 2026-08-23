@@ -18,6 +18,7 @@ class TestAccessRights(BaseCommon):
         cls.user = new_test_user(
             cls.env,
             login="test-vault-user",
+            groups="base.group_user,vault.group_vault_user",
         )
         cls.vault = cls.env["vault"].create({"name": "Vault"})
         cls.entry = cls.env["vault.entry"].create(
@@ -27,6 +28,45 @@ class TestAccessRights(BaseCommon):
             {"entry_id": cls.entry.id, "name": "Field", "value": "Value"}
         )
         cls.vault.right_ids.write({"key": "Owner"})
+
+    def test_group_access(self):
+        group = self.env.ref("vault.group_vault_user")
+
+        # A member of the group can access the module
+        self.assertTrue(self.user.has_group("vault.group_vault_user"))
+        right = self.env["vault.right"].create(
+            {"vault_id": self.vault.id, "user_id": self.user.id}
+        )
+        self.assertTrue(self.vault.with_user(self.user).read())
+
+        # Removing the group denies access to the module
+        self.user.groups_id -= group
+        self.assertFalse(self.user.has_group("vault.group_vault_user"))
+
+        with self.assertRaises(AccessError):
+            self.vault.with_user(self.user).read()
+        with self.assertRaises(AccessError):
+            right.with_user(self.user).read()
+
+    def test_read_only_shared_access(self):
+        right = self.env["vault.right"].create(
+            {
+                "vault_id": self.vault.id,
+                "user_id": self.user.id,
+                "perm_create": False,
+                "perm_write": False,
+                "perm_share": False,
+                "perm_delete": False,
+            }
+        )
+
+        self.assertTrue(self.vault.with_user(self.user).read())
+        self.assertTrue(right.with_user(self.user).read())
+
+        with self.assertRaises(AccessError):
+            right.with_user(self.user).perm_write = True
+        with self.assertRaises(AccessError):
+            right.with_user(self.user).unlink()
 
     def test_vault_reencrypt(self):
         right = self.env["vault.right"].create(

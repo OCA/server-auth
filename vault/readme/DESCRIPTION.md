@@ -14,6 +14,12 @@ entries more easily.
 This modules requires a secure context for the browser to work properly
 and therefore HTTPS support is required.
 
+Access to the module is controlled by the *Vault > User* security group.
+New users receive it by default; remove it from a user to revoke their
+access to the module without affecting their existing keys. Sharing
+individual vaults with per-user read/write/share/delete rights continues
+to work independently of this group.
+
 The [vault-recovery](https://github.com/fkantelberg/vault-recovery)
 project focuses on disaster recovery in case of an incident to recover
 secrets from old database backups or old exports.

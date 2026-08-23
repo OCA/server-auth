@@ -5,6 +5,12 @@ import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 import {user} from "@web/core/user";
 
+// Prefetch the group membership since `show` is synchronous
+let hasVaultAccess = false;
+user.hasGroup("vault.group_vault_user").then((result) => {
+    hasVaultAccess = result;
+});
+
 export function vaultPreferencesItem(env) {
     return {
         type: "item",
@@ -19,6 +25,7 @@ export function vaultPreferencesItem(env) {
             env.services.action.doAction(actionDescription);
         },
         sequence: 55,
+        show: () => hasVaultAccess,
     };
 }
 

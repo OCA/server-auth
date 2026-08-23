@@ -37,27 +37,27 @@
 
     <menuitem
         id="menu_vault"
-        groups="base.group_user"
+        groups="vault.group_vault_user"
         action="action_vault"
         web_icon="vault,static/description/icon.png"
     />
     <menuitem
         id="menu_vault_entry"
-        groups="base.group_user"
+        groups="vault.group_vault_user"
         parent="menu_vault"
         action="action_vault_entry"
         sequence="30"
     />
     <menuitem
         id="menu_vault_inbox"
-        groups="base.group_user"
+        groups="vault.group_vault_user"
         parent="vault.menu_vault"
         action="action_vault_inbox"
         sequence="40"
     />
     <menuitem
         id="menu_vault_right"
-        groups="base.group_user"
+        groups="vault.group_vault_user"
         parent="vault.menu_vault"
         action="action_vault_right"
         sequence="50"

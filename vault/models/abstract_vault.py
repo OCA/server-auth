@@ -42,9 +42,11 @@ class AbstractVault(models.AbstractModel):
             vault = self if self._name == "vault" else self.mapped("vault_id")
             vault._compute_access()
 
-        # Shortcut for vault.right because only the share right is required
         if self._name == "vault.right":
-            if not self.filtered("allowed_share"):
+            if operation == "read":
+                if not self.filtered("allowed_read"):
+                    self.raise_access_error()
+            elif not self.filtered("allowed_share"):
                 self.raise_access_error()
             return
 

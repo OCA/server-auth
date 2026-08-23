@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 =====
 Vault
 =====
@@ -17,7 +13,7 @@ Vault
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
@@ -47,6 +43,12 @@ entries more easily.
 
 This modules requires a secure context for the browser to work properly
 and therefore HTTPS support is required.
+
+Access to the module is controlled by the *Vault > User* security group.
+New users receive it by default; remove it from a user to revoke their
+access to the module without affecting their existing keys. Sharing
+individual vaults with per-user read/write/share/delete rights continues
+to work independently of this group.
 
 The `vault-recovery <https://github.com/fkantelberg/vault-recovery>`__
 project focuses on disaster recovery in case of an incident to recover
