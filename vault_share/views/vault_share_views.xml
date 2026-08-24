@@ -16,7 +16,6 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="token" invisible="1" />
                         <field name="iv" invisible="1" />
                         <field name="salt" invisible="1" />
                         <field name="iterations" invisible="1" />

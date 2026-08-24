@@ -32,6 +32,19 @@ class TestShare(BaseCommon):
 
         cls.share = cls.env["vault.share"].create(cls.vals)
 
+    def test_token_generated_on_create(self):
+        # Fallback: a token is minted when none is supplied (e.g. code/RPC)
+        share = self.env["vault.share"].create(self.vals)
+        self.assertTrue(share.token)
+        self.assertIsInstance(share.token, str)
+        self.assertEqual(share, share.get(share.token))
+        self.assertIn(share.token, share.share_link)
+
+        # A supplied token is kept as-is (e.g. the client-generated one)
+        share = self.env["vault.share"].create({**self.vals, "token": "fixed-token"})
+        self.assertEqual(share.token, "fixed-token")
+        self.assertEqual(share, share.get("fixed-token"))
+
     @mute_logger("odoo.sql_db")
     def test_share(self):
         self.assertEqual(self.share, self.share.get(self.share.token))
