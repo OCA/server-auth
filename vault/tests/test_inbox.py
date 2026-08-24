@@ -72,6 +72,32 @@ class TestShare(BaseCommon):
         self.assertEqual(inbox, model.find_inbox(inbox.token))
         self.assertEqual(model, model.find_inbox(uuid4()))
 
+    def test_writable(self):
+        model = self.env["vault.inbox"]
+        user = self.env.user
+        inbox = model.store_in_inbox(
+            name=f"Inbox {user.name}",
+            secret="secret",
+            iv="iv",
+            user=user,
+            key="key",
+            secret_file="",
+            filename="",
+        )
+
+        inbox.accesses = 5
+        self.assertTrue(inbox.writable)
+
+        inbox.accesses = 0
+        self.assertFalse(inbox.writable)
+
+        inbox.accesses = 5
+        inbox.expiration = datetime(1970, 1, 1)
+        self.assertFalse(inbox.writable)
+
+        inbox.expiration = False
+        self.assertTrue(inbox.writable)
+
     def test_send_wizard(self):
         user = self.env.user
         wiz = self.env["vault.send.wizard"].create(
