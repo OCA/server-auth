@@ -22,7 +22,9 @@ class VaultShare(models.Model):
         store=False,
         help="Using this link and pin people can access the secret.",
     )
-    token = fields.Char(readonly=True, required=True, default=lambda self: uuid4())
+    token = fields.Char(
+        readonly=True, required=True, copy=False, default=lambda self: str(uuid4())
+    )
     secret = fields.Char()
     secret_file = fields.Char()
     filename = fields.Char()
@@ -53,7 +55,9 @@ class VaultShare(models.Model):
     def _compute_url(self):
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
         for rec in self:
-            rec.share_link = f"{base_url}/vault/share/{rec.token}"
+            rec.share_link = (
+                f"{base_url}/vault/share/{rec.token}" if rec.token else False
+            )
 
     @api.model
     def get(self, token, ip=None):
