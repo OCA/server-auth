@@ -1,0 +1,5 @@
+- Install the module.
+- In OAuth Providers, select the new flow: OAuth2 (Authorization Code Flow).
+- Provide your Client Secret (now visible in the provider form).
+- Add concerning scopes based on the provider.
+- Map your Login to login or email in the Token Map for a seamless experience.
