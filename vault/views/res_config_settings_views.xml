@@ -26,6 +26,17 @@
                     >
                         <field name="group_vault_export" />
                     </setting>
+                    <setting
+                        string="Mandatory Custodians"
+                        help="All newly created vaults are shared with these users."
+                        id="vault_custodians"
+                    >
+                        <field
+                            name="vault_custodian_ids"
+                            widget="many2many_tags"
+                            domain="[('has_vault_key', '=', True)]"
+                        />
+                    </setting>
                 </block>
             </block>
         </field>

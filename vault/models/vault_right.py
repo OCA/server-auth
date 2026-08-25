@@ -1,7 +1,8 @@
 # © 2021 Florian Kantelberg - initOS GmbH
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class VaultRight(models.Model):
@@ -63,6 +64,10 @@ class VaultRight(models.Model):
     def _get_is_owner(self):
         return self.env.user == self.vault_id.user_id
 
+    def _filtered_custodians(self):
+        custodians = self.env.company.sudo().vault_custodian_ids
+        return self.filtered(lambda r: r.user_id in custodians)
+
     @api.depends("user_id")
     def _compute_public_key(self):
         for rec in self:
@@ -95,6 +100,15 @@ class VaultRight(models.Model):
         return res
 
     def write(self, values):
+        # Prevent revoking the share with a mandatory custodian
+        if not self.env.su and self._filtered_custodians():
+            if values.get("perm_share") is False:
+                raise UserError(
+                    _("The share permission of a custodian can not be removed.")
+                )
+            if "user_id" in values:
+                raise UserError(_("The user of a custodian can not be changed."))
+
         res = super().write(values)
         perms = ["perm_write", "perm_delete", "perm_share", "perm_create"]
         if any(x in values for x in perms):
@@ -103,6 +117,11 @@ class VaultRight(models.Model):
         return res
 
     def unlink(self):
+        if not self.env.su and self._filtered_custodians():
+            raise UserError(
+                _("A mandatory custodian can not be removed from the vault.")
+            )
+
         for rec in self:
             rec.vault_id.log_info(f"Removed user {self.user_id.display_name}")
             rec.vault_id.reencrypt_required = True

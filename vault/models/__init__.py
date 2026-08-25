@@ -4,6 +4,7 @@
 from . import (
     abstract_vault,
     abstract_vault_field,
+    res_company,
     res_config_settings,
     res_users,
     res_users_key,

@@ -18,11 +18,30 @@ class ResUsers(models.Model):
         store=False,
     )
     keys = fields.One2many("res.users.key", "user_id", readonly=True)
+    has_vault_key = fields.Boolean(
+        compute="_compute_has_vault_key",
+        search="_search_has_vault_key",
+        help="Whether the user has vault keys configured",
+    )
     vault_right_ids = fields.One2many("vault.right", "user_id", readonly=True)
     inbox_ids = fields.One2many("vault.inbox", "user_id")
     inbox_enabled = fields.Boolean(default=True)
     inbox_link = fields.Char(compute="_compute_inbox_link", readonly=True, store=False)
     inbox_token = fields.Char(default=lambda self: uuid4(), readonly=True)
+
+    @api.depends("keys")
+    def _compute_has_vault_key(self):
+        for rec in self:
+            rec.has_vault_key = bool(rec.sudo().keys)
+
+    @api.model
+    def _search_has_vault_key(self, operator, value):
+        if operator not in ("=", "!=") or not isinstance(value, bool):
+            raise ValueError(self.env._("Unsupported search operator"))
+
+        users_with_keys = self.env["res.users.key"].sudo().search([]).mapped("user_id")
+        has_key = (operator == "=") == value
+        return [("id", "in" if has_key else "not in", users_with_keys.ids)]
 
     @api.depends("keys", "keys.current")
     def _compute_active_key(self):

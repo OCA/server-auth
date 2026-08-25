@@ -14,3 +14,8 @@ class ResConfigSettings(models.TransientModel):
     group_vault_import = fields.Boolean(
         "Import Vaults", implied_group="vault.group_vault_import"
     )
+    vault_custodian_ids = fields.Many2many(
+        related="company_id.vault_custodian_ids",
+        string="Mandatory Custodians",
+        readonly=False,
+    )
