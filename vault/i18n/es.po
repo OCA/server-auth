@@ -1298,6 +1298,16 @@ msgid "Warning"
 msgstr "Advertencia"
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "With Content"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "Without Content"
+msgstr ""
+
+#. module: vault
 #: model:ir.model,name:vault.model_vault_store_wizard
 msgid "Wizard store a shared secret in a vault"
 msgstr ""
