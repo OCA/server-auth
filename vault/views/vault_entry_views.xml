@@ -209,6 +209,17 @@
                     domain="[]"
                     context="{'group_by': 'vault_id'}"
                 />
+                <separator />
+                <filter
+                    string="With Content"
+                    name="with_content"
+                    domain="['|', ('field_ids', '!=', False), ('file_ids', '!=', False)]"
+                />
+                <filter
+                    string="Without Content"
+                    name="without_content"
+                    domain="['&amp;', ('field_ids', '=', False), ('file_ids', '=', False)]"
+                />
                 <searchpanel>
                     <field
                         name="vault_id"
