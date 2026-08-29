@@ -1,0 +1,699 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+# * auth_saml
+# Vincent Lhote-Hatakeyama <vincent.lhote@xcg-consulting.fr>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-03 15:51+0000\n"
+"PO-Revision-Date: 2025-01-27 11:02+0000\n"
+"Last-Translator: Vincent Hatakeyama <vincent+github@hatakeyama.fr>\n"
+"Language-Team: XCG Consulting\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.6.2\n"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.providers
+msgid "- or -"
+msgstr "- ou -"
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/controllers/main.py:0
+msgid "Access Denied"
+msgstr "Accès refusé"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__active
+msgid "Active"
+msgstr "Actif"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__css_class
+msgid "Add a CSS class that serves you to style the login button."
+msgstr ""
+"Ajoute une classe CSS utile pour mettre en forme le bouton d’identification."
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Algorithm used to sign requests."
+msgstr "Algorithme utilisé pour signer les requêtes."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_res_config_settings__allow_saml_uid_and_internal_password
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
+msgid ""
+"Allow SAML users to possess an Odoo password (warning: decreases security)"
+msgstr ""
+"Autoriser les utilisateurs avec SAML à aussi avoir un mot de passe Odoo "
+"(attention : abaisse la sécurité)"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_provider_view_search
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Archived"
+msgstr "Archivé"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__attribute_mapping_ids
+msgid "Attribute Mapping"
+msgstr "Correspondance des attributs"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__matching_attribute
+msgid ""
+"Attribute to look for in the returned IDP response to match against an Odoo "
+"user."
+msgstr ""
+"Attribut retourné par le fournisseur d’identité à utiliser pour la "
+"correspondance avec un utilisateur Odoo."
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"Attribute to match the user in Odoo with against the IDP (Identity "
+"Provider). You may use the special case \"subject.nameId\" to match against "
+"the nameId in the IDP response."
+msgstr ""
+"Attribut retourné par le fournisseur d’identité à utiliser pour la "
+"correspondance avec un utilisateur Odoo. La valeur spéciale « subject."
+"nameId » peut être utilisée pour une correspondance avec le nameId de la "
+"réponse du fournisseur d’identité."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__authn_requests_signed
+msgid "Authn Requests Signed"
+msgstr "Signature des requêtes Authn"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__autoredirect
+msgid "Automatic Redirection"
+msgstr "Redirection automatique"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"Available after first save. The URL will change if the provider is deleted "
+"&amp; recreated or the database is renamed."
+msgstr ""
+"Disponible après enregistrement. L’adresse universelle changera si le "
+"fournisseur est supprimé et recréée ou bien si la base de donnée est "
+"renommée."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__sp_baseurl
+msgid ""
+"Base URL sent to Odoo with this, rather than automatically\n"
+"        detecting from request or system parameter web.base.url"
+msgstr ""
+"Base de l’adresse universelle envoyé à Odoo avec ceci, plutôt que de la "
+"détecter depuis la requête ou le paramètre système « web.base.url »"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__css_class
+msgid "Button Icon CSS class"
+msgstr "Classe CSS pour l’icône du bouton"
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de configuration"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__idp_metadata
+msgid ""
+"Configuration for this Identity Provider. Supplied by the provider, in XML "
+"format."
+msgstr ""
+"Configuration pour ce fournisseur d’identité. Fourni par le fournisseur, au "
+"format XML."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__create_uid
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__create_uid
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__create_uid
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__create_date
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__create_date
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__create_date
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__saml_request_id
+msgid "Current Request ID"
+msgstr "Identifiant de la requête courrante"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__saml_access_token
+msgid "Current SAML token for this user"
+msgstr "Jeton SAML courant de l’utilisateur"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__display_name
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__display_name
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__display_name
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Display Settings"
+msgstr "Paramètres d’affichage"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__entity_id
+msgid "Entity ID"
+msgstr "Identifiant de l’entité"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"Entity Identifier sent to the IDP. Often this would be the metadata URL, but "
+"it can be any string."
+msgstr ""
+"Identifiant de l’entité envoyé au fournisseur d’identité. C’est souvent "
+"l’URL des métadonnées, mais peut être toute chaîne."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__entity_id
+msgid "EntityID passed to IDP, used to identify the Odoo"
+msgstr ""
+"EntityID envoyé au fournisseur d’identité, utilisé pour identifier cet Odoo"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__matching_attribute_to_lower
+msgid "Force matching_attribute to lower case before passing back to Odoo."
+msgstr ""
+"Forcer le bas de casse pour les correspondances d’attribut avant de les "
+"envoyer à Odoo."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__id
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__id
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__id
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__id
+msgid "ID"
+msgstr "Identifiant"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__attribute_name
+msgid "IDP Response Attribute"
+msgstr "Attribut de réponse du FI"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata
+msgid "Identity Provider Metadata"
+msgstr "Métadonnées du fournisseur d’identité"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata_url
+msgid "Identity Provider Metadata URL"
+msgstr ""
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Identity Provider Settings"
+msgstr "Paramètres du fournisseur d’identité"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__matching_attribute
+msgid "Identity Provider matching attribute"
+msgstr "Attribut de correspondance du fournisseur d’identité"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__authn_requests_signed
+msgid ""
+"Indicates if the Authentication Requests sent by this SP should be signed by "
+"default."
+msgstr ""
+"Indique si les requêtes d’authentification envoyé par ce fournisseur de "
+"service doivent être signées par défaut."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__want_assertions_signed
+msgid "Indicates if this SP wants the IdP to send the assertions signed."
+msgstr ""
+"Indique si le fournisseur de service veut que le fournisseur d’identité "
+"signe les assertions."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__logout_requests_signed
+msgid ""
+"Indicates if this entity will sign the Logout Requests originated from it."
+msgstr ""
+"Indique si cet entité signera les requêtes de déconnexion dont il est "
+"l’origine."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__want_response_signed
+msgid "Indicates that Authentication Responses to this SP must be signed."
+msgstr ""
+"Indique que les réponses d’authentification de ce fournisseur de service "
+"doivent être signées."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__want_assertions_or_response_signed
+msgid ""
+"Indicates that either the Authentication Response or the assertions "
+"contained within the response to this SP must be signed."
+msgstr ""
+"Indique que soit les réponses d’authentification soit les assertions contenu "
+"dans la réponse envoyé à ce fournisseur de service doivent être signées."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__write_uid
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__write_uid
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__write_uid
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__write_uid
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__write_date
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__write_date
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__write_date
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__write_date
+msgid "Last Updated on"
+msgstr "Dernière modification le"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__body
+msgid "Link text in Login Dialog"
+msgstr "Texte du lien dans l’écran de connexion"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__body
+msgid "Login button label"
+msgstr "Libellé du bouton de connexion"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__logout_requests_signed
+msgid "Logout Requests Signed"
+msgstr "Signature des requêtes de déconnexion"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__matching_attribute_to_lower
+msgid "Lowercase IDP Matching Attribute"
+msgstr "Bas de casse de l’attribut de correspondance du FI"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"Mapped attributes are copied from the SAML response at every logon, if "
+"available. If multiple values are returned (i.e. a list) then the first "
+"value is used."
+msgstr ""
+"Les attributs, si disponibles, seront copiés depuis la réponse SAML à chaque "
+"connexion. Si plusieurs valeurs sont retournées, dans le cas d’une liste par "
+"exemple, alors seulement la première valeur sera utilisé."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_metadata_url
+msgid "Metadata URL"
+msgstr "Adresse universelle des métadonnées"
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/controllers/main.py:0
+msgid "Missing parameters"
+msgstr "Paramètres manquants"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__field_name
+msgid "Odoo Field"
+msgstr "Champ Odoo"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_pem_private
+msgid "Odoo Private Key"
+msgstr "Clé privée Odoo"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_pem_private_filename
+msgid "Odoo Private Key File Name"
+msgstr "Nom de la clé privée d’Odoo"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_pem_public
+msgid "Odoo Public Certificate"
+msgstr "Certificat public d’Odoo"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_pem_public_filename
+msgid "Odoo Public Certificate File Name"
+msgstr "Nom de fichier du certificat public d’Odoo"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Odoo Settings"
+msgstr "Paramètres Odoo"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__autoredirect
+msgid ""
+"Only the provider with the higher priority will be automatically redirected"
+msgstr ""
+"Seul le fournisseur avec la plus haute priorité sera automatiquement redirigé"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_baseurl
+msgid "Override Base URL"
+msgstr "Outrepasser l’adresse universelle de base"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__provider_id
+msgid "Provider"
+msgstr "Fournisseur"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__name
+msgid "Provider Name"
+msgstr "Nom du fournisseur"
+
+#. module: auth_saml
+#: model:ir.actions.act_window,name:auth_saml.action_saml_provider
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_provider_view_search
+msgid "Providers"
+msgstr "Fournisseurs"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Refresh"
+msgstr ""
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_users_form
+msgid "SAML"
+msgstr "SAML"
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_auth_saml_request
+msgid "SAML Outstanding Requests"
+msgstr "Requêtes en attente SAML"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__saml_provider_id
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "SAML Provider"
+msgstr "Fournisseur SAML"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_request__saml_provider_id
+msgid "SAML Provider that issued the token"
+msgstr "Fournisseur SAML qui a fourni le jeton"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_res_users_saml__saml_uid
+msgid "SAML Provider user_id"
+msgstr "Identifiant de l’utilisateur pour ce fournisseur SAML"
+
+#. module: auth_saml
+#: model:ir.ui.menu,name:auth_saml.menu_saml_providers
+msgid "SAML Providers"
+msgstr "Fournisseurs SAML"
+
+#. module: auth_saml
+#: model:ir.model.constraint,message:auth_saml.constraint_res_users_saml_uniq_users_saml_provider_saml_uid
+msgid "SAML UID must be unique per provider"
+msgstr "L’identifiant SAML doit être unique par fournisseur"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__saml_uid
+msgid "SAML User ID"
+msgstr "Identifiant utilisateur SAML"
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_auth_saml_provider
+msgid "SAML2 Provider"
+msgstr "Fournisseur SAML2"
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_auth_saml_attribute_mapping
+msgid "SAML2 attribute mapping"
+msgstr "Correspondance d’attribut SAML2"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_res_users__saml_ids
+msgid "Saml"
+msgstr "SAML"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sequence
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sign_authenticate_requests
+msgid "Sign Authenticate Requests"
+msgstr "Signer les requêtes d’authentification"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sign_metadata
+msgid "Sign Metadata"
+msgstr "Signer les métadonnées"
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/controllers/main.py:0
+msgid "Sign up is not allowed on this database."
+msgstr "L’inscription n’est pas autorisée sur cette base de donnée."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sig_alg
+msgid "Signature Algorithm"
+msgstr "Algorithme de signature"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__idp_metadata_url
+msgid ""
+"Some SAML providers, notably Office365 can have a metadata document which "
+"changes over time, and they provide a URL to the document instead. When this "
+"field is set, the metadata can be fetched from the provided URL."
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_ir_config_parameter
+msgid "System Parameter"
+msgstr "Paramètre système"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"The URL configured for the ACS must exactly match what is sent. If you have "
+"odoo responding on multiple URLs you can use this to force it to send a "
+"specific address rather than rely on automatically detecting."
+msgstr ""
+"L’adresse universelle configuré pour le SCA doit correspondre exactement à "
+"ce qui est envoyé. Si Odoo répond sur plusieurs adresses universelles, vous "
+"pouvez utiliser ceci pour le forcer à envoyer une adresse spécifique plutôt "
+"que de dépendre sur la détection automatique."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_res_users_saml__saml_access_token
+msgid "The current SAML token in use"
+msgstr "Le jeton SAML en cours d’utilisation"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"The metadata may be automatically redownloaded from that URL. If that's okay "
+"for you and you provider gives you a URL, use this field "
+"preferably. Otherwise use the next one"
+msgstr ""
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/models/res_users.py:0
+msgid ""
+"This database disallows users to have both passwords and SAML IDs. Error for "
+"logins %s"
+msgstr ""
+"Cette base de données interdit aux utilisateurs d’avoir à la fois un mot de "
+"passe et un identifiant SAML. Erreur pour les identifiants %s"
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/controllers/main.py:0
+msgid "Unknown provider"
+msgstr "Fournisseur inconnu"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"Used to sign requests sent to the IDP. You can use openssl to generate a "
+"certificate and key."
+msgstr ""
+"Utilisé pour signer des requêtes envoyées au fournisseur d’identité. Vous "
+"pouvez utiliser openssl pour générer le certificat et la clé."
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_res_users
+#: model:ir.model.fields,field_description:auth_saml.field_res_users_saml__user_id
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: auth_saml
+#: model:ir.model,name:auth_saml.model_res_users_saml
+msgid "User to SAML Provider Mapping"
+msgstr "Mappage des utilisateurs aux fournisseurs SAML"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_assertions_or_response_signed
+msgid "Want Assertions Or Response Signed"
+msgstr "Désire une signature des réponses ou des assertions"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_assertions_signed
+msgid "Want Assertions Signed"
+msgstr "Désire une signature des assertions"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__want_response_signed
+msgid "Want Response Signed"
+msgstr "Désire une signature des réponses"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__sign_metadata
+msgid "Whether metadata should be signed or not"
+msgstr "Signature ou non des métadonnées"
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__sign_authenticate_requests
+msgid "Whether the request should be signed or not"
+msgstr "Signature ou non des requêtes"
+
+#. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/controllers/main.py:0
+msgid "You do not have access to this database. Please contact support."
+msgstr ""
+"Vous n’avez pas accès à cette base de donnée. Veuillez contacter votre "
+"support."
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Your ACS url will be base_url + /auth_saml/signin"
+msgstr ""
+"Votre adresse universelle SCA sera celle de base suivi de /auth_saml/signin"
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "Your provider will give you this XML once configured."
+msgstr "Votre fournisseur vous donnera ce XML une fois configuré."
+
+#~ msgid "Last Modified on"
+#~ msgstr "Dernière modification le"
+
+#~ msgid "Button Description"
+#~ msgstr "Description du bouton"
+
+#~ msgid "Users"
+#~ msgstr "Utilisateurs"
+
+#~ msgid ""
+#~ "Allow SAML users to posess an Odoo password (warning: decreases security)"
+#~ msgstr ""
+#~ "Autoriser les utilisateurs avec SAML à aussi avoir un mot de passe Odoo "
+#~ "(attention : abaisse la sécurité)"
+
+#~ msgid "Body"
+#~ msgstr "Corps"
+
+#~ msgid "CSS Class"
+#~ msgstr "Classe CSS"
+
+#~ msgid "Enabled"
+#~ msgstr "Activé"
+
+#~ msgid "IDP Configuration"
+#~ msgstr "Configuration FI"
+
+#~ msgid "Matching Attribute"
+#~ msgstr "Attributs correspondants"
+
+#~ msgid "Private key of our service provider (this openerpserver)"
+#~ msgstr "Clé privée de notre fournisseur de service (ce serveur Odoo)"
+
+#~ msgid "Provider name"
+#~ msgstr "Nom du fournisseur"
+
+#~ msgid "SAML2 provider"
+#~ msgstr "Fournisseur SAML2"
+
+#~ msgid "SP Configuration"
+#~ msgstr "Configuration du fournisseur de service"
+
+#~ msgid ""
+#~ "This database disallows users to have both passwords and SAML IDs. Errors "
+#~ "for login %s"
+#~ msgstr ""
+#~ "Cette base de données interdit aux utilisateurs d’avoir à la fois un mot "
+#~ "de passe et un identifiant SAML. Erreurs pour l’identifiant %s"
+
+#~ msgid ""
+#~ "You do not have access to this database or your invitation has expired. "
+#~ "Please ask for an invitation and be sure to follow the link in your "
+#~ "invitation email."
+#~ msgstr ""
+#~ "Vous n’avez pas accès à cette base de donnée ou votre invitation a "
+#~ "expirée. Demandez une invitation et assurez-vous de suivre le lien dans "
+#~ "le courriel d’invitation."
+
+#~ msgid "arch"
+#~ msgstr "arch"
+
+#~ msgid "auth_saml.token"
+#~ msgstr "auth_saml.token"
+
+#~ msgid "res.config.settings"
+#~ msgstr "res.config.settings"
+
+#~ msgid ""
+#~ "SAML2 authentication: An Odoo user cannot posess both an SAML user ID and "
+#~ "an Odoo password."
+#~ msgstr ""
+#~ "Authentification SAML2 : Un utilisateur Odoo ne peut pas posséder à la "
+#~ "fois un ID utilisateur SAML et un mot de passe Odoo."
+
+#~ msgid "Sign up error"
+#~ msgstr "Erreur d’inscription"
+
+#~ msgid "Authentication error"
+#~ msgstr "Erreur d’authentification"
+
+#~ msgid "res.config"
+#~ msgstr "res.config"
+
+#~ msgid "unknown"
+#~ msgstr "inconnu"
+
+#~ msgid "http://localhost:8000"
+#~ msgstr "http://localhost :8000"
+
+#~ msgid "running on"
+#~ msgstr "en fonctionnement sur"
+
+#~ msgid "You must have an"
+#~ msgstr "Vous devez avoir un"
+
+#~ msgid "authentic2 server"
+#~ msgstr "serveur authentic2"
+
+#~ msgid "Allow users to sign in with a Local Authentic"
+#~ msgstr "Autoriser les utilisateurs à s’inscrire avec un Authentic local"
+
+#~ msgid "Allowed"
+#~ msgstr "Autorisé"
