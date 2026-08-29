@@ -38,6 +38,9 @@ class AuthOauthProvider(models.Model):
     client_secret = fields.Char(
         help="Used in OpenID Connect authorization code flow for confidential clients.",
     )
+    client_secret_post = fields.Boolean(
+        help="Use Client Secret in authorization post requests"
+    )
     code_verifier = fields.Char(
         default=lambda self: secrets.token_urlsafe(32), help="Used for PKCE."
     )
