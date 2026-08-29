@@ -40,16 +40,16 @@ class ResUsers(models.Model):
                 params.get_param("auth_password_policy.minlength", default=0)
             ),
             "expiration_days": int(
-                params.get_param("password_security.expiration_days", default=60)
+                params.get_param("password_security.expiration_days", default=0)
             ),
             "minimum_hours": int(
-                params.get_param("password_security.minimum_hours", default=60)
+                params.get_param("password_security.minimum_hours", default=0)
             ),
-            "history": int(params.get_param("password_security.history", default=30)),
-            "lower": int(params.get_param("password_security.lower", default=1)),
-            "upper": int(params.get_param("password_security.upper", default=1)),
-            "numeric": int(params.get_param("password_security.numeric", default=1)),
-            "special": int(params.get_param("password_security.special", default=1)),
+            "history": int(params.get_param("password_security.history", default=0)),
+            "lower": int(params.get_param("password_security.lower", default=0)),
+            "upper": int(params.get_param("password_security.upper", default=0)),
+            "numeric": int(params.get_param("password_security.numeric", default=0)),
+            "special": int(params.get_param("password_security.special", default=0)),
         }
         return res
 
