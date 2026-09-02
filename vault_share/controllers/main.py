@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 
 
 class Controller(http.Controller):
-    @http.route("/vault/share/<string:token>", type="http", auth="public")
+    @http.route("/vault/share/<string:token>", type="http", auth="public", website=True)
     def vault_share(self, token):
         ctx = {"disable_footer": True, "token": token}
         share = request.env["vault.share"].sudo()
