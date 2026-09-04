@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="vault_portal.VaultKeyManager">
+        <div class="card p-3 mb-3">
+            <t t-if="state.done">
+                <p class="alert alert-success mb-0">
+                    Your vault key is ready. A technician can now grant you access to a vault.
+                </p>
+            </t>
+            <t t-else="">
+                <t t-if="props.hasKeys">
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        t-att-disabled="state.busy"
+                        t-on-click="onInvalidateKey"
+                    >
+                        Invalidate my key
+                    </button>
+                </t>
+                <t t-else="">
+                    <p class="mb-2">
+                        Set up your vault master password now - it is never sent
+                        to, or stored in clear text by, the server.
+                    </p>
+                    <button
+                        type="button"
+                        class="btn btn-primary"
+                        t-att-disabled="state.busy"
+                        t-on-click="onSetupKey"
+                    >
+                        Set up my key
+                    </button>
+                </t>
+                <p
+                    t-if="state.error"
+                    class="text-danger mt-2 mb-0"
+                    t-esc="state.error"
+                />
+            </t>
+        </div>
+    </t>
+</templates>
