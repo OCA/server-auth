@@ -8,7 +8,7 @@
 
     <menuitem
         id="menu_vault_share"
-        groups="base.group_user"
+        groups="vault.group_vault_user"
         parent="vault.menu_vault"
         action="action_vault_share"
         sequence="45"
