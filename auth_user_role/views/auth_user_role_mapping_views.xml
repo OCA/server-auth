@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_auth_user_role_mapping_tree" model="ir.ui.view">
+        <field name="name">auth.user.role.mapping.tree</field>
+        <field name="model">auth.user.role.mapping</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="attribute" />
+                <field name="operator" />
+                <field name="value" />
+                <field name="role_id" />
+            </list>
+        </field>
+    </record>
+
+    <record id="action_auth_user_role_mapping" model="ir.actions.act_window">
+        <field name="name">Identity Role Mappings</field>
+        <field name="res_model">auth.user.role.mapping</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first identity role mapping!
+            </p>
+            <p>
+                Map incoming attributes from your Identity Providers (SAML, OAuth, etc.) to Odoo roles.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_auth_user_role_mapping"
+        name="Identity Role Mappings"
+        parent="base.menu_users"
+        action="action_auth_user_role_mapping"
+        sequence="50"
+    />
+</odoo>
