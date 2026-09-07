@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Keboola
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo noupdate="1">
+    <!-- Default lifetime applied when a mint request omits ttl_days. -->
+    <record id="param_default_ttl_days" model="ir.config_parameter">
+        <field name="key">auth_api_key_provisioning.default_ttl_days</field>
+        <field name="value">30</field>
+    </record>
+
+    <!-- Hard maximum lifetime; a larger requested ttl_days is clamped down to this.
+         A further absolute ceiling (HARD_MAX_TTL_DAYS) is enforced in code. -->
+    <record id="param_max_ttl_days" model="ir.config_parameter">
+        <field name="key">auth_api_key_provisioning.max_ttl_days</field>
+        <field name="value">90</field>
+    </record>
+</odoo>

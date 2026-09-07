@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Keboola
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <record id="auth_api_key_provisioning_log_view_tree" model="ir.ui.view">
+        <field name="name">auth.api.key.provisioning.log.tree</field>
+        <field name="model">auth.api.key.provisioning.log</field>
+        <field name="arch" type="xml">
+            <list string="Provisioned API Keys" create="false" edit="false">
+                <field name="create_date" />
+                <field name="user_id" />
+                <field name="minted_by_id" />
+                <field name="key_name" />
+                <field name="scope" />
+                <field name="expiration" />
+                <field name="is_live" />
+                <field name="revoked_on" />
+            </list>
+        </field>
+    </record>
+
+    <record id="auth_api_key_provisioning_log_view_form" model="ir.ui.view">
+        <field name="name">auth.api.key.provisioning.log.form</field>
+        <field name="model">auth.api.key.provisioning.log</field>
+        <field name="arch" type="xml">
+            <form string="Provisioned API Key" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id" />
+                            <field name="minted_by_id" />
+                            <field name="key_name" />
+                            <field name="scope" />
+                        </group>
+                        <group>
+                            <field name="create_date" />
+                            <field name="expiration" />
+                            <field name="is_live" />
+                            <field name="revoked_on" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="auth_api_key_provisioning_log_view_search" model="ir.ui.view">
+        <field name="name">auth.api.key.provisioning.log.search</field>
+        <field name="model">auth.api.key.provisioning.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id" />
+                <field name="minted_by_id" />
+                <filter
+                    name="live"
+                    string="Live"
+                    domain="[('apikey_id', '!=', False)]"
+                />
+                <filter
+                    name="revoked"
+                    string="Revoked"
+                    domain="[('revoked_on', '!=', False)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        name="group_user"
+                        string="Target User"
+                        context="{'group_by': 'user_id'}"
+                    />
+                    <filter
+                        name="group_minter"
+                        string="Minted By"
+                        context="{'group_by': 'minted_by_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="auth_api_key_provisioning_log_action" model="ir.actions.act_window">
+        <field name="name">Provisioned API Keys</field>
+        <field name="res_model">auth.api.key.provisioning.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem
+        id="menu_auth_api_key_provisioning_log"
+        name="Provisioned API Keys"
+        parent="base.menu_users"
+        action="auth_api_key_provisioning_log_action"
+        sequence="40"
+        groups="group_apikey_provisioning"
+    />
+</odoo>
