@@ -44,7 +44,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_01_signup_user_fail(self):
         """It should fail when signup user with weak password"""
         # Weak password: signup failed
-        response = self.signup("jackoneill", "jackoneill")
+        response = self.signup("jackoneill@example.com", "jackoneill")
 
         # Ensure we stay in the signup page
         self.assertEqual(response.request.path_url, "/web/signup")
@@ -57,7 +57,7 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_02_signup_user_success(self):
         """It should succeed when signup user with strong password"""
         # Weak password: signup failed
-        response = self.signup("jackoneill", "!asdQWE12345_3")
+        response = self.signup("jackoneill@example.com", "!asdQWE12345_3")
 
         # Ensure we were logged in
         self.assertEqual(
