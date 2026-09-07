@@ -6,8 +6,9 @@
 import re
 from datetime import datetime, timedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, modules
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools import config
 
 
 def delta_now(**kwargs):
@@ -67,6 +68,11 @@ class ResUsers(models.Model):
         return data
 
     def _check_password_policy(self, passwords):
+        if (
+            config["test_enable"]
+            and not modules.module.current_test.test_module == "password_security"
+        ):
+            return True
         result = super()._check_password_policy(passwords)
 
         for password in passwords:
@@ -127,7 +133,10 @@ class ResUsers(models.Model):
 
     def _check_password_rules(self, password):
         self.ensure_one()
-        if not password:
+        if not password or (
+            config["test_enable"]
+            and not modules.module.current_test.test_module == "password_security"
+        ):
             return True
         pwd_params = self._get_all_password_params()
         password_regex = [
