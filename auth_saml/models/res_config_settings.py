@@ -1,4 +1,4 @@
-# Copyright (C) 2010-2016, 2022 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016, 2022 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
