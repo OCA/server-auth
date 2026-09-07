@@ -4,6 +4,7 @@
 
 from unittest import mock
 
+from freezegun import freeze_time
 from requests.exceptions import HTTPError
 
 from odoo import http
@@ -82,7 +83,8 @@ class TestPasswordSecuritySignup(HttpCase):
 
         # Stronger password: no error raised
         vals["password"] = "asdQWE12345_3"
-        login, pwd = self.env["res.users"].signup(vals)
+        with freeze_time("2020-01-01"):
+            login, pwd = self.env["res.users"].signup(vals)
 
         # check created user
         created_user = self.env["res.users"].search([("login", "=", "test_user")])
@@ -159,4 +161,24 @@ class TestPasswordSecuritySignup(HttpCase):
         self.assertIn("Content-Security-Policy", response.headers)
         self.assertEqual(
             response.headers["Content-Security-Policy"], "frame-ancestors 'self'"
+        )
+
+    def test_07_cloned_user_password_write_date(self):
+        """Users that are cloned should have their password_write_date updated"""
+        partner = self.env["res.partner"].create({"name": "test partner"})
+        vals = {
+            "name": "Test User",
+            "login": "test_user",
+            "email": "test_user@odoo.com",
+            "password": "Test_user_password123$",
+            "partner_id": partner.id,
+        }
+        with freeze_time("2020-01-01"):
+            self.env["res.users"].signup(vals)
+
+        original_user = self.env["res.users"].search([("login", "=", "test_user")])
+        copied_user = original_user.copy()
+
+        self.assertTrue(
+            copied_user.password_write_date > original_user.password_write_date
         )
