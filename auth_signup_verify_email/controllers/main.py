@@ -6,6 +6,7 @@ import logging
 from email_validator import EmailSyntaxError, EmailUndeliverableError, validate_email
 
 from odoo import _
+from odoo.exceptions import UserError
 from odoo.http import request, route
 
 from odoo.addons.auth_signup.controllers.main import AuthSignupHome
@@ -26,6 +27,8 @@ class SignupVerifyEmail(AuthSignupHome):
 
         # Check good format of e-mail
         try:
+            if not request.env["ir.http"]._verify_request_recaptcha_token("signup"):
+                raise UserError(_("Suspicious activity detected by Google reCaptcha."))
             validate_email(values.get("login", ""))
         except EmailSyntaxError as error:
             qcontext["error"] = getattr(
