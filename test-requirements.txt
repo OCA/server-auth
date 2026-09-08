@@ -1,2 +1,3 @@
 responses
 httpx2
+odoo-test-helper
