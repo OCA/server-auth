@@ -57,12 +57,13 @@ class TestPasswordSecuritySignup(HttpCase):
     def test_02_signup_user_success(self):
         """It should succeed when signup user with strong password"""
         # Weak password: signup failed
+        user = self.env["res.users"].search([("login", "=", "jackoneill")])
+        self.assertFalse(user)
         response = self.signup("jackoneill", "!asdQWE12345_3")
-
+        user = self.env["res.users"].search([("login", "=", "jackoneill")])
+        session = http.root.session_store.get(response.request._cookies["session_id"])
         # Ensure we were logged in
-        self.assertEqual(
-            response.request.path_url, "/web/login_successful?account_created=True"
-        )
+        self.assertEqual(user.id, session.uid)
         self.assertEqual(response.status_code, 200)
 
     def test_03_create_user_signup(self):
