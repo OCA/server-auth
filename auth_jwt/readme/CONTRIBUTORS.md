@@ -1,0 +1,4 @@
+- Stéphane Bidoul \<<stephane.bidoul@acsone.eu>\>
+- Mohamed Alkobrosli \<<malkobrosly@kencove.com>\>
+- [Studio73](https://www.studio73.es):
+  - Pablo Cortés

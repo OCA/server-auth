@@ -1,0 +1,338 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_jwt
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: auth_jwt
+#. odoo-python
+#: code:addons/auth_jwt/models/auth_jwt_validator.py:0
+msgid ""
+"A cookie name must be provided on JWT validator %s because it has cookie "
+"mode enabled."
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Algorithm"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__audience
+msgid "Audience"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__audience
+msgid "Comma separated list of audiences, to validate aud."
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_enabled
+msgid ""
+"Convert the JWT token into an HttpOnly Secure cookie. When both an "
+"Authorization header and the cookie are present in the request, the cookie "
+"is ignored."
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Cookie"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_enabled
+msgid "Cookie Enabled"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_max_age
+msgid "Cookie Max Age"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_name
+msgid "Cookie Name"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_path
+msgid "Cookie Path"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__cookie_secure
+msgid "Cookie Secure"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__es256
+msgid "ES256 - ECDSA using SHA-256"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__es256k
+msgid "ES256K - ECDSA with secp256k1 curve using SHA-256"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__es384
+msgid "ES384 - ECDSA using SHA-384"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__es512
+msgid "ES512 - ECDSA using SHA-512"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__partner_id_strategy__email
+msgid "From email claim"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "General"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__secret_algorithm__hs256
+msgid "HS256 - HMAC using SHA-256 hash algorithm"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__secret_algorithm__hs384
+msgid "HS384 - HMAC using SHA-384 hash algorithm"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__secret_algorithm__hs512
+msgid "HS512 - HMAC using SHA-512 hash algorithm"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model,name:auth_jwt.model_ir_http
+msgid "HTTP Routing"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__id
+msgid "ID"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__issuer
+msgid "Issuer"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "JWK URI"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model,name:auth_jwt.model_auth_jwt_validator
+msgid "JWT Validator Configuration"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.actions.act_window,name:auth_jwt.action_auth_jwt_validator
+#: model:ir.ui.menu,name:auth_jwt.menu_auth_jwt_validator
+msgid "JWT Validators"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.constraint,message:auth_jwt.constraint_auth_jwt_validator_name_uniq
+msgid "JWT validator names must be unique !"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Key"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__name
+msgid "Name"
+msgstr ""
+
+#. module: auth_jwt
+#. odoo-python
+#: code:addons/auth_jwt/models/auth_jwt_validator.py:0
+msgid "Name %r is not a valid python identifier."
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__next_validator_id
+msgid "Next Validator"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__next_validator_id
+msgid "Next validator to try if this one fails"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_max_age
+msgid "Number of seconds until the cookie expires (Max-Age)."
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__ps256
+msgid "PS256 - RSASSA-PSS using SHA-256 and MGF1 padding with SHA-256"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__ps384
+msgid "PS384 - RSASSA-PSS using SHA-384 and MGF1 padding with SHA-384"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__ps512
+msgid "PS512 - RSASSA-PSS using SHA-512 and MGF1 padding with SHA-512"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Partner"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__partner_id_required
+msgid "Partner Id Required"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__partner_id_strategy
+msgid "Partner Id Strategy"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__public_key_algorithm
+msgid "Public Key Algorithm"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__public_key_jwk_uri
+msgid "Public Key Jwk Uri"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__signature_type__public_key
+msgid "Public key"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__rs256
+msgid "RS256 - RSASSA-PKCS1-v1_5 using SHA-256"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__rs384
+msgid "RS384 - RSASSA-PKCS1-v1_5 using SHA-384"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__public_key_algorithm__rs512
+msgid "RS512 - RSASSA-PKCS1-v1_5 using SHA-512"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__signature_type__secret
+msgid "Secret"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__secret_algorithm
+msgid "Secret Algorithm"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__secret_key
+msgid "Secret Key"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__cookie_secure
+msgid "Set to false only for development without https."
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__signature_type
+msgid "Signature Type"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields.selection,name:auth_jwt.selection__auth_jwt_validator__user_id_strategy__static
+msgid "Static"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__static_user_id
+msgid "Static User"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,help:auth_jwt.field_auth_jwt_validator__issuer
+msgid "To validate iss."
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "Token validation"
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "User"
+msgstr ""
+
+#. module: auth_jwt
+#: model:ir.model.fields,field_description:auth_jwt.field_auth_jwt_validator__user_id_strategy
+msgid "User Id Strategy"
+msgstr ""
+
+#. module: auth_jwt
+#. odoo-python
+#: code:addons/auth_jwt/models/auth_jwt_validator.py:0
+msgid "Validators mustn't make a closed chain: {}."
+msgstr ""
+
+#. module: auth_jwt
+#: model_terms:ir.ui.view,arch_db:auth_jwt.view_auth_jwt_validator_form
+msgid "arch"
+msgstr ""
