@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+<odoo>
+    <!-- Inherit from the configuration form to add a setting. -->
+    <record id="auth_saml_base_settings_form" model="ir.ui.view">
+        <field name="name">auth_saml_base_settings_form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='integration']" position="inside">
+                <setting
+                    string="SAML"
+                    help="Allow SAML users to possess an Odoo password (warning: decreases security)"
+                    id="module_auth_saml"
+                >
+                    <field name="allow_saml_uid_and_internal_password" />
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

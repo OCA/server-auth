@@ -1,0 +1,215 @@
+<?xml version="1.0" ?>
+<odoo>
+    <template
+        id="auth_saml.providers"
+        inherit_id="web.login_oauth"
+        name="Auth SAML Providers"
+    >
+        <xpath expr="//t[@t-set='auth_btns']" position="after">
+            <t t-set="auth_btns" t-value="saml_providers + auth_btns" />
+        </xpath>
+    </template>
+
+    <!-- Views for the auth.saml.provider model. -->
+    <record model="ir.ui.view" id="auth_saml_provider_view_search">
+        <field name="name">auth.saml.provider.search</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="arch" type="xml">
+            <search string="Providers">
+                <field name="name" />
+                <field name="entity_id" />
+                <separator />
+                <filter
+                    name="archived"
+                    string="Archived"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_saml_provider_list">
+        <field name="name">auth.saml.provider.list</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="arch" type="xml">
+            <list decoration-muted="not active">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+                <field name="active" widget="boolean_toggle" />
+                <field name="autoredirect" />
+            </list>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="view_saml_provider_form">
+        <field name="name">auth.saml.provider.form</field>
+        <field name="model">auth.saml.provider</field>
+        <field name="arch" type="xml">
+            <form string="SAML Provider">
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        invisible="active"
+                    />
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1>
+                            <field name="name" required="1" />
+                        </h1>
+                    </div>
+                    <group name="idp_settings">
+                        <group string="Identity Provider Settings">
+                            <label for="idp_metadata_url" />
+                            <div>
+                                <field name="idp_metadata_url" />
+                                <p
+                                    class="help small text-muted"
+                                >The metadata may be automatically redownloaded from that URL. If that’s okay for you and you provider gives you a URL, use this field preferably. Otherwise, use the next one.</p>
+                                <button
+                                    type="object"
+                                    string="Refresh"
+                                    name="action_refresh_metadata_from_url"
+                                    invisible="not idp_metadata_url"
+                                />
+                            </div>
+                            <label for="idp_metadata" />
+                            <div>
+                                <field
+                                    name="idp_metadata"
+                                    widget="ace"
+                                    options="{'mode': 'xml'}"
+                                />
+                                <p
+                                    class="help small text-muted"
+                                >Your provider will give you this XML once configured.</p>
+                            </div>
+                            <label for="matching_attribute" />
+                            <div>
+                                <field name="matching_attribute" />
+                                <p
+                                    class="help small text-muted"
+                                >Attribute to match the user in Odoo with against the IDP (Identity Provider). You may use the special case "subject.nameId" to match against the nameId in the IDP response.</p>
+                            </div>
+                            <field name="matching_attribute_to_lower" />
+                        </group>
+                        <group string="Odoo Settings" name="odoo_settings">
+                            <field name="active" invisible="1" />
+                            <label for="autoredirect" />
+                            <div>
+                                <field name="autoredirect" />
+                            </div>
+                            <label for="sp_baseurl" />
+                            <div>
+                                <field name="sp_baseurl" widget="url" />
+                                <p
+                                    class="help small text-muted"
+                                >The URL configured for the ACS must exactly match what is sent. If you have odoo responding on multiple URLs you can use this to force it to send a specific address rather than rely on automatically detecting.</p>
+                                <p
+                                    class="help small text-muted"
+                                >Your ACS url will be base_url + /auth_saml/signin</p>
+                            </div>
+                            <field name="sign_metadata" />
+                            <label for="sp_metadata_url" />
+                            <div>
+                                <field name="sp_metadata_url" widget="url" />
+                                <p
+                                    class="help small text-muted"
+                                >Available after first save. The URL will change if the provider is deleted &amp; recreated or the database is renamed.</p>
+                            </div>
+                            <label for="entity_id" />
+                            <div>
+                                <field name="entity_id" />
+                                <p
+                                    class="help small text-muted"
+                                >Entity Identifier sent to the IDP. Often this would be the metadata URL, but it can be any string.</p>
+                            </div>
+                            <field name="sp_pem_public_filename" invisible="1" />
+                            <label for="sp_pem_public" />
+                            <div>
+                                <field
+                                    name="sp_pem_public"
+                                    filename="sp_pem_public_filename"
+                                />
+                                <p
+                                    class="help small text-muted"
+                                >Used to sign requests sent to the IDP. You can use openssl to generate a certificate and key.</p>
+                            </div>
+                            <field name="sp_pem_private_filename" invisible="1" />
+                            <label for="sp_pem_private" />
+                            <div>
+                                <field
+                                    name="sp_pem_private"
+                                    filename="sp_pem_private_filename"
+                                />
+                                <p
+                                    class="help small text-muted"
+                                >Used to sign requests sent to the IDP. You can use openssl to generate a certificate and key.</p>
+                            </div>
+                            <label for="sig_alg" />
+                            <div>
+                                <field name="sig_alg" />
+                                <p class="help small text-muted">
+                                Algorithm used to sign requests.
+                                </p>
+                            </div>
+                            <field name="sign_authenticate_requests" />
+                            <field name="authn_requests_signed" />
+                            <field name="logout_requests_signed" />
+                            <field name="want_assertions_signed" />
+                            <field name="want_response_signed" />
+                            <field name="want_assertions_or_response_signed" />
+                            <label for="attribute_mapping_ids" />
+                            <div>
+                                <field
+                                    name="attribute_mapping_ids"
+                                    context="{'default_provider_id': id}"
+                                >
+                                    <list editable="bottom">
+                                        <field name="attribute_name" />
+                                        <field name="field_name" widget="selection" />
+                                    </list>
+                                </field>
+                                <p class="help small text-muted">
+                                    Mapped attributes are copied from the SAML response at every logon, if available. If multiple values are returned (i.e. a list) then the first value is used.
+                                </p>
+                            </div>
+                        </group>
+                        <group string="Display Settings" name="display_settings">
+                            <field name="body" />
+                            <field name="css_class" />
+                        </group>
+                        <group
+                            string="User Creation Settings"
+                            name="create_user_settings"
+                        >
+                            <field name="create_user" />
+                            <field
+                                name="create_user_template_id"
+                                string="User Template"
+                            />
+                            <field
+                                name="create_user_reactivate"
+                                invisible="not create_user"
+                                string="Reactivate"
+                            />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <!-- Menu command to open the SAML provider list. -->
+    <record model="ir.actions.act_window" id="action_saml_provider">
+        <field name="name">Providers</field>
+        <field name="res_model">auth.saml.provider</field>
+        <field name="view_mode">list,form</field>
+        <field name="path">saml-providers</field>
+    </record>
+    <menuitem
+        id="menu_saml_providers"
+        name="SAML Providers"
+        parent="base.menu_users"
+        sequence="30"
+        action="action_saml_provider"
+    />
+</odoo>
