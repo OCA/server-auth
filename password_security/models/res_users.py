@@ -69,8 +69,12 @@ class ResUsers(models.Model):
 
     def _check_password_policy(self, passwords):
         if (
-            config["test_enable"]
-            and not modules.module.current_test.test_module == "password_security"
+            (
+                config["test_enable"]
+                and not modules.module.current_test.test_module == "password_security"
+            )
+            # Skip the check while loading data files, to avoid blocking installations
+            or self.env.context.get("install_mode")
         ):
             return True
         result = super()._check_password_policy(passwords)
