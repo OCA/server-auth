@@ -18,6 +18,7 @@ exclude: |
   /build/|/dist/|
   # Ignore test files in addons
   /tests/samples/.*|
+  ^auth_jwt_demo/tests/spa.*|
   # You don't usually want a bot to modify your legal texts
   (LICENSE.*|COPYING.*)
 default_language_version:
