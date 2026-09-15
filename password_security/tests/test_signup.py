@@ -161,3 +161,19 @@ class TestPasswordSecuritySignup(HttpCase):
         self.assertEqual(
             response.headers["Content-Security-Policy"], "frame-ancestors 'self'"
         )
+
+    def test_07_web_auth_signup_disabled(self):
+        """It should not swallow the 404 raised when signup is disabled"""
+        self.env["ir.config_parameter"].sudo().set_param(
+            "auth_signup.invitation_scope", "b2b"
+        )
+        self.env.flush_all()
+        self.session = http.root.session_store.new()
+        self.opener = Opener(self.env.cr)
+        self.opener.cookies.set("session_id", self.session.sid, domain=HOST, path="/")
+
+        with mock.patch("odoo.http.db_filter") as db_filter:
+            db_filter.side_effect = lambda dbs, host=None: [get_db_name()]
+            response = self.url_open("/web/signup")
+
+        self.assertEqual(response.status_code, 404)
