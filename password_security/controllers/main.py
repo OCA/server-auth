@@ -3,7 +3,7 @@
 
 import logging
 
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, HTTPException
 
 from odoo import http
 from odoo.http import request
@@ -52,6 +52,11 @@ class PasswordSecurityHome(AuthSignupHome):
 
         try:
             return super().web_auth_signup(*args, **kw)
+        except HTTPException:
+            # Not something to report on the form: the parent raises NotFound()
+            # when signup is disabled, so rendering the signup page for it makes
+            # a closed route answer 200 with a working-looking form on it.
+            raise
         except Exception as e:
             # Here we catch any generic exception since UserError is already
             # handled in parent method web_auth_signup()
