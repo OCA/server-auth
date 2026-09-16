@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2026-04-30 09:35+0000\n"
+"PO-Revision-Date: 2026-09-16 14:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -1301,12 +1301,12 @@ msgstr "Attenzione"
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "With Content"
-msgstr ""
+msgstr "Con contenuto"
 
 #. module: vault
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
 msgid "Without Content"
-msgstr ""
+msgstr "Senza contanuto"
 
 #. module: vault
 #: model:ir.model,name:vault.model_vault_store_wizard
