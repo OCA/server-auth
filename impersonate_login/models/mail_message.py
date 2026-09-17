@@ -2,9 +2,10 @@
 # @author Kévin Roche <kevin.roche@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from markupsafe import Markup
+
 from odoo import api, fields, models
 from odoo.http import request
-from odoo.tools import html_escape
 
 
 class Message(models.Model):
@@ -12,70 +13,53 @@ class Message(models.Model):
 
     impersonated_author_id = fields.Many2one(
         comodel_name="res.partner",
-        compute="_compute_impersonated_author_id",
-        store=True,
+        string="Impersonated By",
+        readonly=True,
     )
 
-    body = fields.Html(
-        compute="_compute_message_body",
-        inverse="_inverse_message_body",
-        store=True,
-        readonly=False,
-    )
+    def _get_impersonate_notice(self):
+        """Notice to prepend to a message body, or an empty string
 
-    @api.depends("author_id")
-    def _compute_impersonated_author_id(self):
-        for rec in self:
-            if request and request.session.get("impersonate_from_uid"):
-                rec.impersonated_author_id = (
-                    self.env["res.users"]
-                    .browse(request.session.get("impersonate_from_uid"))
-                    .partner_id.id
-                )
-            else:
-                rec.impersonated_author_id = False
+        The notice names the user the message is written as, while the author
+        of the message is the user actually behind the keyboard.
+        """
+        if not (request and request.session.get("impersonate_from_uid")):
+            return ""
+        effective_partner = self.env["res.users"].browse(request.session.uid).partner_id
+        return Markup("<b>%s</b><br/>") % self.env._(
+            "Logged in as %(name)s", name=effective_partner.name
+        )
 
-    @api.depends("author_id", "impersonated_author_id")
-    def _compute_message_body(self):
-        for rec in self:
-            additional_info = ""
-            if (
-                request
-                and request.session.get("impersonate_from_uid")
-                and rec.impersonated_author_id
-            ):
-                current_partner = (
-                    self.env["res.users"].browse(request.session.uid).partner_id
-                )
-                additional_info = self.env._(
-                    "Logged in as %(name)s",
-                    name=html_escape(current_partner.name),
-                )
-            if rec.body and additional_info:
-                rec.body = f"<b>{additional_info}</b><br/>{rec.body}"
-            else:
-                rec.body = rec.body
+    def _add_impersonate_notice(self, vals, notice):
+        """Prepend the notice to the body of ``vals``, at most once"""
+        body = vals.get("body")
+        if not body or str(body).startswith(notice):
+            return vals
+        return dict(vals, body=notice + Markup(body))
 
-    def _inverse_message_body(self):
-        for rec in self:
-            additional_info = ""
-            if (
-                request
-                and request.session.get("impersonate_from_uid")
-                and rec.impersonated_author_id
-            ):
-                current_partner = (
-                    self.env["res.users"].browse(request.session.uid).partner_id
+    @api.model_create_multi
+    def create(self, vals_list):
+        notice = self._get_impersonate_notice()
+        if notice:
+            impersonated_author_id = (
+                self.env["res.users"]
+                .browse(request.session.get("impersonate_from_uid"))
+                .partner_id.id
+            )
+            vals_list = [
+                dict(
+                    self._add_impersonate_notice(vals, notice),
+                    impersonated_author_id=impersonated_author_id,
                 )
-                additional_info = self.env._(
-                    "Logged in as %(name)s",
-                    name=html_escape(current_partner.name),
-                )
-            if additional_info:
-                start_with = f"<b>{additional_info}</b><br/>"
-                if rec.body and rec.body.startswith(start_with):
-                    rec.body = rec.body
-                else:
-                    rec.body = f"{start_with}{rec.body}"
-            else:
-                rec.body = rec.body
+                for vals in vals_list
+            ]
+        return super().create(vals_list)
+
+    def write(self, vals):
+        # Keep the notice when a message is edited from an impersonated
+        # session, but never rewrite the stamp of an existing message.
+        if "body" in vals:
+            notice = self._get_impersonate_notice()
+            if notice:
+                vals = self._add_impersonate_notice(vals, notice)
+        return super().write(vals)
