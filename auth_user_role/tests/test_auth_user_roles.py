@@ -194,17 +194,17 @@ class TestAuthUserRoles(TransactionCase):
     def test_13_strict_sync_removes_native_groups(self):
         """Test that strict sync removes manually assigned native Odoo groups."""
         native_group = self.env.ref("base.group_user")
-        self.user.write({"groups_id": [(4, native_group.id)]})
-        self.assertIn(native_group, self.user.groups_id)
+        self.user.write({"group_ids": [(4, native_group.id)]})
+        self.assertIn(native_group, self.user.group_ids)
         self.assertNotIn(native_group, self.test_role.implied_ids)
 
         payload = {"eduPersonAffiliation": ["role2"]}
         self.user.evaluate_and_apply_auth_roles(payload, strict_sync=True)
 
         # The unrelated manual native group is stripped by set_groups_from_roles
-        self.assertNotIn(native_group, self.user.groups_id)
+        self.assertNotIn(native_group, self.user.group_ids)
         # The role-managed group should be present
-        self.assertIn(self.test_role.group_id, self.user.groups_id)
+        self.assertIn(self.test_role.group_id, self.user.group_ids)
 
     def test_14_duplicate_role_mappings_deduplication(self):
         """Test when multiple different mappings resolve to the EXACT SAME role."""
@@ -251,10 +251,10 @@ class TestAuthUserRoles(TransactionCase):
     def test_17_strict_sync_zero_roles_removes_all_groups(self):
         """If a user drops to zero roles under strict sync, remove all groups."""
         native_group = self.env.ref("base.group_user")
-        self.user.write({"groups_id": [(4, native_group.id)]})
+        self.user.write({"group_ids": [(4, native_group.id)]})
 
         # Ensure they actually have it
-        self.assertIn(native_group, self.user.groups_id)
+        self.assertIn(native_group, self.user.group_ids)
 
         # Send a payload that matches no roles with strict_sync=True
         payload = {"mail": "user2@example.com"}  # no mapped attributes
@@ -263,5 +263,8 @@ class TestAuthUserRoles(TransactionCase):
         # Assert roles dropped to 0
         self.assertEqual(len(self.user.role_line_ids), 0)
 
-        # Assert ALL groups were wiped (including the manual native group)
-        self.assertEqual(len(self.user.groups_id), 0)
+        # Assert ALL groups were wiped, except the ones base_user_role
+        # deliberately never touches (self-writable groups such as
+        # base.group_multi_company or the mail notification type group).
+        self_writable = self.env["res.users"]._get_self_writable_groups()
+        self.assertFalse(self.user.group_ids - self_writable)

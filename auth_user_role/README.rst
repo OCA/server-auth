@@ -17,10 +17,10 @@
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/18.0/auth_user_role
+    :target: https://github.com/OCA/server-auth/tree/19.0/auth_user_role
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-18-0/server-auth-18-0-auth_user_role
+    :target: https://translation.odoo-community.org/projects/server-auth-19-0/server-auth-19-0-auth_user_role
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
     :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=18.0
@@ -119,6 +119,6 @@ OCA, or the Odoo Community Association, is a nonprofit organization whose
 mission is to support the collaborative development of Odoo features and
 promote its widespread use.
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/18.0/auth_user_role>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/19.0/auth_user_role>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

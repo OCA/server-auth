@@ -36,7 +36,9 @@ class AuthUserRoleMapping(models.Model):
     @tools.ormcache()
     def _get_all_mappings_cached(self):
         """Fetch all mappings and cache them as native dicts for fast evaluation."""
-        mappings = self.sudo().search([])
+        mappings = self.sudo().search_fetch(
+            [], ["attribute", "operator", "value", "role_id"]
+        )
         return [
             {
                 "attribute": m.attribute,
