@@ -6,7 +6,22 @@ from datetime import date, timedelta
 
 from odoo.tests.common import TransactionCase
 
-from odoo.addons.auth_saml.tests.fake_idp import DummyResponse
+
+class FakeSamlResponse:
+    """Minimal stand-in for a pysaml2 ``AuthnResponse``.
+
+    ``auth_saml`` ships a ``DummyResponse`` helper in its own test package, but
+    it is an internal test utility whose API changes between versions (the 19.0
+    version no longer exposes ``get_identity``/``set_identity``). Only
+    ``get_identity()`` is needed here, so define it locally instead of coupling
+    these tests to another addon's test helpers.
+    """
+
+    def __init__(self, identity=None):
+        self._identity = identity
+
+    def get_identity(self):
+        return self._identity
 
 
 class TestAuthUserRolesSaml(TransactionCase):
@@ -58,9 +73,7 @@ class TestAuthUserRolesSaml(TransactionCase):
         """
         Simulates the exact two-step SAML login process to prevent false positives.
         """
-        fake_response = DummyResponse(200, "fake_data")
-        if identity_payload is not None:
-            fake_response.set_identity(identity_payload)
+        fake_response = FakeSamlResponse(identity_payload)
 
         validation_extras = (
             self.provider._hook_validate_auth_response(

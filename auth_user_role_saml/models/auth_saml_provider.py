@@ -7,6 +7,13 @@ from odoo import fields, models
 class AuthSamlProvider(models.Model):
     _inherit = "auth.saml.provider"
 
+    sync_roles_strictly = fields.Boolean(
+        string="Strict Role Synchronization",
+        default=lambda self: self._default_strict_sync(),
+        help="If checked, any Odoo roles manually assigned to the user will be removed "
+        "if they are not explicitly provided by the SAML IdP payload.",
+    )
+
     def _default_strict_sync(self):
         # Fetch the global parameter, defaulting to 'True'
         param = (
@@ -15,13 +22,6 @@ class AuthSamlProvider(models.Model):
             .get_param("auth_user_role.strict_sync", "True")
         )
         return param == "True"
-
-    sync_roles_strictly = fields.Boolean(
-        string="Strict Role Synchronization",
-        default=_default_strict_sync,
-        help="If checked, any Odoo roles manually assigned to the user will be removed "
-        "if they are not explicitly provided by the SAML IdP payload.",
-    )
 
     def _hook_validate_auth_response(self, response, matching_value):
         """Extract the identity payload before the response object is destroyed."""

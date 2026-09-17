@@ -3,7 +3,7 @@
 
 {
     "name": "360 ERP - Auth User Role SAML glue module",
-    "version": "18.0.1.0.0",
+    "version": "19.0.1.0.0",
     "author": "360 ERP, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
