@@ -16,15 +16,15 @@
                     </setting>
                     <setting
                         help="Allow all users to import vaults accessible to them"
-                        id="vault_share"
+                        id="vault_import"
                     >
                         <field name="group_vault_import" />
                     </setting>
                     <setting
                         help="Allow all users to export vaults accessible to them"
-                        id="vault_share"
+                        id="vault_export"
                     >
-                        <field name="group_vault_import" />
+                        <field name="group_vault_export" />
                     </setting>
                 </block>
             </block>

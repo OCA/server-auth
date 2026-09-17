@@ -10,7 +10,9 @@
         <field name="name">All Entries</field>
         <field name="res_model">vault.entry</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_vault': 1}</field>
+        <field
+            name="context"
+        >{'search_default_vault': 1, 'search_default_with_content': 1}</field>
         <field
             name="view_ids"
             eval="[(5,0,0),

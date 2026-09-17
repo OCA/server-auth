@@ -32,5 +32,6 @@ class ResUserSaml(models.Model):
         # Redefined to remove password if necessary
         result = super().create(vals_list)
         if not self.env["res.users"].allow_saml_and_password():
-            result.mapped("user_id").write({"password": False})
+            # Avoid sending a security mail by using this method instead of a write
+            result.mapped("user_id")._set_password_blank()
         return result

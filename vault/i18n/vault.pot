@@ -20,12 +20,6 @@ msgid "%(action)s entry %(name)s by %(user)s"
 msgstr ""
 
 #. module: vault
-#. odoo-javascript
-#: code:addons/vault/static/src/backend/controller.esm.js:0
-msgid "%s '%s' of entry '%s'"
-msgstr ""
-
-#. module: vault
 #. odoo-python
 #: code:addons/vault/models/vault_entry.py:0
 msgid "%s (copy)"
@@ -190,12 +184,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_send_wizard
 #: model_terms:ir.ui.view,arch_db:vault.view_vault_store_wizard
 msgid "Cancel"
-msgstr ""
-
-#. module: vault
-#. odoo-javascript
-#: code:addons/vault/static/src/common/vault_utils_service.esm.js:0
-msgid "Cancelled"
 msgstr ""
 
 #. module: vault
@@ -1292,6 +1280,16 @@ msgid "Warning"
 msgstr ""
 
 #. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "With Content"
+msgstr ""
+
+#. module: vault
+#: model_terms:ir.ui.view,arch_db:vault.view_vault_entry_search
+msgid "Without Content"
+msgstr ""
+
+#. module: vault
 #: model:ir.model,name:vault.model_vault_store_wizard
 msgid "Wizard store a shared secret in a vault"
 msgstr ""
@@ -1335,4 +1333,10 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/vault/static/src/backend/templates.xml:0
 msgid "a-z"
+msgstr ""
+
+#. module: vault
+#. odoo-javascript
+#: code:addons/vault/static/src/backend/controller.esm.js:0
+msgid "of entry"
 msgstr ""

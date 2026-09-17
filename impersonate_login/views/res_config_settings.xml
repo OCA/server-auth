@@ -1,0 +1,20 @@
+<odoo>
+    <record id="view_res_config_settings_impersonate" model="ir.ui.view">
+        <field name="name">res.config.settings.impersonate</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block id="user_default_rights" position="after">
+                <block title="Impersonation Login" id="impersonate_login">
+                    <setting
+                        id="restrict_impersonate_admin_settings"
+                        title="Restrict Impersonation of 'Administration: Settings' Users"
+                        help="Prevents impersonating users that have the 'Administration: Settings' access rights."
+                    >
+                        <field name="restrict_impersonate_admin_settings" />
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>

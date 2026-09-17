@@ -1,0 +1,152 @@
+# Copyright 2024 Akretion (http://www.akretion.com).
+# @author Florian Mounier <florian.mounier@akretion.com>
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+import re
+from datetime import datetime, timedelta, timezone
+from secrets import token_urlsafe
+
+import jwt
+
+from odoo import api, fields, models
+from odoo.exceptions import AccessDenied
+
+
+class CrossConnectClient(models.Model):
+    _name = "cross.connect.client"
+    _description = "Cross Connect Client"
+    _inherit = "server.env.mixin"
+
+    name = fields.Char(required=True)
+
+    endpoint_id = fields.Many2one(
+        "fastapi.endpoint",
+        required=True,
+        string="Endpoint",
+    )
+
+    api_key = fields.Char(
+        required=True,
+        string="API Key",
+        help="The API key to give to configure on the client.",
+        default=lambda self: self._generate_api_key(),
+    )
+
+    allowed_group_ids = fields.Many2many(
+        related="endpoint_id.cross_connect_allowed_group_ids",
+    )
+
+    bypass_user_mail_re = fields.Char(
+        string="Bypass Users Email Regexes",
+        help=(
+            "If set, users with an email matching one of these regex will bypass "
+            "the token user/login creation. The regexes are comma separated."
+        ),
+    )
+
+    group_ids = fields.Many2many(
+        "res.groups",
+        string="Groups",
+        help="The groups that this client belongs to.",
+        domain="[('id', 'in', allowed_group_ids)]",
+    )
+
+    user_ids = fields.One2many(
+        "res.users",
+        "cross_connect_client_id",
+        string="Users",
+        help="The users created by this cross connection.",
+    )
+    user_count = fields.Integer(
+        compute="_compute_user_count",
+        string="Cross Connected User Count",
+        help="The number of users created by this cross connection.",
+    )
+
+    @api.model
+    def _generate_api_key(self):
+        # generate random ~64 chars secret key
+        return token_urlsafe(64)
+
+    @api.depends("user_ids")
+    def _compute_user_count(self):
+        for record in self:
+            record.user_count = len(record.user_ids)
+
+    def _request_access(self, access_request):
+        if self.bypass_user_mail_re and any(
+            re.search(mail_re.strip(), access_request.email)
+            for mail_re in self.bypass_user_mail_re.split(",")
+        ):
+            return "bypass"
+
+        # check groups
+        groups = self.env["res.groups"].browse(access_request.groups)
+        if groups - self.group_ids or not groups.exists():
+            raise AccessDenied(
+                self.env._("You are not allowed to access this endpoint.")
+            )
+
+        user = self.user_ids.filtered(
+            lambda u: u.cross_connect_client_user_id == access_request.id
+        )
+
+        # Fallback to default lang if not installed
+        if access_request.lang not in [
+            code for code, _name in self.env["res.lang"].get_installed()
+        ]:
+            access_request.lang = "en_US"
+
+        vals = {
+            "email": access_request.email,
+            "name": access_request.name,
+            "lang": access_request.lang,
+            "groups_id": [(6, 0, groups.ids)],
+            "cross_connect_client_id": self.id,
+            "cross_connect_client_user_id": access_request.id,
+        }
+        login = f"{self.id}_{access_request.id}_{access_request.login}"
+        # Avoid write of login if uncessary because it triggers an email
+        if not user or user.login != login:
+            vals["login"] = login
+        # Create user if not exists
+        if not user:
+            user = (
+                self.env["res.users"].with_context(no_reset_password=True).create(vals)
+            )
+        else:
+            user.write(vals)
+
+        return jwt.encode(
+            {
+                "exp": datetime.now(tz=timezone.utc) + timedelta(minutes=2),
+                "aud": str(self.id),
+                "id": user.id,
+            },
+            self.endpoint_id.cross_connect_secret_key,
+            algorithm="HS256",
+        )
+
+    def _log_from_token(self, token):
+        try:
+            obj = jwt.decode(
+                token,
+                self.endpoint_id.cross_connect_secret_key,
+                audience=str(self.id),
+                options={"require": ["exp", "aud", "id"]},
+                algorithms=["HS256"],
+            )
+        except jwt.PyJWTError as e:
+            raise AccessDenied(self.env._("Invalid Token")) from e
+
+        user = self.env["res.users"].browse(obj["id"])
+
+        if not user:
+            raise AccessDenied(self.env._("Invalid Token"))
+
+        return user
+
+    def _get_final_redirect_url(self, **params):
+        """Get the final redirect url after login.
+        Override this method to customize the local landing action.
+        """
+        return "/web"

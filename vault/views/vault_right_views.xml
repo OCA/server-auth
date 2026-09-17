@@ -8,7 +8,10 @@
                 <field name="master_key" column_invisible="1" />
                 <field name="key" column_invisible="1" />
                 <field name="public_key" column_invisible="1" />
-                <field name="user_id" />
+                <field
+                    name="user_id"
+                    options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"
+                />
                 <field name="perm_create" />
                 <field name="perm_write" />
                 <field name="perm_share" />
@@ -23,7 +26,10 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="user_id" />
+                        <field
+                            name="user_id"
+                            options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}"
+                        />
                         <field name="perm_create" />
                         <field name="perm_write" />
                         <field name="perm_share" />

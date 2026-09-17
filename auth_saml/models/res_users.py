@@ -183,13 +183,14 @@ class ResUser(models.Model):
         """Set the password to a value that prohibits logging."""
         # Use SQL to blank the password to avoid sending security messages (done in
         # mail module) to end users.
-        _logger.debug("Removing password from %s user(s)", len(self.ids))
-        # similar to what Odoo does in Users._set_encrypted_password
-        self.env.cr.execute(
-            "UPDATE res_users SET password = NULL WHERE id IN %s",
-            (tuple(self.ids),),
-        )
-        self.invalidate_recordset(fnames=["password"])
+        if self:  # no users, nothing to do.
+            _logger.debug("Removing password from %s user(s)", len(self.ids))
+            # similar to what Odoo does in Users._set_encrypted_password
+            self.env.cr.execute(
+                "UPDATE res_users SET password = NULL WHERE id IN %s",
+                (tuple(self.ids),),
+            )
+            self.invalidate_recordset(fnames=["password"])
 
     def allow_saml_and_password_changed(self):
         """Called after the parameter is changed."""
