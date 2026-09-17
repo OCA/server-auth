@@ -29,5 +29,4 @@
             "impersonate_login/static/src/js/user_menu.esm.js",
         ],
     },
-    "pre_init_hook": "pre_init_hook",
 }

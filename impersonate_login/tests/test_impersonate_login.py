@@ -97,6 +97,35 @@ class TestImpersonateLogin(HttpCase):
         self.assertEqual(response.status_code, 200)
         return response.json()
 
+    def _message_post(self, record, body):
+        response = self.url_open(
+            "/mail/message/post",
+            data=json.dumps(
+                {
+                    "params": {
+                        "thread_model": record._name,
+                        "thread_id": record.id,
+                        "post_data": {
+                            "body": body,
+                            "message_type": "comment",
+                            "subtype_xmlid": "mail.mt_comment",
+                        },
+                    },
+                }
+            ),
+            headers={"Content-Type": "application/json"},
+        )
+        self.assertEqual(response.status_code, 200)
+        return (
+            self.env["mail.message"]
+            .search(
+                [("model", "=", record._name), ("res_id", "=", record.id)],
+                order="id desc",
+                limit=1,
+            )
+            .sudo()
+        )
+
     def test_01_admin_impersonates_user_demo(self):
         """Admin user impersonates Demo user"""
         # Login as admin
@@ -373,3 +402,26 @@ class TestImpersonateLogin(HttpCase):
             "You cannot impersonate users with "
             "'Administration: Settings' access rights.",
         )
+
+    def test_07_message_notice_is_added_once(self):
+        """The impersonation notice is added once and the stamp is kept"""
+        partner = self.env["res.partner"].create({"name": "Contact Chatter"})
+
+        # Login as admin and impersonate the demo user
+        self.authenticate(user="admin", password="admin")
+        self._impersonate_user(self.demo_user)
+
+        message = self._message_post(partner, "<p>Hello</p>")
+        self.assertTrue(message)
+        # the author is the user behind the keyboard, the notice names the
+        # user the message was written as
+        self.assertEqual(message.author_id, self.admin_user.partner_id)
+        self.assertEqual(message.impersonated_author_id, self.admin_user.partner_id)
+        self.assertEqual(message.body.count("Logged in as"), 1)
+
+        # a later write on the author must neither add the notice again
+        # nor drop the recorded impersonation
+        message.write({"author_id": self.admin_user.partner_id.id})
+        message.invalidate_recordset()
+        self.assertEqual(message.body.count("Logged in as"), 1)
+        self.assertEqual(message.impersonated_author_id, self.admin_user.partner_id)
