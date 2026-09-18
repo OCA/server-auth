@@ -139,6 +139,18 @@ class TestResUsers(TransactionCase):
             rec_id._validate_pass_reset(),
         )
 
+    def test_absent_policy_param_disables_rule(self):
+        """An absent policy param disables the rule, not reverts to a default
+
+        The settings page deletes an ``ir.config_parameter`` when it is saved
+        as 0, so a missing param must read as 0 (disabled) rather than fall
+        back to a non-zero default. See OCA/server-auth#865.
+        """
+        icp = self.env["ir.config_parameter"].sudo()
+        icp.search([("key", "=", "password_security.upper")]).unlink()
+        params = self.model_obj._get_all_password_params()
+        self.assertEqual(params["upper"], 0)
+
     def test_underscore_is_special_character(self):
         password_special = int(
             self.env["ir.config_parameter"]
