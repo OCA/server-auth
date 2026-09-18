@@ -43,6 +43,7 @@ class VaultInbox(models.Model):
         help="If expired the inbox can't be written using the link",
     )
     log_ids = fields.One2many("vault.inbox.log", "inbox_id", "Log", readonly=True)
+    writable = fields.Boolean(compute="_compute_writable")
 
     _sql_constraints = [
         (
@@ -51,6 +52,14 @@ class VaultInbox(models.Model):
             "No value found",
         ),
     ]
+
+    @api.depends("accesses", "expiration")
+    def _compute_writable(self):
+        now = datetime.now()
+        for rec in self:
+            rec.writable = rec.accesses > 0 and (
+                not rec.expiration or now < rec.expiration
+            )
 
     @api.depends("token")
     def _compute_inbox_link(self):
