@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Keboola
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo noupdate="1">
+    <record id="cron_revoke_drifted_apikeys" model="ir.cron">
+        <field name="name">Auth API Key Provisioning: revoke drifted keys</field>
+        <field name="model_id" ref="base.model_res_users" />
+        <field name="state">code</field>
+        <field name="code">model._cron_revoke_drifted_apikeys()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="nextcall" eval="(DateTime.now()).strftime('%Y-%m-%d 02:00:00')" />
+        <field name="user_id" ref="base.user_root" />
+        <field name="active" eval="True" />
+    </record>
+</odoo>

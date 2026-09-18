@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_provisioning_log_provisioning,auth.api.key.provisioning.log provisioning,model_auth_api_key_provisioning_log,group_apikey_provisioning,1,0,0,0
+access_provisioning_log_system,auth.api.key.provisioning.log system,model_auth_api_key_provisioning_log,base.group_system,1,1,1,1
