@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<odoo noupdate="1">
+    <record id="allow_saml_uid_and_internal_password" model="ir.config_parameter">
+        <field name="key">auth_saml.allow_saml_uid_and_internal_password</field>
+        <field name="value">True</field>
+    </record>
+    <record id="saml_error_page_config_parameter" model="ir.config_parameter">
+        <field name="key">auth_saml.saml_error_page</field>
+        <field name="value">/web/login</field>
+    </record>
+</odoo>
