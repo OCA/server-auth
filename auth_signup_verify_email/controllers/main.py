@@ -21,12 +21,11 @@ class SignupVerifyEmail(AuthSignupHome):
         return super().web_auth_signup(*args, **kw)
 
     def passwordless_signup(self):
-        values = request.params
         qcontext = self.get_auth_signup_qcontext()
 
         # Check good format of e-mail
         try:
-            validate_email(values.get("login", ""))
+            validate_email(qcontext.get("login", ""))
         except EmailSyntaxError as error:
             qcontext["error"] = getattr(
                 error,
@@ -40,12 +39,10 @@ class SignupVerifyEmail(AuthSignupHome):
         except Exception as error:
             qcontext["error"] = str(error)
             return request.render("auth_signup.signup", qcontext)
-        if not values.get("email"):
-            values["email"] = values.get("login")
+        if not qcontext.get("email"):
+            qcontext["email"] = qcontext.get("login")
 
-        # remove values that could raise "Invalid field '*' on model 'res.users'"
-        values.pop("redirect", "")
-        values.pop("token", "")
+        values = self._prepare_signup_values(qcontext)
 
         # Remove password
         values["password"] = ""
@@ -61,7 +58,7 @@ class SignupVerifyEmail(AuthSignupHome):
             if (
                 request.env["res.users"]
                 .sudo()
-                .search([("login", "=", qcontext.get("login"))])
+                .search([("login", "=", values.get("login"))])
             ):
                 qcontext["error"] = _(
                     "Another user is already registered using this email" " address."
