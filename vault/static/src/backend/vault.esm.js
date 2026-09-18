@@ -341,13 +341,23 @@ const vaultService = {
                         this.iterations
                     );
 
-                    this.keys = {
-                        publicKey: await vault_utils.load_public_key(params.public),
-                        privateKey: await vault_utils.load_private_key(
+                    let private_key = null;
+                    try {
+                        private_key = await vault_utils.load_private_key(
                             params.private,
                             pass,
                             params.iv
-                        ),
+                        );
+                    } catch (error) {
+                        console.error(error);
+                        throw new Error(
+                            _t("The entered password is wrong. Please try again.")
+                        );
+                    }
+
+                    this.keys = {
+                        publicKey: await vault_utils.load_public_key(params.public),
+                        privateKey: private_key,
                     };
 
                     this.time = new Date();

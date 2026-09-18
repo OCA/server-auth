@@ -112,6 +112,26 @@ QUnit.module(
             assert.deepEqual(master_key, tmp);
         });
 
+        QUnit.test("vault: Test wrong password", async function (assert) {
+            assert.expect(1);
+
+            const key = await utils.generate_key_pair();
+            const iv = utils.generate_bytes(10);
+            const salt = utils.generate_bytes(10);
+
+            const wrapper = await utils.derive_key("test", salt, 4000);
+            const exported = await utils.export_private_key(
+                key.privateKey,
+                wrapper,
+                iv
+            );
+
+            const wrong = await utils.derive_key("wrong", salt, 4000);
+            await assert.rejects(
+                utils.load_private_key(exported, wrong, utils.toBase64(iv))
+            );
+        });
+
         QUnit.test("vault: Test vault class", async function (assert) {
             assert.expect(12);
 
