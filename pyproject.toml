@@ -1,0 +1,2 @@
+[tool.whool]
+depends_override = { "server_environment" = "odoo-addon-server_environment ==18.0.*, >18.0.1.0.6" }
