@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="auth_saml.login_error" name="SAML Login Error">
+        <t t-call="web.layout">
+            <t t-set="head">
+                <t t-call-assets="web.assets_frontend" t-js="false" />
+            </t>
+            <t t-set="body_classname" t-value="'bg-100'" />
+
+            <div class="container py-5">
+                <div
+                    t-attf-class="card border-0 mx-auto bg-100 {{login_card_classes}} o_database_list"
+                    style="max-width: 300px;"
+                >
+                    <div class="card-body">
+                        <div
+                            t-attf-class="text-center pb-3 border-bottom {{'mb-3' if form_small else 'mb-4'}}"
+                        >
+                            <img
+                                t-attf-src="/web/binary/company_logo{{ '?dbname='+db if db else '' }}"
+                                alt="Logo"
+                                style="max-height:120px; max-width: 100%; width:auto"
+                            />
+                        </div>
+                        <div class="oe_login_form">
+                            <p class="alert alert-danger" role="alert">
+                                <t t-out="error" />
+                            </p>
+                            <div
+                                t-attf-class="clearfix oe_login_buttons text-center mb-1 {{'pt-2' if form_small else 'pt-3'}}"
+                            >
+                                <a
+                                    class="btn btn-primary btn-block"
+                                    href="/web/login"
+                                >Log in</a>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+        </t>
+    </template>
+</odoo>
