@@ -52,7 +52,10 @@ class TestAuthAdminPasskeyTotpMailEnforce(HttpCase):
 
         # Reset session (login page displayed)
         response = self.url_open("/web/session/logout")
-        self.assertEqual(response.request.path_url, "/web/login")
+        # Response url changed by module auth_logout_redirect
+        self.assertIn(
+            response.request.path_url, ["/web/login", "/web/logout_successful"]
+        )
 
         # Enable passkey and set auth_admin_passkey_ignore_totp = True
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
@@ -76,7 +79,10 @@ class TestAuthAdminPasskeyTotpMailEnforce(HttpCase):
 
         # Reset session (login page displayed)
         response = self.url_open("/web/session/logout")
-        self.assertEqual(response.request.path_url, "/web/login")
+        # Response url changed by module auth_logout_redirect
+        self.assertIn(
+            response.request.path_url, ["/web/login", "/web/logout_successful"]
+        )
 
         # Enable passkey and set auth_admin_passkey_ignore_totp = True
         config["auth_admin_passkey_password"] = self.sysadmin_passkey
