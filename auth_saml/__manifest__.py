@@ -1,12 +1,12 @@
 # Copyright (C) 2020 GlodoUK <https://www.glodo.uk/>
-# Copyright (C) 2010-2016, 2022 XCG Consulting <http://odoo.consulting>
+# Copyright (C) 2010-2016, 2022 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
     "name": "SAML2 Authentication",
     "version": "18.0.1.1.3",
     "category": "Tools",
-    "author": "XCG Consulting, Odoo Community Association (OCA)",
+    "author": "XCG SAS, Odoo Community Association (OCA)",
     "maintainers": ["vincent-hatakeyama"],
     "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
