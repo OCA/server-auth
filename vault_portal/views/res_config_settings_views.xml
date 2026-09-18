@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2026 INVITU (<https://www.invitu.com>) -->
+<!-- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.vault.portal</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="vault.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block id="vault" position="inside">
+                <setting
+                    string="Portal Two-Factor Authentication Policy"
+                    help="Controls whether portal contacts must have 2FA enabled to access or modify shared vaults"
+                    id="vault_portal_mfa"
+                >
+                    <field name="vault_portal_mfa_policy" />
+                </setting>
+            </block>
+        </field>
+    </record>
+</odoo>

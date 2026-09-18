@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2026 INVITU (<https://www.invitu.com>) -->
+<!-- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- vault: read-only for portal contacts. -->
+    <record id="vault_portal_access_default" model="ir.rule">
+        <field name="name">vault.portal.access.default</field>
+        <field name="model_id" ref="vault.model_vault" />
+        <field name="domain_force">[('right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        <field name="perm_create" eval="0" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_unlink" eval="0" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <!-- vault.entry: create/write allowed, gated per contact by
+         vault.right.perm_create/perm_write (vault.abstract.check_access()).
+         Write is further restricted to url/expire_date only, at the
+         Python level (models/vault_entry.py) - ir.rule cannot express
+         field-level restrictions. No rename/delete from the portal. -->
+    <record id="vault_entry_portal_access_default" model="ir.rule">
+        <field name="name">vault.entry.portal.access.default</field>
+        <field name="model_id" ref="vault.model_vault_entry" />
+        <field
+            name="domain_force"
+        >[('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="0" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <!-- vault.field: write/create allowed, gated per contact by
+         vault.right.perm_write/perm_create (vault.abstract.check_access()). -->
+    <record id="vault_field_portal_access_default" model="ir.rule">
+        <field name="name">vault.field.portal.access.default</field>
+        <field name="model_id" ref="vault.model_vault_field" />
+        <field
+            name="domain_force"
+        >[('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="0" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <!-- vault.file: create allowed (upload), gated per contact by
+         vault.right.perm_create (vault.abstract.check_access()). No
+         replace/rename/delete from the portal. -->
+    <record id="vault_file_portal_access_default" model="ir.rule">
+        <field name="name">vault.file.portal.access.default</field>
+        <field name="model_id" ref="vault.model_vault_file" />
+        <field
+            name="domain_force"
+        >[('vault_id.right_ids.user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="0" />
+        <field name="perm_unlink" eval="0" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <!-- res.users.key: the contact's own key pair, read-write, own record only. -->
+    <record id="res_users_key_portal_access_default" model="ir.rule">
+        <field name="name">res.users.key.portal.access.default</field>
+        <field name="model_id" ref="vault.model_res_users_key" />
+        <field name="domain_force">[('user_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]" />
+        <field name="perm_create" eval="1" />
+        <field name="perm_write" eval="1" />
+        <field name="perm_unlink" eval="1" />
+        <field name="perm_read" eval="1" />
+    </record>
+
+    <!-- vault.tag has no rule here on purpose: it carries no vault_id
+         to scope a domain on, so read access is global (see
+         security/ir.model.access.csv) rather than per-right. -->
+</odoo>

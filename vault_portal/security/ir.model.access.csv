@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_vault_portal,access_vault_portal,vault.model_vault,base.group_portal,1,0,0,0
+access_vault_entry_portal,access_vault_entry_portal,vault.model_vault_entry,base.group_portal,1,1,1,0
+access_vault_field_portal,access_vault_field_portal,vault.model_vault_field,base.group_portal,1,1,1,0
+access_vault_file_portal,access_vault_file_portal,vault.model_vault_file,base.group_portal,1,0,1,0
+access_res_users_key_portal,access_res_users_key_portal,vault.model_res_users_key,base.group_portal,1,1,1,1
+access_vault_tag_portal,access_vault_tag_portal,vault.model_vault_tag,base.group_portal,1,0,0,0
