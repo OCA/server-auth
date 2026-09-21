@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: OpenERP Server 7.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-03 15:51+0000\n"
-"PO-Revision-Date: 2025-01-27 11:02+0000\n"
+"PO-Revision-Date: 2026-09-21 12:12+0000\n"
 "Last-Translator: Vincent Hatakeyama <vincent+github@hatakeyama.fr>\n"
 "Language-Team: XCG Consulting\n"
 "Language: fr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.providers
@@ -220,7 +220,7 @@ msgstr "Métadonnées du fournisseur d’identité"
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__idp_metadata_url
 msgid "Identity Provider Metadata URL"
-msgstr ""
+msgstr "URL des métadonnées du fournisseur d’identité"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
@@ -391,7 +391,7 @@ msgstr "Fournisseurs"
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Refresh"
-msgstr ""
+msgstr "Rafraîchir"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
@@ -483,6 +483,10 @@ msgid ""
 "changes over time, and they provide a URL to the document instead. When this "
 "field is set, the metadata can be fetched from the provided URL."
 msgstr ""
+"Certains fournisseurs SAML, Office365 notamment, peuvent avoir un document "
+"de métadonnées qui change au cours du temps, et ils fournissent une URL vers "
+"le document à la place. Lorsque ce champ est rempli, la métadonnée peut être "
+"récupérée de l’URL fournie."
 
 #. module: auth_saml
 #: model:ir.model,name:auth_saml.model_ir_config_parameter
@@ -513,6 +517,9 @@ msgid ""
 "for you and you provider gives you a URL, use this field "
 "preferably. Otherwise use the next one"
 msgstr ""
+"Les métadonnées peuvent être automatiquement téléchargées depuis cette URL. "
+"Si c’est valide pour vous et que votre fournisseur vous fourni une URL, "
+"utiliser ce champ de préférence. Sinon utiliser le champ suivant."
 
 #. module: auth_saml
 #. odoo-python
