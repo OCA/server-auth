@@ -12,7 +12,9 @@
     "license": "AGPL-3",
     "depends": ["base_setup", "web"],
     "external_dependencies": {
-        "python": ["pysaml2"],
+        # pysaml2 7.5.5 requires cryptography>=46.0.5 and pyopenssl>=26, which
+        # pip installs over the versions pinned by Odoo 17.0, breaking it
+        "python": ["pysaml2<7.5.5"],
         "bin": ["xmlsec1"],
         # special definition used by OCA to install packages
         "deb": ["xmlsec1"],

@@ -3,6 +3,6 @@ cryptography
 email_validator
 lxml
 pyjwt
-pysaml2
+pysaml2<7.5.5
 python-jose
 python-ldap

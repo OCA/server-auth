@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 ====================
 SAML2 Authentication
 ====================
@@ -17,7 +13,7 @@ SAML2 Authentication
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
@@ -40,14 +36,14 @@ On) between Odoo and other applications of your ecosystem.
 
 **Benefits**:
 
-- Reducing the time spent typing different passwords for different
-  accounts.
-- Reducing the time spent in IT support for password oversights.
-- Centralizing authentication systems.
-- Securing all input levels / exit / access to multiple systems without
-  prompting users.
-- The centralization of access control information for compliance
-  testing to different standards.
+-  Reducing the time spent typing different passwords for different
+   accounts.
+-  Reducing the time spent in IT support for password oversights.
+-  Centralizing authentication systems.
+-  Securing all input levels / exit / access to multiple systems without
+   prompting users.
+-  The centralization of access control information for compliance
+   testing to different standards.
 
 **Table of contents**
 
@@ -96,7 +92,7 @@ login screen.
 Known issues / Roadmap
 ======================
 
-- clean up ``auth_saml.request``
+-  clean up ``auth_saml.request``
 
 Changelog
 =========
@@ -107,17 +103,17 @@ Changelog
 Features
 ~~~~~~~~
 
-- 
+-  
 
-  - custom message when response is too old
-  - avoid using werkzeug.urls method, they are deprecated
-  - add missing ondelete cascade when user is deleted
-  - attribute mapping is now also duplicated when the provider is
-    duplicated
-  - factorize getting SAML attribute value, allowing using
-    subject.nameId in mapping attributes too
-  - allow creating user if not found by copying a template user, or
-    activating a deactivated user.
+   -  custom message when response is too old
+   -  avoid using werkzeug.urls method, they are deprecated
+   -  add missing ondelete cascade when user is deleted
+   -  attribute mapping is now also duplicated when the provider is
+      duplicated
+   -  factorize getting SAML attribute value, allowing using
+      subject.nameId in mapping attributes too
+   -  allow creating user if not found by copying a template user, or
+      activating a deactivated user.
 
 17.0.1.0.5 (2026-06-18)
 -----------------------
@@ -125,7 +121,7 @@ Features
 Bugfixes
 ~~~~~~~~
 
-- Fix sending a mail when configuring SAML for a user.
+-  Fix sending a mail when configuring SAML for a user.
 
 17.0.1.0.2 (2025-05-13)
 -----------------------
@@ -133,7 +129,7 @@ Bugfixes
 Bugfixes
 ~~~~~~~~
 
-- Avoid redirecting when there is a SAML error.
+-  Avoid redirecting when there is a SAML error.
 
 17.0.1.0.1
 ----------
@@ -168,28 +164,28 @@ Authors
 Contributors
 ------------
 
-- XCG SAS part of `Orbeet <https://orbeet.io/>`__:
+-  XCG SAS part of `Orbeet <https://orbeet.io/>`__:
 
-  - Florent Aide <florent.aide@orbeet.io>
-  - Vincent Hatakeyama <vincent.hatakeyama@orbeet.io>
-  - Alexandre Brun
-  - Houzéfa Abbasbhay <houzefa.abba@orbeet.io>
-  - Szeka Wong <szeka.wong@orbeet.io>
+   -  Florent Aide <florent.aide@orbeet.io>
+   -  Vincent Hatakeyama <vincent.hatakeyama@orbeet.io>
+   -  Alexandre Brun
+   -  Houzéfa Abbasbhay <houzefa.abba@orbeet.io>
+   -  Szeka Wong <szeka.wong@orbeet.io>
 
-- Jeremy Co Kim Len <jeremy.cokimlen@vinci-concessions.com>
-- Jeffery Chen Fan <jeffery9@gmail.com>
-- Bhavesh Odedra <bodedra@opensourceintegrators.com>
-- `Tecnativa <https://www.tecnativa.com/>`__:
+-  Jeremy Co Kim Len <jeremy.cokimlen@vinci-concessions.com>
+-  Jeffery Chen Fan <jeffery9@gmail.com>
+-  Bhavesh Odedra <bodedra@opensourceintegrators.com>
+-  `Tecnativa <https://www.tecnativa.com/>`__:
 
-  - Jairo Llopis
+   -  Jairo Llopis
 
-- `GlodoUK <https://www.glodo.uk/>`__:
+-  `GlodoUK <https://www.glodo.uk/>`__:
 
-  - Karl Southern
+   -  Karl Southern
 
-- `TAKOBI <https://takobi.online/>`__:
+-  `TAKOBI <https://takobi.online/>`__:
 
-  - Lorenzo Battistini
+   -  Lorenzo Battistini
 
 Maintainers
 -----------
