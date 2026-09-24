@@ -1,0 +1,93 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* base_api_key_expiration
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 17.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-24 17:32+0000\n"
+"PO-Revision-Date: 2026-09-24 17:32+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+
+#. module: base_api_key_expiration
+#: model:ir.model,name:base_api_key_expiration.model_res_users_apikeys_description
+msgid "API Key Description"
+msgstr "Description de clé API"
+
+#. module: base_api_key_expiration
+#: model:ir.model.fields,field_description:base_api_key_expiration.field_res_groups__api_key_duration
+msgid "API Keys maximum duration days"
+msgstr "Durée maximale en jours des clés API"
+
+#. module: base_api_key_expiration
+#: model:ir.model,name:base_api_key_expiration.model_res_groups
+msgid "Access Groups"
+msgstr "Groupes d'accès"
+
+#. module: base_api_key_expiration
+#: model:ir.model.fields,help:base_api_key_expiration.field_res_groups__api_key_duration
+msgid ""
+"Determines the maximum duration of an api key created by a user belonging to"
+" this group."
+msgstr ""
+"Détermine la durée maximale d'une clé API créée par un utilisateur "
+"appartenant à ce groupe."
+
+#. module: base_api_key_expiration
+#: model:ir.model.fields,field_description:base_api_key_expiration.field_res_users_apikeys_description__duration
+msgid "Duration"
+msgstr "Durée"
+
+#. module: base_api_key_expiration
+#: model:ir.model.fields,field_description:base_api_key_expiration.field_res_users_apikeys__expiration_date
+#: model:ir.model.fields,field_description:base_api_key_expiration.field_res_users_apikeys_description__expiration_date
+msgid "Expiration Date"
+msgstr "Date d'expiration"
+
+#. module: base_api_key_expiration
+#: model_terms:ir.ui.view,arch_db:base_api_key_expiration.form_res_users_key_description
+msgid "Give a duration for the key's validity"
+msgstr "Indiquer une durée de validité pour la clé"
+
+#. module: base_api_key_expiration
+#. odoo-python
+#: code:addons/base_api_key_expiration/models/res_users_apikeys_description.py:0
+#, python-format
+msgid "The API key duration is not correct."
+msgstr "La durée de la clé API n'est pas correcte."
+
+#. module: base_api_key_expiration
+#. odoo-python
+#: code:addons/base_api_key_expiration/models/res_users_apikeys.py:0
+#, python-format
+msgid "The API key must have an expiration date"
+msgstr "La clé API doit avoir une date d'expiration"
+
+#. module: base_api_key_expiration
+#: model:ir.model.constraint,message:base_api_key_expiration.constraint_res_groups_check_api_key_duration
+msgid "The api key duration cannot be a negative value."
+msgstr "La durée de la clé API ne peut pas être une valeur négative."
+
+#. module: base_api_key_expiration
+#: model_terms:ir.ui.view,arch_db:base_api_key_expiration.form_res_users_key_description
+msgid "The key will be deleted once this period has elapsed."
+msgstr "La clé sera supprimée à l'issue de cette période."
+
+#. module: base_api_key_expiration
+#: model:ir.model,name:base_api_key_expiration.model_res_users_apikeys
+msgid "Users API Keys"
+msgstr "Utilisateurs des clés API"
+
+#. module: base_api_key_expiration
+#. odoo-python
+#: code:addons/base_api_key_expiration/models/res_users_apikeys.py:0
+#, python-format
+msgid "You cannot exceed %(duration)s days."
+msgstr "Vous ne pouvez pas dépasser la durée de %(duration)s jours."
