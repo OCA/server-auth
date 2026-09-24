@@ -1,3 +1,9 @@
 responses
 httpx2
 odoo-test-helper
+#: auth_saml {{{
+# Editor style requirements (needed to indicate compatibilities with other libriaries)
+pysaml2==7.1.0 ; python_version <= '3.12'  # jammy, noble
+pysaml2==7.5.0 ; python_version == '3.13'  # trixie
+pysaml2==7.5.4 ; python_version >= '3.14'  # question
+#: }}}
