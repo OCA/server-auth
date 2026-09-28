@@ -45,6 +45,23 @@ class UICase(HttpCase):
         doc = self.html_doc(data=self.data)
         self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
 
+    def test_failed_recaptcha(self):
+        """Test rejection of failed reCaptcha."""
+        self.data["login"] = "contributors@odoo-community.org"
+        # Patched on the registry class: the captcha modules override this
+        # method too, and patching the one in base would leave their override
+        # in front of it.
+        with patch.object(
+            type(self.env["ir.http"]),
+            "_verify_request_recaptcha_token",
+            return_value=False,
+        ):
+            doc = self.html_doc(data=self.data)
+        self.assertTrue(doc.xpath('//p[@class="alert alert-danger"]'))
+        self.assertFalse(
+            self.env["res.users"].sudo().search([("login", "=", self.data["login"])])
+        )
+
     @mute_logger("odoo.addons.auth_signup_verify_email.controllers.main")
     def test_good_email(self):
         """Test acceptance of good emails."""
