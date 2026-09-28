@@ -9,8 +9,22 @@ from odoo.http import request
 class BaseModel(models.AbstractModel):
     _inherit = "base"
 
+    def _keep_real_user_on_create_write(self):
+        # Avoid overriding the create_uid and write_uid
+        # when the model is abstract or transient
+        # Keep core attachment access semantics intact.
+        # For temporary/generated attachments (often without res_model/res_id),
+        # read access falls back to creator ownership. Rewriting create_uid to
+        # the original impersonator can make the active impersonated user lose
+        # access immediately in the same flow (e.g. compose email after report).
+        if self._abstract or self._transient or self._name == "ir.attachment":
+            return True
+        return False
+
     def _prepare_create_values(self, vals_list):
         result_vals_list = super()._prepare_create_values(vals_list)
+        if self._keep_real_user_on_create_write():
+            return result_vals_list
         if (
             request
             and request.session.impersonate_from_uid
@@ -23,6 +37,8 @@ class BaseModel(models.AbstractModel):
     def write(self, vals):
         """Overwrite the write_uid with the impersonating user"""
         res = super().write(vals)
+        if self._keep_real_user_on_create_write():
+            return res
         if (
             request
             and request.session.impersonate_from_uid
