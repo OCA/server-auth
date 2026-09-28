@@ -34,5 +34,11 @@ msgstr ""
 #. module: auth_signup_verify_email
 #. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
+msgid "Suspicious activity detected by Google reCaptcha."
+msgstr ""
+
+#. module: auth_signup_verify_email
+#. odoo-python
+#: code:addons/auth_signup_verify_email/controllers/main.py:0
 msgid "That does not seem to be an email address."
 msgstr ""
