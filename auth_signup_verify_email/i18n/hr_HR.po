@@ -23,21 +23,18 @@ msgstr ""
 #. module: auth_signup_verify_email
 #. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
-#, python-format
 msgid "Another user is already registered using this email address."
 msgstr ""
 
 #. module: auth_signup_verify_email
 #. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
-#, python-format
 msgid "Check your email to activate your account!"
 msgstr "Provjerite svoj mail za aktiviranje računa"
 
 #. module: auth_signup_verify_email
 #. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
-#, python-format
 msgid "Something went wrong, please try again later or contact us."
 msgstr ""
 "Nešto nije u redu, molimo pokušajte se prijaviti kasnije ili nas "
@@ -46,6 +43,11 @@ msgstr ""
 #. module: auth_signup_verify_email
 #. odoo-python
 #: code:addons/auth_signup_verify_email/controllers/main.py:0
-#, python-format
+msgid "Suspicious activity detected by Google reCaptcha."
+msgstr ""
+
+#. module: auth_signup_verify_email
+#. odoo-python
+#: code:addons/auth_signup_verify_email/controllers/main.py:0
 msgid "That does not seem to be an email address."
 msgstr "Ovo ne izgleda kao valjana mail adresa."
