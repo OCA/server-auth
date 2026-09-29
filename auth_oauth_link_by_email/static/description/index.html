@@ -386,12 +386,16 @@ logins, so later email changes on either side do not matter.</p>
 <p><strong>Table of contents</strong></p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
-<li><a class="reference internal" href="#configuration" id="toc-entry-1">Configuration</a></li>
-<li><a class="reference internal" href="#bug-tracker" id="toc-entry-2">Bug Tracker</a></li>
-<li><a class="reference internal" href="#credits" id="toc-entry-3">Credits</a><ul>
-<li><a class="reference internal" href="#authors" id="toc-entry-4">Authors</a></li>
-<li><a class="reference internal" href="#contributors" id="toc-entry-5">Contributors</a></li>
-<li><a class="reference internal" href="#maintainers" id="toc-entry-6">Maintainers</a></li>
+<li><a class="reference internal" href="#configuration" id="toc-entry-1">Configuration</a><ul>
+<li><a class="reference internal" href="#which-identifier-is-stored" id="toc-entry-2">Which identifier is stored</a></li>
+<li><a class="reference internal" href="#linking-users-manually" id="toc-entry-3">Linking users manually</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#bug-tracker" id="toc-entry-4">Bug Tracker</a></li>
+<li><a class="reference internal" href="#credits" id="toc-entry-5">Credits</a><ul>
+<li><a class="reference internal" href="#authors" id="toc-entry-6">Authors</a></li>
+<li><a class="reference internal" href="#contributors" id="toc-entry-7">Contributors</a></li>
+<li><a class="reference internal" href="#maintainers" id="toc-entry-8">Maintainers</a></li>
 </ul>
 </li>
 </ul>
@@ -413,9 +417,9 @@ administrators can change it.</p>
 <li><tt class="docutils literal">email_verified</tt> is missing or not the JSON boolean <tt class="docutils literal">true</tt>;</li>
 <li>several users have the email as login (differing only in case);</li>
 <li>the matching user is already linked to a subject;</li>
-<li>the matching user is a Settings administrator: link those manually, as
-whoever controls their email at the provider would otherwise gain
-administrator access.</li>
+<li>the matching user is a Settings administrator: link those manually
+(see below), as whoever controls their email at the provider would
+otherwise gain administrator access.</li>
 </ul>
 <p>Only enable this option for providers that verify email addresses and
 return <tt class="docutils literal">email</tt> and <tt class="docutils literal">email_verified</tt> in the claims Odoo reads. With
@@ -424,9 +428,30 @@ providers (e.g. Authelia) only return them from the userinfo endpoint by
 default and must be configured to include them in the ID token.</p>
 <p>Disabling signup during the migration makes unmatched users fail loudly
 instead of creating duplicates.</p>
+<div class="section" id="which-identifier-is-stored">
+<h3><a class="toc-backref" href="#toc-entry-2">Which identifier is stored</a></h3>
+<p>The OAuth User ID of a user, whether linked automatically or manually,
+is the <tt class="docutils literal">user_id</tt> Odoo resolves from the provider’s claims. By default
+this is the subject (<tt class="docutils literal">sub</tt>). With <tt class="docutils literal">auth_oidc</tt>, the provider’s
+<strong>Token Map</strong> can map another claim instead: with
+<tt class="docutils literal">preferred_username:user_id</tt>, the OAuth User ID is the username at the
+provider. Only map a claim the provider never lets users change, as a
+changed value no longer matches the linked user.</p>
+<p>Changing the mapping of a provider after users are linked makes their
+stored OAuth User IDs stale: they must be linked again.</p>
+</div>
+<div class="section" id="linking-users-manually">
+<h3><a class="toc-backref" href="#toc-entry-3">Linking users manually</a></h3>
+<p>Settings administrators can view and edit a user’s OAuth Provider and
+OAuth User ID in the <strong>OAuth</strong> tab of the user form, for instance to
+link other administrators, or to fix or remove a link. Set the OAuth
+User ID to the value the provider asserts for the claim mapped to
+<tt class="docutils literal">user_id</tt> (see above): the <tt class="docutils literal">sub</tt> by default, or e.g. the username
+with <tt class="docutils literal">preferred_username:user_id</tt>.</p>
+</div>
 </div>
 <div class="section" id="bug-tracker">
-<h2><a class="toc-backref" href="#toc-entry-2">Bug Tracker</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-4">Bug Tracker</a></h2>
 <p>Bugs are tracked on <a class="reference external" href="https://github.com/OCA/server-auth/issues">GitHub Issues</a>.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
@@ -434,21 +459,21 @@ If you spotted it first, help us to smash it by providing a detailed and welcome
 <p>Do not contact contributors directly about support or help with technical issues.</p>
 </div>
 <div class="section" id="credits">
-<h2><a class="toc-backref" href="#toc-entry-3">Credits</a></h2>
+<h2><a class="toc-backref" href="#toc-entry-5">Credits</a></h2>
 <div class="section" id="authors">
-<h3><a class="toc-backref" href="#toc-entry-4">Authors</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-6">Authors</a></h3>
 <ul class="simple">
 <li>spomata</li>
 </ul>
 </div>
 <div class="section" id="contributors">
-<h3><a class="toc-backref" href="#toc-entry-5">Contributors</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-7">Contributors</a></h3>
 <ul class="simple">
 <li>spomata <a class="reference external" href="mailto:49432438+spomata&#64;users.noreply.github.com">49432438+spomata&#64;users.noreply.github.com</a></li>
 </ul>
 </div>
 <div class="section" id="maintainers">
-<h3><a class="toc-backref" href="#toc-entry-6">Maintainers</a></h3>
+<h3><a class="toc-backref" href="#toc-entry-8">Maintainers</a></h3>
 <p>This module is maintained by the OCA.</p>
 <a class="reference external image-reference" href="https://odoo-community.org">
 <img alt="Odoo Community Association" src="https://odoo-community.org/logo.png" />

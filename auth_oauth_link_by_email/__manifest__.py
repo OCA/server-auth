@@ -10,5 +10,5 @@
     "summary": "Link existing users to their OAuth subject on first login, "
     "by verified email",
     "depends": ["auth_oauth"],
-    "data": ["views/auth_oauth_provider.xml"],
+    "data": ["views/auth_oauth_provider.xml", "views/res_users.xml"],
 }

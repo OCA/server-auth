@@ -68,9 +68,9 @@ No link is made, and the login proceeds as without this module, when:
 - ``email_verified`` is missing or not the JSON boolean ``true``;
 - several users have the email as login (differing only in case);
 - the matching user is already linked to a subject;
-- the matching user is a Settings administrator: link those manually, as
-  whoever controls their email at the provider would otherwise gain
-  administrator access.
+- the matching user is a Settings administrator: link those manually
+  (see below), as whoever controls their email at the provider would
+  otherwise gain administrator access.
 
 Only enable this option for providers that verify email addresses and
 return ``email`` and ``email_verified`` in the claims Odoo reads. With
@@ -80,6 +80,30 @@ default and must be configured to include them in the ID token.
 
 Disabling signup during the migration makes unmatched users fail loudly
 instead of creating duplicates.
+
+Which identifier is stored
+--------------------------
+
+The OAuth User ID of a user, whether linked automatically or manually,
+is the ``user_id`` Odoo resolves from the provider's claims. By default
+this is the subject (``sub``). With ``auth_oidc``, the provider's
+**Token Map** can map another claim instead: with
+``preferred_username:user_id``, the OAuth User ID is the username at the
+provider. Only map a claim the provider never lets users change, as a
+changed value no longer matches the linked user.
+
+Changing the mapping of a provider after users are linked makes their
+stored OAuth User IDs stale: they must be linked again.
+
+Linking users manually
+----------------------
+
+Settings administrators can view and edit a user's OAuth Provider and
+OAuth User ID in the **OAuth** tab of the user form, for instance to
+link other administrators, or to fix or remove a link. Set the OAuth
+User ID to the value the provider asserts for the claim mapped to
+``user_id`` (see above): the ``sub`` by default, or e.g. the username
+with ``preferred_username:user_id``.
 
 Bug Tracker
 ===========
