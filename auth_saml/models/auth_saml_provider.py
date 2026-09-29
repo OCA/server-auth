@@ -19,7 +19,7 @@ from saml2.config import Config as Saml2Config
 from saml2.sigver import SignatureError
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -148,10 +148,75 @@ class AuthSamlProvider(models.Model):
         default=True,
         help="Whether metadata should be signed or not",
     )
+    requested_authn_context_class_refs = fields.Text(
+        string="Requested Authentication Context",
+        help="Authentication context class references (AuthnContextClassRef) to "
+        "request from the IDP, one per line, for example "
+        "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport. "
+        "When set, a RequestedAuthnContext element is added to the "
+        "authentication requests. Leave empty to not send it.",
+    )
+    requested_authn_context_comparison = fields.Selection(
+        selection=[
+            ("exact", "Exact"),
+            ("minimum", "Minimum"),
+            ("maximum", "Maximum"),
+            ("better", "Better"),
+        ],
+        string="Authentication Context Comparison",
+        default="exact",
+        required=True,
+        help="How the IDP compares the authentication method used with the "
+        "requested context classes. Only used when at least one class is set.",
+    )
 
     @api.model
     def _sig_alg_selection(self):
         return [(sig[0], sig[0]) for sig in ds.SIG_ALLOWED_ALG]
+
+    @api.model
+    def _parse_requested_authn_context_class_refs(self, value):
+        """Return the list of class references, one per line, without
+        blank lines and duplicates, keeping the order."""
+        class_refs = []
+        for line in (value or "").splitlines():
+            class_ref = line.strip()
+            if class_ref and class_ref not in class_refs:
+                class_refs.append(class_ref)
+        return class_refs
+
+    @api.constrains("requested_authn_context_class_refs")
+    def _check_requested_authn_context_class_refs(self):
+        for record in self:
+            invalid = [
+                class_ref
+                for class_ref in self._parse_requested_authn_context_class_refs(
+                    record.requested_authn_context_class_refs
+                )
+                if any(char.isspace() for char in class_ref)
+            ]
+            if invalid:
+                raise ValidationError(
+                    self.env._(
+                        "Each requested authentication context must be a single "
+                        "URI, one per line. Invalid values: %(values)s",
+                        values=", ".join(invalid),
+                    )
+                )
+
+    def _get_requested_authn_context(self):
+        """Return the value for the pysaml2 SP setting requested_authn_context,
+        or an empty dict when no class reference is configured."""
+        self.ensure_one()
+        class_refs = self._parse_requested_authn_context_class_refs(
+            self.requested_authn_context_class_refs
+        )
+        if not class_refs:
+            return {}
+        return {
+            "authn_context_class_ref": class_refs,
+            "comparison": self.requested_authn_context_comparison or "exact",
+        }
 
     @api.onchange("name")
     def _onchange_name(self):
@@ -244,6 +309,11 @@ class AuthSamlProvider(models.Model):
             "cert_file": self._get_cert_key_path("sp_pem_public"),
             "key_file": self._get_cert_key_path("sp_pem_private"),
         }
+        requested_authn_context = self._get_requested_authn_context()
+        if requested_authn_context:
+            settings["service"]["sp"]["requested_authn_context"] = (
+                requested_authn_context
+            )
         try:
             sp_config = Saml2Config()
             sp_config.load(settings)
