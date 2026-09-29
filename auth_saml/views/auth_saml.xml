@@ -177,6 +177,20 @@
                             <field name="want_assertions_signed" />
                             <field name="want_response_signed" />
                             <field name="want_assertions_or_response_signed" />
+                            <label for="requested_authn_context_class_refs" />
+                            <div>
+                                <field
+                                    name="requested_authn_context_class_refs"
+                                    placeholder="urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+                                />
+                                <p class="help small">
+                                One URI per line. Leave empty to let the IDP choose the authentication method.
+                                </p>
+                            </div>
+                            <field
+                                name="requested_authn_context_comparison"
+                                invisible="not requested_authn_context_class_refs"
+                            />
                             <label for="attribute_mapping_ids" />
                             <div>
                                 <field
