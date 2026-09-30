@@ -49,15 +49,21 @@ class ResUsers(models.Model):
 
         # Lookup for user by oauth uid and provider
         oauth_uid = validation["user_id"]
-        user = self.search(
-            [("oauth_uid", "=", oauth_uid), ("oauth_provider_id", "=", provider)]
-        )
+        domain = [("oauth_uid", "=", oauth_uid), ("oauth_provider_id", "=", provider)]
+        user = self.search(domain)
 
         # Because access_token is automatically written to the user, we need to replace
-        # this by the existing oauth_access_token which acts as oauth_master_uuid
-        params["access_token"] = user.oauth_access_token
+        # this by the existing oauth_access_token which acts as oauth_master_uuid.
+        # Without a user yet, keep the access token: like on signup, it becomes the
+        # master uuid of the user linked or created by super().
+        if user:
+            params["access_token"] = user.oauth_access_token
         res = super()._auth_oauth_signin(provider, validation, params)
 
+        if not user:
+            # the user may have been created (signup) or linked to this oauth uid
+            # by another module during super()
+            user = self.search(domain)
         if not user:
             raise exceptions.AccessDenied()
         user.ensure_one()
