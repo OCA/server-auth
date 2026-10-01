@@ -8,6 +8,8 @@ from copy import deepcopy
 from unittest.mock import patch
 
 import responses
+from saml2 import samlp
+from saml2.s_utils import decode_base64_and_inflate
 from saml2.sigver import SignatureError
 
 from odoo.exceptions import AccessDenied, UserError, ValidationError
@@ -291,6 +293,111 @@ class TestPySaml(HttpCase):
         self.assertEqual(self.user.name, "Test")
         # Not changed
         self.assertEqual(self.user.login, "test@example.com")
+
+    def _get_authn_request_from_redirect_url(self, redirect_url):
+        """Decode the AuthnRequest sent in a redirect URL"""
+        query = urllib.parse.parse_qs(urllib.parse.urlparse(redirect_url).query)
+        return samlp.authn_request_from_string(
+            decode_base64_and_inflate(query["SAMLRequest"][0])
+        )
+
+    def test_requested_authn_context_not_sent_by_default(self):
+        """Without configuration, no RequestedAuthnContext is sent"""
+        self.assertFalse(self.saml_provider.requested_authn_context_class_refs)
+        self.assertEqual(self.saml_provider._get_requested_authn_context(), {})
+        authn_request = self._get_authn_request_from_redirect_url(
+            self.saml_provider._get_auth_request()
+        )
+        self.assertIsNone(authn_request.requested_authn_context)
+
+    def test_requested_authn_context_sent(self):
+        """A configured class reference is sent in the AuthnRequest"""
+        self.saml_provider.requested_authn_context_class_refs = (
+            "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+        )
+        authn_request = self._get_authn_request_from_redirect_url(
+            self.saml_provider._get_auth_request()
+        )
+        requested_authn_context = authn_request.requested_authn_context
+        self.assertEqual(requested_authn_context.comparison, "exact")
+        self.assertEqual(
+            [
+                class_ref.text
+                for class_ref in requested_authn_context.authn_context_class_ref
+            ],
+            ["urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"],
+        )
+
+    def test_requested_authn_context_several_class_refs_and_comparison(self):
+        """Several class references keep their order, blank lines and
+        duplicates are ignored, and the comparison is sent"""
+        password_protected_transport = (
+            "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+        )
+        windows = "urn:federation:authentication:windows"
+        self.saml_provider.write(
+            {
+                "requested_authn_context_class_refs": (
+                    f"  {password_protected_transport}  \n\n{windows}\n"
+                    f"{password_protected_transport}\n"
+                ),
+                "requested_authn_context_comparison": "minimum",
+            }
+        )
+        authn_request = self._get_authn_request_from_redirect_url(
+            self.saml_provider._get_auth_request()
+        )
+        requested_authn_context = authn_request.requested_authn_context
+        self.assertEqual(requested_authn_context.comparison, "minimum")
+        self.assertEqual(
+            [
+                class_ref.text
+                for class_ref in requested_authn_context.authn_context_class_ref
+            ],
+            [password_protected_transport, windows],
+        )
+
+    def test_requested_authn_context_blank_value(self):
+        """A value with only blank lines behaves as no configuration"""
+        self.saml_provider.requested_authn_context_class_refs = "  \n \n"
+        self.assertEqual(self.saml_provider._get_requested_authn_context(), {})
+        authn_request = self._get_authn_request_from_redirect_url(
+            self.saml_provider._get_auth_request()
+        )
+        self.assertIsNone(authn_request.requested_authn_context)
+
+    def test_requested_authn_context_invalid_value(self):
+        """Two URIs on the same line are refused"""
+        with self.assertRaises(ValidationError):
+            self.saml_provider.requested_authn_context_class_refs = (
+                "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport "
+                "urn:federation:authentication:windows"
+            )
+
+    def test_requested_authn_context_metadata(self):
+        """Metadata can still be generated with a requested context"""
+        self.saml_provider.requested_authn_context_class_refs = (
+            "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+        )
+        response = self.url_open(
+            "/auth_saml/metadata?p=%d&d=%s"
+            % (self.saml_provider.id, self.env.cr.dbname)
+        )
+        self.assertTrue(response.ok)
+        self.assertTrue("xml" in response.headers.get("Content-Type"))
+
+    def test_login_with_saml_requested_authn_context(self):
+        """Test login with SAML on a provider requesting an authentication
+        context"""
+        self.saml_provider.write(
+            {
+                "requested_authn_context_class_refs": (
+                    "urn:oasis:names:tc:SAML:2.0:ac:classes:InternetProtocolPassword"
+                ),
+                "requested_authn_context_comparison": "minimum",
+            }
+        )
+        self.test_login_with_saml()
 
     def test_disallow_user_password_when_changing_ir_config_parameter(self):
         """Test that disabling users from having both a password and SAML ids remove
