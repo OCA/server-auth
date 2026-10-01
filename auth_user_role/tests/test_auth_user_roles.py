@@ -1,7 +1,8 @@
 # Copyright 2026 360ERP (<https://www.360erp.com>)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
-from datetime import date, timedelta
+from datetime import timedelta
 
+from odoo import fields
 from odoo.tests.common import TransactionCase
 
 
@@ -9,7 +10,7 @@ class TestAuthUserRoles(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.env["ir.config_parameter"].set_param("auth_user_role.strict_sync", "False")
+        cls.env["ir.config_parameter"].set_bool("auth_user_role.strict_sync", False)
         cls.test_role = cls.env["res.users.role"].create({"name": "Test Global Role"})
         cls.extra_manual_role = cls.env["res.users.role"].create(
             {"name": "Extra Manual Role"}
@@ -156,8 +157,8 @@ class TestAuthUserRoles(TransactionCase):
     def test_12_reactivate_expired_role(self):
         """Test that an expired role is reactivated instead of creating
         a duplicate constraint error."""
-        yesterday = date.today() - timedelta(days=1)
-        two_days_ago = date.today() - timedelta(days=2)
+        yesterday = fields.Date.today() - timedelta(days=1)
+        two_days_ago = fields.Date.today() - timedelta(days=2)
 
         self.user.write(
             {

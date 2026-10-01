@@ -20,19 +20,19 @@ class TestHooks(TransactionCase):
         post_init_hook(self.env)
 
         # Verify it was created and set to 'True'
-        val = self.env["ir.config_parameter"].sudo().get_param(param_key)
-        self.assertEqual(val, "True")
+        val = self.env["ir.config_parameter"].sudo().get_bool(param_key, None)
+        self.assertIs(val, True)
 
     def test_post_init_hook_respects_existing_param(self):
         """Test that the hook does NOT overwrite an existing parameter."""
         param_key = "auth_user_role.strict_sync"
 
         # Explicitly set the parameter to 'False' before the hook runs
-        self.env["ir.config_parameter"].sudo().set_param(param_key, "False")
+        self.env["ir.config_parameter"].sudo().set_bool(param_key, False)
 
         # Run the hook manually
         post_init_hook(self.env)
 
         # Verify the hook respected the existing 'False' value
-        val = self.env["ir.config_parameter"].sudo().get_param(param_key)
-        self.assertEqual(val, "False")
+        val = self.env["ir.config_parameter"].sudo().get_bool(param_key, None)
+        self.assertIs(val, False)

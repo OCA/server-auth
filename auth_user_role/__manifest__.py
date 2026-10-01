@@ -3,7 +3,7 @@
 
 {
     "name": "360 ERP - Auth User Role",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "author": "360 ERP, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
@@ -11,7 +11,7 @@
         "base_user_role",
     ],
     "data": [
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "views/auth_user_role_mapping_views.xml",
     ],
     "post_init_hook": "post_init_hook",

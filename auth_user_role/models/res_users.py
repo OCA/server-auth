@@ -29,9 +29,12 @@ class ResUser(models.Model):
 
             for attr_val in attribute_values:
                 attr_str = str(attr_val)
-                if mapping["operator"] == "equals" and attr_str == mapping["value"]:
-                    roles_to_add.add(mapping["role_id"])
-                elif mapping["operator"] == "contains" and mapping["value"] in attr_str:
+                if (
+                    mapping["operator"] == "equals"
+                    and attr_str == mapping["value"]
+                    or mapping["operator"] == "contains"
+                    and mapping["value"] in attr_str
+                ):
                     roles_to_add.add(mapping["role_id"])
 
         return roles_to_add
@@ -48,8 +51,7 @@ class ResUser(models.Model):
             strict_sync = (
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("auth_user_role.strict_sync", "True")
-                == "True"
+                .get_bool("auth_user_role.strict_sync", True)
             )
 
         roles_to_add = self._get_mapped_roles(identity_payload)

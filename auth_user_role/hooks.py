@@ -7,5 +7,6 @@ def post_init_hook(env):
     param_key = "auth_user_role.strict_sync"
 
     # Only set it to 'True' if it doesn't already exist in the database
-    if not env["ir.config_parameter"].sudo().get_param(param_key):
-        env["ir.config_parameter"].sudo().set_param(param_key, "True")
+    icp = env["ir.config_parameter"].sudo()
+    if icp.get_bool(param_key, None) is None:
+        icp.set_bool(param_key, True)

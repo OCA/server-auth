@@ -1,0 +1,2 @@
+id,name,model_id,group_id/id,operation,domain
+access_auth_user_role_mapping,auth.user.role.mapping,auth.user.role.mapping,base.group_system,crud,

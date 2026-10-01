@@ -1,7 +1,7 @@
 # Copyright 2026 360ERP (<https://www.360erp.com>)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, tools
+from odoo import api, fields, models
 
 
 class AuthUserRoleMapping(models.Model):
@@ -9,6 +9,7 @@ class AuthUserRoleMapping(models.Model):
     _description = "Identity Role Mapping"
     _rec_name = "attribute"
     _order = "attribute"
+    _clear_cache_name = "default"
 
     attribute = fields.Char(
         string="Identity Attribute",
@@ -33,7 +34,7 @@ class AuthUserRoleMapping(models.Model):
     )
 
     @api.model
-    @tools.ormcache()
+    @api.ormcache()
     def _get_all_mappings_cached(self):
         """Fetch all mappings and cache them as native dicts for fast evaluation."""
         mappings = self.sudo().search_fetch(
@@ -48,16 +49,3 @@ class AuthUserRoleMapping(models.Model):
             }
             for m in mappings
         ]
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        self.env.registry.clear_cache()
-        return super().create(vals_list)
-
-    def write(self, vals):
-        self.env.registry.clear_cache()
-        return super().write(vals)
-
-    def unlink(self):
-        self.env.registry.clear_cache()
-        return super().unlink()
