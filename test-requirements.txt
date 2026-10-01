@@ -1,0 +1,1 @@
+odoo-addon-base_user_role @ git+https://github.com/OCA/server-backend.git@refs/pull/488/head#subdirectory=base_user_role
