@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_users_form_simple_modif" model="ir.ui.view">
+        <field name="name">res.users.preferences.form.oauth_server</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form_simple_modif" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='api_key_ids']/../.." position="after">
+                <group
+                    string="Connected Applications"
+                    name="oauth_server_authorizations"
+                    attrs="{'invisible': [('oauth_server_authorization_ids', '=', [])]}"
+                >
+                    <div class="text-muted" colspan="2">
+                        Applications you allowed to act on your behalf. Revoke
+                        one to disconnect it at once.
+                    </div>
+                    <div colspan="2">
+                        <field
+                            name="oauth_server_authorization_ids"
+                            nolabel="1"
+                            colspan="4"
+                            readonly="0"
+                        >
+                            <tree editable="bottom" create="false" delete="false">
+                                <field name="client_id" />
+                                <field name="resource_id" />
+                                <field name="create_date" string="Allowed On" />
+                                <field name="expires_at" />
+                                <button
+                                    type="object"
+                                    name="action_revoke"
+                                    string="Revoke"
+                                    icon="fa-ban"
+                                    confirm="The application loses its access at once. Continue?"
+                                />
+                            </tree>
+                        </field>
+                    </div>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
