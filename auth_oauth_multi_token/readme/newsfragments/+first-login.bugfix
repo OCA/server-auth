@@ -1,0 +1,2 @@
+Fix the first OAuth login of a user that is created (signup) or linked to its
+OAuth account during the sign in, which was always refused.
