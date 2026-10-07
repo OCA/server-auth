@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.oauth_server</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='integration']" position="after">
+                <h2>OAuth Authorization Server</h2>
+                <div class="row mt16 o_settings_container" name="oauth_server">
+                    <div class="col-12 col-lg-6 o_setting_box" id="oauth_server_issuer">
+                        <div class="o_setting_right_pane">
+                            <label for="oauth_server_issuer" />
+                            <div class="text-muted">
+                                Public address of this Odoo, as applications
+                                reach it. Changing it invalidates every access
+                                token issued so far.
+                            </div>
+                            <div class="content-group">
+                                <div class="mt16">
+                                    <field
+                                        name="oauth_server_issuer"
+                                        placeholder="https://erp.example.com"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="oauth_server_cimd">
+                        <div class="o_setting_left_pane">
+                            <field name="oauth_server_cimd_enabled" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="oauth_server_cimd_enabled" />
+                            <div class="text-muted">
+                                Applications identified by the address of the
+                                details they publish can connect without being
+                                registered first.
+                            </div>
+                            <div
+                                class="content-group"
+                                attrs="{'invisible': [('oauth_server_cimd_enabled', '=', False)]}"
+                            >
+                                <div class="mt16">
+                                    <label
+                                        for="oauth_server_cimd_trusted_domains"
+                                        class="o_light_label"
+                                    />
+                                    <field
+                                        name="oauth_server_cimd_trusted_domains"
+                                        placeholder="example.com, example.org"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box" id="oauth_server_dcr">
+                        <div class="o_setting_left_pane">
+                            <field name="oauth_server_dcr_enabled" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="oauth_server_dcr_enabled" />
+                            <div class="text-muted">
+                                Applications may register themselves. Their
+                                names are not verified: the consent page says
+                                so.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- the validators of protected resources are managed from the resource -->
+    <record id="view_auth_jwt_validator_form" model="ir.ui.view">
+        <field name="name">auth.jwt.validator.form.oauth_server</field>
+        <field name="model">auth.jwt.validator</field>
+        <field name="inherit_id" ref="auth_jwt.view_auth_jwt_validator_form" />
+        <field name="arch" type="xml">
+            <field name="audience" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+            </field>
+            <field name="issuer" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+            </field>
+            <field name="signature_type" position="attributes">
+                <attribute
+                    name="attrs"
+                >{'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+            </field>
+            <field name="secret_key" position="attributes">
+                <attribute name="attrs">{
+                    'invisible': [('signature_type', '!=', 'secret')],
+                    'required': [('signature_type', '=', 'secret')],
+                    'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+            </field>
+            <field name="user_id_strategy" position="after">
+                <field
+                    name="oauth_server_resource_ids"
+                    widget="many2many_tags"
+                    attrs="{'invisible': [('user_id_strategy', '!=', 'oauth_server')]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

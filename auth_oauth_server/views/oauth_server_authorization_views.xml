@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="oauth_server_authorization_view_tree" model="ir.ui.view">
+        <field name="name">oauth.server.authorization.tree</field>
+        <field name="model">oauth.server.authorization</field>
+        <field name="arch" type="xml">
+            <tree create="false" edit="false">
+                <field name="create_date" string="Allowed On" />
+                <field name="user_id" />
+                <field name="client_id" />
+                <field name="resource_id" />
+                <field name="scopes" />
+                <field name="last_refresh" />
+                <field name="expires_at" />
+                <field
+                    name="state"
+                    widget="badge"
+                    decoration-success="state == 'active'"
+                    decoration-muted="state in ('expired', 'revoked')"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="oauth_server_authorization_view_form" model="ir.ui.view">
+        <field name="name">oauth.server.authorization.form</field>
+        <field name="model">oauth.server.authorization</field>
+        <field name="arch" type="xml">
+            <form create="false" edit="false">
+                <header>
+                    <button
+                        name="action_revoke"
+                        type="object"
+                        string="Revoke"
+                        attrs="{'invisible': [('state', 'in', ('expired', 'revoked'))]}"
+                        confirm="The application loses its access at once. Continue?"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <group>
+                        <group name="who">
+                            <field name="user_id" />
+                            <field name="client_id" />
+                            <field name="resource_id" />
+                            <field name="scopes" />
+                            <field name="redirect_uri" />
+                        </group>
+                        <group name="when">
+                            <field name="create_date" string="Allowed On" />
+                            <field name="last_refresh" />
+                            <field name="expires_at" />
+                            <field
+                                name="revoked_reason"
+                                attrs="{'invisible': [('revoked', '=', False)]}"
+                            />
+                            <field name="revoked" invisible="1" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="oauth_server_authorization_view_search" model="ir.ui.view">
+        <field name="name">oauth.server.authorization.search</field>
+        <field name="model">oauth.server.authorization</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id" />
+                <field name="client_id" />
+                <field name="resource_id" />
+                <filter
+                    string="Not Revoked"
+                    name="not_revoked"
+                    domain="[('revoked', '=', False), ('code_used', '=', True)]"
+                />
+                <filter
+                    string="Revoked"
+                    name="revoked"
+                    domain="[('revoked', '=', True)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        string="Application"
+                        name="group_client"
+                        context="{'group_by': 'client_id'}"
+                    />
+                    <filter
+                        string="User"
+                        name="group_user"
+                        context="{'group_by': 'user_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="oauth_server_authorization_action" model="ir.actions.act_window">
+        <field name="name">OAuth Authorizations</field>
+        <field name="res_model">oauth.server.authorization</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_not_revoked': 1}</field>
+    </record>
+</odoo>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="oauth_server_client_view_tree" model="ir.ui.view">
+        <field name="name">oauth.server.client.tree</field>
+        <field name="model">oauth.server.client</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="identifier" />
+                <field name="registration_type" />
+                <field name="client_type" />
+                <field name="authorization_count" />
+            </tree>
+        </field>
+    </record>
+    <record id="oauth_server_client_view_form" model="ir.ui.view">
+        <field name="name">oauth.server.client.form</field>
+        <field name="model">oauth.server.client</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_generate_secret"
+                        type="object"
+                        string="Generate Secret"
+                        attrs="{'invisible': ['|', ('id', '=', False), ('registration_type', '!=', 'manual')]}"
+                        confirm="The application must then use the new secret: the previous one stops working. Continue?"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Reporting tool" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="identification">
+                            <field name="identifier" />
+                            <field name="registration_type" />
+                            <field
+                                name="client_type"
+                                attrs="{'readonly': [('registration_type', '!=', 'manual')]}"
+                            />
+                            <field name="client_uri" widget="url" />
+                            <field
+                                name="metadata_expires_at"
+                                attrs="{'invisible': [('registration_type', '!=', 'metadata_document')]}"
+                            />
+                            <field name="active" invisible="1" />
+                        </group>
+                        <group name="redirect">
+                            <field
+                                name="redirect_uris"
+                                placeholder="https://app.example.com/callback"
+                                attrs="{'readonly': [('registration_type', '!=', 'manual')]}"
+                            />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Authorizations" name="authorizations">
+                            <field name="authorization_ids">
+                                <tree>
+                                    <field name="create_date" string="Allowed On" />
+                                    <field name="user_id" />
+                                    <field name="resource_id" />
+                                    <field name="scopes" />
+                                    <field name="state" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="oauth_server_client_view_search" model="ir.ui.view">
+        <field name="name">oauth.server.client.search</field>
+        <field name="model">oauth.server.client</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="identifier" />
+                <filter
+                    string="Manual"
+                    name="manual"
+                    domain="[('registration_type', '=', 'manual')]"
+                />
+                <filter
+                    string="Self-registered"
+                    name="self_registered"
+                    domain="[('registration_type', '!=', 'manual')]"
+                />
+                <separator />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+                <group expand="0" string="Group By">
+                    <filter
+                        string="Registration"
+                        name="group_registration_type"
+                        context="{'group_by': 'registration_type'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="oauth_server_client_action" model="ir.actions.act_window">
+        <field name="name">OAuth Applications</field>
+        <field name="res_model">oauth.server.client</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="oauth_server_client_secret_view_form" model="ir.ui.view">
+        <field name="name">oauth.server.client.secret.form</field>
+        <field name="model">oauth.server.client.secret</field>
+        <field name="arch" type="xml">
+            <form>
+                <p>
+                    Copy the secret now and give it to the application: it is
+                    not stored and cannot be shown again.
+                </p>
+                <group>
+                    <field name="identifier" widget="CopyClipboardChar" />
+                    <field name="secret" widget="CopyClipboardChar" />
+                </group>
+                <footer>
+                    <button special="cancel" string="Done" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
