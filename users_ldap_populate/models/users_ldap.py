@@ -139,7 +139,9 @@ class CompanyLDAP(models.Model):
         users = (
             self.env["res.users"]
             .sudo()
-            .search([("id", "not in", known_user_ids)], order="login")
+            .search(
+                [("id", "not in", known_user_ids), ("share", "=", False)], order="login"
+            )
         )
         ldap_confs = self._get_ldap_dicts()
         for unknown_user in users:
