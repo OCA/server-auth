@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Keboola
+     License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <record id="module_category_apikey_provisioning" model="ir.module.category">
+        <field name="name">API Key Provisioning</field>
+        <field name="description">Delegated minting of per-user API keys.</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Caller capability: who may mint/revoke keys on behalf of other users.
+         Least-privilege by design; system admins are NOT implicit members. -->
+    <record id="group_apikey_provisioning" model="res.groups">
+        <field name="name">API Key Provisioning</field>
+        <field name="category_id" ref="module_category_apikey_provisioning" />
+    </record>
+
+    <!-- Allowlist: a key may only be minted for a user who is a member of this group. -->
+    <record id="group_apikey_mintable_target" model="res.groups">
+        <field name="name">API Key Mintable Target</field>
+        <field name="category_id" ref="module_category_apikey_provisioning" />
+    </record>
+</odoo>
