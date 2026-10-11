@@ -23,3 +23,16 @@ If you are using Office365 as identity provider, set up the federation metadata 
 rather than the document itself. This will allow the module to refresh the document when
 needed. 
 
+
+Some IDPs send an empty `<AuthnContext>` in the assertion when the request
+does not ask for a specific authentication context (for example Microsoft
+Entra ID or ADFS after a login from a trusted location). pysaml2 rejects such
+a response with a `SignatureError` ("Invalid document format"). In that case,
+fill in **Requested Authentication Context** on the provider with one
+`AuthnContextClassRef` per line, for example
+`urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport`, and choose
+the **Authentication Context Comparison** (`exact`, `minimum`, `maximum` or
+`better`). A `RequestedAuthnContext` element is then added to the
+authentication requests. Check the values with your IDP administrator: if the
+IDP cannot satisfy the requested context, it may ask for a password or refuse
+the login.

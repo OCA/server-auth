@@ -7,3 +7,4 @@ pysaml2==7.1.0 ; python_version <= '3.12'  # jammy, noble
 pysaml2==7.5.0 ; python_version == '3.13'  # trixie
 pysaml2==7.5.4 ; python_version >= '3.14'  # question
 #: }}}
+pydantic<2.14  # extendable-pydantic incompatible with pydantic 2.14, see lmignon/extendable-pydantic#24
