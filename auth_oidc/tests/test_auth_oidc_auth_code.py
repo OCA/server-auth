@@ -217,16 +217,18 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             ],
         )
 
-        with self.assertRaises(
-            JWTError,
-            msg="OpenID Connect requires kid to be set if there is"
-            " more than one key in the JWKS",
+        with (
+            self.assertRaises(
+                JWTError,
+                msg="OpenID Connect requires kid to be set if there is"
+                " more than one key in the JWKS",
+            ),
+            MockRequest(self.env),
         ):
-            with MockRequest(self.env):
-                self.env["res.users"].auth_oauth(
-                    self.provider_rec.id,
-                    {"state": json.dumps({})},
-                )
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
 
     @responses.activate
     def test_login_without_matching_key(self):
@@ -239,12 +241,11 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             keys=[{"kid": "other_key_id", "keys": [self.second_key_public_pem]}],
         )
 
-        with self.assertRaises(JWTError):
-            with MockRequest(self.env):
-                self.env["res.users"].auth_oauth(
-                    self.provider_rec.id,
-                    {"state": json.dumps({})},
-                )
+        with self.assertRaises(JWTError), MockRequest(self.env):
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
 
     @responses.activate
     def test_login_without_any_key(self):
@@ -257,13 +258,12 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             keys=[],
         )
 
-        with self.assertRaises(AccessDenied):
-            with MockRequest(self.env):
-                with self.assertLogs(level=logging.ERROR) as logs:
-                    self.env["res.users"].auth_oauth(
-                        self.provider_rec.id,
-                        {"state": json.dumps({})},
-                    )
+        with self.assertRaises(AccessDenied), MockRequest(self.env):
+            with self.assertLogs(level=logging.ERROR) as logs:
+                self.env["res.users"].auth_oauth(
+                    self.provider_rec.id,
+                    {"state": json.dumps({})},
+                )
         self.assertEqual(len(logs.records), 1)
         self.assertEqual(logs.records[0].levelno, logging.ERROR)
         self.assertEqual(

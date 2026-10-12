@@ -1,6 +1,6 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="ir.ui.view" id="view_oidc_provider_form">
+    <record id="view_oidc_provider_form" model="ir.ui.view">
         <field name="name">auth.oidc.provider.form</field>
         <field name="model">auth.oauth.provider</field>
         <field name="inherit_id" ref="auth_oauth.view_oauth_provider_form" />

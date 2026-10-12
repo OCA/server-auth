@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <record id="local_keycloak" model="auth.oauth.provider">
         <field name="name">keycloak:8080 on localhost</field>

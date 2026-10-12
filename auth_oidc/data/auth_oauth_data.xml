@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo noupdate="1">
     <record id="provider_azuread_multi" model="auth.oauth.provider">
         <field name="name">Azure AD Multitenant</field>
