@@ -1,0 +1,4 @@
+- Stéphane Bidoul \<<stephane.bidoul@acsone.eu>\>
+- Mohamed Alkobrosli \<<malkobrosly@kencove.com>\>
+- Open2S (https://www.open2s.com.ec):
+  - Danilo Moya \<<danilo.moya@open2s.com.ec>\>
