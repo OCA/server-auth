@@ -7,11 +7,11 @@ import re
 from calendar import timegm
 from functools import partial
 
-import jwt  # pylint: disable=missing-manifest-dependency
+import jwt
 from jwt import PyJWKClient
 from werkzeug.exceptions import InternalServerError
 
-from odoo import _, api, fields, models, tools
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import mute_logger
 
@@ -99,16 +99,16 @@ class AuthJwtValidator(models.Model):
         default=True, help="Set to false only for development without https."
     )
 
-    _sql_constraints = [
-        ("name_uniq", "unique(name)", "JWT validator names must be unique !"),
-    ]
+    _name_uniq = models.Constraint(
+        "unique(name)", "JWT validator names must be unique !"
+    )
 
     @api.constrains("name")
     def _check_name(self):
         for rec in self:
             if not rec.name.isidentifier():
                 raise ValidationError(
-                    _("Name %r is not a valid python identifier.") % (rec.name,)
+                    self.env._("Name %r is not a valid python identifier.", rec.name)
                 )
 
     @api.constrains("next_validator_id")
@@ -122,8 +122,9 @@ class AuthJwtValidator(models.Model):
                 chain.append(validator.name)
                 if rec == validator:
                     raise ValidationError(
-                        _("Validators mustn't make a closed chain: {}.").format(
-                            " -> ".join(chain)
+                        self.env._(
+                            "Validators mustn't make a closed chain: %s.",
+                            " -> ".join(chain),
                         )
                     )
 
@@ -132,11 +133,11 @@ class AuthJwtValidator(models.Model):
         for rec in self:
             if rec.cookie_enabled and not rec.cookie_name:
                 raise ValidationError(
-                    _(
+                    self.env._(
                         "A cookie name must be provided on JWT validator %s "
-                        "because it has cookie mode enabled."
+                        "because it has cookie mode enabled.",
+                        rec.name,
                     )
-                    % (rec.name,)
                 )
 
     @api.model
@@ -159,7 +160,7 @@ class AuthJwtValidator(models.Model):
             raise AmbiguousJwtValidator()
         return validator
 
-    @tools.ormcache("self.public_key_jwk_uri", "kid")
+    @api.ormcache("self.public_key_jwk_uri", "kid")
     def _get_key(self, kid):
         jwks_client = PyJWKClient(self.public_key_jwk_uri, cache_keys=False)
         return jwks_client.get_signing_key(kid).key
@@ -173,7 +174,8 @@ class AuthJwtValidator(models.Model):
         """
         payload = dict(
             payload,
-            exp=timegm(datetime.datetime.utcnow().utctimetuple()) + expire,
+            exp=timegm(datetime.datetime.now(datetime.timezone.utc).utctimetuple())
+            + expire,
             aud=self.audience,
             iss=self.issuer,
         )
@@ -200,12 +202,12 @@ class AuthJwtValidator(models.Model):
                 token,
                 key=key,
                 algorithms=[algorithm],
-                options=dict(
-                    require=["exp", "aud", "iss"],
-                    verify_exp=True,
-                    verify_aud=True,
-                    verify_iss=True,
-                ),
+                options={
+                    "require": ["exp", "aud", "iss"],
+                    "verify_exp": True,
+                    "verify_aud": True,
+                    "verify_iss": True,
+                },
                 audience=self.audience.split(","),
                 issuer=self.issuer,
             )
@@ -247,7 +249,7 @@ class AuthJwtValidator(models.Model):
 
     def _register_hook(self):
         res = super()._register_hook()
-        self.search([])._register_auth_method()
+        self.search([])._register_auth_method()  # pylint: disable=no-search-all
         return res
 
     def _register_auth_method(self):

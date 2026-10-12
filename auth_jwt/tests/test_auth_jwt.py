@@ -45,8 +45,12 @@ class TestAuthMethod(TransactionCase):
         del request.jwt_partner_id
 
         with contextlib.ExitStack() as s:
-            odoo.http._request_stack.push(request)
-            s.callback(odoo.http._request_stack.pop)
+            if hasattr(odoo.http, "request_var"):
+                token = odoo.http.request_var.set(request)
+                s.callback(lambda: odoo.http.request_var.reset(token))
+            elif hasattr(odoo.http, "_request_stack"):
+                odoo.http._request_stack.push(request)
+                s.callback(odoo.http._request_stack.pop)
             yield request
 
     def _create_token(
@@ -58,7 +62,7 @@ class TestAuthMethod(TransactionCase):
         nbf=None,
         email=None,
     ):
-        payload = dict(aud=audience, iss=issuer, exp=time.time() + exp_delta)
+        payload = {"aud": audience, "iss": issuer, "exp": time.time() + exp_delta}
         if email:
             payload["email"] = email
         if nbf:
@@ -76,18 +80,18 @@ class TestAuthMethod(TransactionCase):
         static_user_id=1,
     ):
         v = self.env["auth.jwt.validator"].create(
-            dict(
-                name=name,
-                signature_type="secret",
-                secret_algorithm="HS256",
-                secret_key=secret_key,
-                audience=audience,
-                issuer=issuer,
-                user_id_strategy="static",
-                static_user_id=static_user_id,
-                partner_id_strategy="email",
-                partner_id_required=partner_id_required,
-            )
+            {
+                "name": name,
+                "signature_type": "secret",
+                "secret_algorithm": "HS256",
+                "secret_key": secret_key,
+                "audience": audience,
+                "issuer": issuer,
+                "user_id_strategy": "static",
+                "static_user_id": static_user_id,
+                "partner_id_strategy": "email",
+                "partner_id_required": partner_id_required,
+            }
         )
         try:
             yield v
@@ -95,10 +99,12 @@ class TestAuthMethod(TransactionCase):
             v.unlink()
 
     def test_missing_authorization_header(self):
-        with self._create_validator("validator"):
-            with self._mock_request(authorization=None):
-                with self.assertRaises(UnauthorizedMissingAuthorizationHeader):
-                    self.env["ir.http"]._auth_method_jwt(validator_name="validator")
+        with (
+            self._create_validator("validator"),
+            self._mock_request(authorization=None),
+            self.assertRaises(UnauthorizedMissingAuthorizationHeader),
+        ):
+            self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_malformed_authorization_header(self):
         with self._create_validator("validator"):
@@ -110,9 +116,11 @@ class TestAuthMethod(TransactionCase):
                 "Bearer token ",
                 "bearer token",
             ):
-                with self._mock_request(authorization=authorization):
-                    with self.assertRaises(UnauthorizedMalformedAuthorizationHeader):
-                        self.env["ir.http"]._auth_method_jwt(validator_name="validator")
+                with (
+                    self._mock_request(authorization=authorization),
+                    self.assertRaises(UnauthorizedMalformedAuthorizationHeader),
+                ):
+                    self.env["ir.http"]._auth_method_jwt(validator_name="validator")
 
     def test_auth_method_valid_token(self):
         with self._create_validator("validator"):
@@ -176,9 +184,11 @@ class TestAuthMethod(TransactionCase):
         # Other types of invalid tokens are unit tested elswhere.
         with self._create_validator("validator4"):
             authorization = "Bearer " + self._create_token(audience="bad")
-            with self._mock_request(authorization=authorization):
-                with self.assertRaises(UnauthorizedInvalidToken):
-                    self.env["ir.http"]._auth_method_jwt_validator4()
+            with (
+                self._mock_request(authorization=authorization),
+                self.assertRaises(UnauthorizedInvalidToken),
+            ):
+                self.env["ir.http"]._auth_method_jwt_validator4()
 
     def test_auth_method_invalid_token_on_chain(self):
         with (
@@ -296,7 +306,11 @@ class TestAuthMethod(TransactionCase):
             )
 
     def test_partner_id_strategy_email_found(self):
-        partner = self.env["res.partner"].search([("email", "!=", False)])[0]
+        partner = self.env["res.partner"].search([("email", "!=", False)], limit=1)
+        if not partner:
+            partner = self.env["res.partner"].create(
+                {"name": "Test Partner", "email": "testpartner@example.com"}
+            )
         with self._create_validator("validator6"):
             authorization = "Bearer " + self._create_token(email=partner.email)
             with self._mock_request(authorization=authorization) as request:
@@ -317,9 +331,11 @@ class TestAuthMethod(TransactionCase):
             authorization = "Bearer " + self._create_token(
                 email="notanemail@example.com"
             )
-            with self._mock_request(authorization=authorization):
-                with self.assertRaises(UnauthorizedPartnerNotFound):
-                    self.env["ir.http"]._auth_method_jwt_validator6()
+            with (
+                self._mock_request(authorization=authorization),
+                self.assertRaises(UnauthorizedPartnerNotFound),
+            ):
+                self.env["ir.http"]._auth_method_jwt_validator6()
 
     def test_get_validator(self):
         AuthJwtValidator = self.env["auth.jwt.validator"]
@@ -430,9 +446,11 @@ class TestAuthMethod(TransactionCase):
             )
 
     def test_name_check(self):
-        with self.assertRaises(ValidationError):
-            with self._create_validator(name="not an identifier"):
-                pass
+        with (
+            self.assertRaises(ValidationError),
+            self._create_validator(name="not an identifier"),
+        ):
+            pass
 
     def test_public_or_jwt_valid_token(self):
         with self._create_validator("validator"):

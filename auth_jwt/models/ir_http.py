@@ -31,10 +31,8 @@ class IrHttpJwt(models.AbstractModel):
         _authenticate method and make sure the conditions have not changed.
         """
         auth_method = endpoint.routing["auth"]
-        if (
-            auth_method in ("jwt", "public_or_jwt")
-            or auth_method.startswith("jwt_")
-            or auth_method.startswith("public_or_jwt_")
+        if auth_method in ("jwt", "public_or_jwt") or auth_method.startswith(
+            ("jwt_", "public_or_jwt_")
         ):
             if request.session.uid:
                 _logger.warning(
@@ -87,7 +85,7 @@ class IrHttpJwt(models.AbstractModel):
 
         if not payload:
             if len(exceptions) == 1:
-                raise list(exceptions.values())[0]
+                raise next(iter(exceptions.values()))
             raise UnauthorizedCompositeJwtError(exceptions)
 
         if validator.cookie_enabled:

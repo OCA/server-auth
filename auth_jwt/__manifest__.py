@@ -3,16 +3,15 @@
 
 {
     "name": "Auth JWT",
-    "summary": """
-        JWT bearer token authentication.""",
-    "version": "18.0.1.0.2",
+    "summary": "JWT bearer token authentication.",
+    "version": "20.0.1.0.2",
     "license": "LGPL-3",
-    "author": "ACSONE SA/NV,Odoo Community Association (OCA)",
+    "author": "ACSONE SA/NV, Open2S, Odoo Community Association (OCA)",
     "maintainers": ["sbidoul"],
     "website": "https://github.com/OCA/server-auth",
     "depends": [],
     "external_dependencies": {"python": ["pyjwt", "cryptography"]},
-    "data": ["security/ir.model.access.csv", "views/auth_jwt_validator_views.xml"],
+    "data": ["security/ir.access.csv", "views/auth_jwt_validator_views.xml"],
     "demo": [],
     "installable": True,
     "application": False,
