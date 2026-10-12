@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<odoo>
+    <record id="view_auth_jwt_validator_form" model="ir.ui.view">
+        <field name="name">auth.jwt.validator.form</field>
+        <field name="model">auth.jwt.validator</field>
+        <field name="arch" type="xml">
+            <form string="arch">
+                <sheet>
+                    <group col="4">
+                        <group colspan="2" string="General">
+                            <field name="name" />
+                            <field name="next_validator_id" />
+                        </group>
+                        <group colspan="2" string="Token validation">
+                            <field name="audience" />
+                            <field name="issuer" />
+                            <field name="signature_type" />
+                            <field
+                                name="secret_key"
+                                string="Key"
+                                invisible="signature_type != 'secret'"
+                                required="signature_type == 'secret'"
+                            />
+                            <field
+                                name="secret_algorithm"
+                                string="Algorithm"
+                                invisible="signature_type != 'secret'"
+                                required="signature_type == 'secret'"
+                            />
+                            <field
+                                name="public_key_jwk_uri"
+                                string="JWK URI"
+                                invisible="signature_type != 'public_key'"
+                                required="signature_type == 'public_key'"
+                                widget="url"
+                            />
+                            <field
+                                name="public_key_algorithm"
+                                string="Algorithm"
+                                invisible="signature_type != 'public_key'"
+                                required="signature_type == 'public_key'"
+                            />
+                        </group>
+                        <group colspan="2" string="User">
+                            <field name="user_id_strategy" />
+                            <field
+                                name="static_user_id"
+                                invisible="user_id_strategy != 'static'"
+                                required="user_id_strategy == 'static'"
+                            />
+                        </group>
+                        <group colspan="2" string="Partner">
+                            <field name="partner_id_strategy" />
+                            <field name="partner_id_required" />
+                        </group>
+                        <group colspan="2" string="Cookie">
+                            <field name="cookie_enabled" />
+                            <field
+                                name="cookie_name"
+                                invisible="not cookie_enabled"
+                                required="cookie_enabled"
+                            />
+                            <field name="cookie_path" invisible="not cookie_enabled" />
+                            <field
+                                name="cookie_max_age"
+                                invisible="not cookie_enabled"
+                            />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_auth_jwt_validator_tree" model="ir.ui.view">
+        <field name="name">auth.jwt.validator.tree</field>
+        <field name="model">auth.jwt.validator</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="issuer" />
+                <field name="audience" />
+                <field name="signature_type" />
+                <field name="user_id_strategy" />
+                <field name="partner_id_strategy" />
+                <field name="partner_id_required" />
+                <field name="next_validator_id" />
+            </list>
+        </field>
+    </record>
+    <record id="action_auth_jwt_validator" model="ir.actions.act_window">
+        <field name="name">JWT Validators</field>
+        <field name="res_model">auth.jwt.validator</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem
+        id="menu_auth_jwt_validator"
+        name="JWT Validators"
+        parent="base.menu_users"
+        sequence="30"
+        action="action_auth_jwt_validator"
+        groups="base.group_no_one"
+    />
+</odoo>
