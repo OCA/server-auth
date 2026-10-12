@@ -29,13 +29,13 @@ class ResUsers(models.Model):
             auth = (oauth_provider.client_id, oauth_provider.client_secret)
         response = requests.post(
             oauth_provider.token_endpoint,
-            data=dict(
-                client_id=oauth_provider.client_id,
-                grant_type="authorization_code",
-                code=code,
-                code_verifier=oauth_provider.code_verifier,  # PKCE
-                redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
-            ),
+            data={
+                "client_id": oauth_provider.client_id,
+                "grant_type": "authorization_code",
+                "code": code,
+                "code_verifier": oauth_provider.code_verifier,  # PKCE
+                "redirect_uri": request.httprequest.url_root + "auth_oauth/signin",
+            },
             auth=auth,
             timeout=10,
         )

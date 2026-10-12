@@ -7,7 +7,7 @@ import secrets
 
 import requests
 
-from odoo import fields, models, tools
+from odoo import api, fields, models
 
 try:
     from jose import jwt
@@ -47,7 +47,7 @@ class AuthOauthProvider(models.Model):
     )
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
 
-    @tools.ormcache("self.jwks_uri", "kid")
+    @api.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):
         r = requests.get(self.jwks_uri, timeout=10)
         r.raise_for_status()

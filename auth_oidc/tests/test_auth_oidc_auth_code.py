@@ -91,7 +91,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         # disable existing providers except our test provider
         self.env["auth.oauth.provider"].search(
             [("client_id", "!=", "auth_oidc-test")]
-        ).write(dict(enabled=False))
+        ).write({"enabled": False})
         with MockRequest(self.env):
             providers = OpenIDLogin().list_providers()
             self.assertEqual(len(providers), 1)
@@ -156,7 +156,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
 
         params = {"state": json.dumps({})}
         with MockRequest(self.env):
-            db, login, token = self.env["res.users"].auth_oauth(
+            _db, login, token = self.env["res.users"].auth_oauth(
                 self.provider_rec.id,
                 params,
             )
@@ -175,7 +175,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
 
         params = {"state": json.dumps({})}
         with MockRequest(self.env):
-            db, login, token = self.env["res.users"].auth_oauth(
+            _db, login, token = self.env["res.users"].auth_oauth(
                 self.provider_rec.id,
                 params,
             )
@@ -193,7 +193,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
 
         params = {"state": json.dumps({})}
         with MockRequest(self.env):
-            db, login, token = self.env["res.users"].auth_oauth(
+            _db, login, token = self.env["res.users"].auth_oauth(
                 self.provider_rec.id,
                 params,
             )
@@ -258,12 +258,15 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             keys=[],
         )
 
-        with self.assertRaises(AccessDenied), MockRequest(self.env):
-            with self.assertLogs(level=logging.ERROR) as logs:
-                self.env["res.users"].auth_oauth(
-                    self.provider_rec.id,
-                    {"state": json.dumps({})},
-                )
+        with (
+            self.assertRaises(AccessDenied),
+            MockRequest(self.env),
+            self.assertLogs(level=logging.ERROR) as logs,
+        ):
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
         self.assertEqual(len(logs.records), 1)
         self.assertEqual(logs.records[0].levelno, logging.ERROR)
         self.assertEqual(
@@ -286,7 +289,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
 
         with MockRequest(self.env):
-            db, login, token = self.env["res.users"].auth_oauth(
+            _db, login, token = self.env["res.users"].auth_oauth(
                 self.provider_rec.id,
                 {"state": json.dumps({})},
             )
@@ -307,7 +310,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
 
         with MockRequest(self.env):
-            db, login, token = self.env["res.users"].auth_oauth(
+            _db, login, token = self.env["res.users"].auth_oauth(
                 self.provider_rec.id,
                 {"state": json.dumps({})},
             )
@@ -326,7 +329,7 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
 
         with MockRequest(self.env):
-            db, login, token = self.env["res.users"].auth_oauth(
+            _db, login, token = self.env["res.users"].auth_oauth(
                 self.provider_rec.id,
                 {"state": json.dumps({})},
             )
