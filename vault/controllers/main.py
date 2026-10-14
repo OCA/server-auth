@@ -19,12 +19,16 @@ class Controller(http.Controller):
         user = request.env["res.users"].sudo().find_user_of_inbox(token)
         if len(inbox) == 1 and inbox.accesses > 0:
             ctx.update({"name": inbox.name, "public": inbox.user_id.active_key.public})
-        elif len(inbox) == 0 and len(user) == 1:
+        elif len(user) == 1:
             ctx["public"] = user.active_key.public
-
-        # A valid token would mean we found a public key
-        if not ctx.get("public"):
+        else:
+            # The token doesn't match any inbox or user
             ctx["error"] = _("Invalid token")
+            return request.render("vault.inbox", ctx)
+
+        # The token is valid but the recipient has no key pair to encrypt for
+        if not ctx.get("public"):
+            ctx["error"] = _("The recipient has not set up a vault key yet")
             return request.render("vault.inbox", ctx)
 
         # Just render if GET method

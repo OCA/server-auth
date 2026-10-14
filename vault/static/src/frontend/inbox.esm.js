@@ -63,6 +63,8 @@ document.getElementById("secret").onchange = async function () {
     toggle_required(data.secret, required);
     toggle_required(data.secret_file, !required);
     data.submit.removeAttribute("disabled");
+    data.secret.setCustomValidity("");
+    data.secret_file.setCustomValidity("");
 };
 
 document.getElementById("secret_file").onchange = async function () {
@@ -92,4 +94,29 @@ document.getElementById("secret_file").onchange = async function () {
     toggle_required(data.secret_file, required);
     data.filename.value = file.name;
     data.submit.removeAttribute("disabled");
+    data.secret.setCustomValidity("");
+    data.secret_file.setCustomValidity("");
+};
+
+// Ensure that at least one of the fields is provided before submitting.
+document.getElementById("submit").closest("form").onsubmit = function (ev) {
+    this.action += location.hash;
+
+    if (!utils.supported()) return true;
+
+    for (const id of fields) if (!data[id]) data[id] = document.getElementById(id);
+
+    const has_secret = data.secret.value || data.encrypted.value;
+    const has_file = data.secret_file.value || data.encrypted_file.value;
+
+    if (!has_secret && !has_file) {
+        data.secret.setCustomValidity("Please enter a secret or attach a file.");
+        data.secret.reportValidity();
+        ev.preventDefault();
+        return false;
+    }
+
+    data.secret.setCustomValidity("");
+    data.secret_file.setCustomValidity("");
+    return true;
 };
