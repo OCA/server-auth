@@ -1,5 +1,5 @@
 # Copyright (C) 2020 GlodoUK <https://glodo.uk/>
-# Copyright (C) 2022 XCG Consulting <https://xcg-consulting.fr/>
+# Copyright (C) 2022 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import fields, models
