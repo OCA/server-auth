@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 =================
 Password Security
 =================
@@ -17,7 +13,7 @@ Password Security
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-LGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-LGPL--3-blue.png
     :target: http://www.gnu.org/licenses/lgpl-3.0-standalone.html
     :alt: License: LGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
@@ -37,12 +33,15 @@ requirements and enforces them on the user.
 
 It contains features such as
 
-- Password expiration days
-- Password length requirement
-- Password minimum number of lowercase letters
-- Password minimum number of uppercase letters
-- Password minimum number of numbers
-- Password minimum number of special characters
+-  Password expiration days
+-  Password length requirement
+-  Password minimum number of lowercase letters
+-  Password minimum number of uppercase letters
+-  Password minimum number of numbers
+-  Password minimum number of special characters
+
+Individual users can also be exempted from these policies through two
+security groups (see Usage).
 
 **Table of contents**
 
@@ -70,6 +69,14 @@ Usage
 Configure using above instructions for each company that should have
 password security mandates.
 
+**Exempting individual users:** two security groups let specific users
+(for example service or integration accounts) skip part of the policy:
+
+-  **Exempt from Password Expiration** skips the time-based checks:
+   password expiration and the minimum delay time between resets.
+-  **Exempt from Password Format Rules** skips the value-based checks on
+   the password itself: complexity requirements and history (no reuse).
+
 Bug Tracker
 ===========
 
@@ -96,30 +103,30 @@ Authors
 Contributors
 ------------
 
-- James Foster <jfoster@laslabs.com>
+-  James Foster <jfoster@laslabs.com>
 
-- Dave Lasley <dave@laslabs.com>
+-  Dave Lasley <dave@laslabs.com>
 
-- Kaushal Prajapati <kbprajapati@live.com>
+-  Kaushal Prajapati <kbprajapati@live.com>
 
-- Petar Najman <petar.najman@modoolar.com>
+-  Petar Najman <petar.najman@modoolar.com>
 
-- Shepilov Vladislav <shepilov.v@protonmail.com>
+-  Shepilov Vladislav <shepilov.v@protonmail.com>
 
-- Florian Kantelberg <florian.kantelberg@initos.com>
+-  Florian Kantelberg <florian.kantelberg@initos.com>
 
-- Carlos Jimeno <carlos.jimeno@bt-group.com>
+-  Carlos Jimeno <carlos.jimeno@bt-group.com>
 
-- Dhara Solanki <dhara.solanki@initos.com>
+-  Dhara Solanki <dhara.solanki@initos.com>
 
-- `Open Source Integrators <https://opensourceintegrators.com>`__
+-  `Open Source Integrators <https://opensourceintegrators.com>`__
 
-     - Chandresh Thakkar <cthakkar@opensourceintegrators.com>
-     - Daniel Reis <dreis@opensourceintegrators.com>
+      -  Chandresh Thakkar <cthakkar@opensourceintegrators.com>
+      -  Daniel Reis <dreis@opensourceintegrators.com>
 
-- `Onestein <https://www.onestein.nl>`__:
+-  `Onestein <https://www.onestein.nl>`__:
 
-  - Andrea Stirpe <a.stirpe@onestein.nl>
+   -  Andrea Stirpe <a.stirpe@onestein.nl>
 
 Maintainers
 -----------
