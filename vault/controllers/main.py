@@ -55,7 +55,7 @@ class Controller(http.Controller):
             return request.render("vault.inbox", ctx)
 
         try:
-            inbox.store_in_inbox(
+            result = inbox.store_in_inbox(
                 name,
                 secret,
                 secret_file,
@@ -70,6 +70,10 @@ class Controller(http.Controller):
             ctx["error"] = _(
                 "An error occured. Please contact the user or administrator"
             )
+            return request.render("vault.inbox", ctx)
+
+        if not result:
+            ctx["error"] = _("This link is no longer active")
             return request.render("vault.inbox", ctx)
 
         ctx["message"] = _("Successfully stored")
