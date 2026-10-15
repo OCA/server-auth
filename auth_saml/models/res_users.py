@@ -210,7 +210,6 @@ class ResUser(models.Model):
             super(ResUser, non_blank_password_users)._set_password()
         if blank_password_users:
             blank_password_users._set_password_blank()
-        return
 
     def _set_password_blank(self):
         """Set the password to a value that prohibits logging."""

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <!-- Inherit from the configuration form to add a setting. -->
     <record id="auth_saml_base_settings_form" model="ir.ui.view">
