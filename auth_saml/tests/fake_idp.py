@@ -1,4 +1,5 @@
 import os
+import warnings
 from urllib.parse import parse_qs, urlparse
 
 from saml2 import BINDING_HTTP_POST, BINDING_HTTP_REDIRECT, pack
@@ -6,7 +7,13 @@ from saml2.authn_context import INTERNETPROTOCOLPASSWORD
 from saml2.config import Config as Saml2Config
 from saml2.metadata import create_metadata_string
 from saml2.saml import NAME_FORMAT_URI, NAMEID_FORMAT_PERSISTENT
-from saml2.server import Server
+
+# pysaml2 still uses the old location of the CFB cipher mode, and recent versions of
+# cryptography warn about it when saml2.server is imported. This is not something
+# this module can fix, so hide that one warning to keep the test log clean.
+with warnings.catch_warnings():
+    warnings.filterwarnings("ignore", message="CFB has been moved")
+    from saml2.server import Server
 
 TYP = {"GET": [BINDING_HTTP_REDIRECT], "POST": [BINDING_HTTP_POST]}
 
