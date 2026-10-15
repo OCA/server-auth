@@ -93,7 +93,6 @@
                             <field name="matching_attribute_to_lower" />
                         </group>
                         <group string="Odoo Settings" name="odoo_settings">
-                            <field name="active" invisible="1" />
                             <label for="autoredirect" />
                             <div>
                                 <field name="autoredirect" />
@@ -123,7 +122,6 @@
                                     class="help small text-muted"
                                 >Entity Identifier sent to the IDP. Often this would be the metadata URL, but it can be any string.</p>
                             </div>
-                            <field name="sp_pem_public_filename" invisible="1" />
                             <label for="sp_pem_public" />
                             <div>
                                 <field
@@ -134,7 +132,6 @@
                                     class="help small text-muted"
                                 >Used to sign requests sent to the IDP. You can use openssl to generate a certificate and key.</p>
                             </div>
-                            <field name="sp_pem_private_filename" invisible="1" />
                             <label for="sp_pem_private" />
                             <div>
                                 <field
