@@ -7,7 +7,7 @@ from typing import Set  # noqa
 
 import passlib
 
-from odoo import SUPERUSER_ID, Command, api, fields, models, tools
+from odoo import SUPERUSER_ID, Command, api, fields, models
 from odoo.exceptions import AccessDenied, ValidationError
 from odoo.modules.registry import Registry
 
@@ -25,7 +25,9 @@ class ResUser(models.Model):
 
     saml_ids = fields.One2many("res.users.saml", "user_id")
 
-    def _auth_saml_validate(self, provider_id: int, token: str, base_url: str = None):
+    def _auth_saml_validate(
+        self, provider_id: int, token: str, base_url: str | None = None
+    ):
         provider = self.env["auth.saml.provider"].sudo().browse(provider_id)
         return provider._validate_auth_response(token, base_url)
 
@@ -48,9 +50,12 @@ class ResUser(models.Model):
         saml_provider = self.env["auth.saml.provider"].browse(provider)
         user = user_saml.user_id
         user_copy_defaults = {}
-        if not user.active and saml_provider.create_user:
-            if saml_provider.create_user_reactivate:
-                user.active = True
+        if (
+            not user.active
+            and saml_provider.create_user
+            and saml_provider.create_user_reactivate
+        ):
+            user.active = True
         if not user:
             user_copy_defaults = saml_provider._user_copy_defaults(validation)
             if not user_copy_defaults:
@@ -105,7 +110,7 @@ class ResUser(models.Model):
         return user.login
 
     @api.model
-    def auth_saml(self, provider: int, saml_response: str, base_url: str = None):
+    def auth_saml(self, provider: int, saml_response: str, base_url: str | None = None):
         validation = self._auth_saml_validate(provider, saml_response, base_url)
 
         # required check
@@ -173,13 +178,11 @@ class ResUser(models.Model):
     @api.model
     def allow_saml_and_password(self) -> bool:
         """Can both SAML and local password auth methods coexist."""
-        return tools.str2bool(
-            self.env["ir.config_parameter"]
-            .sudo()
-            .get_param(ALLOW_SAML_UID_AND_PASSWORD)
+        return (
+            self.env["ir.config_parameter"].sudo().get_bool(ALLOW_SAML_UID_AND_PASSWORD)
         )
 
-    def _set_password(self):
+    def _set_password(self):  # pylint: disable=missing-return
         """Inverse method of the password field."""
         # Redefine base method to block setting password on users with SAML ids
         # And also to be able to set password to a blank value

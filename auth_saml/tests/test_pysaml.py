@@ -1,6 +1,5 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 # Copyright (C) 2025-2026 XCG SAS <https://orbeet.io/>
-import base64
 import html
 import os
 import os.path as osp
@@ -15,7 +14,7 @@ from saml2.sigver import SignatureError
 from odoo.exceptions import AccessDenied, UserError, ValidationError
 from odoo.orm.commands import Command
 from odoo.tests import HttpCase, tagged
-from odoo.tools import mute_logger
+from odoo.tools import BinaryBytes, mute_logger
 
 from odoo.addons.auth_saml.controllers.main import fragment_to_query_string
 
@@ -43,8 +42,8 @@ class TestPySaml(HttpCase):
             {
                 "name": "SAML Provider Demo",
                 "idp_metadata": FakeIDP().get_metadata(),
-                "sp_pem_public": base64.b64encode(sp_pem_public.encode()),
-                "sp_pem_private": base64.b64encode(sp_pem_private.encode()),
+                "sp_pem_public": BinaryBytes(sp_pem_public.encode()),
+                "sp_pem_private": BinaryBytes(sp_pem_private.encode()),
                 "body": "Login with Authentic",
                 "active": True,
                 "sig_alg": "SIG_RSA_SHA1",
@@ -400,8 +399,8 @@ class TestPySaml(HttpCase):
         disallow option is set."""
         # change the option
         self.browse_ref("auth_saml.allow_saml_uid_and_internal_password").unlink()
-        self.env["ir.config_parameter"].set_param(
-            "auth_saml.allow_saml_uid_and_internal_password", "False"
+        self.env["ir.config_parameter"].set_bool(
+            "auth_saml.allow_saml_uid_and_internal_password", False
         )
         # Create a new user with only SAML ids
         user = (
@@ -474,7 +473,7 @@ class TestPySaml(HttpCase):
             [{"key": "test", "value": "unrelated"}]
         )
         self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
-        self.env["ir.config_parameter"].set_param("test", "False")
+        self.env["ir.config_parameter"].set_str("test", "False")
         self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
         param.unlink()
         self.authenticate(user="test@example.com", password="Lu,ums-7vRU>0i]=YDLa")
@@ -491,7 +490,10 @@ class TestPySaml(HttpCase):
 
     def test_db_filtering(self):
         # change filter to only allow our db.
-        with patch("odoo.http.db_filter", new=lambda *args, **kwargs: []):
+        with patch(
+            "odoo.addons.auth_saml.controllers.main.db_filter",
+            new=lambda *args, **kwargs: [],
+        ):
             self.add_provider_to_user()
 
             redirect_url = self.saml_provider._get_auth_request()
@@ -562,27 +564,10 @@ class TestPySaml(HttpCase):
     def test_fragment_to_query_string_no_kw(self):
         """Test the case where no keyword arguments are passed."""
         response = self.decorated_function(self)
-        # ruff: disable
-        expected_html = (
-            b"""<!DOCTYPE html>
-            <html><head><script>
-                (function() {
-                    const url = window.location;
-                    const fragment = url.hash.substring(1);  // remove the leading "#"
-                    let new_url = url.pathname + url.search;
-                    if(fragment.length !== 0) {
-                        const separator = url.search ? (url.search === \'?\' ? \'\' """
-            b""": \'&\') : \'?\';
-                        new_url = url.pathname + url.search + separator + fragment;
-                    }
-                    if (new_url == url.pathname) {
-                        new_url = \'/\';
-                    }
-                    window.location = new_url;
-                })()
-            </script></head><body></body></html>"""
-        )
-        self.assertEqual(response.data, expected_html)
+        # Do not compare the whole page: Odoo may change its formatting.
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b"url.hash.substring(1)", response.data)
+        self.assertIn(b"window.location = new_url", response.data)
 
     def test_fragment_to_query_string_with_kw(self):
         """Test the case where keyword arguments are passed."""
@@ -669,8 +654,8 @@ class TestPySaml(HttpCase):
                 "password": "securepassword",
             }
         )
-        self.env["ir.config_parameter"].set_param(
-            "auth_saml.allow_saml_uid_and_internal_password", "False"
+        self.env["ir.config_parameter"].set_bool(
+            "auth_saml.allow_saml_uid_and_internal_password", False
         )
         self.env["res.users.saml"].create(
             {
@@ -681,8 +666,8 @@ class TestPySaml(HttpCase):
                         "name": "Demo Provider",
                         "sig_alg": "SIG_RSA_SHA1",
                         "idp_metadata": "fake_metadata",
-                        "sp_pem_public": base64.b64encode(b"public_key"),
-                        "sp_pem_private": base64.b64encode(b"private_key"),
+                        "sp_pem_public": BinaryBytes(b"public_key"),
+                        "sp_pem_private": BinaryBytes(b"private_key"),
                     }
                 )
                 .id,
@@ -713,11 +698,11 @@ class TestPySaml(HttpCase):
 
     def test_get_cert_key_path_tempfile(self):
         """Test _get_cert_key_path for non-file storage locations."""
-        # Create a mock attachment with base64-encoded data
+        # Create a mock attachment with raw data
         self.env["ir.attachment"].create(
             {
                 "name": "test.pem",
-                "datas": base64.b64encode(b"dummy_cert_key_content").decode("utf-8"),
+                "raw": BinaryBytes(b"dummy_cert_key_content"),
                 "res_model": "auth.saml.provider",
                 "res_field": "sp_pem_public",
                 "res_id": 1,
@@ -945,10 +930,6 @@ class TestPySaml(HttpCase):
             mute_logger("saml2.entity"),
             mute_logger("saml2.client_base"),
         ):
-            (database, login, token) = (
-                self.env["res.users"]
-                .sudo()
-                .auth_saml(
-                    self.saml_provider.id, unpacked_response.get("SAMLResponse"), None
-                )
+            self.env["res.users"].sudo().auth_saml(
+                self.saml_provider.id, unpacked_response.get("SAMLResponse"), None
             )

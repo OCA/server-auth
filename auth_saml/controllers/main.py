@@ -10,15 +10,12 @@ import werkzeug.utils
 from saml2.validate import ResponseLifetimeExceed
 from werkzeug.exceptions import BadRequest
 
-from odoo import (
-    SUPERUSER_ID,
-    api,
-    exceptions,
-    http,
-    models,
-    modules,
-)
-from odoo.http import fragment_to_query_string, request
+from odoo import SUPERUSER_ID, api, exceptions, http, models
+from odoo.http import request
+from odoo.http.requestlib import fragment_to_query_string
+from odoo.http.router import db_filter
+from odoo.http.session import authenticate
+from odoo.modules.registry import Registry
 from odoo.tools.misc import clean_context
 
 from odoo.addons.web.controllers.home import Home
@@ -160,7 +157,7 @@ class AuthSAMLController(http.Controller):
             self._get_saml_extra_relaystate(), request.httprequest.url_root.rstrip("/")
         )
         if not redirect_url:
-            raise Exception(
+            raise exceptions.UserError(
                 request.env._(
                     "Failed to get auth request from provider. "
                     "Either misconfigured SAML provider or unknown provider."
@@ -196,8 +193,8 @@ class AuthSAMLController(http.Controller):
         state = json.loads(kw["RelayState"])
         provider = state["p"]
         dbname = state["d"]
-        if not http.db_filter([dbname]):
-            return BadRequest()
+        if not db_filter([dbname]):
+            raise BadRequest()
         ensure_db(db=dbname)
 
         request.update_context(**clean_context(state.get("c", {})))
@@ -230,7 +227,7 @@ class AuthSAMLController(http.Controller):
                 "token": credentials[2],
                 "type": "saml_token",
             }
-            auth_info = request.session.authenticate(request.env, credentials_dict)
+            auth_info = authenticate(request.session, request.env, credentials_dict)
             resp = request.redirect(_get_login_redirect_url(auth_info["uid"], url), 303)
             resp.autocorrect_location_header = False
             return resp
@@ -246,9 +243,9 @@ class AuthSAMLController(http.Controller):
             _logger.debug("Response Lifetime Exceed - %s", str(e))
             url = "/web/login?saml_error=response-lifetime-exceed"
 
-        except Exception as e:
+        except Exception:
             # signup error
-            _logger.exception("SAML2: failure - %s", str(e))
+            _logger.exception("SAML2: failure")
             url = "/web/login?saml_error=access-denied"
 
         redirect = request.redirect(url, 303)
@@ -269,7 +266,7 @@ class AuthSAMLController(http.Controller):
 
         provider = int(provider)
 
-        with modules.registry.Registry(dbname).cursor() as cr:
+        with Registry(dbname).cursor() as cr:
             env = api.Environment(cr, SUPERUSER_ID, {})
             client = env["auth.saml.provider"].sudo().browse(provider)
             if not client.exists():

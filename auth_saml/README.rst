@@ -21,13 +21,13 @@ SAML2 Authentication
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
-    :target: https://github.com/OCA/server-auth/tree/19.0/auth_saml
+    :target: https://github.com/OCA/server-auth/tree/20.0/auth_saml
     :alt: OCA/server-auth
 .. |badge4| image:: https://img.shields.io/badge/weblate-Translate%20me-F47D42.png
-    :target: https://translation.odoo-community.org/projects/server-auth-19-0/server-auth-19-0-auth_saml
+    :target: https://translation.odoo-community.org/projects/server-auth-20-0/server-auth-20-0-auth_saml
     :alt: Translate me on Weblate
 .. |badge5| image:: https://img.shields.io/badge/runboat-Try%20me-875A7B.png
-    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=19.0
+    :target: https://runboat.odoo-community.org/builds?repo=OCA/server-auth&target_branch=20.0
     :alt: Try me on Runboat
 
 |badge1| |badge2| |badge3| |badge4| |badge5|
@@ -40,14 +40,14 @@ On) between Odoo and other applications of your ecosystem.
 
 **Benefits**:
 
-- Reducing the time spent typing different passwords for different
-  accounts.
-- Reducing the time spent in IT support for password oversights.
-- Centralizing authentication systems.
-- Securing all input levels / exit / access to multiple systems without
-  prompting users.
-- The centralization of access control information for compliance
-  testing to different standards.
+-  Reducing the time spent typing different passwords for different
+   accounts.
+-  Reducing the time spent in IT support for password oversights.
+-  Centralizing authentication systems.
+-  Securing all input levels / exit / access to multiple systems without
+   prompting users.
+-  The centralization of access control information for compliance
+   testing to different standards.
 
 **Table of contents**
 
@@ -100,7 +100,7 @@ login screen.
 Known issues / Roadmap
 ======================
 
-- clean up ``auth_saml.request``
+-  clean up ``auth_saml.request``
 
 Changelog
 =========
@@ -111,9 +111,9 @@ Changelog
 Features
 ~~~~~~~~
 
-- When using attribute mapping, only write value that changes. Not
-  writing the value systematically avoids getting security mail on
-  login/email when there is no real change.
+-  When using attribute mapping, only write value that changes. Not
+   writing the value systematically avoids getting security mail on
+   login/email when there is no real change.
 
 18.0.1.0.2 (2025-05-13)
 -----------------------
@@ -121,7 +121,7 @@ Features
 Bugfixes
 ~~~~~~~~
 
-- Avoid redirecting when there is a SAML error.
+-  Avoid redirecting when there is a SAML error.
 
 18.0.1.0.0
 ----------
@@ -134,7 +134,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/OCA/server-auth/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_saml%0Aversion:%2019.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/OCA/server-auth/issues/new?body=module:%20auth_saml%0Aversion:%2020.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -149,28 +149,28 @@ Authors
 Contributors
 ------------
 
-- XCG SAS part of `Orbeet <https://orbeet.io/>`__:
+-  XCG SAS part of `Orbeet <https://orbeet.io/>`__:
 
-  - Florent Aide <florent.aide@orbeet.io>
-  - Vincent Hatakeyama <vincent.hatakeyama@orbeet.io>
-  - Alexandre Brun
-  - Houzéfa Abbasbhay <houzefa.abba@orbeet.io>
-  - Szeka Wong <szeka.wong@orbeet.io>
+   -  Florent Aide <florent.aide@orbeet.io>
+   -  Vincent Hatakeyama <vincent.hatakeyama@orbeet.io>
+   -  Alexandre Brun
+   -  Houzéfa Abbasbhay <houzefa.abba@orbeet.io>
+   -  Szeka Wong <szeka.wong@orbeet.io>
 
-- Jeremy Co Kim Len <jeremy.cokimlen@vinci-concessions.com>
-- Jeffery Chen Fan <jeffery9@gmail.com>
-- Bhavesh Odedra <bodedra@opensourceintegrators.com>
-- `Tecnativa <https://www.tecnativa.com/>`__:
+-  Jeremy Co Kim Len <jeremy.cokimlen@vinci-concessions.com>
+-  Jeffery Chen Fan <jeffery9@gmail.com>
+-  Bhavesh Odedra <bodedra@opensourceintegrators.com>
+-  `Tecnativa <https://www.tecnativa.com/>`__:
 
-  - Jairo Llopis
+   -  Jairo Llopis
 
-- `GlodoUK <https://www.glodo.uk/>`__:
+-  `GlodoUK <https://www.glodo.uk/>`__:
 
-  - Karl Southern
+   -  Karl Southern
 
-- `TAKOBI <https://takobi.online/>`__:
+-  `TAKOBI <https://takobi.online/>`__:
 
-  - Lorenzo Battistini
+   -  Lorenzo Battistini
 
 Maintainers
 -----------
@@ -193,6 +193,6 @@ Current `maintainer <https://odoo-community.org/page/maintainer-role>`__:
 
 |maintainer-vincent-hatakeyama| 
 
-This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/19.0/auth_saml>`_ project on GitHub.
+This module is part of the `OCA/server-auth <https://github.com/OCA/server-auth/tree/20.0/auth_saml>`_ project on GitHub.
 
 You are welcome to contribute. To learn how please visit https://odoo-community.org/page/Contribute.

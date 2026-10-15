@@ -2,7 +2,6 @@
 # Copyright (C) 2010-2016, 2022, 2025-2026 XCG SAS <https://orbeet.io/>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import base64
 import json
 import logging
 import os
@@ -90,7 +89,6 @@ class AuthSamlProvider(models.Model):
     attribute_mapping_ids = fields.One2many(
         "auth.saml.attribute.mapping",
         "provider_id",
-        string="Attribute Mapping",
         copy=True,
     )
     active = fields.Boolean(default=True)
@@ -180,9 +178,7 @@ class AuthSamlProvider(models.Model):
 
     @api.depends("sp_baseurl")
     def _compute_sp_metadata_url(self):
-        icp_base_url = (
-            self.env["ir.config_parameter"].sudo().get_param("web.base.url", "")
-        )
+        icp_base_url = self.env["ir.config_parameter"].sudo().get_str("web.base.url")
 
         for record in self:
             if not record.id:
@@ -216,14 +212,14 @@ class AuthSamlProvider(models.Model):
             # For non-file locations we need to create a temp file to pass to pysaml.
             fd, keys_path = tempfile.mkstemp()
             with open(keys_path, "wb") as f:
-                f.write(base64.b64decode(keys.datas))
+                f.write(keys.raw.content)
             os.close(fd)
         else:
             keys_path = model_attachment._full_path(keys.store_fname)
 
         return keys_path
 
-    def _get_config_for_provider(self, base_url: str = None) -> Saml2Config:
+    def _get_config_for_provider(self, base_url: str | None = None) -> Saml2Config:
         """
         Internal helper to get a configured Saml2Client
         """
@@ -233,9 +229,7 @@ class AuthSamlProvider(models.Model):
             base_url = self.sp_baseurl
 
         if not base_url:
-            base_url = (
-                self.env["ir.config_parameter"].sudo().get_param("web.base.url", "")
-            )
+            base_url = self.env["ir.config_parameter"].sudo().get_str("web.base.url")
 
         acs_url = urllib.parse.urljoin(base_url, "/auth_saml/signin")
         settings = {
@@ -278,7 +272,7 @@ class AuthSamlProvider(models.Model):
                 saml2_retry_after_refresh_metadata=1
             )._get_config_for_provider(base_url)
 
-    def _get_client_for_provider(self, base_url: str = None) -> Saml2Client:
+    def _get_client_for_provider(self, base_url: str | None = None) -> Saml2Client:
         sp_config = self._get_config_for_provider(base_url)
         saml_client = Saml2Client(config=sp_config)
         return saml_client
@@ -317,7 +311,7 @@ class AuthSamlProvider(models.Model):
 
         return redirect_url
 
-    def _validate_auth_response(self, token: str, base_url: str = None):
+    def _validate_auth_response(self, token: str, base_url: str | None = None):
         """return the validation data corresponding to the access token"""
         self.ensure_one()
         try:
@@ -382,7 +376,7 @@ class AuthSamlProvider(models.Model):
             {"saml_provider_id": self.id, "saml_request_id": reqid}
         )
 
-    def _metadata_string(self, valid=None, base_url: str = None):
+    def _metadata_string(self, valid=None, base_url: str | None = None):
         self.ensure_one()
 
         sp_config = self._get_config_for_provider(base_url)
