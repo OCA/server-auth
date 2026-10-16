@@ -48,10 +48,10 @@ class SAMLLogin(Home):
             domain.append(("autoredirect", "=", True))
         providers = request.env["auth.saml.provider"].sudo().search_read(domain)
         for provider in providers:
-            provider["auth_link"] = self._auth_saml_request_link(provider)
+            provider["auth_link"] = self._auth_saml_request_link(provider, None)
         return providers
 
-    def _saml_autoredirect(self):
+    def _saml_autoredirect(self, subpath):
         # automatically redirect if any provider is set up to do that
         autoredirect_providers = self.list_saml_providers(True)
         # do not redirect if asked too or if a SAML error has been found
@@ -60,17 +60,19 @@ class SAMLLogin(Home):
         )
         if autoredirect_providers and not disable_autoredirect:
             return werkzeug.utils.redirect(
-                self._auth_saml_request_link(autoredirect_providers[0]),
+                self._auth_saml_request_link(autoredirect_providers[0], subpath),
                 303,
             )
         return None
 
-    def _auth_saml_request_link(self, provider: models.Model):
+    def _auth_saml_request_link(self, provider: models.Model, subpath):
         """Return the auth request link for the provided provider"""
         params = {
             "pid": provider["id"],
         }
         redirect = request.params.get("redirect")
+        if subpath:
+            params["redirect"] = f"odoo/{subpath}"
         if redirect:
             params["redirect"] = redirect
         return f"/auth_saml/get_auth_request?{urlencode(params)}"
@@ -79,7 +81,7 @@ class SAMLLogin(Home):
     def web_client(self, s_action=None, **kw):
         ensure_db()
         if not request.session.uid:
-            result = self._saml_autoredirect()
+            result = self._saml_autoredirect(kw.get("subpath", None))
             if result:
                 return result
         return super().web_client(s_action, **kw)
@@ -96,7 +98,7 @@ class SAMLLogin(Home):
             return request.redirect(request.params.get("redirect"))
 
         if request.httprequest.method == "GET":
-            result = self._saml_autoredirect()
+            result = self._saml_autoredirect(None)
             if result:
                 return result
 
