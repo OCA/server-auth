@@ -7,3 +7,6 @@ pysaml2==7.1.0 ; python_version <= '3.12'  # jammy, noble
 pysaml2==7.5.0 ; python_version == '3.13'  # trixie
 pysaml2==7.5.4 ; python_version >= '3.14'  # question
 #: }}}
+# extendable-pydantic needs pydantic._internal._generate_schema.get_type_ref,
+# removed in pydantic 2.14 (extendable_fastapi fails to import with it)
+pydantic<2.14
