@@ -10,7 +10,7 @@
     "maintainers": ["vincent-hatakeyama"],
     "website": "https://github.com/OCA/server-auth",
     "license": "AGPL-3",
-    "depends": ["base_setup", "web"],
+    "depends": ["base_setup", "html_editor"],
     "external_dependencies": {
         "python": ["pysaml2", "responses"],
         "bin": ["xmlsec1"],
