@@ -96,7 +96,7 @@ class AuthSamlProvider(models.Model):
     css_class = fields.Char(
         string="Button Icon CSS class",
         help="Add a CSS class that serves you to style the login button.",
-        default="fa fa-fw fa-sign-in text-primary",
+        default="oi oi-fw text-primary",
     )
     body = fields.Char(
         string="Login button label", help="Link text in Login Dialog", translate=True
