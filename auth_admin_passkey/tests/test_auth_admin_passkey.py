@@ -6,7 +6,8 @@ from contextlib import contextmanager
 from types import SimpleNamespace
 
 from odoo import exceptions
-from odoo.http import _request_stack, get_default_session, request
+from odoo.http import request, request_var
+from odoo.http.session import get_default_session
 from odoo.tests import common, tagged
 from odoo.tools import DotDict, config
 
@@ -73,12 +74,12 @@ class TestAuthAdminPasskey(common.TransactionCase):
     def mock_request(self):
         session = DotDict(get_default_session())
         session.sid = "auth_admin_passkey_test"
-        request = SimpleNamespace(env=self.env, session=session)
-        _request_stack.push(request)
+        mock_request = SimpleNamespace(env=self.env, session=session)
+        token = request_var.set(mock_request)
         try:
             yield
         finally:
-            _request_stack.pop()
+            request_var.reset(token)
 
     def _check_credentials(self, password):
         with self.mock_request():

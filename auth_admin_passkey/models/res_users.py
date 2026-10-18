@@ -4,7 +4,8 @@
 
 import hashlib
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 from odoo import SUPERUSER_ID, api, exceptions, models
 from odoo.http import request
@@ -51,6 +52,9 @@ class ResUsers(models.Model):
     @api.model
     def _prepare_email_passkey(self, login_user):
         subject = self.env._("Passkey used")
+        login_date = datetime.now(timezone.utc).astimezone(
+            ZoneInfo(login_user.tz or "UTC")
+        )
         body = self.env._(
             "System Administrator user used his passkey to login"
             " with %(login)s."
@@ -58,7 +62,7 @@ class ResUsers(models.Model):
             "Technicals informations belows : \n\n"
             "- Login date : %(login_date)s\n\n",
             login=login_user.login,
-            login_date=datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            login_date=login_date.strftime("%Y-%m-%d %H:%M:%S %Z"),
         )
         return subject, f"<pre>{body}</pre>"
 
