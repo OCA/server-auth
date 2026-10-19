@@ -1,0 +1,15 @@
+- XCG SAS part of [Orbeet](https://orbeet.io/):
+  - Florent Aide \<<florent.aide@orbeet.io>\>
+  - Vincent Hatakeyama \<<vincent.hatakeyama@orbeet.io>\>
+  - Alexandre Brun
+  - Houzéfa Abbasbhay \<<houzefa.abba@orbeet.io>\>
+  - Szeka Wong \<<szeka.wong@orbeet.io>\>
+- Jeremy Co Kim Len \<<jeremy.cokimlen@vinci-concessions.com>\>
+- Jeffery Chen Fan \<<jeffery9@gmail.com>\>
+- Bhavesh Odedra \<<bodedra@opensourceintegrators.com>\>
+- [Tecnativa](https://www.tecnativa.com/):
+  - Jairo Llopis
+- [GlodoUK](https://www.glodo.uk/):
+  - Karl Southern
+- [TAKOBI](https://takobi.online/):
+  - Lorenzo Battistini
