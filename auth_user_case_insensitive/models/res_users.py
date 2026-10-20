@@ -16,6 +16,12 @@ class ResUsers(models.Model):
             credential["login"] = credential["login"].lower()
         return super()._login(db, credential, user_agent_env=user_agent_env)
 
+    @api.model
+    def _get_login_domain(self, login):
+        """Lowercase the login so lookups outside of `_login`, such as the
+        password reset of auth_signup, match the stored lowercase login."""
+        return super()._get_login_domain(login.lower() if login else login)
+
     @api.model_create_multi
     def create(self, vals_list):
         """Overload create multiple to lowercase login."""

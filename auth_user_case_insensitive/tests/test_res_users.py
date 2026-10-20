@@ -42,6 +42,16 @@ class TestResUsers(TransactionCase):
             "Login was not lowercased when saved to db.",
         )
 
+    def test_login_domain_matches_mixed_case_login(self):
+        """Verify the login domain finds the user regardless of case."""
+        rec_id = self._new_record()
+        res_id = self.model_obj.search(self.model_obj._get_login_domain(self.login))
+        self.assertEqual(
+            rec_id,
+            res_id,
+            "Login domain with uppercase chars did not match the user",
+        )
+
     def test_login_login_is_lowercased(self):
         """Verify the login is set to lowercase on login."""
         rec_id = self.env.ref("base.user_admin")  # Get the admin user reference
