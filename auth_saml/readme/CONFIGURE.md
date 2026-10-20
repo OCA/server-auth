@@ -16,11 +16,16 @@ automatic redirection in the provider settings. The autoredirection will
 only be done on the active provider with the highest priority. It is
 still possible to access the login without redirection by using the
 query parameter `disable_autoredirect`, as in
-`https://example.com/web/login?disable_autoredirect=` The login is also
+`https://example.com/web/login?disable_autoredirect=`.
+
+The login is also
 displayed if there is an error with SAML login, in order to display any
 error message.
 
+There is an option to use a page that only displays the error message
+in a separate page instead of the login form.
+This is useful when displaying the login form is not desired.
+
 If you are using Office365 as identity provider, set up the federation metadata document
 rather than the document itself. This will allow the module to refresh the document when
-needed. 
-
+needed.
