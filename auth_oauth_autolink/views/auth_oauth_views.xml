@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_oauth_provider_form_autolink" model="ir.ui.view">
+        <field name="name">auth.oauth.provider.form.autolink</field>
+        <field name="model">auth.oauth.provider</field>
+        <field name="inherit_id" ref="auth_oauth.view_oauth_provider_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='enabled']" position="after">
+                <field name="autolink_by_email" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
