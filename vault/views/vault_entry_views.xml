@@ -166,6 +166,9 @@
                         <page string="Log">
                             <field name="log_ids" options="{'no_open': True}" />
                         </page>
+                        <page string="Access Logs" groups="vault.group_vault_manager">
+                            <field name="access_log_ids" options="{'no_open': True}" />
+                        </page>
                     </notebook>
                 </sheet>
             </form>

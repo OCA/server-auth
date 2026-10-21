@@ -2,12 +2,14 @@
 # Copyright 2022 Tecnativa - Víctor Martínez
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import json
 import logging
 from datetime import datetime
 from uuid import uuid4
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -32,6 +34,9 @@ class VaultEntry(models.Model):
     field_ids = fields.One2many("vault.field", "entry_id", "Fields")
     file_ids = fields.One2many("vault.file", "entry_id", "Files")
     log_ids = fields.One2many("vault.log", "entry_id", "Log", readonly=True)
+    access_log_ids = fields.One2many(
+        "vault.access.log", "secret_id", "Access Logs", readonly=True
+    )
 
     perm_user = fields.Many2one(related="vault_id.perm_user", store=False)
     allowed_read = fields.Boolean(related="vault_id.allowed_read", store=False)
@@ -96,6 +101,46 @@ class VaultEntry(models.Model):
             domain += [("child_ids", "!=", False)]
         return super().search_read(
             domain=domain, fields=fields, offset=offset, limit=limit, order=order
+        )
+
+    def action_log_access(self, access_type="reveal"):
+        """Record a read/access event on a secret for auditing (NIS2 / ISO 27001).
+
+        Meant to be called over RPC from the frontend right after a secret is
+        revealed, copied or exported. Only the record id and the access type
+        cross the wire -- never the decrypted plaintext. The originating IP is
+        resolved server-side from the HTTP request, not trusted from the client.
+        """
+        self.ensure_one()
+
+        log_model = self.env["vault.access.log"]
+        valid_types = dict(log_model._fields["access_type"].selection)
+        if access_type not in valid_types:
+            raise ValidationError(_("Invalid access type: %s", access_type))
+
+        ip_address = request.httprequest.remote_addr if request else ""
+
+        log_model.sudo().create(
+            {
+                "secret_id": self.id,
+                "user_id": self.env.user.id,
+                "access_type": access_type,
+                "ip_address": ip_address,
+            }
+        )
+
+        # Structured single-line JSON so SIEM collectors (Syslog, Datadog, ELK)
+        # can parse the event straight from stdout.
+        _logger.info(
+            json.dumps(
+                {
+                    "event": "vault_access",
+                    "user_id": self.env.user.id,
+                    "secret_id": self.id,
+                    "ip": ip_address,
+                    "type": access_type,
+                }
+            )
         )
 
     def copy_data(self, default=None):
