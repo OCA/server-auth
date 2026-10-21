@@ -71,7 +71,8 @@ class ResUsers(models.Model):
         if (
             (
                 config["test_enable"]
-                and not modules.module.current_test.test_module == "password_security"
+                and getattr(modules.module.current_test, "test_module", None)
+                != "password_security"
             )
             # Skip the check while loading data files, to avoid blocking installations
             or self.env.context.get("install_mode")
