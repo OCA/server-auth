@@ -14,7 +14,6 @@ class OAuthProviderRedirectURI(models.Model):
     )
     client_id = fields.Many2one(
         comodel_name="oauth.provider.client",
-        string="Client",
         required=True,
         help="Client allowed to redirect using this URI.",
     )

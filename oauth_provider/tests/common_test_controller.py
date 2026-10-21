@@ -2,32 +2,54 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 from unittest import mock
 from urllib.parse import parse_qs, urlparse
 
-from werkzeug.test import Client
-from werkzeug.wrappers import BaseResponse
-
 from odoo import fields
-from odoo.service import wsgi_server
-from odoo.tests.common import TransactionCase
-from odoo.tools.misc import consteq
+from odoo.http.requestlib import Request
+from odoo.tests.common import HttpCase, tagged
 
 _logger = logging.getLogger(__name__)
 
 
-class OAuthProviderControllerTransactionCase(TransactionCase):
+class TestResponse:
+    """Expose a requests response with the werkzeug test response API"""
+
+    def __init__(self, response):
+        self.status_code = response.status_code
+        self.headers = response.headers
+        self.data = response.content
+
+
+@tagged("post_install", "-at_install")
+class OAuthProviderControllerTransactionCase(HttpCase):
+    # The tests live in mixins shared by the application types
+    allow_inherited_tests_method = True
+
     def setUp(self, application_type):
         super().setUp()
 
-        # Initialize controller test stuff
-        self.werkzeug_environ = {
-            "REMOTE_ADDR": "127.0.0.1",
-        }
-        self.user = self.env.ref("base.user_demo")
+        # Tests post without CSRF tokens
+        self.csrf_patcher = mock.patch.object(
+            Request, "validate_csrf", return_value=True
+        )
+        self.csrf_patcher.start()
+        self.addCleanup(self.csrf_patcher.stop)
+
+        # Own user, the tests do not depend on demo data
+        self.user_password = "oauth-provider-test"
+        self.user = self.env["res.users"].create(
+            {
+                "name": "OAuth Provider Test User",
+                "login": "oauth_provider_test",
+                "email": "oauth_provider_test@example.com",
+                "city": "Lyon",
+                "password": self.user_password,
+                "group_ids": [(6, 0, [self.env.ref("base.group_user").id])],
+            }
+        )
         self.logged_user = False
-        self.initialize_test_client()
 
         # Initialize common stuff
         self.redirect_uri_base = "http://example.com"
@@ -90,51 +112,33 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
             }
         )
 
-    def initialize_test_client(self):
-        # Instantiate a test client
-        self.test_client = Client(wsgi_server.application, BaseResponse)
-        # Select the database
-        self.get_request("/web", data={"db": self.env.cr.dbname})
-
     def login(self, username, password):
-        # Login as demo user
-        self.post_request(
-            "/web/login",
-            data={
-                "login": username,
-                "password": password,
-            },
-        )
+        self.authenticate(username, password)
         self.logged_user = self.env["res.users"].search([("login", "=", username)])
 
     def logout(self):
-        # Login as demo user
-        self.get_request("/web/session/logout")
+        res = super().logout()
         self.logged_user = False
+        return res
 
-    @mock.patch("odoo.http.WebRequest.env", new_callable=mock.PropertyMock)
-    def get_request(self, uri, request_env, data=None, headers=None):
-        """Execute a GET request on the test client"""
-        # Mock the http request's environ to allow it to see test records
-        user = self.logged_user or self.env.ref("base.public_user")
-        request_env.return_value = self.env(user=user)
-
-        return self.test_client.get(
-            uri, query_string=data, environ_base=self.werkzeug_environ, headers=headers
+    def get_request(self, uri, data=None, headers=None):
+        """Execute a GET request on the test server"""
+        headers = dict(headers or {})
+        return TestResponse(
+            self.url_open(uri, params=data, headers=headers, allow_redirects=False)
         )
 
-    @mock.patch("odoo.http.WebRequest.env", new_callable=mock.PropertyMock)
-    @mock.patch("odoo.http.WebRequest.validate_csrf")
-    def post_request(self, uri, validate_csrf, request_env, data=None, headers=None):
-        """Execute a POST request on the test client"""
-        # Mock the http request's environ to allow it to see test records
-        user = self.logged_user or self.env.ref("base.public_user")
-        request_env.return_value = self.env(user=user)
-        # Disable CSRF tokens check during tests
-        validate_csrf.return_value = consteq("", "")
-
-        return self.test_client.post(
-            uri, data=data, environ_base=self.werkzeug_environ, headers=headers
+    def post_request(self, uri, data=None, headers=None):
+        """Execute a POST request on the test server"""
+        headers = dict(headers or {})
+        return TestResponse(
+            self.url_open(
+                uri,
+                data=data or {},
+                headers=headers,
+                allow_redirects=False,
+                method="POST",
+            )
         )
 
     def new_token(self):
@@ -146,7 +150,7 @@ class OAuthProviderControllerTransactionCase(TransactionCase):
                 "client_id": self.client.id,
                 "user_id": self.user.id,
                 "expires_at": fields.Datetime.to_string(
-                    datetime.now() + timedelta(seconds=3600)
+                    fields.Datetime.now() + timedelta(seconds=3600)
                 ),
             }
         )

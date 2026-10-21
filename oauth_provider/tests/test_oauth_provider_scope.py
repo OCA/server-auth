@@ -219,7 +219,7 @@ class TestOAuthProviderScope(TransactionCase):
                     "email": self.env.user.email,
                     "name": self.env.user.name,
                     "city": self.env.user.city,
-                    "country_id": country.name,
+                    "country_id": (country.id, country.display_name),
                 }
             },
         )

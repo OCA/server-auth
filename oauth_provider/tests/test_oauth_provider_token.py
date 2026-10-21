@@ -1,7 +1,7 @@
 # Copyright 2016 SYLEAM
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from odoo import exceptions, fields
 from odoo.tests.common import TransactionCase
@@ -60,7 +60,7 @@ class TestOAuthProviderToken(TransactionCase):
 
     def test_inactive(self):
         """Check the value of the active field, for an expired token"""
-        not_expired = datetime.now() + timedelta(days=1)
+        not_expired = fields.Datetime.now() + timedelta(days=1)
         token = self.new_token(
             vals={
                 "token": "Active",
@@ -71,7 +71,7 @@ class TestOAuthProviderToken(TransactionCase):
 
     def test_active(self):
         """Check the value of the active field, for a not expired token"""
-        expired = datetime.now() - timedelta(minutes=1)
+        expired = fields.Datetime.now() - timedelta(minutes=1)
         token = self.new_token(
             vals={
                 "token": "Not active",
@@ -81,7 +81,7 @@ class TestOAuthProviderToken(TransactionCase):
         self.assertEqual(token.active, False)
 
     def _generate_tokens_for_active_search(self):
-        not_expired = datetime.now() + timedelta(days=1)
+        not_expired = fields.Datetime.now() + timedelta(days=1)
         not_expired_tokens = self.new_token(
             vals={
                 "token": "Not expired",
@@ -94,7 +94,7 @@ class TestOAuthProviderToken(TransactionCase):
             }
         )
 
-        expired = datetime.now() - timedelta(minutes=1)
+        expired = fields.Datetime.now() - timedelta(minutes=1)
         expired_tokens = self.new_token(
             vals={
                 "token": "Expired",
@@ -115,14 +115,14 @@ class TestOAuthProviderToken(TransactionCase):
         Only active tokens should be returned
         """
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        _expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(token_obj.search([]), not_expired_tokens)
 
     def test_active_search_equal_true(self):
         """Check the results of searching tokens with explicit active = True domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        _expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -136,7 +136,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_equal_false(self):
         """Check the results of searching tokens with active = False domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        expired_tokens, _not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -150,7 +150,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_not_equal_true(self):
         """Check the results of searching tokens with active != True domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        expired_tokens, _not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -164,7 +164,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_not_equal_false(self):
         """Check the results of searching tokens with active != False domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        _expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -178,7 +178,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_in_true(self):
         """Check the results of searching tokens with active in (True,) domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        _expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -192,7 +192,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_in_false(self):
         """Check the results of searching tokens with active in (False,) domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        expired_tokens, _not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -206,7 +206,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_not_in_true(self):
         """Check the results of searching tokens with active not in (True,) domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        expired_tokens, _not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -220,7 +220,7 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_not_in_false(self):
         """Check the results of searching tokens with active not in (False,) domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        _expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -251,7 +251,7 @@ class TestOAuthProviderToken(TransactionCase):
         with active notin (True,False) domain
         """
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
+        _expired_tokens, _not_expired_tokens = self._generate_tokens_for_active_search()
 
         self.assertEqual(
             token_obj.search(
@@ -265,10 +265,8 @@ class TestOAuthProviderToken(TransactionCase):
     def test_active_search_invalid_operator(self):
         """Check the results of searching tokens with an invalid operatr in domain"""
         token_obj = self.env["oauth.provider.token"]
-        expired_tokens, not_expired_tokens = self._generate_tokens_for_active_search()
-
         with self.assertRaises(exceptions.UserError):
-            token_obj.search([("active", ">", True)])
+            token_obj._search_active(">", True)
 
     def test_get_data_from_model_with_at_least_one_scope_matching(self):
         """Check the values returned by the _get_data_for_model method with

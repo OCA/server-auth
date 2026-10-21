@@ -13,7 +13,7 @@ class IrHttp(models.AbstractModel):
     _inherit = "ir.http"
 
     @classmethod
-    def _auth_method_oauth_provider(cls):
+    def _auth_method_oauth_provider(cls, routing: dict):
         """Implement auth method 'oauth_provider'"""
         request = oauthlib.common.Request(*cls._oauth_get_request_information())
         access_token = oauthlib.oauth2.rfc6749.tokens.get_token_from_header(request)
@@ -60,7 +60,7 @@ class IrHttp(models.AbstractModel):
         uri, http_method, body, headers = self._oauth_get_request_information()
 
         # Validate request information
-        valid, oauthlib_request = oauth2_server.verify_request(
+        valid, _oauthlib_request = oauth2_server.verify_request(
             uri, http_method=http_method, body=body, headers=headers
         )
 

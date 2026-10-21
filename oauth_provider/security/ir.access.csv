@@ -1,0 +1,6 @@
+id,name,model_id,group_id/id,operation,domain
+oauth_provider_client_manager,OAuth Client Manager,oauth.provider.client,oauth_provider.group_oauth_provider_manager,crud,
+oauth_provider_scope_manager,OAuth Scope Manager,oauth.provider.scope,oauth_provider.group_oauth_provider_manager,crud,
+oauth_provider_redirect_uri_manager,OAuth Redirect URI Manager,oauth.provider.redirect.uri,oauth_provider.group_oauth_provider_manager,crud,
+oauth_provider_token_manager,OAuth Token Manager,oauth.provider.token,oauth_provider.group_oauth_provider_manager,crud,
+oauth_provider_authorization_code_manager,OAuth Auth Code Manager,oauth.provider.authorization.code,oauth_provider.group_oauth_provider_manager,crud,
