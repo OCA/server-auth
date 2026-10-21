@@ -4,8 +4,9 @@
 import hashlib
 import json
 import logging
-from datetime import datetime
-from unittest import mock
+from urllib.parse import parse_qs, urlparse
+
+from odoo import fields
 
 _logger = logging.getLogger(__name__)
 
@@ -16,7 +17,7 @@ class TestOAuthProviderAurhorizeController:
 
         Must return an unknown client identifier error
         """
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request("/oauth2/authorize")
         self.assertEqual(response.status_code, 200)
         response_text = response.data.decode("utf8")
@@ -28,7 +29,7 @@ class TestOAuthProviderAurhorizeController:
 
         Must return an invalid_request error
         """
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -48,7 +49,7 @@ class TestOAuthProviderAurhorizeController:
 
         Must return an unsupported_response_type error
         """
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -69,7 +70,7 @@ class TestOAuthProviderAurhorizeController:
 
         Must return an invalid_scope error
         """
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -91,7 +92,7 @@ class TestOAuthProviderAurhorizeController:
 
         Must return an invalid_request error
         """
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -111,7 +112,7 @@ class TestOAuthProviderAurhorizeController:
         Must return an invalid_request error
         """
         self.client.redirect_uri_ids.unlink()
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -130,35 +131,33 @@ class TestOAuthProviderAurhorizeController:
 
         Must return an unknown client identifier error
         """
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.post_request("/oauth2/authorize")
         self.assertEqual(response.status_code, 200)
         response_text = response.data.decode("utf8")
         self.assertTrue("Unknown Client Identifier!" in response_text)
         self.assertTrue("This client identifier is invalid." in response_text)
 
-    @mock.patch("openerp.http.WebRequest.env", new_callable=mock.PropertyMock)
-    def test_authorize_unsafe_chars(self, request_env):
-        """Call /oauth2/authorize with unsafe chars in the query string"""
-        # Mock the http request's environ to allow it to see test records
-        request_env.return_value = self.env(user=self.user)
-
-        query_string = (
-            "client_id={}&response_type={}&state={}",
-            format(
-                self.client.identifier,
-                self.client.response_type,
-            ),
-        )
-        self.login("demo", "demo")
-        response = self.test_client.get(
+    def test_authorize_unsafe_chars(self):
+        """Unsafe chars in the state come back unchanged to the client"""
+        state = "a{b}|c^d <e>"
+        self.login(self.user.login, self.user_password)
+        response = self.get_request(
             "/oauth2/authorize",
-            query_string=query_string,
-            environ_base=self.werkzeug_environ,
+            data={
+                "client_id": self.client.identifier,
+                "response_type": self.client.response_type,
+                "redirect_uri": self.redirect_uri_base,
+                "state": state,
+            },
         )
         self.assertEqual(response.status_code, 200)
-        response_text = response.data.decode("utf8")
-        self.assertTrue(self.client.name in response_text)
+        self.assertIn(self.client.name, response.data.decode("utf8"))
+        response = self.post_request("/oauth2/authorize")
+        self.assertEqual(response.status_code, 302)
+        location = urlparse(response.headers["Location"])
+        params = parse_qs(location.query or location.fragment)
+        self.assertEqual(params["state"], [state])
 
 
 class TestOAuthProviderRefreshTokenController:
@@ -205,9 +204,42 @@ class TestOAuthProviderRefreshTokenController:
         self.assertEqual(new_token.refresh_token, response_data["refresh_token"])
         self.assertEqual(new_token.scope_ids, token.scope_ids)
         self.assertEqual(new_token.user_id, self.user)
+        self.assertNotIn("odoo_user_id", response_data)
+
+    def test_refresh_token_with_expired_access_token(self):
+        """The refresh token still works once its access token expired"""
+        token = self.new_token()
+        token.scope_ids = self.client.scope_ids[0]
+        token.expires_at = fields.Datetime.subtract(fields.Datetime.now(), hours=2)
+        response = self.post_request(
+            "/oauth2/token",
+            data={
+                "client_id": self.client.identifier,
+                "grant_type": "refresh_token",
+                "refresh_token": token.refresh_token,
+            },
+        )
+        response_data = json.loads(response.data.decode("utf8"))
+        self.assertEqual(response.status_code, 200)
+        new_token = self.env["oauth.provider.token"].search(
+            [("token", "=", response_data["access_token"])]
+        )
+        self.assertEqual(new_token.scope_ids, token.scope_ids)
+        self.assertEqual(new_token.user_id, self.user)
 
 
 class TestOAuthProviderTokeninfoController:
+    def test_tokeninfo_long_lifetime(self):
+        """expires_in counts the whole lifetime, days included"""
+        token = self.new_token()
+        token.expires_at = fields.Datetime.add(fields.Datetime.now(), days=2)
+        response = self.get_request(
+            "/oauth2/tokeninfo", data={"access_token": token.token}
+        )
+        response_data = json.loads(response.data.decode("utf8"))
+        self.assertEqual(response.status_code, 200)
+        self.assertGreater(response_data["expires_in"], 86400)
+
     def test_tokeninfo_error_missing_arguments(self):
         """Call /oauth2/tokeninfo without any argument
 
@@ -230,7 +262,7 @@ class TestOAuthProviderTokeninfoController:
                 "access_token": token.token,
             },
         )
-        token_lifetime = (token.expires_at - datetime.now()).seconds
+        token_lifetime = (token.expires_at - fields.Datetime.now()).total_seconds()
         response_text = response.data.decode("utf8")
         response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
@@ -266,7 +298,7 @@ class TestOAuthProviderTokeninfoController:
                 "access_token": token.token,
             },
         )
-        token_lifetime = (token.expires_at - datetime.now()).seconds
+        token_lifetime = (token.expires_at - fields.Datetime.now()).total_seconds()
         response_text = response.data.decode("utf8")
         response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
@@ -345,51 +377,12 @@ class TestOAuthProviderUserinfoController:
 
 
 class TestOAuthProviderOtherinfoController:
-    def test_otherinfo_error_missing_arguments(self):
-        """Call /oauth2/otherinfo method without any argument
+    def _get_otherinfo(self, data=None):
+        """Call the deprecated /oauth2/otherinfo endpoint"""
+        with self.assertLogs("odoo.addons.oauth_provider.controllers.main", "WARNING"):
+            return self.get_request("/oauth2/otherinfo", data=data)
 
-        Must return an invalid_or_expired_token error
-        """
-        response = self.get_request("/oauth2/otherinfo")
-        response_text = response.data.decode("utf8")
-        self.assertEqual(response.status_code, 401)
-        self.assertEqual(
-            json.loads(response_text), {"error": "invalid_or_expired_token"}
-        )
-
-    def test_otherinfo_error_missing_model(self):
-        """Call /oauth2/otherinfo method without the model argument
-
-        Must return an invalid_model error
-        """
-        token = self.new_token()
-        response = self.get_request(
-            "/oauth2/otherinfo", data={"access_token": token.token}
-        )
-        response_text = response.data.decode("utf8")
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response_text), {"error": "invalid_model"})
-
-    def test_otherinfo_error_invalid_model(self):
-        """Call /oauth2/otherinfo method withan invalid model
-
-        Must return an invalid_model error
-        """
-        token = self.new_token()
-        response = self.get_request(
-            "/oauth2/otherinfo",
-            data={"access_token": token.token, "model": "invalid.model"},
-        )
-        response_text = response.data.decode("utf8")
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(json.loads(response_text), {"error": "invalid_model"})
-
-    def test_otherinfo_user_information(self):
-        """Call /oauth2/otherinfo to retrieve information using the token"""
-        token = self.new_token()
-        token.scope_ids = self.client.scope_ids
-
-        # Add a new scope to test informations retrieval
+    def _add_groups_scope(self, token):
         token.scope_ids += self.env["oauth.provider.scope"].create(
             {
                 "name": "Groups",
@@ -402,9 +395,49 @@ class TestOAuthProviderOtherinfoController:
                 ],
             }
         )
+
+    def test_otherinfo_error_missing_arguments(self):
+        """Call /oauth2/otherinfo method without any argument
+
+        Must return an invalid_request error
+        """
+        response = self._get_otherinfo()
+        response_text = response.data.decode("utf8")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response_text)["error"], "invalid_request")
+
+    def test_otherinfo_error_missing_model(self):
+        """Call /oauth2/otherinfo method without the model argument
+
+        Must return an invalid_request error
+        """
+        token = self.new_token()
+        response = self._get_otherinfo(data={"access_token": token.token})
+        response_text = response.data.decode("utf8")
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(json.loads(response_text)["error"], "invalid_request")
+
+    def test_otherinfo_error_invalid_model(self):
+        """Call /oauth2/otherinfo method withan invalid model
+
+        Must return an invalid_resource error
+        """
+        token = self.new_token()
+        response = self._get_otherinfo(
+            data={"access_token": token.token, "model": "invalid.model"},
+        )
+        response_text = response.data.decode("utf8")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(json.loads(response_text)["error"], "invalid_resource")
+
+    def test_otherinfo_user_information(self):
+        """Call /oauth2/otherinfo to retrieve information using the token"""
+        token = self.new_token()
+        token.scope_ids = self.client.scope_ids
+        self._add_groups_scope(token)
+
         # Retrieve user information
-        response = self.get_request(
-            "/oauth2/otherinfo",
+        response = self._get_otherinfo(
             data={
                 "access_token": token.token,
                 "model": "res.users",
@@ -418,12 +451,17 @@ class TestOAuthProviderOtherinfoController:
         self.assertEqual(
             json.loads(response_text),
             {
-                str(self.user.id): {
-                    "id": self.user.id,
-                    "name": self.user.name,
-                    "email": self.user.email,
-                    "city": self.user.city,
-                }
+                "resource": "res.users",
+                "data": {
+                    str(self.user.id): {
+                        "id": self.user.id,
+                        "name": self.user.name,
+                        "email": self.user.email,
+                        "city": self.user.city,
+                    }
+                },
+                "scope": "email profile",
+                "client_id": self.client.identifier,
             },
         )
 
@@ -431,34 +469,22 @@ class TestOAuthProviderOtherinfoController:
         """Call /oauth2/otherinfo to retrieve information using the token"""
         token = self.new_token()
         token.scope_ids = self.client.scope_ids
-
-        # Add a new scope to test informations retrieval
-        token.scope_ids += self.env["oauth.provider.scope"].create(
-            {
-                "name": "Groups",
-                "code": "groups",
-                "description": "List of accessible groups",
-                "model_id": self.env.ref("base.model_res_groups").id,
-                "filter_id": False,
-                "field_ids": [
-                    (6, 0, [self.env.ref("base.field_res_groups__name").id]),
-                ],
-            }
-        )
+        self._add_groups_scope(token)
 
         # Retrieve groups information
         all_groups = self.env["res.groups"].search([])
-        response = self.get_request(
-            "/oauth2/otherinfo",
+        response = self._get_otherinfo(
             data={
                 "access_token": token.token,
                 "model": "res.groups",
             },
         )
         response_text = response.data.decode("utf8")
+        response_data = json.loads(response_text)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response_data["scope"], "groups")
         self.assertEqual(
-            sorted(json.loads(response_text).keys()), sorted(map(str, all_groups.ids))
+            sorted(response_data["data"].keys()), sorted(map(str, all_groups.ids))
         )
 
 
@@ -511,6 +537,20 @@ class TestOAuthProviderRevokeTokenController:
         )
         self.assertFalse(token.exists())
 
+    def test_revoke_access_token_without_csrf(self):
+        """An external client revokes a token without any CSRF token"""
+        self.csrf_patcher.stop()
+        token = self.new_token()
+        response = self.post_request(
+            "/oauth2/revoke_token",
+            data={
+                "client_id": self.client.identifier,
+                "token": token.token,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(token.exists())
+
     def test_revoke_refresh_token(self):
         """Revoke a refresh token"""
         token = self.new_token()
@@ -523,3 +563,17 @@ class TestOAuthProviderRevokeTokenController:
         )
         self.assertTrue(token.exists())
         self.assertFalse(token.refresh_token)
+
+    def test_revoke_refresh_token_with_expired_access_token(self):
+        """The refresh token of an expired access token can be revoked"""
+        token = self.new_token()
+        token.expires_at = fields.Datetime.subtract(fields.Datetime.now(), hours=2)
+        response = self.post_request(
+            "/oauth2/revoke_token",
+            data={
+                "client_id": self.client.identifier,
+                "token": token.refresh_token,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(token.with_context(active_test=False).refresh_token)

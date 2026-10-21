@@ -3,12 +3,11 @@
 
 import base64
 import logging
-from datetime import datetime
 
 import werkzeug.utils
 import werkzeug.wrappers
 
-from odoo import http
+from odoo import fields, http
 
 from odoo.addons.web.controllers.utils import ensure_db
 
@@ -169,6 +168,7 @@ class OAuth2ProviderController(http.Controller):
         methods=["POST"],
         csrf=False,
         website=True,
+        readonly=False,
     )
     def token(
         self,
@@ -223,41 +223,11 @@ class OAuth2ProviderController(http.Controller):
 
         # Retrieve needed arguments for oauthlib methods
         uri, http_method, body, headers = self._get_request_information()
-        credentials = {"scope": " ".join(client.scope_ids.mapped("code"))}
-
-        # Retrieve the authorization code, if any, to get Odoo's user id
-        existing_code = (
-            http.request.env["oauth.provider.authorization.code"]
-            .sudo()
-            .search(
-                [
-                    ("client_id.identifier", "=", client_id),
-                    ("code", "=", code),
-                ]
-            )
-        )
-        if existing_code:
-            credentials["odoo_user_id"] = existing_code.user_id.id
-        # Retrieve the existing token, if any, to get Odoo's user id
-        existing_token = (
-            http.request.env["oauth.provider.token"]
-            .sudo()
-            .search(
-                [
-                    ("client_id.identifier", "=", client_id),
-                    ("refresh_token", "=", refresh_token),
-                ]
-            )
-        )
-        if refresh_token and existing_token:
-            credentials["odoo_user_id"] = existing_token.user_id.id
-
         headers, body, status = oauth2_server.create_token_response(
             uri,
             http_method=http_method,
             body=body,
             headers=headers,
-            credentials=credentials,
         )
 
         return werkzeug.Response(body, status=status, headers=headers)
@@ -281,7 +251,7 @@ class OAuth2ProviderController(http.Controller):
                 data={"error": "invalid_or_expired_token"}, status=401
             )
 
-        token_lifetime = (token.expires_at - datetime.now()).seconds
+        token_lifetime = int((token.expires_at - fields.Datetime.now()).total_seconds())
         # Base data to return
         data = {
             "audience": token.client_id.identifier,
@@ -430,7 +400,7 @@ class OAuth2ProviderController(http.Controller):
 
             return self._json_response(data=response_data)
 
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             _logger.error("Error accessing protected resource: %s", str(e))
             return self._json_response(
                 data={
@@ -475,7 +445,13 @@ class OAuth2ProviderController(http.Controller):
         return self.protected_resource(model, access_token, *args, **kwargs)
 
     @http.route(
-        "/oauth2/revoke_token", type="http", auth="none", methods=["POST"], website=True
+        "/oauth2/revoke_token",
+        type="http",
+        auth="none",
+        methods=["POST"],
+        csrf=False,
+        website=True,
+        readonly=False,
     )
     def revoke_token(self, token=None, *args, **kwargs):
         """Revoke the supplied token"""
@@ -484,6 +460,7 @@ class OAuth2ProviderController(http.Controller):
         db_token = (
             http.request.env["oauth.provider.token"]
             .sudo()
+            .with_context(active_test=False)
             .search(
                 [
                     ("token", "=", token),
@@ -494,6 +471,7 @@ class OAuth2ProviderController(http.Controller):
             db_token = (
                 http.request.env["oauth.provider.token"]
                 .sudo()
+                .with_context(active_test=False)
                 .search(
                     [
                         ("refresh_token", "=", token),

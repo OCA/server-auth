@@ -41,7 +41,7 @@ class TestOAuthProviderController(
 
         # Call the authorize method with good values
         state = "Some custom state"
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -88,7 +88,7 @@ class TestOAuthProviderController(
         # Call the authorize method with good values to fill the session scopes
         # and credentials variables
         state = "Some custom state"
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={

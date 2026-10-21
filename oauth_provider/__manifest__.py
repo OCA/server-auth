@@ -4,7 +4,7 @@
 {
     "name": "OAuth Provider",
     "summary": "Allows to use Odoo as an OAuth2 provider",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "category": "Authentication",
     "website": "https://github.com/OCA/server-auth",
     "author": "SYLEAM, Odoo Community Association (OCA)",
@@ -19,7 +19,7 @@
     ],
     "data": [
         "security/oauth_provider_security.xml",
-        "security/ir.model.access.csv",
+        "security/ir.access.csv",
         "views/oauth_provider_client.xml",
         "views/oauth_provider_scope.xml",
         "templates/authorization.xml",

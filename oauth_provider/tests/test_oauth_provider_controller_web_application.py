@@ -4,6 +4,8 @@
 import json
 import logging
 
+from odoo import fields
+
 from .common_test_controller import OAuthProviderControllerTransactionCase
 from .common_test_oauth_provider_controller import (
     TestOAuthProviderAurhorizeController,
@@ -40,7 +42,7 @@ class TestOAuthProviderController(
 
         # Call the authorize method with good values
         state = "Some custom state"
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -336,7 +338,7 @@ class TestOAuthProviderController(
 
         # Call the authorize method with good values
         state = "Some custom state"
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -380,7 +382,7 @@ class TestOAuthProviderController(
         # Call the authorize method with good values to fill the session scopes
         # and credentials variables
         state = "Some custom state"
-        self.login("demo", "demo")
+        self.login(self.user.login, self.user_password)
         response = self.get_request(
             "/oauth2/authorize",
             data={
@@ -456,3 +458,69 @@ class TestOAuthProviderController(
         self.assertEqual(token.refresh_token, response_data["refresh_token"])
         self.assertEqual(token.scope_ids, code.scope_ids)
         self.assertEqual(token.user_id, self.user)
+        self.assertNotIn("odoo_user_id", response_data)
+
+    def _request_token_with_code(self, code, scope=None):
+        data = {
+            "client_id": self.client.identifier,
+            "redirect_uri": self.redirect_uri_base,
+            "code": code.code,
+            "grant_type": self.client.grant_type,
+        }
+        if scope is not None:
+            data["scope"] = scope
+        response = self.post_request("/oauth2/token", data=data)
+        self.assertEqual(response.status_code, 200)
+        return self.env["oauth.provider.token"].search(
+            [("client_id", "=", self.client.id)], order="id DESC", limit=1
+        )
+
+    def test_token_without_scope_takes_code_scopes(self):
+        """A token asked without scope gets the scopes granted to the code"""
+        code = self.new_code()
+        token = self._request_token_with_code(code)
+        self.assertEqual(code.scope_ids, self.client.scope_ids[0])
+        self.assertEqual(token.scope_ids, code.scope_ids)
+
+    def test_token_cannot_extend_code_scopes(self):
+        """A token can not get more scopes than the ones granted to the code"""
+        code = self.new_code()
+        token = self._request_token_with_code(
+            code, scope=" ".join(self.client.scope_ids.mapped("code"))
+        )
+        self.assertEqual(token.scope_ids, code.scope_ids)
+
+    def test_resources_with_valid_token(self):
+        """Call /oauth2/resources/<model> with a valid Bearer token"""
+        token = self.new_token()
+        token.scope_ids = self.client.scope_ids
+        response = self.get_request(
+            "/oauth2/resources/res.users",
+            headers={"Authorization": f"Bearer {token.token}"},
+        )
+        self.assertEqual(response.status_code, 200)
+        response_data = json.loads(response.data.decode("utf8"))
+        self.assertEqual(response_data["resource"], "res.users")
+        self.assertEqual(
+            response_data["data"][str(self.user.id)]["email"], self.user.email
+        )
+
+    def test_resources_without_token(self):
+        """Call /oauth2/resources/<model> without token"""
+        response = self.get_request("/oauth2/resources/res.users")
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            json.loads(response.data.decode("utf8")),
+            {"error": "invalid_or_expired_token"},
+        )
+
+    def test_resources_with_expired_token(self):
+        """Call /oauth2/resources/<model> with an expired token"""
+        token = self.new_token()
+        token.scope_ids = self.client.scope_ids
+        token.expires_at = fields.Datetime.subtract(fields.Datetime.now(), hours=1)
+        response = self.get_request(
+            "/oauth2/resources/res.users",
+            headers={"Authorization": f"Bearer {token.token}"},
+        )
+        self.assertEqual(response.status_code, 401)

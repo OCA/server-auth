@@ -22,7 +22,6 @@ class OAuthProviderScope(models.Model):
     )
     model_id = fields.Many2one(
         comodel_name="ir.model",
-        string="Model",
         required=True,
         ondelete="cascade",
         help="Model allowed to be accessed by this scope.",
@@ -35,7 +34,6 @@ class OAuthProviderScope(models.Model):
     )
     filter_id = fields.Many2one(
         comodel_name="ir.filters",
-        string="Filter",
         domain="[('model_id', '=', model)]",
         help="Filter applied to retrieve records allowed by this scope.",
     )
