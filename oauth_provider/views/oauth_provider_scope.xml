@@ -61,7 +61,7 @@
             </search>
         </field>
     </record>
-    <record model="ir.actions.act_window" id="act_open_oauth_provider_scope_view">
+    <record id="act_open_oauth_provider_scope_view" model="ir.actions.act_window">
         <field name="name">OAuth Provider Scopes</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">oauth.provider.scope</field>
@@ -71,8 +71,8 @@
         <field name="context">{}</field>
     </record>
     <record
-        model="ir.actions.act_window.view"
         id="act_open_oauth_provider_scope_view_form"
+        model="ir.actions.act_window.view"
     >
         <field name="act_window_id" ref="act_open_oauth_provider_scope_view" />
         <field name="sequence" eval="20" />
@@ -80,8 +80,8 @@
         <field name="view_id" ref="view_oauth_provider_scope_form" />
     </record>
     <record
-        model="ir.actions.act_window.view"
         id="act_open_oauth_provider_scope_view_tree"
+        model="ir.actions.act_window.view"
     >
         <field name="act_window_id" ref="act_open_oauth_provider_scope_view" />
         <field name="sequence" eval="10" />
