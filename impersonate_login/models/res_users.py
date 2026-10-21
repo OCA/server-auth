@@ -16,7 +16,7 @@ class Users(models.Model):
     _inherit = "res.users"
 
     def _get_partner_name(self, user_id):
-        return self.env["res.users"].browse(user_id).partner_id.name
+        return self.env["res.users"].sudo().browse(user_id).partner_id.name
 
     def _is_impersonate_user(self):
         self.ensure_one()
