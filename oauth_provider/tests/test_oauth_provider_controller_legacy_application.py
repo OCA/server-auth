@@ -4,6 +4,9 @@
 import base64
 import json
 import logging
+from unittest import mock
+
+from odoo import fields
 
 from .common_test_controller import OAuthProviderControllerTransactionCase
 from .common_test_oauth_provider_controller import (
@@ -143,7 +146,7 @@ class TestOAuthProviderController(
                 "grant_type": self.client.grant_type,
                 "client_id": self.client.identifier,
                 "username": "Wrong username",
-                "password": "demo",
+                "password": self.user_password,
             },
         )
         response_text = response.data.decode("utf8")
@@ -254,7 +257,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
         )
         response_text = response.data.decode("utf8")
@@ -279,7 +282,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
             headers=[
                 (
@@ -311,7 +314,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
             headers=[
                 (
@@ -340,7 +343,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
             headers=[
                 (
@@ -386,7 +389,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
             headers=[
                 (
@@ -434,7 +437,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
             headers=[
                 (
@@ -460,7 +463,7 @@ class TestOAuthProviderController(
                 "scope": self.client.scope_ids[0].code,
                 "grant_type": self.client.grant_type,
                 "username": self.user.login,
-                "password": "demo",
+                "password": self.user_password,
             },
         )
         response_text = response.data.decode("utf8")
@@ -481,3 +484,66 @@ class TestOAuthProviderController(
         self.assertEqual(token.refresh_token, response_data["refresh_token"])
         self.assertEqual(token.scope_ids, self.client.scope_ids[0])
         self.assertEqual(token.user_id, self.user)
+
+    def _request_password_token(self, password):
+        return self.post_request(
+            "/oauth2/token",
+            data={
+                "client_id": self.client.identifier,
+                "scope": self.client.scope_ids[0].code,
+                "grant_type": self.client.grant_type,
+                "username": self.user.login,
+                "password": password,
+            },
+        )
+
+    def _new_api_key(self):
+        return (
+            self.env["res.users.apikeys"]
+            .with_user(self.user)
+            .sudo()
+            ._generate(
+                "rpc", "OAuth", fields.Datetime.add(fields.Datetime.now(), days=1)
+            )
+        )
+
+    def _rpc_api_keys_only(self):
+        # What auth_totp does for a user with 2FA enabled
+        return mock.patch.object(
+            type(self.env["res.users"]), "_rpc_api_keys_only", return_value=True
+        )
+
+    def test_token_with_api_key(self):
+        """An API key can be used instead of the password"""
+        response = self._request_password_token(self._new_api_key())
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("access_token", json.loads(response.data.decode("utf8")))
+
+    def test_token_with_api_key_and_2fa(self):
+        """A user with 2FA can get a token with an API key"""
+        api_key = self._new_api_key()
+        with self._rpc_api_keys_only():
+            response = self._request_password_token(api_key)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("access_token", json.loads(response.data.decode("utf8")))
+
+    def test_token_with_password_and_2fa(self):
+        """A user with 2FA can not get a token with the password only"""
+        with self._rpc_api_keys_only():
+            response = self._request_password_token(self.user_password)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.data.decode("utf8"))["error"], "invalid_grant"
+        )
+
+    def test_token_does_not_log_session_in(self):
+        """Getting a token does not log a web session in"""
+        self._request_password_token(self.user_password)
+        response = self.url_open(
+            "/web/session/get_session_info",
+            json={"jsonrpc": "2.0", "method": "call", "params": {}},
+        ).json()
+        self.assertNotIn("result", response)
+        self.assertTrue(
+            response["error"]["data"]["name"].endswith("SessionExpiredException")
+        )

@@ -20,13 +20,11 @@ class OAuthProviderToken(models.Model):
     refresh_token = fields.Char(help="The refresh token, if applicable.")
     client_id = fields.Many2one(
         comodel_name="oauth.provider.client",
-        string="Client",
         required=True,
         help="Client associated to this token.",
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
-        string="User",
         required=True,
         help="User associated to this token.",
     )

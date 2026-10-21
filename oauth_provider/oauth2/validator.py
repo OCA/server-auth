@@ -3,7 +3,7 @@
 
 import base64
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from odoo import exceptions, fields, http
 
@@ -88,7 +88,7 @@ class OdooValidator(RequestValidator):
                 "refresh_token",
             )
             or request.client_secret
-            or not request.odoo_user.active
+            or not request.odoo_user.sudo().active
         )
 
     def confirm_redirect_uri(
@@ -142,6 +142,7 @@ class OdooValidator(RequestValidator):
         token = (
             http.request.env["oauth.provider.token"]
             .sudo()
+            .with_context(active_test=False)
             .search(
                 [
                     ("client_id", "=", request.client.id),
@@ -172,6 +173,7 @@ class OdooValidator(RequestValidator):
         token = (
             http.request.env["oauth.provider.token"]
             .sudo()
+            .with_context(active_test=False)
             .search(
                 [
                     ("client_id", "=", request.client.id),
@@ -186,6 +188,7 @@ class OdooValidator(RequestValidator):
         db_token = (
             http.request.env["oauth.provider.token"]
             .sudo()
+            .with_context(active_test=False)
             .search(
                 [
                     ("token", "=", token),
@@ -200,6 +203,7 @@ class OdooValidator(RequestValidator):
             db_token = (
                 http.request.env["oauth.provider.token"]
                 .sudo()
+                .with_context(active_test=False)
                 .search(
                     [
                         ("refresh_token", "=", token),
@@ -249,13 +253,23 @@ class OdooValidator(RequestValidator):
     def save_bearer_token(self, token, request, *args, **kwargs):
         """Store the bearer token into the database"""
         scopes = (token.get("scope") or "").split()
-        http.request.env["oauth.provider.token"].sudo().create(
+        Token = http.request.env["oauth.provider.token"].sudo()
+        if request.refresh_token:
+            # A used refresh token must not work again. Empty it before the create:
+            # without rotation, the new token reuses the same value.
+            Token.with_context(active_test=False).search(
+                [
+                    ("client_id", "=", request.client.id),
+                    ("refresh_token", "=", request.refresh_token),
+                ]
+            ).refresh_token = False
+        Token.create(
             {
                 "token": token["access_token"],
                 "token_type": token["token_type"],
                 "refresh_token": token.get("refresh_token"),
                 "client_id": request.client.id,
-                "user_id": token.get("odoo_user_id", request.odoo_user.id),
+                "user_id": request.odoo_user.id,
                 "scope_ids": [
                     (
                         6,
@@ -266,7 +280,7 @@ class OdooValidator(RequestValidator):
                     )
                 ],
                 "expires_at": fields.Datetime.to_string(
-                    datetime.now() + timedelta(seconds=token["expires_in"])
+                    fields.Datetime.now() + timedelta(seconds=token["expires_in"])
                 ),
             }
         )
@@ -306,6 +320,8 @@ class OdooValidator(RequestValidator):
             )
         )
         request.odoo_user = code.user_id
+        # oauthlib expects the scopes granted to the code here
+        request.scopes = code.scope_ids.mapped("code")
         return bool(code)
 
     def validate_grant_type(
@@ -326,9 +342,11 @@ class OdooValidator(RequestValidator):
 
     def validate_refresh_token(self, refresh_token, client, request, *args, **kwargs):
         """Ensure the refresh token is valid and associated to the client"""
+        # A refresh token outlives its access token: search the expired ones too
         token = (
             http.request.env["oauth.provider.token"]
             .sudo()
+            .with_context(active_test=False)
             .search(
                 [
                     ("client_id", "=", client.id),
@@ -336,7 +354,8 @@ class OdooValidator(RequestValidator):
                 ]
             )
         )
-        return bool(token)
+        request.odoo_user = token.user_id
+        return bool(token) and token.user_id.active
 
     def validate_response_type(
         self, client_id, response_type, client, request, *args, **kwargs
@@ -356,9 +375,12 @@ class OdooValidator(RequestValidator):
     def validate_user(self, username, password, client, request, *args, **kwargs):
         """Ensure the usernamd and password are valid"""
         try:
-            uid = http.request.session.authenticate(
-                http.request.session.db, username, password
-            )
+            # Non-interactive, like RPC: accepts API keys, enforces them with
+            # 2FA and does not log a web session in
+            uid = http.request.env["res.users"].authenticate(
+                {"type": "password", "login": username, "password": password},
+                {"interactive": False},
+            )["uid"]
         except exceptions.AccessDenied:
             uid = []
         request.odoo_user = http.request.env["res.users"].sudo().browse(uid)

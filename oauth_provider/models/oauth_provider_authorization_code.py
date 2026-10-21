@@ -12,13 +12,11 @@ class OAuthProviderAuthorizationCode(models.Model):
     code = fields.Char(required=True, help="Name of the authorization code.")
     client_id = fields.Many2one(
         comodel_name="oauth.provider.client",
-        string="Client",
         required=True,
         help="Client associated to this authorization code.",
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
-        string="User",
         required=True,
         help="User associated to this authorization code.",
     )
