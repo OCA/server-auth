@@ -89,8 +89,9 @@ class AuthApiKey(models.Model):
     def _compute_active(self):
         option_disable_key = self.user_id.company_id.archived_user_disable_auth_api_key
         for record in self:
-            if option_disable_key:
+            if option_disable_key and record.active != record.user_id.active:
                 record.active = record.user_id.active
+                self._clear_key_cache()
             # To stay coherent if the option is disabled the active field is not
             # changed. Because the field is stored, it should not be an issue.
 
@@ -103,6 +104,11 @@ class AuthApiKey(models.Model):
 
     def write(self, vals):
         super().write(vals)
-        if "key" in vals or "user_id" in vals:
+        if "key" in vals or "user_id" in vals or "active" in vals:
             self._clear_key_cache()
         return True
+
+    def unlink(self):
+        res = super().unlink()
+        self._clear_key_cache()
+        return res
