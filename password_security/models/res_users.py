@@ -140,7 +140,8 @@ class ResUsers(models.Model):
         self.ensure_one()
         if not password or (
             config["test_enable"]
-            and not modules.module.current_test.test_module == "password_security"
+            and getattr(modules.module.current_test, "test_module", None)
+            != "password_security"
         ):
             return True
         pwd_params = self._get_all_password_params()
