@@ -192,14 +192,14 @@ class AuthSamlProvider(models.Model):
             limit=1,
         )
 
-        if model_attachment._storage() != "file":
+        if keys.store_fname:
+            keys_path = model_attachment._full_path(keys.store_fname)
+        else:
             # For non-file locations we need to create a temp file to pass to pysaml.
             fd, keys_path = tempfile.mkstemp()
             with open(keys_path, "wb") as f:
                 f.write(base64.b64decode(keys.datas))
             os.close(fd)
-        else:
-            keys_path = model_attachment._full_path(keys.store_fname)
 
         return keys_path
 
