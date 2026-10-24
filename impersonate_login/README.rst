@@ -1,7 +1,3 @@
-.. image:: https://odoo-community.org/readme-banner-image
-   :target: https://odoo-community.org/get-involved?utm_source=readme
-   :alt: Odoo Community Association
-
 =================
 Impersonate Login
 =================
@@ -17,7 +13,7 @@ Impersonate Login
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-OCA%2Fserver--auth-lightgray.png?logo=github
@@ -63,6 +59,14 @@ The impersonating user must belong to group "Impersonate Users".
 If you want to prevent impersonation of users with the *Administration:
 Settings* rights, enable the *Restrict Impersonation of "Administration:
 Settings" Users* option in the settings.
+
+Each user also has an *Impersonation* setting, on the *Access Rights*
+tab of the user form (administrators only):
+
+- *Default*: follow the general setting above;
+- *Allowed*: the user can always be impersonated, even with the
+  *Administration: Settings* rights;
+- *Forbidden*: the user can never be impersonated.
 
 Usage
 =====

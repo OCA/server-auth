@@ -15,6 +15,44 @@ logger = logging.getLogger(__name__)
 class Users(models.Model):
     _inherit = "res.users"
 
+    impersonate_mode = fields.Selection(
+        selection=[
+            ("default", "Default"),
+            ("allowed", "Allowed"),
+            ("forbidden", "Forbidden"),
+        ],
+        string="Impersonation",
+        default="default",
+        required=True,
+        groups="base.group_system",
+        help="Default: follow the general setting (when 'Restrict Impersonation of "
+        "Administration: Settings Users' is enabled, users with that access right "
+        "cannot be impersonated).\n"
+        "Allowed: this user can always be impersonated, even with that access right.\n"
+        "Forbidden: this user can never be impersonated.",
+    )
+
+    def _check_can_be_impersonated(self):
+        """Raise if nobody may impersonate this user."""
+        self.ensure_one()
+        mode = self.sudo().impersonate_mode
+        if mode == "forbidden":
+            raise UserError(self.env._("This user cannot be impersonated."))
+        if mode == "allowed":
+            return
+        config_restrict = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("impersonate_login.restrict_impersonate_admin_settings")
+        )
+        if config_restrict and self.env.ref("base.group_system") in self.groups_id:
+            raise UserError(
+                self.env._(
+                    "You cannot impersonate users with"
+                    " 'Administration: Settings' access rights."
+                )
+            )
+
     def _get_partner_name(self, user_id):
         return self.env["res.users"].browse(user_id).partner_id.name
 
@@ -24,20 +62,8 @@ class Users(models.Model):
 
     def impersonate_login(self):
         if request:
-            config_restrict = (
-                self.env["ir.config_parameter"]
-                .sudo()
-                .get_param("impersonate_login.restrict_impersonate_admin_settings")
-            )
-            if config_restrict:
-                admin_settings_group = self.env.ref("base.group_system")
-                if admin_settings_group in self.groups_id:
-                    raise UserError(
-                        self.env._(
-                            "You cannot impersonate users with"
-                            " 'Administration: Settings' access rights."
-                        )
-                    )
+            if self.id != request.session.impersonate_from_uid:
+                self._check_can_be_impersonated()
             if request.session.impersonate_from_uid:
                 if self.id == request.session.impersonate_from_uid:
                     return self.back_to_origin_login()

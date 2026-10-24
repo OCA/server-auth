@@ -337,3 +337,50 @@ class TestImpersonateLogin(HttpCase):
             "You cannot impersonate users with "
             "'Administration: Settings' access rights.",
         )
+
+    def _demo_impersonator(self):
+        self.demo_user.groups_id += self.env.ref(
+            "impersonate_login.group_impersonate_login"
+        )
+        self.authenticate(user="demo", password="demo")
+        self.assertEqual(self.session.uid, self.demo_user.id)
+
+    def _restrict_admin_settings(self):
+        self.env["ir.config_parameter"].sudo().set_param(
+            "impersonate_login.restrict_impersonate_admin_settings", True
+        )
+        self.admin_user.groups_id += self.env.ref("base.group_system")
+
+    def test_07_forbidden_user(self):
+        """A user set to Forbidden can never be impersonated."""
+        self.admin_user.impersonate_mode = "forbidden"
+        self._demo_impersonator()
+        with mute_logger("odoo.http"):
+            data = self._impersonate_user(self.admin_user)
+        self.assertEqual(
+            data["error"]["data"]["message"], "This user cannot be impersonated."
+        )
+        self.assertEqual(self._get_session_info()["result"]["uid"], self.demo_user.id)
+
+    def test_08_allowed_admin_despite_restriction(self):
+        """An administrator set to Allowed can be impersonated even when the
+        general setting restricts administrators."""
+        self._restrict_admin_settings()
+        self.admin_user.impersonate_mode = "allowed"
+        self._demo_impersonator()
+        data = self._impersonate_user(self.admin_user)
+        self.assertNotIn("error", data)
+        self.assertEqual(self._get_session_info()["result"]["uid"], self.admin_user.id)
+
+    def test_09_default_admin_follows_restriction(self):
+        """Default mode keeps the general setting."""
+        self._restrict_admin_settings()
+        self.assertEqual(self.admin_user.impersonate_mode, "default")
+        self._demo_impersonator()
+        with mute_logger("odoo.http"):
+            data = self._impersonate_user(self.admin_user)
+        self.assertEqual(
+            data["error"]["data"]["message"],
+            "You cannot impersonate users with "
+            "'Administration: Settings' access rights.",
+        )
