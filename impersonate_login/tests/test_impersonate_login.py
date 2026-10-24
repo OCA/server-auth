@@ -4,6 +4,7 @@
 import json
 from uuid import uuid4
 
+from odoo.exceptions import AccessError
 from odoo.tests import HttpCase, tagged
 from odoo.tools import mute_logger
 
@@ -384,3 +385,12 @@ class TestImpersonateLogin(HttpCase):
             "You cannot impersonate users with "
             "'Administration: Settings' access rights.",
         )
+
+    def test_10_only_administrators_set_the_mode(self):
+        """A user cannot lift their own protection."""
+        self.demo_user.impersonate_mode = "forbidden"
+        with self.assertRaises(AccessError):
+            self.demo_user.with_user(self.demo_user).write(
+                {"impersonate_mode": "default"}
+            )
+        self.assertEqual(self.demo_user.impersonate_mode, "forbidden")
