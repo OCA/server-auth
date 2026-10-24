@@ -49,6 +49,29 @@ class TestMultiToken(TransactionCase):
                 self.provider_google.id, validation, params
             )
 
+    def test_signup_new_user(self):
+        self.env["ir.config_parameter"].sudo().set_param(
+            "auth_signup.invitation_scope", "b2c"
+        )
+        validation = {
+            "user_id": "oauth_uid_janedoe",
+            "email": "janedoe@example.com",
+            "name": "Jane Doe",
+        }
+        params = self._fake_params(state=json.dumps({}))
+        login = (
+            self.env["res.users"]
+            .sudo()
+            ._auth_oauth_signin(self.provider_google.id, validation, params)
+        )
+        self.assertEqual(login, "janedoe@example.com")
+        user = self.user_model.search([("oauth_uid", "=", "oauth_uid_janedoe")])
+        self.assertEqual(len(user.oauth_access_token_ids), 1)
+        self.assertEqual(
+            user.oauth_access_token_ids.oauth_access_token,
+            params["access_token_multi"],
+        )
+
     def _test_one_token(self):
         validation = {
             "user_id": "oauth_uid_johndoe",
