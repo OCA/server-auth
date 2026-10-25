@@ -4,6 +4,8 @@
 import json
 from uuid import uuid4
 
+from lxml import etree
+
 from odoo.exceptions import AccessError
 from odoo.tests import HttpCase, tagged
 from odoo.tools import mute_logger
@@ -394,3 +396,152 @@ class TestImpersonateLogin(HttpCase):
                 {"impersonate_mode": "default"}
             )
         self.assertEqual(self.demo_user.impersonate_mode, "forbidden")
+
+    def test_11_only_impersonable_users_are_listed(self):
+        """The "Switch Login" list only shows users that can be impersonated."""
+        self._restrict_admin_settings()
+        forbidden = self.env["res.users"].create(
+            {
+                "name": "Forbidden User",
+                "login": "forbidden_impersonate",
+                "impersonate_mode": "forbidden",
+            }
+        )
+        allowed_admin = self.env["res.users"].create(
+            {
+                "name": "Allowed Admin",
+                "login": "allowed_admin_impersonate",
+                "impersonate_mode": "allowed",
+                "groups_id": [(4, self.env.ref("base.group_system").id)],
+            }
+        )
+        self._demo_impersonator()
+        domain = self._action_impersonate_login()["result"]["domain"]
+        listed = self.env["res.users"].search(domain)
+        self.assertIn(allowed_admin, listed)
+        self.assertNotIn(forbidden, listed)
+        self.assertNotIn(self.admin_user, listed)  # restricted administrator
+        self.assertNotIn(self.demo_user, listed)  # oneself
+        as_demo = self.env["res.users"].with_user(self.demo_user)
+        self.assertFalse(as_demo.browse(forbidden.id).impersonate_allowed)
+        self.assertFalse(as_demo.browse(self.admin_user.id).impersonate_allowed)
+        self.assertFalse(as_demo.browse(self.demo_user.id).impersonate_allowed)
+        self.assertTrue(as_demo.browse(allowed_admin.id).impersonate_allowed)
+
+    def test_12_button_hidden_for_users_that_cannot_be_impersonated(self):
+        """The row button of the users list follows impersonate_allowed."""
+        arch = etree.fromstring(
+            self.env["res.users"]
+            .with_user(self.admin_user)
+            .get_view(self.env.ref("base.view_users_tree").id, "list")["arch"]
+        )
+        buttons = arch.xpath("//button[@name='impersonate_login']")
+        self.assertEqual(len(buttons), 1)
+        self.assertEqual(buttons[0].get("invisible"), "not impersonate_allowed")
+        self.assertTrue(arch.xpath("//field[@name='impersonate_allowed']"))
+        # A non-administrator impersonator gets the same button and its field.
+        impersonator = self.env["res.users"].create(
+            {
+                "name": "Impersonator",
+                "login": "impersonator_view",
+                "groups_id": [
+                    (4, self.env.ref("base.group_user").id),
+                    (4, self.env.ref("base.group_erp_manager").id),
+                    (4, self.env.ref("impersonate_login.group_impersonate_login").id),
+                ],
+            }
+        )
+        view_id = self.env.ref("base.view_users_tree").id
+        arch = etree.fromstring(
+            self.env["res.users"]
+            .with_user(impersonator)
+            .get_view(view_id, "list")["arch"]
+        )
+        self.assertEqual(
+            arch.xpath("//button[@name='impersonate_login']")[0].get("invisible"),
+            "not impersonate_allowed",
+        )
+        # Without the group: neither the button nor the field.
+        self.env.ref("impersonate_login.group_impersonate_login").users -= impersonator
+        arch = etree.fromstring(
+            self.env["res.users"]
+            .with_user(impersonator)
+            .get_view(view_id, "list")["arch"]
+        )
+        self.assertFalse(arch.xpath("//button[@name='impersonate_login']"))
+        self.assertFalse(arch.xpath("//field[@name='impersonate_allowed']"))
+
+    def _set_restriction(self, value):
+        self.env["res.config.settings"].create(
+            {"restrict_impersonate_admin_settings": value}
+        ).set_values()
+
+    def test_13_flag_and_list_follow_the_general_setting(self):
+        """Changing the general setting in the settings changes both the flag
+        (re-read in the same environment) and who is listed."""
+        self.admin_user.groups_id += self.env.ref("base.group_system")
+        users = self.env["res.users"].with_user(self.demo_user)
+        target = users.browse(self.admin_user.id)
+        allowed = [("impersonate_allowed", "=", True)]
+        self._set_restriction(False)
+        self.assertTrue(target.impersonate_allowed)
+        self.assertIn(self.admin_user, users.search(allowed))
+        self._set_restriction(True)
+        self.assertFalse(target.impersonate_allowed)
+        self.assertNotIn(self.admin_user, users.search(allowed))
+        self._set_restriction(False)
+        self.assertTrue(target.impersonate_allowed)
+        self.assertIn(self.admin_user, users.search(allowed))
+
+    def test_14_search_matches_the_computed_flag(self):
+        """The SQL rule gives the same answer as the computed flag."""
+        group_system = self.env.ref("base.group_system")
+        implying = self.env["res.groups"].create(
+            {"name": "Implies Settings", "implied_ids": [(4, group_system.id)]}
+        )
+        Users = self.env["res.users"]
+        users = (
+            self.env.ref("base.user_root")
+            | self.admin_user
+            | self.demo_user
+            | Users.create({"name": "Plain", "login": "plain_imp"})
+            | Users.create(
+                {"name": "Implied Admin", "login": "implied_imp", "groups_id": implying}
+            )
+            | Users.create(
+                {"name": "Inactive Admin", "login": "inactive_imp", "active": False}
+            )
+            | Users.create(
+                {
+                    "name": "Forbidden",
+                    "login": "forbidden_imp",
+                    "impersonate_mode": "forbidden",
+                }
+            )
+            | Users.create(
+                {
+                    "name": "Allowed Admin",
+                    "login": "allowed_imp",
+                    "impersonate_mode": "allowed",
+                    "groups_id": group_system,
+                }
+            )
+        )
+        users.filtered(lambda u: u.login == "inactive_imp").groups_id += group_system
+        as_demo = Users.with_user(self.demo_user).with_context(active_test=False)
+        for restrict in (False, True):
+            self._set_restriction(restrict)
+            for user in users:
+                with self.subTest(restrict=restrict, login=user.login):
+                    flag = as_demo.browse(user.id).impersonate_allowed
+                    ids = [("id", "=", user.id)]
+                    for operator, value, expected in (
+                        ("=", True, flag),
+                        ("!=", True, not flag),
+                        ("=", False, not flag),
+                        ("!=", False, flag),
+                    ):
+                        found = as_demo.search(
+                            ids + [("impersonate_allowed", operator, value)]
+                        )
+                        self.assertEqual(bool(found), expected, (operator, value))

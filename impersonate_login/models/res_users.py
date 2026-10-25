@@ -32,26 +32,75 @@ class Users(models.Model):
         "Forbidden: this user can never be impersonated.",
     )
 
-    def _check_can_be_impersonated(self):
-        """Raise if nobody may impersonate this user."""
-        self.ensure_one()
-        mode = self.sudo().impersonate_mode
-        if mode == "forbidden":
-            raise UserError(self.env._("This user cannot be impersonated."))
-        if mode == "allowed":
-            return
+    impersonate_allowed = fields.Boolean(
+        compute="_compute_impersonate_allowed",
+        search="_search_impersonate_allowed",
+        string="Can Be Impersonated",
+        help="Whether the current user may switch to this user: never oneself, "
+        "a user set to Forbidden, nor (when the general setting restricts "
+        "them) a user with the 'Administration: Settings' access right.",
+    )
+
+    @api.depends("impersonate_mode", "groups_id")
+    @api.depends_context("uid")
+    def _compute_impersonate_allowed(self):
+        for user in self:
+            user.impersonate_allowed = (
+                user.id != self.env.uid and not user._get_impersonation_refusal()
+            )
+
+    def _search_impersonate_allowed(self, operator, value):
+        """Same rule as _get_impersonation_refusal(), as a SQL domain."""
+        if operator not in ("=", "!=") or not isinstance(value, bool):
+            raise UserError(self.env._("Operation not supported"))
+        domain = [
+            ("id", "!=", self.env.uid),
+            ("impersonate_mode", "!=", "forbidden"),
+        ]
         config_restrict = (
             self.env["ir.config_parameter"]
             .sudo()
             .get_param("impersonate_login.restrict_impersonate_admin_settings")
         )
-        if config_restrict and self.env.ref("base.group_system") in self.groups_id:
-            raise UserError(
-                self.env._(
-                    "You cannot impersonate users with"
-                    " 'Administration: Settings' access rights."
-                )
+        if config_restrict:
+            domain += [
+                "|",
+                ("impersonate_mode", "=", "allowed"),
+                ("groups_id", "not in", self.env.ref("base.group_system").ids),
+            ]
+        # impersonate_mode is readable by administrators only: the subquery is
+        # built as superuser, its result only says who may be switched to.
+        query = self.sudo().with_context(active_test=False)._search(domain)
+        allowed = (operator == "=") == value
+        return [("id", "in" if allowed else "not in", query)]
+
+    def _get_impersonation_refusal(self):
+        """Why nobody may impersonate this user (a message), or False."""
+        self.ensure_one()
+        mode = self.sudo().impersonate_mode
+        if mode == "forbidden":
+            return self.env._("This user cannot be impersonated.")
+        if mode == "allowed":
+            return False
+        config_restrict = (
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("impersonate_login.restrict_impersonate_admin_settings")
+        )
+        if config_restrict and self.env.ref("base.group_system") in (
+            self.sudo().groups_id
+        ):
+            return self.env._(
+                "You cannot impersonate users with"
+                " 'Administration: Settings' access rights."
             )
+        return False
+
+    def _check_can_be_impersonated(self):
+        """Raise if nobody may impersonate this user."""
+        refusal = self._get_impersonation_refusal()
+        if refusal:
+            raise UserError(refusal)
 
     def _get_partner_name(self, user_id):
         return self.env["res.users"].browse(user_id).partner_id.name
@@ -119,9 +168,12 @@ class Users(models.Model):
                     "base.action_res_users"
                 )
                 action["views"] = [[self.env.ref("base.view_users_tree").id, "list"]]
+                # Only the users that can be switched to: the others would only
+                # show a button that ends in an error.
                 action["domain"] = [
                     ("id", "!=", self.env.user.id),
                     ("share", "=", False),
+                    ("impersonate_allowed", "=", True),
                 ]
                 action["target"] = "new"
                 return action
