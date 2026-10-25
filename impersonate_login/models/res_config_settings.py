@@ -13,3 +13,9 @@ class ResConfigSettings(models.TransientModel):
         ),
         default=False,
     )
+
+    def set_values(self):
+        res = super().set_values()
+        # Whether a user can be impersonated depends on this setting.
+        self.env["res.users"].invalidate_model(["impersonate_allowed"])
+        return res

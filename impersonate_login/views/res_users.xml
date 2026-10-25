@@ -9,14 +9,35 @@
         <field name="type">list</field>
         <field name="arch" type="xml">
             <field name="name" position="before">
+                <field
+                    name="impersonate_allowed"
+                    column_invisible="True"
+                    groups="impersonate_login.group_impersonate_login"
+                />
                 <button
                     string="Switch Login"
                     name="impersonate_login"
                     type="object"
                     class="btn btn-info"
+                    invisible="not impersonate_allowed"
                     groups="impersonate_login.group_impersonate_login"
                 />
             </field>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="impersonate_res_users_form">
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <page name="access_rights" position="inside">
+                <group
+                    string="Impersonation"
+                    name="impersonation"
+                    groups="base.group_system"
+                >
+                    <field name="impersonate_mode" />
+                </group>
+            </page>
         </field>
     </record>
 </odoo>
