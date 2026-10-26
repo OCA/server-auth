@@ -1,10 +1,11 @@
 # Copyright 2026 360ERP (<https://www.360erp.com>)
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-import base64
-from datetime import date, timedelta
+from datetime import timedelta
 
+from odoo import fields
 from odoo.tests.common import TransactionCase
+from odoo.tools import BinaryBytes
 
 
 class FakeSamlResponse:
@@ -38,8 +39,8 @@ class TestAuthUserRolesSaml(TransactionCase):
             {
                 "name": "Test SAML Bridge Provider",
                 "idp_metadata": "<EntityDescriptor></EntityDescriptor>",
-                "sp_pem_public": base64.b64encode(b"fake_public_key"),
-                "sp_pem_private": base64.b64encode(b"fake_private_key"),
+                "sp_pem_public": BinaryBytes(b"fake_public_key"),
+                "sp_pem_private": BinaryBytes(b"fake_private_key"),
                 "matching_attribute": "mail",
                 "sig_alg": "SIG_RSA_SHA1",
                 "sync_roles_strictly": False,  # Defaults to False
@@ -178,7 +179,7 @@ class TestAuthUserRolesSaml(TransactionCase):
         self.assertIn(role3.id, roles_assigned)
 
     def test_09_reactivate_expired_role(self):
-        yesterday = date.today() - timedelta(days=1)
+        yesterday = fields.Date.today() - timedelta(days=1)
         self.user.write(
             {
                 "role_line_ids": [
@@ -290,8 +291,8 @@ class TestAuthUserRolesSaml(TransactionCase):
             {
                 "name": "Default True Test Provider",
                 "idp_metadata": "<EntityDescriptor></EntityDescriptor>",
-                "sp_pem_public": base64.b64encode(b"fake_public_key"),
-                "sp_pem_private": base64.b64encode(b"fake_private_key"),
+                "sp_pem_public": BinaryBytes(b"fake_public_key"),
+                "sp_pem_private": BinaryBytes(b"fake_private_key"),
                 "matching_attribute": "mail",
                 "sig_alg": "SIG_RSA_SHA1",
             }
@@ -301,15 +302,15 @@ class TestAuthUserRolesSaml(TransactionCase):
         self.assertTrue(provider_true.sync_roles_strictly)
 
         # Change the global parameter to False
-        self.env["ir.config_parameter"].set_param("auth_user_role.strict_sync", "False")
+        self.env["ir.config_parameter"].set_bool("auth_user_role.strict_sync", False)
 
         # Create another provider WITHOUT explicitly setting sync_roles_strictly
         provider_false = self.env["auth.saml.provider"].create(
             {
                 "name": "Default False Test Provider",
                 "idp_metadata": "<EntityDescriptor></EntityDescriptor>",
-                "sp_pem_public": base64.b64encode(b"fake_public_key"),
-                "sp_pem_private": base64.b64encode(b"fake_private_key"),
+                "sp_pem_public": BinaryBytes(b"fake_public_key"),
+                "sp_pem_private": BinaryBytes(b"fake_private_key"),
                 "matching_attribute": "mail",
                 "sig_alg": "SIG_RSA_SHA1",
             }

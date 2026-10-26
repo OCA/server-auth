@@ -15,13 +15,12 @@ class AuthSamlProvider(models.Model):
     )
 
     def _default_strict_sync(self):
-        # Fetch the global parameter, defaulting to 'True'
-        param = (
+        # Fetch the global parameter, defaulting to True
+        return (
             self.env["ir.config_parameter"]
             .sudo()
-            .get_param("auth_user_role.strict_sync", "True")
+            .get_bool("auth_user_role.strict_sync", True)
         )
-        return param == "True"
 
     def _hook_validate_auth_response(self, response, matching_value):
         """Extract the identity payload before the response object is destroyed."""
