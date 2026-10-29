@@ -1,27 +1,34 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import {t, useProps} from "@odoo/owl";
 import sh_utils from "../../common/utils.esm";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 import {useService} from "@web/core/utils/hooks";
+import {vaultMixinProps} from "@vault/backend/fields/vault_mixin.esm";
 
-export default (x) => {
+export const vaultShareMixinProps = {
+    fieldIterations: t.string().optional("iterations"),
+    fieldPin: t.string().optional("pin"),
+    fieldSalt: t.string().optional("salt"),
+};
+
+/**
+ * @param {Class} x: Base vault component class
+ * @param {Object} baseProps: Props schema of the base component
+ * @returns the extended component class
+ */
+export default (x, baseProps = standardFieldProps) => {
     class Extended extends x {
-        static defaultProps = {
-            ...x.defaultProps,
-            fieldPin: "pin",
-            fieldSalt: "salt",
-            fieldIterations: "iterations",
-        };
-        static props = {
-            ...x.props,
-            fieldIterations: {type: String, optional: true},
-            fieldPin: {type: String, optional: true},
-            fieldSalt: {type: String, optional: true},
-        };
+        props = useProps({
+            ...baseProps,
+            ...vaultMixinProps,
+            ...vaultShareMixinProps,
+        });
+
         setup() {
             super.setup();
 
-            this.context = this.env.searchModel.context;
             this.vault_utils = useService("vault_utils");
             this.vault = useService("vault");
         }
@@ -81,7 +88,7 @@ export default (x) => {
             const record = this.props.record;
             if (!record) return null;
 
-            const pin_size = this.context.pin_size || sh_utils.PinSize;
+            const pin_size = this.props.record.context.pin_size || sh_utils.PinSize;
 
             let pin = record.data[this.props.fieldPin];
             if (pin) {

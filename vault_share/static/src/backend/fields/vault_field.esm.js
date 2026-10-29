@@ -33,7 +33,7 @@ patch(VaultField.prototype, {
 
         this.action.doAction({
             type: "ir.actions.act_window",
-            title: _t("Share the secret"),
+            name: _t("Share the secret"),
             target: "new",
             res_model: "vault.share",
             views: [[false, "form"]],

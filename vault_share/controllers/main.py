@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, http
+from odoo import http
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
@@ -16,11 +16,11 @@ class Controller(http.Controller):
         share = request.env["vault.share"].sudo()
         secret = share.get(token, ip=request.httprequest.remote_addr)
         if secret is None:
-            ctx["error"] = _("The secret expired")
+            ctx["error"] = request.env._("The secret expired")
             return request.render("vault_share.share", ctx)
 
         if len(secret) != 1:
-            ctx["error"] = _("Invalid token")
+            ctx["error"] = request.env._("Invalid token")
             return request.render("vault_share.share", ctx)
 
         ctx.update(

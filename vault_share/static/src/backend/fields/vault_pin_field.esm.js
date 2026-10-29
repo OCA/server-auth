@@ -1,7 +1,7 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {Component, useRef, useState} from "@odoo/owl";
+import {Component, proxy, signal} from "@odoo/owl";
 import VaultMixin from "@vault/backend/fields/vault_mixin.esm";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
@@ -10,18 +10,16 @@ import {useService} from "@web/core/utils/hooks";
 
 export class VaultPinField extends VaultMixin(Component) {
     static template = "vault.FieldPinVault";
+    span = signal.ref();
+
     setup() {
         super.setup();
 
         this.action = useService("action");
-        this.span = useRef("span");
-        this.state = useState({
+        this.state = proxy({
             decrypted: false,
             decryptedValue: "",
         });
-
-        this.context = this.env.searchModel.context;
-        this.props.readonly = true;
     }
 
     get sendButton() {
@@ -59,7 +57,7 @@ export class VaultPinField extends VaultMixin(Component) {
     async _decrypt(data) {
         if (!data) return data;
 
-        const pin_size = this.context.pin_size || sh_utils.PinSize;
+        const pin_size = this.props.record.context.pin_size || sh_utils.PinSize;
 
         const private_key = await this.vault.get_private_key();
         const plain = await this.vault_utils.asym_decrypt(private_key, data);
@@ -100,7 +98,8 @@ export class VaultPinField extends VaultMixin(Component) {
      * Update the value shown
      */
     async showValue() {
-        this.span.el.innerHTML = this.formattedValue;
+        // Never interpret the pin as HTML
+        if (this.span()) this.span().textContent = this.formattedValue;
     }
 }
 

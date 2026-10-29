@@ -5,8 +5,9 @@ import {VaultField, vaultField} from "@vault/backend/fields/vault_field.esm";
 import VaultShareMixin from "./vault_share_mixin.esm";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
+import {standardFieldProps} from "@web/views/fields/standard_field_props";
 
-export class VaultShareField extends VaultShareMixin(VaultField) {
+export class VaultShareField extends VaultShareMixin(VaultField, standardFieldProps) {
     static template = "vault.FieldShareVault";
 }
 
