@@ -3,13 +3,15 @@
 
 import json
 import logging
-from datetime import datetime
 from uuid import uuid4
 
+from odoo import fields
+from odoo.exceptions import AccessError
+from odoo.tests import Form, new_test_user
 from odoo.tools import mute_logger
 
 from odoo.addons.base.tests.common import BaseCommon
-from odoo.addons.website.tools import MockRequest
+from odoo.addons.http_routing.tests.common import MockRequest
 
 from ..controllers import main
 
@@ -17,6 +19,9 @@ _logger = logging.getLogger(__name__)
 
 
 class TestShare(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -45,6 +50,18 @@ class TestShare(BaseCommon):
         self.assertEqual(share.token, "fixed-token")
         self.assertEqual(share, share.get("fixed-token"))
 
+    def test_share_link_kept_on_save(self):
+        # The link shown in the form before saving must remain valid
+        # Values are passed like the share button of the vault fields does
+        defaults = {f"default_{k}": v for k, v in self.vals.items() if k != "name"}
+        with Form(self.env["vault.share"].with_context(**defaults)) as form:
+            form.name = self.vals["name"]
+            link = form.share_link
+        share = form.save()
+        self.assertTrue(link)
+        self.assertEqual(share.share_link, link)
+        self.assertEqual(share, share.get(link.rsplit("/", 1)[-1]))
+
     @mute_logger("odoo.sql_db")
     def test_share(self):
         self.assertEqual(self.share, self.share.get(self.share.token))
@@ -61,7 +78,7 @@ class TestShare(BaseCommon):
 
         # Deletion because of expiration
         share = self.share.create(self.vals)
-        share.expiration = datetime(1970, 1, 1)
+        share.expiration = fields.Datetime.to_datetime("1970-01-01")
         self.assertEqual(None, share.get(share.token))
 
         # Search for invalid token
@@ -89,3 +106,23 @@ class TestShare(BaseCommon):
             self.share.accesses = 0
             response = load(controller.vault_share(self.share.token))
             self.assertIn("error", response)
+
+    def test_share_access_rights(self):
+        alice = new_test_user(self.env, login="share_alice", groups="base.group_user")
+        bob = new_test_user(self.env, login="share_bob", groups="base.group_user")
+        share = self.env["vault.share"].with_user(alice).create(self.vals)
+        self.assertEqual(share.user_id, alice)
+        self.assertTrue(share.log_ids)
+
+        # Other internal users can't see nor read the share or its log
+        Share = self.env["vault.share"].with_user(bob)
+        self.assertFalse(Share.search([("id", "=", share.id)]))
+        self.assertFalse(
+            self.env["vault.share.log"]
+            .with_user(bob)
+            .search([("share_id", "=", share.id)])
+        )
+        with self.assertRaises(AccessError):
+            Share.browse(share.id).read(["secret"])
+        with self.assertRaises(AccessError):
+            Share.browse(share.id).unlink()
