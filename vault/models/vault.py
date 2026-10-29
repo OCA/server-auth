@@ -4,7 +4,7 @@
 import logging
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ _logger = logging.getLogger(__name__)
 class Vault(models.Model):
     _name = "vault"
     _description = "Vault"
-    _inherit = ["vault.abstract"]
+    _inherit = ("vault.abstract",)
     _order = "name"
 
     user_id = fields.Many2one(
@@ -31,7 +31,7 @@ class Vault(models.Model):
     entry_ids = fields.One2many("vault.entry", "vault_id", "Entries")
     field_ids = fields.One2many("vault.field", "vault_id", "Fields")
     file_ids = fields.One2many("vault.file", "vault_id", "Files")
-    log_ids = fields.One2many("vault.log", "vault_id", "Log", readonly=True)
+    log_ids = fields.One2many("vault.log", "vault_id", readonly=True)
     reencrypt_required = fields.Boolean(default=False)
 
     # Access control
@@ -52,9 +52,10 @@ class Vault(models.Model):
     name = fields.Char(required=True)
     note = fields.Text()
 
-    _sql_constraints = [
-        ("uuid_uniq", "UNIQUE(uuid)", "The UUID must be unique."),
-    ]
+    _uuid_uniq = models.Constraint(
+        "UNIQUE(uuid)",
+        "The UUID must be unique.",
+    )
 
     @api.depends("right_ids.user_id")
     def _compute_access(self):
@@ -63,15 +64,11 @@ class Vault(models.Model):
             rec.perm_user = user.id
 
             if user == rec.user_id:
-                rec.write(
-                    {
-                        "allowed_create": True,
-                        "allowed_share": True,
-                        "allowed_write": True,
-                        "allowed_delete": True,
-                        "allowed_read": True,
-                    }
-                )
+                rec.allowed_create = True
+                rec.allowed_share = True
+                rec.allowed_write = True
+                rec.allowed_delete = True
+                rec.allowed_read = True
                 continue
 
             rights = rec.right_ids
@@ -140,7 +137,7 @@ class Vault(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_import_wizard")
         return {
-            "name": _("Import from file"),
+            "name": self.env._("Import from file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.import.wizard",
@@ -154,7 +151,7 @@ class Vault(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_export_wizard")
         return {
-            "name": _("Export to file"),
+            "name": self.env._("Export to file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.export.wizard",

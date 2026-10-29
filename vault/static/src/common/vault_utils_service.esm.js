@@ -1,4 +1,4 @@
-import {Component, onMounted, useRef, useState} from "@odoo/owl";
+import {Component, onMounted, proxy, signal, t, useProps} from "@odoo/owl";
 import {Dialog} from "@web/core/dialog/dialog";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
@@ -7,21 +7,27 @@ import utils from "./utils.esm";
 export class AskPassDialog extends Component {
     static template = "vault.AskPassDialog";
     static components = {Dialog};
+    props = useProps({
+        close: t.function(),
+        onResolve: t.function(),
+        title: t.any().optional(),
+        confirm: t.boolean().optional(false),
+    });
+    keyfileInput = signal.ref();
 
     setup() {
-        this.state = useState({
+        this.state = proxy({
             password: "",
             confirm: "",
             error: "",
         });
-        this.keyfileInput = useRef("keyfileInput");
     }
 
     async onConfirm() {
         const {confirm} = this.props;
         const password = this.state.password;
         let keyfileContent = null;
-        const input = this.keyfileInput.el;
+        const input = this.keyfileInput();
         if (input && input.files && input.files[0]) {
             const file = input.files[0];
             const text = await file.text();
@@ -50,9 +56,14 @@ export class AskPassDialog extends Component {
 export class GeneratePassDialog extends Component {
     static template = "vault.GeneratePassDialog";
     static components = {Dialog};
+    props = useProps({
+        close: t.function(),
+        onResolve: t.function(),
+        title: t.any().optional(),
+    });
 
     setup() {
-        this.state = useState({
+        this.state = proxy({
             length: 15,
             big: true,
             small: true,

@@ -7,12 +7,11 @@ from odoo import api, fields, models
 class VaultRight(models.Model):
     _name = "vault.right"
     _description = "Vault rights"
-    _inherit = ["vault.abstract"]
+    _inherit = ("vault.abstract",)
     _order = "user_id"
 
     vault_id = fields.Many2one(
         "vault",
-        "Vault",
         readonly=True,
         required=True,
         ondelete="cascade",
@@ -20,7 +19,6 @@ class VaultRight(models.Model):
     master_key = fields.Char(related="vault_id.master_key", readonly=True, store=False)
     user_id = fields.Many2one(
         "res.users",
-        "User",
         domain=[("keys", "!=", False)],
         required=True,
     )
@@ -56,8 +54,9 @@ class VaultRight(models.Model):
     # Encrypted with the public key of the user
     key = fields.Char()
 
-    _sql_constraints = (
-        ("user_uniq", "UNIQUE(user_id, vault_id)", "The user must be unique"),
+    _user_uniq = models.Constraint(
+        "UNIQUE(user_id, vault_id)",
+        "The user must be unique",
     )
 
     def _get_is_owner(self):

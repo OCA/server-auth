@@ -2,8 +2,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from datetime import datetime
 from uuid import uuid4
+
+from odoo import fields
 
 from odoo.addons.base.tests.common import BaseCommon
 
@@ -11,6 +12,9 @@ _logger = logging.getLogger(__name__)
 
 
 class TestShare(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     def test_user_inbox(self):
         user = self.env["res.users"].create(
             {"login": "test", "email": "test@test", "name": "test"}
@@ -63,7 +67,7 @@ class TestShare(BaseCommon):
 
         # No change because expired
         vals["secret"] = "newer secret"
-        inbox.expiration = datetime(1970, 1, 1)
+        inbox.expiration = fields.Datetime.to_datetime("1970-01-01")
         inbox.store_in_inbox(**vals)
         self.assertEqual(inbox.secret, "new secret")
         self.assertEqual(inbox.accesses, 4)

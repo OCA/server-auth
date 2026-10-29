@@ -72,7 +72,7 @@
                             name="vault.action_open_entries"
                             string="Entries"
                             type="action"
-                            icon="fa-bars"
+                            icon="menu"
                         />
                     </div>
 

@@ -1,14 +1,18 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {BinaryField, binaryField} from "@web/views/fields/binary/binary_field";
-import VaultMixin from "./vault_mixin.esm";
+import {
+    BinaryField,
+    binaryField,
+    binaryFieldProps,
+} from "@web/views/fields/binary/binary_field";
+import VaultMixin, {getContent} from "./vault_mixin.esm";
 import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
 
-export class VaultExportFile extends VaultMixin(BinaryField) {
+export class VaultExportFile extends VaultMixin(BinaryField, binaryFieldProps) {
     static template = "vault.FileVaultExport";
     setup() {
         super.setup();
@@ -17,18 +21,12 @@ export class VaultExportFile extends VaultMixin(BinaryField) {
     }
 
     /**
-     * Get the value saved on db because the system is showing just the
-     * size on the props.
-     *
-     * @param {Object} ev
+     * Get the exported content of the wizard. The binary content is computed by
+     * the onchange and is base64 encoded JSON.
      */
     async _getCryptedValue() {
-        const crypted = await this.orm.read(
-            this.props.record.resModel,
-            [this.props.record.resId],
-            [this.props.name]
-        );
-        return crypted[0][this.props.name];
+        const content = getContent(this.props.record.data[this.props.name]);
+        return content ? atob(content) : false;
     }
 
     /**

@@ -1,22 +1,24 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {Component, useEffect, useRef, useState} from "@odoo/owl";
+import {Component, proxy, signal} from "@odoo/owl";
 import {useBus, useService} from "@web/core/utils/hooks";
 import VaultMixin from "./vault_mixin.esm";
 import {_t} from "@web/core/l10n/translation";
-import {getActiveHotkey} from "@web/core/hotkeys/hotkey_service";
+import {getActiveHotkey} from "@web/core/hotkeys/hotkey_utils";
 import {registry} from "@web/core/registry";
+import {useLayoutEffect} from "@web/owl2/utils";
 
 export class VaultField extends VaultMixin(Component) {
     static template = "vault.FieldVault";
+    input = signal.ref();
+    span = signal.ref();
+
     setup() {
         super.setup();
 
         this.action = useService("action");
-        this.input = useRef("input");
-        this.span = useRef("span");
-        this.state = useState({
+        this.state = proxy({
             decrypted: false,
             decryptedValue: "",
             isDirty: false,
@@ -24,7 +26,7 @@ export class VaultField extends VaultMixin(Component) {
         });
 
         const self = this;
-        useEffect(
+        useLayoutEffect(
             (inputEl) => {
                 if (inputEl) {
                     const onInput = self.onInput.bind(self);
@@ -38,25 +40,33 @@ export class VaultField extends VaultMixin(Component) {
                     };
                 }
             },
-            () => [self.input.el]
+            () => [self.input()]
         );
 
-        useEffect(() => {
-            const isInvalid = self.props.record
-                ? self.props.record.isFieldInvalid(self.props.name)
-                : false;
+        // Reading the value in the dependencies subscribes the component to it, so
+        // the input is refreshed when the value changes (e.g. generated secret).
+        // NaN keeps re-applying the effect on every patch like before.
+        useLayoutEffect(
+            () => {
+                const isInvalid = self.props.record
+                    ? self.props.record.isFieldInvalid(self.props.name)
+                    : false;
 
-            if (self.input.el && !self.state.isDirty && !isInvalid) {
-                Promise.resolve(self.getValue()).then((val) => {
-                    if (!self.input.el) return;
+                if (self.input() && !self.state.isDirty && !isInvalid) {
+                    Promise.resolve(self.getValue()).then((val) => {
+                        if (!self.input()) return;
 
-                    if (val) self.input.el.value = val;
-                    else if (val !== "")
-                        self.props.record.setInvalidField(self.props.name);
-                });
-                self.state.lastSetValue = self.input.el.value;
-            }
-        });
+                        if (val) {
+                            self.input().value = val;
+                            self.state.lastSetValue = val;
+                        } else if (val !== "")
+                            self.props.record.setInvalidField(self.props.name);
+                    });
+                    self.state.lastSetValue = self.input().value;
+                }
+            },
+            () => [self.value, NaN]
+        );
         const {model} = this.props.record;
         useBus(model.bus, "WILL_SAVE_URGENTLY", () => self.commitChanges(true));
         useBus(model.bus, "NEED_LOCAL_CHANGES", (ev) =>
@@ -149,7 +159,8 @@ export class VaultField extends VaultMixin(Component) {
      * Update the value shown
      */
     async showValue() {
-        this.span.el.innerHTML = this.formattedValue;
+        // Never interpret the secret as HTML
+        if (this.span()) this.span().textContent = this.formattedValue;
     }
 
     /**
@@ -170,16 +181,16 @@ export class VaultField extends VaultMixin(Component) {
      * @param {Boolean} urgent
      */
     async commitChanges(urgent) {
-        if (!this.input.el) return;
+        if (!this.input()) return;
 
-        this.state.isDirty = this.input.el.value !== this.state.lastSetValue;
+        this.state.isDirty = this.input().value !== this.state.lastSetValue;
         if (this.state.isDirty || urgent) {
             this.state.isDirty = false;
 
-            const val = this.input.el.value || false;
+            const val = this.input().value || false;
             if (val !== (this.state.lastSetValue || false)) {
-                this.state.lastSetValue = this.input.el.value;
-                this.state.decryptedValue = this.input.el.value;
+                this.state.lastSetValue = this.input().value;
+                this.state.decryptedValue = this.input().value;
                 await this.storeValue(val);
                 this.props.record.model.bus.trigger(
                     "FIELD_IS_DIRTY",

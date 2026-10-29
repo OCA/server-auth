@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, fields, models
+from odoo import fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -15,7 +15,6 @@ class VaultSendWizard(models.TransientModel):
 
     user_id = fields.Many2one(
         "res.users",
-        "User",
         required=True,
         domain=[("keys", "!=", False), ("inbox_enabled", "=", True)],
     )
@@ -28,17 +27,14 @@ class VaultSendWizard(models.TransientModel):
     secret_file = fields.Char()
     filename = fields.Char()
 
-    _sql_constraints = [
-        (
-            "value_check",
-            "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
-            "No value found",
-        ),
-    ]
+    _value_check = models.Constraint(
+        "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
+        "No value found",
+    )
 
     def action_send(self):
         if not self.secret and not self.secret_file:
-            raise ValidationError(_("Neither a secret nor file was given"))
+            raise ValidationError(self.env._("Neither a secret nor file was given"))
 
         self.ensure_one()
         self.env["vault.inbox"].sudo().create(
@@ -51,6 +47,8 @@ class VaultSendWizard(models.TransientModel):
                 "key": self.key_user,
                 "user_id": self.user_id.id,
                 "filename": self.filename,
-                "log_ids": [(0, 0, {"name": _("Created by %s") % self.user_id.name})],
+                "log_ids": [
+                    (0, 0, {"name": self.env._("Created by %s", self.env.user.name)})
+                ],
             }
         )

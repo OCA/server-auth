@@ -1,19 +1,22 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import {BinaryField, binaryField} from "@web/views/fields/binary/binary_field";
-import VaultMixin from "./vault_mixin.esm";
+import {
+    BinaryField,
+    binaryField,
+    binaryFieldProps,
+} from "@web/views/fields/binary/binary_field";
+import VaultMixin, {getContent} from "./vault_mixin.esm";
 import {_t} from "@web/core/l10n/translation";
 import {downloadFile} from "@web/core/network/download";
 import {registry} from "@web/core/registry";
 import {useService} from "@web/core/utils/hooks";
 
-export class VaultFile extends VaultMixin(BinaryField) {
+export class VaultFile extends VaultMixin(BinaryField, binaryFieldProps) {
     static template = "vault.FileVault";
     setup() {
         super.setup();
         this.orm = useService("orm");
-        this.notification = useService("notification");
         this.action = useService("action");
     }
 
@@ -34,7 +37,7 @@ export class VaultFile extends VaultMixin(BinaryField) {
             [this.props.record.resId],
             [this.props.name]
         );
-        return crypted[0][this.props.name];
+        return getContent(crypted[0][this.props.name]);
     }
 
     /**

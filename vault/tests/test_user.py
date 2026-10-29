@@ -9,6 +9,9 @@ _logger = logging.getLogger(__name__)
 
 
 class TestShare(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     def test_user_inbox(self):
         user = self.env["res.users"].create(
             {"login": "test", "email": "test@test", "name": "test"}

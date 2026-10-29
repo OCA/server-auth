@@ -5,6 +5,7 @@ import logging
 from uuid import uuid4
 
 from odoo import api, fields, models
+from odoo.exceptions import AccessError
 
 _logger = logging.getLogger(__name__)
 
@@ -22,7 +23,12 @@ class ResUsers(models.Model):
     inbox_ids = fields.One2many("vault.inbox", "user_id")
     inbox_enabled = fields.Boolean(default=True)
     inbox_link = fields.Char(compute="_compute_inbox_link", readonly=True, store=False)
-    inbox_token = fields.Char(default=lambda self: uuid4(), readonly=True)
+    # The token gives write access to the inbox of the user
+    inbox_token = fields.Char(
+        default=lambda self: uuid4(),
+        readonly=True,
+        groups="base.group_erp_manager",
+    )
 
     @api.depends("keys", "keys.current")
     def _compute_active_key(self):
@@ -30,11 +36,24 @@ class ResUsers(models.Model):
             keys = rec.sudo().keys.filtered("current")
             rec.active_key = keys[0] if keys else None
 
+    def _can_manage_vault_of(self, user):
+        """Only the user itself or user administrators can manage the vault
+        settings of an user"""
+        return (
+            self.env.su
+            or user == self.env.user
+            or self.env.user.has_group("base.group_erp_manager")
+        )
+
     @api.depends("inbox_token")
+    @api.depends_context("uid")
     def _compute_inbox_link(self):
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        base_url = self.env["ir.config_parameter"].sudo().get_str("web.base.url")
         for rec in self:
-            rec.inbox_link = f"{base_url}/vault/inbox/{rec.inbox_token}"
+            if self._can_manage_vault_of(rec._origin):
+                rec.inbox_link = f"{base_url}/vault/inbox/{rec.sudo().inbox_token}"
+            else:
+                rec.inbox_link = False
 
     @api.model
     def action_get_vault(self):
@@ -46,16 +65,22 @@ class ResUsers(models.Model):
 
     def action_new_inbox_token(self):
         self.ensure_one()
+        if not self._can_manage_vault_of(self):
+            raise AccessError(self.env._("You can't change the inbox of other users."))
         self.sudo().inbox_token = uuid4()
         return self.action_get_vault()
 
     def action_invalidate_key(self):
         """Disable the current key and remove all accesses to the vaults"""
         self.ensure_one()
+        if not self.env.su and self != self.env.user:
+            raise AccessError(
+                self.env._("You can't invalidate the key of other users.")
+            )
         self.keys.write({"current": False})
         self.vault_right_ids.sudo().unlink()
         self.inbox_ids.unlink()
-        self.env["vault"].search([])._compute_access()
+        self.env["vault"].search([])._compute_access()  # pylint: disable=no-search-all
         return self.action_get_vault()
 
     @api.model

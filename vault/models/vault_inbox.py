@@ -2,10 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from datetime import datetime, timedelta
+from datetime import timedelta
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -39,34 +39,32 @@ class VaultInbox(models.Model):
         help="If this is 0 the inbox can't be written using the link",
     )
     expiration = fields.Datetime(
-        default=lambda self: datetime.now() + timedelta(days=7),
+        default=lambda self: fields.Datetime.now() + timedelta(days=7),
         help="If expired the inbox can't be written using the link",
     )
-    log_ids = fields.One2many("vault.inbox.log", "inbox_id", "Log", readonly=True)
+    log_ids = fields.One2many("vault.inbox.log", "inbox_id", readonly=True)
 
-    _sql_constraints = [
-        (
-            "value_check",
-            "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
-            "No value found",
-        ),
-    ]
+    _value_check = models.Constraint(
+        "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
+        "No value found",
+    )
 
     @api.depends("token")
     def _compute_inbox_link(self):
-        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        base_url = self.env["ir.config_parameter"].sudo().get_str("web.base.url")
         for rec in self:
             rec.inbox_link = f"{base_url}/vault/inbox/{rec.token}"
-
-    def read(self, *args, **kwargs):
-        # Always load the binary instead of the size
-        return super(VaultInbox, self.with_context(bin_size=False)).read(
-            *args, **kwargs
-        )
 
     @api.model
     def find_inbox(self, token):
         return self.search([("token", "=", token)])
+
+    def _is_writable(self):
+        """Check if the inbox can still be written using the link"""
+        self.ensure_one()
+        return self.accesses > 0 and (
+            not self.expiration or fields.Datetime.now() < self.expiration
+        )
 
     def store_in_inbox(
         self,
@@ -79,9 +77,10 @@ class VaultInbox(models.Model):
         filename,
         ip=None,
     ):
-        log_info = {"name": user.name, "ip": ip or "n/a"}
+        # The sender is anonymous, only the IP is known
+        ip = ip or "n/a"
         if len(self) == 0:
-            log = _("Created by %(name)s via %(ip)s") % log_info
+            log = self.env._("Created via %(ip)s", ip=ip)
             return self.create(
                 {
                     "name": name,
@@ -97,8 +96,8 @@ class VaultInbox(models.Model):
             )
 
         self.ensure_one()
-        if self.accesses > 0 and datetime.now() < self.expiration:
-            log = _("Written by %(name)s via %(ip)s") % log_info
+        if self._is_writable():
+            log = self.env._("Written via %(ip)s", ip=ip)
 
             self.write(
                 {
@@ -112,3 +111,4 @@ class VaultInbox(models.Model):
                 }
             )
             return self
+        return self.browse()

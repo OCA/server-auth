@@ -1,6 +1,7 @@
 # © 2021 Florian Kantelberg - initOS GmbH
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import base64
 import json
 import logging
 from unittest.mock import MagicMock
@@ -8,7 +9,7 @@ from unittest.mock import MagicMock
 from odoo.tools import mute_logger
 
 from odoo.addons.base.tests.common import BaseCommon
-from odoo.addons.website.tools import MockRequest
+from odoo.addons.http_routing.tests.common import MockRequest
 
 from ..controllers import main
 
@@ -16,6 +17,9 @@ _logger = logging.getLogger(__name__)
 
 
 class TestController(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -45,7 +49,7 @@ class TestController(BaseCommon):
                 "key": "4",
                 "iv": "1",
                 "secret": "old secret",
-                "secret_file": "old file",
+                "secret_file": base64.b64encode(b"old file").decode(),
                 "accesses": 100,
             }
         )
@@ -79,7 +83,10 @@ class TestController(BaseCommon):
             self.assertIn("error", response)
 
             request_mock.params.update(
-                {"encrypted": "secret", "encrypted_file": "file"}
+                {
+                    "encrypted": "secret",
+                    "encrypted_file": base64.b64encode(b"file").decode(),
+                }
             )
             response = load(self.controller.vault_inbox(self.user.inbox_token))
             self.assertIn("error", response)
@@ -89,14 +96,14 @@ class TestController(BaseCommon):
             self.assertIn("error", response)
 
             self.assertEqual(self.inbox.secret, "old secret")
-            self.assertEqual(self.inbox.secret_file, b"old file")
+            self.assertEqual(self.inbox.secret_file.content, b"old file")
 
             # Store something successfully
             request_mock.params.update({"iv": "iv", "key": "key"})
             response = load(self.controller.vault_inbox(self.inbox.token))
             self.assertNotIn("error", response)
             self.assertEqual(self.inbox.secret, "secret")
-            self.assertEqual(self.inbox.secret_file, b"file")
+            self.assertEqual(self.inbox.secret_file.content, b"file")
 
             # Test a duplicate inbox
             self.inbox.copy().token = self.inbox.token
@@ -137,24 +144,32 @@ class TestController(BaseCommon):
                 {"entry_id": entry.id, "name": "Test", "value": "hello"}
             )
             file = self.env["vault.file"].create(
-                {"entry_id": entry.id, "name": "Test", "value": b"hello"}
+                {
+                    "entry_id": entry.id,
+                    "name": "Test",
+                    "value": base64.b64encode(b"hello").decode(),
+                }
             )
             right.write({"key": "invalid"})
 
             self.controller.vault_replace(None)
             self.assertEqual(field.value, "hello")
-            self.assertEqual(file.value, b"hello")
+            self.assertEqual(file.value.content, b"hello")
 
             vault.reencrypt_required = True
             self.controller.vault_replace(
                 [
                     {"model": field._name, "id": field.id, "value": "test"},
-                    {"model": file._name, "id": file.id, "value": "test"},
+                    {
+                        "model": file._name,
+                        "id": file.id,
+                        "value": base64.b64encode(b"test").decode(),
+                    },
                     {"model": right._name, "id": right.id, "key": "changed"},
                 ]
             )
             self.assertEqual(field.value, "test")
-            self.assertEqual(file.value, b"test")
+            self.assertEqual(file.value.content, b"test")
             self.assertEqual(right.key, "changed")
             self.assertFalse(vault.reencrypt_required)
 

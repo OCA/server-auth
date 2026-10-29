@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -16,26 +16,24 @@ class VaultLog(models.Model):
 
     vault_id = fields.Many2one(
         "vault",
-        "Vault",
         ondelete="cascade",
         required=True,
         readonly=True,
     )
     entry_id = fields.Many2one(
         "vault.entry",
-        "Entry",
         ondelete="cascade",
         readonly=True,
     )
-    user_id = fields.Many2one("res.users", "User", required=True, readonly=True)
+    user_id = fields.Many2one("res.users", required=True, readonly=True)
     state = fields.Selection(lambda self: self._get_log_state(), readonly=True)
     message = fields.Char(readonly=True, required=True)
 
     def _get_log_state(self):
         return [
-            ("info", _("Information")),
-            ("warn", _("Warning")),
-            ("error", _("Error")),
+            ("info", self.env._("Information")),
+            ("warn", self.env._("Warning")),
+            ("error", self.env._("Error")),
         ]
 
     @api.model_create_multi

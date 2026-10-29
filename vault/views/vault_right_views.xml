@@ -61,18 +61,16 @@
             <search>
                 <field name="user_id" operator="ilike" />
                 <field name="vault_id" operator="ilike" />
-                <group expand="0" string="Grouped">
-                    <filter
-                        name="user_id"
-                        string="By user"
-                        context="{'group_by': 'user_id'}"
-                    />
-                    <filter
-                        name="vault_id"
-                        string="By vault"
-                        context="{'group_by': 'vault_id'}"
-                    />
-                </group>
+                <filter
+                    name="user_id"
+                    string="By user"
+                    context="{'group_by': 'user_id'}"
+                />
+                <filter
+                    name="vault_id"
+                    string="By vault"
+                    context="{'group_by': 'vault_id'}"
+                />
             </search>
         </field>
     </record>

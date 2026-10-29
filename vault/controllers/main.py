@@ -3,11 +3,14 @@
 
 import logging
 
-from odoo import _, http
+from odoo import http
 from odoo.exceptions import AccessDenied
 from odoo.http import request
 
 _logger = logging.getLogger(__name__)
+
+# Maximum size of the encrypted data which can be stored using the public inbox
+DEFAULT_INBOX_MAX_SIZE = 10 * 1024 * 1024
 
 
 class Controller(http.Controller):
@@ -17,14 +20,14 @@ class Controller(http.Controller):
         # Find the right token
         inbox = request.env["vault.inbox"].sudo().find_inbox(token)
         user = request.env["res.users"].sudo().find_user_of_inbox(token)
-        if len(inbox) == 1 and inbox.accesses > 0:
+        if len(inbox) == 1 and inbox._is_writable():
             ctx.update({"name": inbox.name, "public": inbox.user_id.active_key.public})
         elif len(inbox) == 0 and len(user) == 1:
             ctx["public"] = user.active_key.public
 
         # A valid token would mean we found a public key
         if not ctx.get("public"):
-            ctx["error"] = _("Invalid token")
+            ctx["error"] = request.env._("Invalid token")
             return request.render("vault.inbox", ctx)
 
         # Just render if GET method
@@ -39,23 +42,32 @@ class Controller(http.Controller):
         iv = request.params.get("iv")
         key = request.params.get("key")
         if not name:
-            ctx["error"] = _("Please specify a name")
+            ctx["error"] = request.env._("Please specify a name")
             return request.render("vault.inbox", ctx)
 
         if not secret and not secret_file:
-            ctx["error"] = _("No secret found")
+            ctx["error"] = request.env._("No secret found")
             return request.render("vault.inbox", ctx)
 
         if secret_file and not filename:
-            ctx["error"] = _("Missing filename")
+            ctx["error"] = request.env._("Missing filename")
             return request.render("vault.inbox", ctx)
 
         if not iv or not key:
-            ctx["error"] = _("Something went wrong with the encryption")
+            ctx["error"] = request.env._("Something went wrong with the encryption")
+            return request.render("vault.inbox", ctx)
+
+        max_size = (
+            request.env["ir.config_parameter"]
+            .sudo()
+            .get_int("vault.inbox_max_size", DEFAULT_INBOX_MAX_SIZE)
+        )
+        if len(secret or "") + len(secret_file or "") > max_size:
+            ctx["error"] = request.env._("The secret is too big")
             return request.render("vault.inbox", ctx)
 
         try:
-            inbox.store_in_inbox(
+            stored = inbox.store_in_inbox(
                 name,
                 secret,
                 secret_file,
@@ -65,17 +77,21 @@ class Controller(http.Controller):
                 filename,
                 ip=request.httprequest.remote_addr,
             )
-        except Exception as e:
-            _logger.exception(e)
-            ctx["error"] = _(
+        except Exception:
+            _logger.exception("Error storing the secret in the inbox")
+            ctx["error"] = request.env._(
                 "An error occured. Please contact the user or administrator"
             )
             return request.render("vault.inbox", ctx)
 
-        ctx["message"] = _("Successfully stored")
+        if not stored:
+            ctx["error"] = request.env._("The inbox can't be written anymore")
+            return request.render("vault.inbox", ctx)
+
+        ctx["message"] = request.env._("Successfully stored")
         return request.render("vault.inbox", ctx)
 
-    @http.route("/vault/public", type="json")
+    @http.route("/vault/public", type="jsonrpc")
     def vault_public(self, user_id):
         """Get the public key of a specific user"""
         user = request.env["res.users"].sudo().browse(user_id).exists()
@@ -84,12 +100,12 @@ class Controller(http.Controller):
 
         return {"public_key": user.active_key.public}
 
-    @http.route("/vault/inbox/get", auth="user", type="json")
+    @http.route("/vault/inbox/get", auth="user", type="jsonrpc")
     def vault_get_inbox(self):
         inboxes = request.env.user.inbox_ids
         return {inbox.token: inbox.key for inbox in inboxes}
 
-    @http.route("/vault/inbox/store", auth="user", type="json")
+    @http.route("/vault/inbox/store", auth="user", type="jsonrpc")
     def vault_store_inbox(self, keys):
         if not isinstance(keys, dict):
             return
@@ -100,23 +116,23 @@ class Controller(http.Controller):
             if isinstance(key, str):
                 inbox.key = key
 
-    @http.route("/vault/keys/store", auth="user", type="json")
+    @http.route("/vault/keys/store", auth="user", type="jsonrpc")
     def vault_store_keys(self, **kwargs):
         """Store the key pair for the current user"""
         return request.env["res.users.key"].store(**kwargs)
 
-    @http.route("/vault/keys/get", auth="user", type="json")
+    @http.route("/vault/keys/get", auth="user", type="jsonrpc")
     def vault_get_keys(self):
         """Get the currently active key pair"""
         return request.env.user.get_vault_keys()
 
-    @http.route("/vault/rights/get", auth="user", type="json")
+    @http.route("/vault/rights/get", auth="user", type="jsonrpc")
     def vault_get_right_keys(self):
         """Get the master keys from the vault.right records"""
         rights = request.env.user.vault_right_ids
         return {right.vault_id.uuid: right.key for right in rights}
 
-    @http.route("/vault/rights/store", auth="user", type="json")
+    @http.route("/vault/rights/store", auth="user", type="jsonrpc")
     def vault_store_right_keys(self, keys):
         """Store the master keys to the specific vault.right records"""
         if not isinstance(keys, dict):
@@ -128,7 +144,7 @@ class Controller(http.Controller):
             if isinstance(master_key, str):
                 right.sudo().key = master_key
 
-    @http.route("/vault/replace", auth="user", type="json")
+    @http.route("/vault/replace", auth="user", type="jsonrpc")
     def vault_replace(self, data):
         """Replace the master keys and values within a single transaction"""
         if not isinstance(data, list):
@@ -136,8 +152,17 @@ class Controller(http.Controller):
 
         vault = request.env["vault"].with_context(vault_skip_log=True)
         for changes in data:
-            record = vault.env[changes["model"]].browse(changes["id"])
-            if not record.vault_id.allowed_write:
+            if not isinstance(changes, dict):
+                raise AccessDenied()
+
+            model, record_id = changes.get("model"), changes.get("id")
+            if model not in ("vault.field", "vault.file", "vault.right"):
+                raise AccessDenied()
+            if not isinstance(record_id, int):
+                raise AccessDenied()
+
+            record = vault.env[model].browse(record_id).exists()
+            if len(record) != 1 or not record.vault_id.allowed_write:
                 raise AccessDenied()
 
             vault |= record.vault_id

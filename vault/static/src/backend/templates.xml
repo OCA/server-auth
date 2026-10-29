@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="vault.AskPassDialog">
-        <Dialog title="props.title" size="'md'">
+        <Dialog title="this.props.title" size="'md'">
             <div class="o_form_view">
                 <label for="vault_password" class="col-lg-auto col-form-label">
                     Please enter your password or upload a keyfile:
@@ -20,11 +20,11 @@
                                 class="form-control"
                                 type="password"
                                 name="password"
-                                t-model="state.password"
+                                t-model.proxy="this.state.password"
                             />
                         </td>
                     </tr>
-                    <tr t-if="props.confirm">
+                    <tr t-if="this.props.confirm">
                         <td class="o_td_label text-nowrap">
                             <label class="o_form_label" for="vault_confirm">
                                 Confirm your password:
@@ -36,7 +36,7 @@
                                 class="form-control"
                                 type="password"
                                 name="confirm"
-                                t-model="state.confirm"
+                                t-model.proxy="this.state.confirm"
                             />
                         </td>
                     </tr>
@@ -52,20 +52,28 @@
                                 class="form-control"
                                 type="file"
                                 name="keyfile"
-                                t-ref="keyfileInput"
+                                t-ref="this.keyfileInput"
                             />
                         </td>
                     </tr>
                 </table>
-                <t t-if="state.error">
-                    <div class="alert alert-danger mt-3" t-esc="state.error" />
+                <t t-if="this.state.error">
+                    <div class="alert alert-danger mt-3" t-out="this.state.error" />
                 </t>
             </div>
             <t t-set-slot="footer">
-                <button type="button" class="btn btn-secondary" t-on-click="onCancel">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    t-on-click="this.onCancel"
+                >
                     Cancel
                 </button>
-                <button type="button" class="btn btn-primary" t-on-click="onConfirm">
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    t-on-click="this.onConfirm"
+                >
                     Enter
                 </button>
             </t>
@@ -73,7 +81,7 @@
     </t>
 
     <t t-name="vault.GeneratePassDialog">
-        <Dialog title="props.title" size="'md'">
+        <Dialog title="this.props.title" size="'md'">
             <div class="o_form_view">
                 <label for="vault_password_preview" class="col-lg-auto col-form-label">
                     Generate a new secret:
@@ -89,7 +97,7 @@
                             <span
                                 id="vault_password_preview"
                                 class="col-12 text-monospace"
-                                t-esc="state.password"
+                                t-out="this.state.password"
                             />
                         </td>
                     </tr>
@@ -106,11 +114,11 @@
                                 type="range"
                                 min="8"
                                 max="64"
-                                t-model.number="state.length"
-                                t-on-input="onOptionsChange"
+                                t-model.proxy.number="this.state.length"
+                                t-on-input="this.onOptionsChange"
                             />
                             <small class="text-muted ms-2">
-                                <t t-esc="state.length" />
+                                <t t-out="this.state.length" />
                             </small>
                         </td>
                     </tr>
@@ -126,8 +134,8 @@
                                     id="vault_big_letter"
                                     class="form-check-input"
                                     type="checkbox"
-                                    t-model="state.big"
-                                    t-on-change="onOptionsChange"
+                                    t-model.proxy="this.state.big"
+                                    t-on-change="this.onOptionsChange"
                                 />
                                 <label
                                     class="form-check-label o_form_label"
@@ -142,8 +150,8 @@
                                     id="vault_small_letter"
                                     class="form-check-input"
                                     type="checkbox"
-                                    t-model="state.small"
-                                    t-on-change="onOptionsChange"
+                                    t-model.proxy="this.state.small"
+                                    t-on-change="this.onOptionsChange"
                                 />
                                 <label
                                     class="form-check-label o_form_label"
@@ -158,8 +166,8 @@
                                     id="vault_digits"
                                     class="form-check-input"
                                     type="checkbox"
-                                    t-model="state.digits"
-                                    t-on-change="onOptionsChange"
+                                    t-model.proxy="this.state.digits"
+                                    t-on-change="this.onOptionsChange"
                                 />
                                 <label
                                     class="form-check-label o_form_label"
@@ -174,8 +182,8 @@
                                     id="vault_special"
                                     class="form-check-input"
                                     type="checkbox"
-                                    t-model="state.special"
-                                    t-on-change="onOptionsChange"
+                                    t-model.proxy="this.state.special"
+                                    t-on-change="this.onOptionsChange"
                                 />
                                 <label
                                     class="form-check-label o_form_label"
@@ -187,19 +195,23 @@
                         </td>
                     </tr>
                 </table>
-                <t t-if="state.error">
-                    <div class="alert alert-danger mt-3" t-esc="state.error" />
+                <t t-if="this.state.error">
+                    <div class="alert alert-danger mt-3" t-out="this.state.error" />
                 </t>
             </div>
             <t t-set-slot="footer">
-                <button type="button" class="btn btn-secondary" t-on-click="onCancel">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    t-on-click="this.onCancel"
+                >
                     Cancel
                 </button>
                 <button
                     type="button"
                     class="btn btn-primary"
-                    t-on-click="onConfirm"
-                    t-att-disabled="!state.password"
+                    t-on-click="this.onConfirm"
+                    t-att-disabled="!this.state.password"
                 >
                     Use password
                 </button>

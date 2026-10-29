@@ -5,7 +5,7 @@ import json
 import logging
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ class ImportWizard(models.TransientModel):
     _name = "vault.import.wizard"
     _description = "Import wizard for vaults"
 
-    vault_id = fields.Many2one("vault", "Vault")
+    vault_id = fields.Many2one("vault")
     parent_id = fields.Many2one(
         "vault.entry",
         "Parent Entry",
@@ -131,4 +131,4 @@ class ImportWizard(models.TransientModel):
 
             self.vault_id.log_entry(f"Imported entries from file {self.name}")
         except Exception as e:
-            raise UserError(_("Invalid file to import from")) from e
+            raise UserError(self.env._("Invalid file to import from")) from e

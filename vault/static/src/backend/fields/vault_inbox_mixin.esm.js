@@ -6,15 +6,6 @@ import {useService} from "@web/core/utils/hooks";
 
 export default (x) => {
     class Extended extends x {
-        static props = {
-            ...x.props,
-            storeModel: {type: String, optional: true},
-        };
-        static extractProps = ({attrs}) => {
-            return {
-                storeModel: attrs.store,
-            };
-        };
         setup() {
             super.setup();
 

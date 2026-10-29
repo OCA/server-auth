@@ -13,6 +13,9 @@ _logger = logging.getLogger(__name__)
 
 
 class TestVault(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()

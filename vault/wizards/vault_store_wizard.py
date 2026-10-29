@@ -4,6 +4,7 @@
 import logging
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -12,10 +13,9 @@ class VaultStoreWizard(models.TransientModel):
     _name = "vault.store.wizard"
     _description = "Wizard store a shared secret in a vault"
 
-    vault_id = fields.Many2one("vault", "Vault", required=True)
+    vault_id = fields.Many2one("vault", required=True)
     entry_id = fields.Many2one(
         "vault.entry",
-        "Entry",
         domain="[('vault_id', '=', vault_id)]",
         required=True,
     )
@@ -34,14 +34,14 @@ class VaultStoreWizard(models.TransientModel):
 
     def action_store(self):
         self.ensure_one()
-        try:
-            self.env[self.model].create(
-                {
-                    "entry_id": self.entry_id.id,
-                    "name": self.name,
-                    "iv": self.iv,
-                    "value": self.secret,
-                }
-            )
-        except Exception as e:
-            _logger.exception(e)
+        if self.model not in ("vault.field", "vault.file"):
+            raise UserError(self.env._("Invalid model to store the secret"))
+
+        self.env[self.model].create(
+            {
+                "entry_id": self.entry_id.id,
+                "name": self.name,
+                "iv": self.iv,
+                "value": self.secret,
+            }
+        )

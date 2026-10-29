@@ -1,24 +1,33 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import {t, useProps} from "@odoo/owl";
 import {VaultFile, vaultFileField} from "./vault_file.esm";
 import VaultInboxMixin from "./vault_inbox_mixin.esm";
+import {binaryFieldProps} from "@web/views/fields/binary/binary_field";
+import {getContent, vaultMixinProps} from "./vault_mixin.esm";
 import {_t} from "@web/core/l10n/translation";
 import {registry} from "@web/core/registry";
 
 export class VaultInboxFile extends VaultInboxMixin(VaultFile) {
-    static defaultProps = {
-        ...VaultFile.defaultProps,
-        fieldKey: "key",
-    };
     static template = "vault.FileVaultInbox";
+    props = useProps({
+        ...binaryFieldProps,
+        ...vaultMixinProps,
+        fieldKey: t.string().optional("key"),
+    });
+
+    get value() {
+        return getContent(this.props.record.data[this.props.name]);
+    }
+
     /**
      * Save the content in an entry of a vault
      *
      * @private
      */
     async _onSaveValue() {
-        await this.saveValue("vault.file", this.props.value, this.state.fileName);
+        await this.saveValue("vault.file", this.value, this.fileName);
     }
 
     /**

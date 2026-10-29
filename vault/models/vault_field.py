@@ -12,6 +12,6 @@ class VaultField(models.Model):
     _name = "vault.field"
     _description = "Field of a vault"
     _order = "name"
-    _inherit = ["vault.abstract.field", "vault.abstract"]
+    _inherit = ("vault.abstract.field", "vault.abstract")
 
     value = fields.Char(required=True)

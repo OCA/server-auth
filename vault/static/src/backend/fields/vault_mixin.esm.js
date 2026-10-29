@@ -1,31 +1,37 @@
 // © 2021-2024 Florian Kantelberg - initOS GmbH
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import {t, useProps} from "@odoo/owl";
 import {_t} from "@web/core/l10n/translation";
 import {standardFieldProps} from "@web/views/fields/standard_field_props";
 import {useService} from "@web/core/utils/hooks";
 
-export default (x) => {
+export const vaultMixinProps = {
+    fieldKey: t.string().optional("master_key"),
+    fieldIV: t.string().optional("iv"),
+};
+
+/**
+ * Extract the base64 content of a field value. Binary fields are read as
+ * `{content, size, filename}` objects since 20.0 while char fields are strings.
+ *
+ * @param {Object|String} value
+ * @returns the base64 content or false
+ */
+export function getContent(value) {
+    if (value && typeof value === "object") return value.content || false;
+    return value || false;
+}
+
+/**
+ * @param {Class} x: Base component class
+ * @param {Object} baseProps: Props schema of the base component
+ * @returns the extended component class
+ */
+export default (x, baseProps = standardFieldProps) => {
     class Extended extends x {
-        static props = {
-            ...standardFieldProps,
-            ...x.props,
-            fieldKey: {type: String, optional: true},
-            fieldIV: {type: String, optional: true},
-        };
-        static defaultProps = {
-            ...x.defaultProps,
-            fieldIV: "iv",
-            fieldKey: "master_key",
-        };
-        static extractProps = ({attrs, field}) => {
-            const extract_props = x.extractProps || (() => ({}));
-            return {
-                ...extract_props({attrs, field}),
-                fieldKey: attrs.key,
-                fieldIV: attrs.iv,
-            };
-        };
+        props = useProps({...baseProps, ...vaultMixinProps});
+
         setup() {
             super.setup();
             this.vault_utils = useService("vault_utils");

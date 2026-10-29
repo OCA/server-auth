@@ -10,6 +10,7 @@ import {ListController} from "@web/views/list/list_controller";
 import {_t} from "@web/core/l10n/translation";
 import {patch} from "@web/core/utils/patch";
 import {rpc} from "@web/core/network/rpc";
+import {getContent} from "./fields/vault_mixin.esm";
 import {useService} from "@web/core/utils/hooks";
 
 patch(FormController.prototype, {
@@ -156,17 +157,13 @@ patch(FormController.prototype, {
             const records = await self.model.orm.searchRead(
                 model,
                 [["vault_id", "=", record.resId]],
-                ["iv", "value", "name", "entry_name"],
-                {
-                    context: {vault_reencrypt: true},
-                    limit: 0,
-                }
+                ["iv", "value", "name", "entry_name"]
             );
 
             for (const rec of records) {
                 const val = await self.vault_utils.sym_decrypt(
                     current_key,
-                    rec.value,
+                    getContent(rec.value),
                     rec.iv
                 );
                 if (val === null) {
@@ -199,8 +196,7 @@ patch(FormController.prototype, {
             const rights = await self.model.orm.searchRead(
                 "vault.right",
                 [["vault_id", "=", record.resId]],
-                ["public_key"],
-                {limit: 0}
+                ["public_key"]
             );
 
             for (const right of rights) {
@@ -249,7 +245,7 @@ patch(FormController.prototype, {
         const data = await this.importer.import(
             await this.vault.unwrap(record.data.master_key),
             record.data.name,
-            atob(record.data.content)
+            atob(getContent(record.data.content))
         );
 
         if (data) await record.update({crypted_content: JSON.stringify(data)});
@@ -265,7 +261,7 @@ patch(FormController.prototype, {
     async _vaultEnsureRightKey(root, right) {
         if (!root.data.master_key || right.data.key) return;
 
-        const params = {user_id: right.data.user_id[0]};
+        const params = {user_id: right.data.user_id.id};
         const user = await rpc("/vault/public", params);
 
         if (!user || !user.public_key) throw new TypeError("User has no public key");
@@ -356,13 +352,12 @@ patch(FormController.prototype, {
      */
     setup() {
         this.vault_utils = useService("vault_utils");
+        super.setup();
         if (this.props.resModel === "vault" && !this.vault_utils.supported()) {
-            this.props.preventCreate = true;
-            this.props.preventEdit = true;
+            this.canCreate = false;
+            this.canEdit = false;
         }
 
-        super.setup();
-        this.ui = useService("ui");
         this.vault = useService("vault");
         this.importer = useService("vault_import");
     },
@@ -425,6 +420,6 @@ patch(ListController.prototype, {
         super.setup();
         this.vault_utils = useService("vault_utils");
         if (this.props.resModel === "vault" && !this.vault_utils.supported())
-            this.props.showButtons = false;
+            this.activeActions = {...this.activeActions, create: false};
     },
 });

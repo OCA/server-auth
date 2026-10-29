@@ -44,8 +44,8 @@ TestData = [
             {"name": "secret", "value": "dlrow olle", "iv": "abcd"},
         ],
         "files": [
-            {"name": "a", "value": "Hello World", "iv": "abcd"},
-            {"name": "secret", "value": "dlrow olleh", "iv": "abcd"},
+            {"name": "a", "value": "SGVsbG8gV29ybGQ=", "iv": "abcd"},
+            {"name": "secret", "value": "ZGxyb3cgb2xsZWg=", "iv": "abcd"},
             {},
         ],
         "childs": [
@@ -66,6 +66,9 @@ TestData = [
 
 
 class TestWidgets(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -136,7 +139,7 @@ class TestWidgets(BaseCommon):
 
         # Export without entry should export entire vault
         wiz._onchange_content()
-        entries = json.loads(wiz.content)
+        entries = json.loads(wiz.content.decode())
         self.assertEqual({e["uuid"] for e in entries}, {second.uuid, self.entry.uuid})
         self.assertEqual(len(entries), 2)
 
@@ -144,7 +147,7 @@ class TestWidgets(BaseCommon):
 
         # Export the entire tree
         wiz._onchange_content()
-        entries = json.loads(wiz.content)
+        entries = json.loads(wiz.content.decode())
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]["uuid"], self.entry.uuid)
         self.assertEqual(entries[0]["childs"][0]["uuid"], child.uuid)
@@ -152,7 +155,7 @@ class TestWidgets(BaseCommon):
         # Skip exporting childs
         wiz.include_childs = False
         wiz._onchange_content()
-        entries = json.loads(wiz.content)
+        entries = json.loads(wiz.content.decode())
         self.assertEqual(len(entries), 1)
         self.assertEqual(entries[0]["uuid"], self.entry.uuid)
         self.assertEqual(len(entries[0]["childs"]), 0)

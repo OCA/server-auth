@@ -3,10 +3,9 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 import logging
-from datetime import datetime
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -15,23 +14,22 @@ _logger = logging.getLogger(__name__)
 class VaultEntry(models.Model):
     _name = "vault.entry"
     _description = "Entry inside a vault"
-    _inherit = ["vault.abstract"]
+    _inherit = ("vault.abstract",)
     _order = "complete_name"
     _rec_name = "complete_name"
 
     parent_id = fields.Many2one(
         "vault.entry",
-        "Parent",
         ondelete="cascade",
         domain="[('vault_id', '=', vault_id)]",
     )
-    child_ids = fields.One2many("vault.entry", "parent_id", "Child")
+    child_ids = fields.One2many("vault.entry", "parent_id")
 
-    vault_id = fields.Many2one("vault", "Vault", ondelete="cascade", required=True)
+    vault_id = fields.Many2one("vault", ondelete="cascade", required=True)
     user_id = fields.Many2one(related="vault_id.user_id")
     field_ids = fields.One2many("vault.field", "entry_id", "Fields")
     file_ids = fields.One2many("vault.file", "entry_id", "Files")
-    log_ids = fields.One2many("vault.log", "entry_id", "Log", readonly=True)
+    log_ids = fields.One2many("vault.log", "entry_id", readonly=True)
 
     perm_user = fields.Many2one(related="vault_id.perm_user", store=False)
     allowed_read = fields.Boolean(related="vault_id.allowed_read", store=False)
@@ -58,14 +56,15 @@ class VaultEntry(models.Model):
         store=False,
     )
 
-    _sql_constraints = [
-        ("vault_uuid_uniq", "UNIQUE(vault_id, uuid)", "The UUID must be unique."),
-    ]
+    _vault_uuid_uniq = models.Constraint(
+        "UNIQUE(vault_id, uuid)",
+        "The UUID must be unique.",
+    )
 
     @api.constrains("parent_id")
     def _check_parent_id(self):
         if self._has_cycle():
-            raise ValidationError(_("You can not create recursive entries."))
+            raise ValidationError(self.env._("You can not create recursive entries."))
 
     @api.depends("name", "parent_id.complete_name")
     def _compute_complete_name(self):
@@ -105,7 +104,7 @@ class VaultEntry(models.Model):
             default = {}
 
         if "name" not in default:
-            default["name"] = _("%s (copy)", self.name)
+            default["name"] = self.env._("%s (copy)", self.name)
 
         if "field_ids" not in default:
             default["field_ids"] = [
@@ -126,7 +125,7 @@ class VaultEntry(models.Model):
 
     @api.depends("expire_date")
     def _compute_expired(self):
-        now = datetime.now()
+        now = fields.Datetime.now()
         for rec in self:
             rec.expired = rec.expire_date and now > rec.expire_date
 
@@ -135,9 +134,13 @@ class VaultEntry(models.Model):
             return []
 
         if (operator, value) in [("=", True), ("!=", False)]:
-            return [("expire_date", "<", datetime.now())]
+            return [("expire_date", "<", fields.Datetime.now())]
 
-        return ["|", ("expire_date", ">=", datetime.now()), ("expire_date", "=", False)]
+        return [
+            "|",
+            ("expire_date", ">=", fields.Datetime.now()),
+            ("expire_date", "=", False),
+        ]
 
     def log_change(self, action):
         if self.env.context.get("vault_skip_log"):
@@ -145,12 +148,12 @@ class VaultEntry(models.Model):
 
         for rec in self:
             rec.log_info(
-                _("%(action)s entry %(name)s by %(user)s")
-                % {
-                    "action": action,
-                    "name": rec.complete_name,
-                    "user": rec.env.user.display_name,
-                }
+                self.env._(
+                    "%(action)s entry %(name)s by %(user)s",
+                    action=action,
+                    name=rec.complete_name,
+                    user=rec.env.user.display_name,
+                )
             )
 
     @api.model_create_multi
@@ -184,7 +187,7 @@ class VaultEntry(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_import_wizard")
         return {
-            "name": _("Import from file"),
+            "name": self.env._("Import from file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.import.wizard",
@@ -201,7 +204,7 @@ class VaultEntry(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_export_wizard")
         return {
-            "name": _("Export to file"),
+            "name": self.env._("Export to file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.export.wizard",

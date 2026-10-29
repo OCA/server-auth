@@ -9,6 +9,9 @@ _logger = logging.getLogger(__name__)
 
 
 class TestLog(BaseCommon):
+    # Run the tests with the user creating the test data like in previous versions
+    _test_user_groups = ()
+
     def test_not_implemeneted(self):
         with self.assertRaises(NotImplementedError):
             self.env["vault.abstract"].log_entry("test")

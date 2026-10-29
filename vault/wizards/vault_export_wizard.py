@@ -3,9 +3,9 @@
 
 import json
 import logging
-from datetime import datetime
 
 from odoo import api, fields, models
+from odoo.tools import BinaryBytes, BinaryValue
 
 _logger = logging.getLogger(__name__)
 
@@ -14,7 +14,7 @@ class ExportWizard(models.TransientModel):
     _name = "vault.export.wizard"
     _description = "Export wizard for vaults"
 
-    vault_id = fields.Many2one("vault", "Vault")
+    vault_id = fields.Many2one("vault")
     entry_id = fields.Many2one(
         "vault.entry", "Entries", domain="[('vault_id', '=', vault_id)]"
     )
@@ -26,14 +26,15 @@ class ExportWizard(models.TransientModel):
     @api.onchange("vault_id", "entry_id")
     def _onchange_content(self):
         for rec in self.with_context(skip_log=True):
-            rec.content = self._export_content(
+            content = self._export_content(
                 rec.vault_id,
                 rec.entry_id,
                 rec.include_childs,
             )
+            rec.content = BinaryBytes(content.encode())
 
     def _default_name(self):
-        return datetime.now().strftime("database-%Y%m%d-%H%M.json")
+        return fields.Datetime.now().strftime("database-%Y%m%d-%H%M.json")
 
     def _export_content(self, vault=None, entry=None, include_childs=False):
         if entry:
@@ -49,6 +50,8 @@ class ExportWizard(models.TransientModel):
     @api.model
     def _export_field(self, rec):
         def ensure_string(x):
+            if isinstance(x, BinaryValue):
+                return x.to_base64() if x else False
             return x.decode() if isinstance(x, bytes) else x
 
         return {f: ensure_string(rec[f]) for f in ["name", "iv", "value"]}
