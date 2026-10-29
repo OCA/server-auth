@@ -21,10 +21,10 @@
     </t>
 
     <t t-name="vault.FieldPinVault">
-        <div class="o_vault o_vault_error" t-if="!supported()">
+        <div t-if="!supported()" class="o_vault o_vault_error">
             <span>*******</span>
         </div>
-        <div class="o_vault" t-else="">
+        <div t-else="" class="o_vault">
             <t t-call="vault.Field.buttons" />
             <span t-esc="formattedValue" t-ref="span" />
         </div>

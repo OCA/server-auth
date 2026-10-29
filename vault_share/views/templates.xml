@@ -15,33 +15,33 @@
             <input type="hidden" id="iv" t-att-value="iv" />
             <input type="hidden" id="iterations" t-att-value="iterations" />
 
-            <div class="form-group" t-if="not error">
+            <div t-if="not error" class="form-group">
                 <label for="pin">Enter the pin:</label>
-                <input type="text" id="pin" class="form-control col-12 alert-danger" />
+                <input id="pin" class="form-control col-12 alert-danger" type="text" />
             </div>
 
-            <p class="alert alert-danger" t-if="error" role="alert" t-esc="error" />
+            <p t-if="error" class="alert alert-danger" role="alert" t-out="error" />
             <p
-                class="alert alert-success"
                 t-if="message"
+                class="alert alert-success"
                 role="status"
-                t-esc="message"
+                t-out="message"
             />
 
-            <div id="secret_group" class="form-group o_hidden" t-if="encrypted">
+            <div t-if="encrypted" id="secret_group" class="form-group o_hidden">
                 <label for="secret">Shared secret:</label>
                 <input
-                    type="text"
                     id="secret"
-                    readonly="readonly"
                     class="col-12 form-control"
+                    type="text"
+                    readonly="readonly"
                 />
             </div>
 
-            <div id="file_group" class="form-group o_hidden" t-if="encrypted_file">
+            <div t-if="encrypted_file" id="file_group" class="form-group o_hidden">
                 <label for="secret">Shared file:</label>
                 <div class="col-12">
-                    <a href="" id="secret_file" class="form-control" />
+                    <a id="secret_file" class="form-control" href="" />
                 </div>
             </div>
         </t>
