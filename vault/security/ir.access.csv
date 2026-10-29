@@ -1,0 +1,18 @@
+id,name,model_id,group_id/id,operation,domain
+vault_access_default,vault.access.default,vault,base.group_user,crud,"['|', ('user_id', '=', user.id), ('right_ids.user_id', '=', user.id)]"
+vault_entry_access_default,vault.entry.access.default,vault.entry,base.group_user,crud,"['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]"
+access_vault_export_wizard,access_vault_export_wizard,vault.export.wizard,base.group_user,crud,
+vault_field_access_default,vault.field.access.default,vault.field,base.group_user,crud,"['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]"
+vault_file_access_default,vault.file.access.default,vault.file,base.group_user,crud,"['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]"
+access_vault_import_wizard,access_vault_import_wizard,vault.import.wizard,base.group_user,crud,
+access_vault_import_wizard_path,access_vault_import_wizard_path,vault.import.wizard.path,base.group_user,crud,
+access_vault_inbox,access_vault_inbox,vault.inbox,base.group_user,crud,
+vault_inbox_owner,vault.inbox.access.owner,vault.inbox,,crud,"[('user_id', '=', user.id)]"
+access_vault_inbox_log,access_vault_inbox_log,vault.inbox.log,base.group_user,crud,
+vault_inbox_log_owner,vault.inbox.log.access.owner,vault.inbox.log,,crud,"[('inbox_id.user_id', '=', user.id)]"
+vault_log_access_default,vault.log.access.read,vault.log,base.group_user,r,"['|', ('vault_id.user_id', '=', user.id), ('vault_id.right_ids.user_id', '=', user.id)]"
+vault_right_access_default,vault.right.access.default,vault.right,base.group_user,crud,"[('vault_id.right_ids.user_id', '=', user.id)]"
+access_vault_send_wizard,access_vault_send_wizard,vault.send.wizard,base.group_user,crud,
+access_vault_store_wizard,access_vault_store_wizard,vault.store.wizard,base.group_user,crud,
+access_vault_tag,access_vault_tag,vault.tag,base.group_user,crud,
+res_users_key_access_default,res.users.key.access.default,res.users.key,base.group_user,crud,"[('user_id', '=', user.id)]"

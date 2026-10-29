@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="vault.AskPassDialog">
+        <Dialog title="this.props.title" size="'md'">
+            <div class="o_form_view">
+                <label for="vault_password" class="col-lg-auto col-form-label">
+                    Please enter your password or upload a keyfile:
+                </label>
+
+                <table class="col o_group">
+                    <tr>
+                        <td class="o_td_label text-nowrap">
+                            <label class="o_form_label" for="vault_password">
+                                Enter your password:
+                            </label>
+                        </td>
+                        <td class="col-12">
+                            <input
+                                id="vault_password"
+                                class="form-control"
+                                type="password"
+                                name="password"
+                                t-model.proxy="this.state.password"
+                            />
+                        </td>
+                    </tr>
+                    <tr t-if="this.props.confirm">
+                        <td class="o_td_label text-nowrap">
+                            <label class="o_form_label" for="vault_confirm">
+                                Confirm your password:
+                            </label>
+                        </td>
+                        <td class="col-12">
+                            <input
+                                id="vault_confirm"
+                                class="form-control"
+                                type="password"
+                                name="confirm"
+                                t-model.proxy="this.state.confirm"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="o_td_label text-nowrap">
+                            <label class="o_form_label" for="vault_keyfile">
+                                Keyfile:
+                            </label>
+                        </td>
+                        <td class="col-12">
+                            <input
+                                id="vault_keyfile"
+                                class="form-control"
+                                type="file"
+                                name="keyfile"
+                                t-ref="this.keyfileInput"
+                            />
+                        </td>
+                    </tr>
+                </table>
+                <t t-if="this.state.error">
+                    <div class="alert alert-danger mt-3" t-out="this.state.error" />
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    t-on-click="this.onCancel"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    t-on-click="this.onConfirm"
+                >
+                    Enter
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="vault.GeneratePassDialog">
+        <Dialog title="this.props.title" size="'md'">
+            <div class="o_form_view">
+                <label for="vault_password_preview" class="col-lg-auto col-form-label">
+                    Generate a new secret:
+                </label>
+                <table class="col o_group">
+                    <tr>
+                        <td class="o_td_label">
+                            <label class="o_form_label" for="vault_password_preview">
+                                Password:
+                            </label>
+                        </td>
+                        <td class="col-12">
+                            <span
+                                id="vault_password_preview"
+                                class="col-12 text-monospace"
+                                t-out="this.state.password"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="o_td_label">
+                            <label class="o_form_label" for="vault_length">
+                                Length:
+                            </label>
+                        </td>
+                        <td class="col-12">
+                            <input
+                                id="vault_length"
+                                class="col-12 custom-range align-middle"
+                                type="range"
+                                min="8"
+                                max="64"
+                                t-model.proxy.number="this.state.length"
+                                t-on-input="this.onOptionsChange"
+                            />
+                            <small class="text-muted ms-2">
+                                <t t-out="this.state.length" />
+                            </small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="o_td_label">
+                            <label class="o_form_label">
+                                Characters:
+                            </label>
+                        </td>
+                        <td class="col-12">
+                            <div class="form-check form-check-inline">
+                                <input
+                                    id="vault_big_letter"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    t-model.proxy="this.state.big"
+                                    t-on-change="this.onOptionsChange"
+                                />
+                                <label
+                                    class="form-check-label o_form_label"
+                                    for="vault_big_letter"
+                                >
+                                    A-Z
+                                </label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input
+                                    id="vault_small_letter"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    t-model.proxy="this.state.small"
+                                    t-on-change="this.onOptionsChange"
+                                />
+                                <label
+                                    class="form-check-label o_form_label"
+                                    for="vault_small_letter"
+                                >
+                                    a-z
+                                </label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input
+                                    id="vault_digits"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    t-model.proxy="this.state.digits"
+                                    t-on-change="this.onOptionsChange"
+                                />
+                                <label
+                                    class="form-check-label o_form_label"
+                                    for="vault_digits"
+                                >
+                                    0-9
+                                </label>
+                            </div>
+
+                            <div class="form-check form-check-inline">
+                                <input
+                                    id="vault_special"
+                                    class="form-check-input"
+                                    type="checkbox"
+                                    t-model.proxy="this.state.special"
+                                    t-on-change="this.onOptionsChange"
+                                />
+                                <label
+                                    class="form-check-label o_form_label"
+                                    for="vault_special"
+                                >
+                                    Special
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <t t-if="this.state.error">
+                    <div class="alert alert-danger mt-3" t-out="this.state.error" />
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    t-on-click="this.onCancel"
+                >
+                    Cancel
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    t-on-click="this.onConfirm"
+                    t-att-disabled="!this.state.password"
+                >
+                    Use password
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

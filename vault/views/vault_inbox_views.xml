@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_inbox_tree" model="ir.ui.view">
+        <field name="model">vault.inbox</field>
+        <field name="arch" type="xml">
+            <list create="false">
+                <field name="name" />
+                <field name="inbox_link" widget="url" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_vault_inbox_form" model="ir.ui.view">
+        <field name="model">vault.inbox</field>
+        <field name="arch" type="xml">
+            <form create="false">
+                <sheet>
+                    <field name="user_id" invisible="1" />
+                    <field name="iv" invisible="1" />
+                    <field name="key" invisible="1" />
+                    <field name="filename" invisible="1" />
+                    <group>
+                        <field name="inbox_link" widget="url" />
+                        <field name="name" />
+                        <field name="accesses" />
+                        <field name="expiration" />
+                        <field
+                            name="secret"
+                            widget="vault_inbox_field"
+                            invisible="not secret"
+                        />
+                        <field
+                            name="secret_file"
+                            filename="filename"
+                            widget="vault_inbox_file"
+                            invisible="not secret_file"
+                        />
+                    </group>
+
+                    <label for="log_ids" />
+                    <field name="log_ids" options="{'no_open': True}">
+                        <list>
+                            <field name="name" />
+                            <field name="create_date" />
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
