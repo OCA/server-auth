@@ -1,0 +1,5 @@
+id,name,model_id,group_id/id,operation,domain
+access_vault_share,access_vault_share,vault.share,base.group_user,crud,
+vault_share_owner,vault.share.access.owner,vault.share,,crud,"[('user_id', '=', user.id)]"
+access_vault_share_log,access_vault_share_log,vault.share.log,base.group_user,crud,
+vault_share_log_owner,vault.share.log.access.owner,vault.share.log,,crud,"[('share_id.user_id', '=', user.id)]"

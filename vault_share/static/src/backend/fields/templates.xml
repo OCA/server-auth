@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t
+        t-name="vault.FieldShareVault"
+        t-inherit="vault.FieldVault"
+        t-inherit-mode="primary"
+    >
+        <xpath expr="//div[@t-elif='this.props.readonly']" position="attributes">
+            <attribute name="t-elif">!this.isNew</attribute>
+        </xpath>
+    </t>
+
+    <t
+        t-name="vault.FileShareVault"
+        t-inherit="web.BinaryField"
+        t-inherit-mode="primary"
+    >
+        <xpath expr="//t[@t-if='!this.props.readonly']" position="attributes">
+            <attribute name="t-if">this.isNew</attribute>
+        </xpath>
+    </t>
+
+    <t t-name="vault.FieldPinVault">
+        <div t-if="!this.supported()" class="o_vault o_vault_error">
+            <span>*******</span>
+        </div>
+        <div t-else="" class="o_vault">
+            <t t-call="vault.Field.buttons" />
+            <span t-out="this.formattedValue" t-ref="this.span" />
+        </div>
+    </t>
+
+    <t t-inherit="vault.FieldVault" t-inherit-mode="extension">
+        <xpath expr="//span[hasclass('o_vault_buttons')]" position="inside">
+            <button
+                t-if="this.shareButton"
+                class="oi btn btn-secondary btn-sm o_vault_share"
+                data-icon="open_in_new"
+                title="Share the secret with an external user"
+                aria-label="Share the secret with an external user"
+                t-on-click="this._onShareValue"
+            />
+        </xpath>
+    </t>
+</templates>
