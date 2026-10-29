@@ -27,54 +27,54 @@
                 <div class="form-group">
                     <label for="name">Name of your secret:</label>
                     <input
-                        type="text"
                         t-if="name"
+                        class="form-control"
+                        type="text"
                         name="name"
                         readonly="readonly"
-                        class="form-control"
                         t-att-value="name"
                     />
                     <input
-                        type="text"
                         t-else=""
+                        class="form-control"
+                        type="text"
                         name="name"
                         required="required"
                         autofocus="autofocus"
-                        class="form-control"
                     />
                 </div>
 
                 <div class="form-group">
                     <label for="secret">Secret to share:</label>
                     <input
+                        id="secret"
+                        class="form-control"
                         placeholder="Secret"
                         type="text"
-                        id="secret"
                         name="secret"
                         required="required"
                         autofocus="autofocus"
-                        class="form-control"
                     />
                 </div>
 
                 <div class="form-group">
                     <label for="secret">File to share:</label>
                     <input
+                        id="secret_file"
+                        class="form-control"
                         type="file"
                         placeholder="Secret"
-                        id="secret_file"
                         name="secret_file"
                         required="required"
-                        class="form-control"
                     />
                 </div>
 
-                <p class="alert alert-danger" t-if="error" role="alert" t-esc="error" />
+                <p t-if="error" class="alert alert-danger" role="alert" t-out="error" />
                 <p
-                    class="alert alert-success"
                     t-if="message"
+                    class="alert alert-success"
                     role="status"
-                    t-esc="message"
+                    t-out="message"
                 />
 
                 <div
@@ -82,8 +82,8 @@
                 >
                     <button
                         id="submit"
-                        type="submit"
                         class="btn btn-primary btn-block"
+                        type="submit"
                         disabled="disabled"
                     >Submit secret</button>
                 </div>
