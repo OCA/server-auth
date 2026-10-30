@@ -18,8 +18,8 @@ class IrHttp(models.AbstractModel):
 
     @classmethod
     def _auth_method_api_key(cls):
-        headers = request.httprequest.environ
-        api_key = headers.get("HTTP_API_KEY")
+        headers = request.httprequest.headers
+        api_key = headers.get("API_KEY")
         if api_key:
             request.update_env(user=1)
             auth_api_key = request.env["auth.api.key"]._retrieve_api_key(api_key)
