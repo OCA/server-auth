@@ -1,3 +1,8 @@
+## 19.0.1.0.1
+
+- Issue a fresh PKCE ``code_verifier`` per authorization request and keep it
+  in the session instead of on the provider record
+
 ## 19.0.1.0.0 2025-10-01
 
 - Odoo 19 migration
