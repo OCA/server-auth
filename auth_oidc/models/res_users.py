@@ -2,6 +2,7 @@
 # Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import json
 import logging
 
 import requests
@@ -10,7 +11,22 @@ from odoo import api, models
 from odoo.exceptions import AccessDenied
 from odoo.http import request
 
+from .. import pkce
+
 _logger = logging.getLogger(__name__)
+
+
+def _state_from_params(params):
+    """Decode the OAuth ``state`` parameter into the dict that carried it."""
+    raw = params.get("state")
+    if not raw:
+        return {}
+    try:
+        state = json.loads(raw)
+    except (TypeError, ValueError):
+        _logger.warning("Could not decode OAuth state parameter.")
+        return {}
+    return state if isinstance(state, dict) else {}
 
 
 class ResUsers(models.Model):
@@ -33,7 +49,9 @@ class ResUsers(models.Model):
                 client_id=oauth_provider.client_id,
                 grant_type="authorization_code",
                 code=code,
-                code_verifier=oauth_provider.code_verifier,  # PKCE
+                # PKCE: the verifier issued for this very authorization,
+                # claimed from the session under the key carried in state.
+                code_verifier=pkce.claim(_state_from_params(params)),
                 redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
             ),
             auth=auth,

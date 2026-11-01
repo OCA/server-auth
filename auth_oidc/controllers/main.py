@@ -4,12 +4,15 @@
 
 import base64
 import hashlib
+import json
 import logging
 import secrets
 
 from werkzeug.urls import url_decode, url_encode
 
 from odoo.addons.auth_oauth.controllers.main import OAuthLogin
+
+from .. import pkce
 
 _logger = logging.getLogger(__name__)
 
@@ -38,6 +41,13 @@ class OpenIDLogin(OAuthLogin):
                 ).rstrip(b"=")
                 params["code_challenge"] = code_challenge
                 params["code_challenge_method"] = "S256"
+                # File this request's verifier in the session and tag the
+                # state with the key it was filed under, so the callback
+                # claims exactly this one. A page may list providers more
+                # than once; ``remember`` reuses the key it already filed
+                # for this verifier, so the renders agree.
+                state = json.loads(params["state"])
+                params["state"] = json.dumps(pkce.remember(code_verifier, state))
                 # scope
                 if provider.get("scope"):
                     if "openid" not in provider["scope"].split():
