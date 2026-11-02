@@ -1,7 +1,12 @@
 # Copyright 2018 ACSONE SA/NV
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
+from werkzeug.datastructures import EnvironHeaders
+
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests.common import TransactionCase
+
+from odoo.addons.website.tools import MockRequest
 
 
 class TestAuthApiKey(TransactionCase):
@@ -68,3 +73,12 @@ class TestAuthApiKey(TransactionCase):
         self.assertEqual(
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"), demo_user.id
         )
+
+    def test_api_key_headers(self):
+        """The API key in the headers is read."""
+        with MockRequest(self.env) as mocked_request:
+            mocked_request.httprequest.environ["HTTP_API_KEY"] = self.api_key_good.key
+            mocked_request.httprequest.headers = EnvironHeaders(
+                mocked_request.httprequest.environ
+            )
+            self.assertTrue(self.env["ir.http"]._auth_method_api_key())
