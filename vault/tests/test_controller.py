@@ -68,6 +68,16 @@ class TestController(BaseCommon):
             self.assertNotIn("error", response)
             self.assertEqual(response["public"], self.user.active_key.public)
 
+            keyless = self.env["res.users"].create(
+                {"login": "keyless", "email": "k@k", "name": "keyless"}
+            )
+            keyless.inbox_token = "no-key-token"
+            keyless.keys.current = False
+            response = load(self.controller.vault_inbox("no-key-token"))
+            self.assertEqual(
+                response["error"], "The recipient has not set up a vault key yet"
+            )
+
             # Try to eliminate each error step by step
             request_mock.httprequest.method = "POST"
             request_mock.params = {}

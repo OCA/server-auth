@@ -9,7 +9,6 @@
                 role="form"
                 t-attf-action="/vault/inbox/{{ token }}"
                 method="post"
-                onsubmit="this.action = this.action + location.hash"
             >
                 <input
                     type="hidden"
@@ -51,7 +50,6 @@
                         type="text"
                         id="secret"
                         name="secret"
-                        required="required"
                         autofocus="autofocus"
                         class="form-control"
                     />
@@ -64,7 +62,6 @@
                         placeholder="Secret"
                         id="secret_file"
                         name="secret_file"
-                        required="required"
                         class="form-control"
                     />
                 </div>
