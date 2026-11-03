@@ -7,10 +7,14 @@ import uuid
 
 from odoo import exceptions
 from odoo.tests import users
-from odoo.tests.common import TransactionCase
+
+from odoo.addons.base.tests.common import BaseCommon
 
 
-class TestMultiToken(TransactionCase):
+class TestMultiToken(BaseCommon):
+    # the tokens are only readable by settings administrators
+    _test_user_groups = ("base.group_system",)
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -50,7 +54,7 @@ class TestMultiToken(TransactionCase):
             )
 
     def test_signup_new_user(self):
-        self.env["ir.config_parameter"].sudo().set_param(
+        self.env["ir.config_parameter"].sudo().set_str(
             "auth_signup.invitation_scope", "b2c"
         )
         validation = {
