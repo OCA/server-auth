@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 ForgeFlow S.L.
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html). -->
+<odoo>
+    <record id="group_auth_session_no_sched_logout" model="res.groups">
+        <field name="name">Exempt from Scheduled Session Logout</field>
+        <field
+            name="comment"
+        >Members of this group keep their sessions when the scheduled logout job runs.</field>
+    </record>
+</odoo>
