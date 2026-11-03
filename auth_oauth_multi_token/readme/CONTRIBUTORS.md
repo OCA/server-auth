@@ -1,0 +1,13 @@
+- Florent de Labarre \<<florent.mirieu@gmail.com>\>
+- Simone Orsi \<<simone.orsi@camptocamp.com>\>
+- [Tecnativa](https://www.tecnativa.com/):
+  - Jairo Llopis
+  - Sergio Teruel
+- Stéphane Bidoul \<<stephane.bidoul@acsone.eu>\>
+- Dan Tillinghast
+- Miku Laitinen
+- [Kencove](https://www.kencove.com/):
+  - Mohamed Alkobrosli
+- Christopher Rogos
+- [Digiteasy](https://www.digiteasy.at/)
+  - Alvaro Estebanez
