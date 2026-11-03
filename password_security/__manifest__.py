@@ -22,6 +22,7 @@
     "website": "https://github.com/OCA/server-auth",
     "license": "LGPL-3",
     "data": [
+        "security/password_security_groups.xml",
         "views/res_config_settings_views.xml",
         "security/ir.model.access.csv",
         "security/res_users_pass_history.xml",
