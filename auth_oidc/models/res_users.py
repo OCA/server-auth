@@ -24,18 +24,23 @@ class ResUsers(models.Model):
         # https://openid.net/specs/openid-connect-core-1_0.html#AuthResponse
         code = params.get("code")
         # https://openid.net/specs/openid-connect-core-1_0.html#TokenRequest
+        data = dict(
+            grant_type="authorization_code",
+            code=code,
+            code_verifier=oauth_provider.code_verifier,  # PKCE
+            redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
+        )
         auth = None
         if oauth_provider.client_secret:
+            # Use a single client authentication method per request: HTTP Basic.
+            # https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
             auth = (oauth_provider.client_id, oauth_provider.client_secret)
+        else:
+            # Public client (PKCE): no authentication, only identify the client.
+            data["client_id"] = oauth_provider.client_id
         response = requests.post(
             oauth_provider.token_endpoint,
-            data=dict(
-                client_id=oauth_provider.client_id,
-                grant_type="authorization_code",
-                code=code,
-                code_verifier=oauth_provider.code_verifier,  # PKCE
-                redirect_uri=request.httprequest.url_root + "auth_oauth/signin",
-            ),
+            data=data,
             auth=auth,
             timeout=10,
         )
