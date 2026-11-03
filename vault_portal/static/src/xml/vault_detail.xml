@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="vault_portal.VaultDetail">
+        <div>
+            <input
+                type="search"
+                class="form-control mb-3"
+                placeholder="Search entries..."
+                t-model="state.query"
+            />
+            <p t-if="state.query and !visibleEntryGroups.length" class="text-muted">
+                No matching entry.
+            </p>
+
+            <div class="accordion">
+                <t t-foreach="visibleEntryGroups" t-as="group" t-key="group.key">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button
+                                type="button"
+                                class="accordion-button"
+                                t-att-class="{collapsed: group_index != 0}"
+                                data-bs-toggle="collapse"
+                                t-attf-data-bs-target="#o_vault_group_#{group.key}"
+                            >
+                                <t t-esc="group.parentName or 'Top level'" />
+                            </button>
+                        </h2>
+                        <div
+                            t-attf-id="o_vault_group_#{group.key}"
+                            class="accordion-collapse collapse"
+                            t-att-class="{show: group_index == 0}"
+                        >
+                            <div class="accordion-body">
+                                <t
+                                    t-foreach="group.entries"
+                                    t-as="entry"
+                                    t-key="entry.id"
+                                >
+                                    <div class="card p-3 mb-2">
+                                        <h5>
+                                            <t t-esc="entry.name" />
+                                            <span
+                                                t-if="entry.expired"
+                                                class="badge bg-danger ms-1"
+                                            >
+                                                Expired
+                                            </span>
+                                        </h5>
+                                        <div class="small mb-2">
+                                            <a
+                                                t-if="entry.url"
+                                                t-att-href="entry.url"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <t t-esc="entry.url" />
+                                            </a>
+                                            <t
+                                                t-foreach="entry.tags"
+                                                t-as="tag"
+                                                t-key="tag"
+                                            >
+                                                <span
+                                                    class="badge bg-secondary ms-1"
+                                                    t-esc="tag"
+                                                />
+                                            </t>
+                                        </div>
+
+                                        <t t-if="entry.allowedWrite">
+                                            <div class="mb-2">
+                                                <label
+                                                    class="form-label small mb-0"
+                                                >URL</label>
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm"
+                                                    placeholder="https://..."
+                                                    t-model="getEntryDraft(entry).url"
+                                                />
+                                            </div>
+                                            <div class="row g-2 mb-2 align-items-end">
+                                                <div class="col-8">
+                                                    <label
+                                                        class="form-label small mb-0"
+                                                    >Expires</label>
+                                                    <div
+                                                        class="o_portal_vault_date_input"
+                                                    >
+                                                        <DateTimeInput
+                                                            type="'date'"
+                                                            value="getEntryDateTimeValue(entry)"
+                                                            onChange="(value) => this.onEntryDateChange(entry, value)"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div class="col-4 text-end">
+                                                    <button
+                                                        t-if="isEntryDirty(entry)"
+                                                        type="button"
+                                                        class="btn btn-sm btn-primary"
+                                                        t-on-click="() => this.onSaveEntryDetails(entry)"
+                                                    >Save</button>
+                                                </div>
+                                            </div>
+                                        </t>
+
+                                        <t
+                                            t-foreach="entry.fields"
+                                            t-as="field"
+                                            t-key="field.id"
+                                        >
+                                            <div class="row align-items-center mb-1">
+                                                <div class="col-3">
+                                                    <t t-esc="field.name" />
+                                                </div>
+                                                <div class="col-6">
+                                                    <t t-if="!isRevealed(field)">
+                                                        <span>••••••••</span>
+                                                    </t>
+                                                    <t t-elif="field.allowedWrite">
+                                                        <input
+                                                            type="text"
+                                                            class="form-control form-control-sm"
+                                                            t-model="state.fieldDrafts[field.id]"
+                                                        />
+                                                    </t>
+                                                    <t t-else="">
+                                                        <t
+                                                            t-esc="state.revealed[field.id]"
+                                                        />
+                                                    </t>
+                                                </div>
+                                                <div class="col-3 text-end">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-secondary"
+                                                        t-on-click="() => this.onToggleReveal(field)"
+                                                    >
+                                                        <t
+                                                            t-esc="isRevealed(field) ? 'Hide' : 'Show'"
+                                                        />
+                                                    </button>
+                                                    <button
+                                                        t-if="field.allowedWrite and isFieldDirty(field)"
+                                                        type="button"
+                                                        class="btn btn-sm btn-primary"
+                                                        t-on-click="() => this.onSaveField(field)"
+                                                    >Save</button>
+                                                </div>
+                                            </div>
+                                            <div
+                                                t-if="state.fieldErrors[field.id]"
+                                                class="text-danger small mb-1"
+                                            >
+                                                <t
+                                                    t-esc="state.fieldErrors[field.id]"
+                                                />
+                                            </div>
+                                        </t>
+
+                                        <t t-if="entry.allowedCreate">
+                                            <t t-if="state.showAddField[entry.id]">
+                                                <div
+                                                    class="row g-2 mt-2 pt-2 border-top"
+                                                >
+                                                    <div class="col-3">
+                                                        <input
+                                                            type="text"
+                                                            class="form-control form-control-sm"
+                                                            placeholder="Name"
+                                                            t-model="state.newFieldDrafts[entry.id].name"
+                                                        />
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <input
+                                                            type="text"
+                                                            class="form-control form-control-sm"
+                                                            placeholder="Value"
+                                                            t-model="state.newFieldDrafts[entry.id].value"
+                                                        />
+                                                    </div>
+                                                    <div class="col-3 text-end">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm btn-primary"
+                                                            t-on-click="() => this.onCreateField(entry)"
+                                                        >Add</button>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <t t-else="">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-link mt-1"
+                                                    t-on-click="() => this.showAddFieldForm(entry)"
+                                                >+ Add a field</button>
+                                            </t>
+                                            <div
+                                                t-if="state.entryErrors[entry.id]"
+                                                class="text-danger small mt-1"
+                                            >
+                                                <t
+                                                    t-esc="state.entryErrors[entry.id]"
+                                                />
+                                            </div>
+                                        </t>
+
+                                        <t
+                                            t-if="entry.files.length or entry.allowedCreate"
+                                        >
+                                            <hr class="my-2" />
+                                            <t
+                                                t-foreach="entry.files"
+                                                t-as="file"
+                                                t-key="file.id"
+                                            >
+                                                <div
+                                                    class="row align-items-center mb-1"
+                                                >
+                                                    <div class="col-9">
+                                                        <t t-esc="file.name" />
+                                                    </div>
+                                                    <div class="col-3 text-end">
+                                                        <button
+                                                            type="button"
+                                                            class="btn btn-sm btn-secondary"
+                                                            t-on-click="() => this.onDownloadFile(file)"
+                                                        >Download</button>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    t-if="state.fileErrors[file.id]"
+                                                    class="text-danger small mb-1"
+                                                >
+                                                    <t
+                                                        t-esc="state.fileErrors[file.id]"
+                                                    />
+                                                </div>
+                                            </t>
+
+                                            <t t-if="entry.allowedCreate">
+                                                <t t-if="state.showAddFile[entry.id]">
+                                                    <div
+                                                        class="row g-2 mt-2 pt-2 border-top"
+                                                    >
+                                                        <div class="col-4">
+                                                            <input
+                                                                type="text"
+                                                                class="form-control form-control-sm"
+                                                                placeholder="Name"
+                                                                t-model="state.newFileDrafts[entry.id].name"
+                                                            />
+                                                        </div>
+                                                        <div class="col-5">
+                                                            <input
+                                                                type="file"
+                                                                class="form-control form-control-sm"
+                                                                t-on-change="(ev) => this.onFileSelected(entry, ev)"
+                                                            />
+                                                        </div>
+                                                        <div class="col-3 text-end">
+                                                            <button
+                                                                type="button"
+                                                                class="btn btn-sm btn-primary"
+                                                                t-on-click="() => this.onCreateFile(entry)"
+                                                            >Add</button>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                                <t t-else="">
+                                                    <button
+                                                        type="button"
+                                                        class="btn btn-sm btn-link mt-1"
+                                                        t-on-click="() => this.showAddFileForm(entry)"
+                                                    >+ Add a file</button>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </t>
+
+                                <t t-if="props.allowedCreate">
+                                    <t t-if="state.showAddEntry[group.key]">
+                                        <div class="row g-2">
+                                            <div class="col-9">
+                                                <input
+                                                    type="text"
+                                                    class="form-control form-control-sm"
+                                                    placeholder="Entry name"
+                                                    t-model="state.newEntryDrafts[group.key].name"
+                                                />
+                                            </div>
+                                            <div class="col-3 text-end">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-primary"
+                                                    t-on-click="() => this.onCreateEntry(group.key)"
+                                                >Add</button>
+                                            </div>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-link"
+                                            t-on-click="() => this.showAddEntryForm(group.key)"
+                                        >+ Add an entry</button>
+                                    </t>
+                                    <div
+                                        t-if="state.groupErrors[group.key]"
+                                        class="text-danger small mt-1"
+                                    >
+                                        <t t-esc="state.groupErrors[group.key]" />
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
