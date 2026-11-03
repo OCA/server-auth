@@ -3,6 +3,7 @@
 
 from . import (
     test_controller,
+    test_inbox,
     test_log,
     test_rights,
     test_user,
