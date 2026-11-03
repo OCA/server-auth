@@ -14,3 +14,5 @@ access_vault_send_wizard,access_vault_send_wizard,model_vault_send_wizard,base.g
 access_vault_store_wizard,access_vault_store_wizard,model_vault_store_wizard,base.group_user,1,1,1,1
 access_vault_tag,access_vault_tag,model_vault_tag,base.group_user,1,1,1,1
 access_vault_users_key,access_res_users_key,model_res_users_key,base.group_user,1,1,1,1
+access_vault_access_log_user,vault.access.log.user,model_vault_access_log,base.group_user,1,0,0,0
+access_vault_access_log_manager,vault.access.log.manager,model_vault_access_log,vault.group_vault_manager,1,0,0,0

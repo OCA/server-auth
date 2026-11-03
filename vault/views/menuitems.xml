@@ -62,4 +62,11 @@
         action="action_vault_right"
         sequence="50"
     />
+    <menuitem
+        id="menu_vault_access_log"
+        groups="vault.group_vault_manager"
+        parent="vault.menu_vault"
+        action="action_vault_access_log"
+        sequence="60"
+    />
 </odoo>

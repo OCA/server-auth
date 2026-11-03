@@ -12,9 +12,10 @@
     "category": "Vault",
     "depends": ["base_setup", "web"],
     "data": [
+        "security/vault_security.xml",
         "security/ir.model.access.csv",
         "security/ir_rule.xml",
-        "security/vault_security.xml",
+        "views/vault_access_log_views.xml",
         "views/res_config_settings_views.xml",
         "views/res_users_views.xml",
         "views/vault_entry_views.xml",

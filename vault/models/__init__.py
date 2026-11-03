@@ -16,4 +16,5 @@ from . import (
     vault_log,
     vault_right,
     vault_tag,
+    vault_access_log,
 )
