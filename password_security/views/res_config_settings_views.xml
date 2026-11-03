@@ -22,6 +22,7 @@
                             class="oe_inline"
                         /> days.
                         </span>
+                        <div class="text-muted">Set to 0 to disable</div>
                     </setting>
                     <setting>
                         <span>
@@ -30,6 +31,7 @@
                             class="oe_inline"
                         /> hours again.
                         </span>
+                        <div class="text-muted">Set to 0 to disable</div>
                     </setting>
 
                     <setting>
