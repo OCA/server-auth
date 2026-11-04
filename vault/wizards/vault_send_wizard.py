@@ -28,13 +28,9 @@ class VaultSendWizard(models.TransientModel):
     secret_file = fields.Char()
     filename = fields.Char()
 
-    _sql_constraints = [
-        (
-            "value_check",
-            "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)",
-            "No value found",
-        ),
-    ]
+    _value_check = models.Constraint(
+        "CHECK(secret IS NOT NULL OR secret_file IS NOT NULL)", "No value found"
+    )
 
     def action_send(self):
         if not self.secret and not self.secret_file:

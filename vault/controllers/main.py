@@ -75,7 +75,7 @@ class Controller(http.Controller):
         ctx["message"] = request.env._("Successfully stored")
         return request.render("vault.inbox", ctx)
 
-    @http.route("/vault/public", type="json")
+    @http.route("/vault/public", type="jsonrpc")
     def vault_public(self, user_id):
         """Get the public key of a specific user"""
         user = request.env["res.users"].sudo().browse(user_id).exists()
@@ -84,12 +84,12 @@ class Controller(http.Controller):
 
         return {"public_key": user.active_key.public}
 
-    @http.route("/vault/inbox/get", auth="user", type="json")
+    @http.route("/vault/inbox/get", auth="user", type="jsonrpc")
     def vault_get_inbox(self):
         inboxes = request.env.user.inbox_ids
         return {inbox.token: inbox.key for inbox in inboxes}
 
-    @http.route("/vault/inbox/store", auth="user", type="json")
+    @http.route("/vault/inbox/store", auth="user", type="jsonrpc")
     def vault_store_inbox(self, keys):
         if not isinstance(keys, dict):
             return
@@ -100,23 +100,23 @@ class Controller(http.Controller):
             if isinstance(key, str):
                 inbox.key = key
 
-    @http.route("/vault/keys/store", auth="user", type="json")
+    @http.route("/vault/keys/store", auth="user", type="jsonrpc")
     def vault_store_keys(self, **kwargs):
         """Store the key pair for the current user"""
         return request.env["res.users.key"].store(**kwargs)
 
-    @http.route("/vault/keys/get", auth="user", type="json")
+    @http.route("/vault/keys/get", auth="user", type="jsonrpc")
     def vault_get_keys(self):
         """Get the currently active key pair"""
         return request.env.user.get_vault_keys()
 
-    @http.route("/vault/rights/get", auth="user", type="json")
+    @http.route("/vault/rights/get", auth="user", type="jsonrpc")
     def vault_get_right_keys(self):
         """Get the master keys from the vault.right records"""
         rights = request.env.user.vault_right_ids
         return {right.vault_id.uuid: right.key for right in rights}
 
-    @http.route("/vault/rights/store", auth="user", type="json")
+    @http.route("/vault/rights/store", auth="user", type="jsonrpc")
     def vault_store_right_keys(self, keys):
         """Store the master keys to the specific vault.right records"""
         if not isinstance(keys, dict):
@@ -128,7 +128,7 @@ class Controller(http.Controller):
             if isinstance(master_key, str):
                 right.sudo().key = master_key
 
-    @http.route("/vault/replace", auth="user", type="json")
+    @http.route("/vault/replace", auth="user", type="jsonrpc")
     def vault_replace(self, data):
         """Replace the master keys and values within a single transaction"""
         if not isinstance(data, list):

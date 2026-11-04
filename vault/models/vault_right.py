@@ -56,8 +56,8 @@ class VaultRight(models.Model):
     # Encrypted with the public key of the user
     key = fields.Char()
 
-    _sql_constraints = (
-        ("user_uniq", "UNIQUE(user_id, vault_id)", "The user must be unique"),
+    _user_uniq = models.Constraint(
+        "UNIQUE(user_id, vault_id)", "The user must be unique"
     )
 
     def _get_is_owner(self):

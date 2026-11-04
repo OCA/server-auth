@@ -5,8 +5,8 @@
         <field name="model">vault</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" operator="ilike" />
-                <field name="note" operator="ilike" />
+                <field name="name" />
+                <field name="note" />
             </search>
         </field>
     </record>

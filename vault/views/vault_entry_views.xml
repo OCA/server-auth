@@ -189,10 +189,10 @@
         <field name="model">vault.entry</field>
         <field name="arch" type="xml">
             <search>
-                <field name="complete_name" operator="ilike" />
-                <field name="name" operator="ilike" />
-                <field name="tags" operator="ilike" />
-                <field name="note" operator="ilike" />
+                <field name="complete_name" />
+                <field name="name" />
+                <field name="tags" />
+                <field name="note" />
                 <filter
                     string="Expired"
                     name="expired"

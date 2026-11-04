@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 from odoo.tools import mute_logger
 
 from odoo.addons.base.tests.common import BaseCommon
-from odoo.addons.website.tools import MockRequest
+from odoo.addons.http_routing.tests.common import MockRequest
 
 from ..controllers import main
 
