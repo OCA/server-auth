@@ -6,7 +6,7 @@ import re
 from hashlib import sha256
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -53,13 +53,13 @@ class ResUsersKey(models.Model):
 
     def store(self, iterations, iv, private, public, salt, version):
         if not all(isinstance(x, str) and x for x in [public, private, iv, salt]):
-            raise ValidationError(_("Invalid parameter"))
+            raise ValidationError(self.env._("Invalid parameter"))
 
         if not isinstance(iterations, int) or iterations < 4000:
-            raise ValidationError(_("Invalid parameter"))
+            raise ValidationError(self.env._("Invalid parameter"))
 
         if not isinstance(version, int):
-            raise ValidationError(_("Invalid parameter"))
+            raise ValidationError(self.env._("Invalid parameter"))
 
         domain = [
             ("user_id", "=", self.env.uid),

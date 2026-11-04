@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
@@ -65,7 +65,7 @@ class VaultEntry(models.Model):
     @api.constrains("parent_id")
     def _check_parent_id(self):
         if self._has_cycle():
-            raise ValidationError(_("You can not create recursive entries."))
+            raise ValidationError(self.env._("You can not create recursive entries."))
 
     @api.depends("name", "parent_id.complete_name")
     def _compute_complete_name(self):
@@ -105,7 +105,7 @@ class VaultEntry(models.Model):
             default = {}
 
         if "name" not in default:
-            default["name"] = _("%s (copy)", self.name)
+            default["name"] = self.env._("%s (copy)", self.name)
 
         if "field_ids" not in default:
             default["field_ids"] = [
@@ -145,12 +145,12 @@ class VaultEntry(models.Model):
 
         for rec in self:
             rec.log_info(
-                _("%(action)s entry %(name)s by %(user)s")
-                % {
-                    "action": action,
-                    "name": rec.complete_name,
-                    "user": rec.env.user.display_name,
-                }
+                self.env._(
+                    "%(action)s entry %(name)s by %(user)s",
+                    action=action,
+                    name=rec.complete_name,
+                    user=rec.env.user.display_name,
+                )
             )
 
     @api.model_create_multi
@@ -184,7 +184,7 @@ class VaultEntry(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_import_wizard")
         return {
-            "name": _("Import from file"),
+            "name": self.env._("Import from file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.import.wizard",
@@ -201,7 +201,7 @@ class VaultEntry(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_export_wizard")
         return {
-            "name": _("Export to file"),
+            "name": self.env._("Export to file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.export.wizard",

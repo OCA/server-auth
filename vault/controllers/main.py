@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, http
+from odoo import http
 from odoo.exceptions import AccessDenied
 from odoo.http import request
 
@@ -24,7 +24,7 @@ class Controller(http.Controller):
 
         # A valid token would mean we found a public key
         if not ctx.get("public"):
-            ctx["error"] = _("Invalid token")
+            ctx["error"] = request.env._("Invalid token")
             return request.render("vault.inbox", ctx)
 
         # Just render if GET method
@@ -39,19 +39,19 @@ class Controller(http.Controller):
         iv = request.params.get("iv")
         key = request.params.get("key")
         if not name:
-            ctx["error"] = _("Please specify a name")
+            ctx["error"] = request.env._("Please specify a name")
             return request.render("vault.inbox", ctx)
 
         if not secret and not secret_file:
-            ctx["error"] = _("No secret found")
+            ctx["error"] = request.env._("No secret found")
             return request.render("vault.inbox", ctx)
 
         if secret_file and not filename:
-            ctx["error"] = _("Missing filename")
+            ctx["error"] = request.env._("Missing filename")
             return request.render("vault.inbox", ctx)
 
         if not iv or not key:
-            ctx["error"] = _("Something went wrong with the encryption")
+            ctx["error"] = request.env._("Something went wrong with the encryption")
             return request.render("vault.inbox", ctx)
 
         try:
@@ -67,12 +67,12 @@ class Controller(http.Controller):
             )
         except Exception as e:
             _logger.exception(e)
-            ctx["error"] = _(
+            ctx["error"] = request.env._(
                 "An error occured. Please contact the user or administrator"
             )
             return request.render("vault.inbox", ctx)
 
-        ctx["message"] = _("Successfully stored")
+        ctx["message"] = request.env._("Successfully stored")
         return request.render("vault.inbox", ctx)
 
     @http.route("/vault/public", type="json")

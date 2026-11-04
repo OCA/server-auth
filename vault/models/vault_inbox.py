@@ -5,7 +5,7 @@ import logging
 from datetime import datetime, timedelta
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -81,7 +81,11 @@ class VaultInbox(models.Model):
     ):
         log_info = {"name": user.name, "ip": ip or "n/a"}
         if len(self) == 0:
-            log = _("Created by %(name)s via %(ip)s") % log_info
+            log = self.env._(
+                "Created by %(name)s via %(ip)s",
+                name=log_info["name"],
+                ip=log_info["ip"],
+            )
             return self.create(
                 {
                     "name": name,
@@ -98,7 +102,11 @@ class VaultInbox(models.Model):
 
         self.ensure_one()
         if self.accesses > 0 and datetime.now() < self.expiration:
-            log = _("Written by %(name)s via %(ip)s") % log_info
+            log = self.env._(
+                "Written by %(name)s via %(ip)s",
+                name=log_info["name"],
+                ip=log_info["ip"],
+            )
 
             self.write(
                 {

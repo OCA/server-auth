@@ -55,7 +55,7 @@ class ResUsers(models.Model):
         self.keys.write({"current": False})
         self.vault_right_ids.sudo().unlink()
         self.inbox_ids.unlink()
-        self.env["vault"].search([])._compute_access()
+        self.env["vault"].search([])._compute_access()  # pylint: disable=no-search-all
         return self.action_get_vault()
 
     @api.model

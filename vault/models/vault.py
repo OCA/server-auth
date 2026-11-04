@@ -4,7 +4,7 @@
 import logging
 from uuid import uuid4
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 _logger = logging.getLogger(__name__)
 
@@ -140,7 +140,7 @@ class Vault(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_import_wizard")
         return {
-            "name": _("Import from file"),
+            "name": self.env._("Import from file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.import.wizard",
@@ -154,7 +154,7 @@ class Vault(models.Model):
         self.ensure_one()
         wizard = self.env.ref("vault.view_vault_export_wizard")
         return {
-            "name": _("Export to file"),
+            "name": self.env._("Export to file"),
             "type": "ir.actions.act_window",
             "view_mode": "form",
             "res_model": "vault.export.wizard",

@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, api, models
+from odoo import api, models
 from odoo.exceptions import AccessError
 
 _logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class AbstractVault(models.AbstractModel):
     @api.model
     def raise_access_error(self):
         raise AccessError(
-            _(
+            self.env._(
                 "The requested operation can not be completed due to security "
                 "restrictions."
             )
