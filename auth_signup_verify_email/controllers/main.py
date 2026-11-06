@@ -36,7 +36,7 @@ class SignupVerifyEmail(AuthSignupHome):
         except EmailUndeliverableError as error:
             qcontext["error"] = str(error)
             return request.render("auth_signup.signup", qcontext)
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
             qcontext["error"] = str(error)
             return request.render("auth_signup.signup", qcontext)
         if not values.get("email"):
@@ -54,9 +54,9 @@ class SignupVerifyEmail(AuthSignupHome):
             with request.env.cr.savepoint():
                 sudo_users.signup(values, qcontext.get("token"))
                 sudo_users.reset_password(values.get("login"))
-        except Exception as error:
+        except Exception:
             # Duplicate key or wrong SMTP settings, probably
-            _logger.exception(error)
+            _logger.exception("Passwordless signup failed")
             if (
                 request.env["res.users"]
                 .sudo()
