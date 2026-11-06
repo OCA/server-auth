@@ -1,0 +1,104 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * auth_admin_passkey
+#
+# Translators:
+# OCA Transbot <transbot@odoo-community.org>, 2017
+# Bole <bole@dajmi5.com>, 2018
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 10.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-03-02 18:39+0000\n"
+"PO-Revision-Date: 2019-11-13 17:34+0000\n"
+"Last-Translator: Bole <bole@dajmi5.com>\n"
+"Language-Team: Croatian (https://www.transifex.com/oca/teams/23907/hr/)\n"
+"Language: hr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.8\n"
+
+#. module: auth_admin_passkey
+#. odoo-python
+#: code:addons/auth_admin_passkey/models/res_users.py:0
+msgid "Passkey used"
+msgstr "Korišten ključ"
+
+#. module: auth_admin_passkey
+#. odoo-python
+#: code:addons/auth_admin_passkey/models/res_users.py:0
+msgid ""
+"System Administrator user used his passkey to login with %(login)s.\n"
+"\n"
+"\n"
+"\n"
+"Technicals informations belows : \n"
+"\n"
+"- Login date : %(login_date)s\n"
+"\n"
+msgstr ""
+
+#. module: auth_admin_passkey
+#: model:ir.model,name:auth_admin_passkey.model_res_users
+msgid "User"
+msgstr ""
+
+#, python-format
+#~ msgid "<pre>User with login '%s' has the same password as you.</pre>"
+#~ msgstr "<pre>Korisnik '%s' ima istu zaporku kao i Vi.</pre>"
+
+#, python-format
+#~ msgid ""
+#~ "Admin user used his passkey to login with '%s'.\n"
+#~ "\n"
+#~ "\n"
+#~ "\n"
+#~ "Technicals informations belows : \n"
+#~ "\n"
+#~ "- Login date : %s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Administrator je koristio svoj ključ za prijavu kao '%s'.\n"
+#~ "\n"
+#~ "\n"
+#~ "\n"
+#~ "Tehničke informacije : \n"
+#~ "\n"
+#~ "- Datum prijave : %s\n"
+#~ "\n"
+
+#~ msgid "Passkey"
+#~ msgstr "Ključ"
+
+#~ msgid "Send email to admin user."
+#~ msgstr "Pošalji mail administratoru."
+
+#~ msgid "Send email to user."
+#~ msgstr "Pošalji mail korisniku."
+
+#~ msgid "Users"
+#~ msgstr "Korisnici"
+
+#~ msgid ""
+#~ "When the administrator use his password to login in with a different "
+#~ "account, Odoo will send an email to the account user."
+#~ msgstr ""
+#~ "Kas administrator koristi svoju zaporku za prijavu kao drugi korisnik, "
+#~ "odoo će korisniku poslati email obavijest o tome."
+
+#~ msgid ""
+#~ "When the administrator use his password to login in with a different "
+#~ "account, Odoo will send an email to the admin user."
+#~ msgstr ""
+#~ "Kas administrator koristi svoju zaporku za prijavu kao drugi korisnik, "
+#~ "odoo će administratoru poslati email obavijest o tome."
+
+#, python-format
+#~ msgid "[WARNING] Odoo Security Risk"
+#~ msgstr "[UPOZORENJE] Odoo sigurnosni rizik"
+
+#~ msgid "base.config.settings"
+#~ msgstr "base.config.settings"
