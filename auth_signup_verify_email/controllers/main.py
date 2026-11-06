@@ -4,6 +4,7 @@
 import logging
 
 from email_validator import EmailSyntaxError, EmailUndeliverableError, validate_email
+from werkzeug.exceptions import NotFound
 
 from odoo.http import request, route
 
@@ -20,12 +21,19 @@ class SignupVerifyEmail(AuthSignupHome):
         return super().web_auth_signup(*args, **kw)
 
     def passwordless_signup(self):
-        values = request.params
         qcontext = self.get_auth_signup_qcontext()
+
+        # Same guards as core's web_auth_signup
+        if not qcontext.get("token") and not qcontext.get("signup_enabled"):
+            raise NotFound()
+        if qcontext.get("error"):
+            return request.render("auth_signup.signup", qcontext)
+
+        login = request.params.get("login", "")
 
         # Check good format of e-mail
         try:
-            validate_email(values.get("login", ""))
+            validate_email(login)
         except EmailSyntaxError as error:
             qcontext["error"] = getattr(
                 error,
@@ -36,32 +44,32 @@ class SignupVerifyEmail(AuthSignupHome):
         except EmailUndeliverableError as error:
             qcontext["error"] = str(error)
             return request.render("auth_signup.signup", qcontext)
-        except Exception as error:
+        except Exception as error:  # noqa: BLE001
             qcontext["error"] = str(error)
             return request.render("auth_signup.signup", qcontext)
-        if not values.get("email"):
-            values["email"] = values.get("login")
 
-        # remove values that could raise "Invalid field '*' on model 'res.users'"
-        values.pop("redirect", "")
-        values.pop("token", "")
-
-        # Remove password
-        values["password"] = ""
+        # Only pass the fields the signup form is meant to set: request
+        # params go to a sudo copy() of the template user
+        values = {
+            "login": login,
+            "name": request.params.get("name"),
+            "email": request.params.get("email") or login,
+            "password": "",
+        }
+        # Same language handling as core's _prepare_signup_values
+        lang = request.env.context.get("lang")
+        if lang in dict(request.env["res.lang"].get_installed()):
+            values["lang"] = lang
         sudo_users = request.env["res.users"].with_context(create_user=True).sudo()
 
         try:
             with request.env.cr.savepoint():
                 sudo_users.signup(values, qcontext.get("token"))
-                sudo_users.reset_password(values.get("login"))
-        except Exception as error:
+                sudo_users.reset_password(login)
+        except Exception:
             # Duplicate key or wrong SMTP settings, probably
-            _logger.exception(error)
-            if (
-                request.env["res.users"]
-                .sudo()
-                .search([("login", "=", qcontext.get("login"))])
-            ):
+            _logger.exception("Passwordless signup failed")
+            if request.env["res.users"].sudo().search([("login", "=", login)]):
                 qcontext["error"] = self.env._(
                     "Another user is already registered using this email address."
                 )

@@ -3,17 +3,14 @@
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
     <template id="signup_fields" inherit_id="auth_signup.fields">
-        <xpath expr="//div[hasclass('field-password')]" position="attributes">
-            <attribute name="t-if">only_passwords</attribute>
+        <xpath
+            expr="//div[hasclass('field-password')][label[@for='password']]"
+            position="attributes"
+        >
+            <attribute name="t-if">token and not invalid_token</attribute>
         </xpath>
         <xpath expr="//div[hasclass('field-confirm_password')]" position="attributes">
-            <attribute name="t-if">only_passwords</attribute>
-        </xpath>
-    </template>
-
-    <template id="signup_login_fields" inherit_id="auth_signup.signup">
-        <xpath expr="//input[@name='login']" position="attributes">
-            <attribute name="type">email</attribute>
+            <attribute name="t-if">token and not invalid_token</attribute>
         </xpath>
     </template>
 </odoo>
