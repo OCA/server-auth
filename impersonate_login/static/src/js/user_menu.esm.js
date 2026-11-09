@@ -1,19 +1,22 @@
-/** @odoo-module **/
 // License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import {markup, usePlugin} from "@odoo/owl";
+import {ORM} from "@web/core/orm_plugin";
 import {_t} from "@web/core/l10n/translation";
-import {markup} from "@odoo/owl";
 import {registry} from "@web/core/registry";
 import {session} from "@web/session";
+import {useService} from "@web/core/utils/hooks";
 
-export function impersonateLoginItem(env) {
+export function impersonateLoginItem() {
+    const action = useService("action");
+    const orm = usePlugin(ORM);
     return {
         type: "item",
         id: "impersonate_login",
         description: _t("Switch Login"),
         hide: session.impersonate_from_uid || !session.is_impersonate_user,
         callback: async function () {
-            const actionImpersonateLogin = await env.services.orm.call(
+            const actionImpersonateLogin = await orm.call(
                 "res.users",
                 "action_impersonate_login"
             );
@@ -24,24 +27,26 @@ export function impersonateLoginItem(env) {
             ) {
                 actionImpersonateLogin.help = markup(actionImpersonateLogin.help);
             }
-            env.services.action.doAction(actionImpersonateLogin);
+            action.doAction(actionImpersonateLogin);
         },
         sequence: 55,
     };
 }
 
-export function impersonateBackLoginItem(env) {
+export function impersonateBackLoginItem() {
+    const action = useService("action");
+    const orm = usePlugin(ORM);
     return {
         type: "item",
         id: "impersonate_back",
         description: _t("Back to Original User"),
         hide: !session.impersonate_from_uid,
         callback: async function () {
-            const actionBackToOriginLogin = await env.services.orm.call(
+            const actionBackToOriginLogin = await orm.call(
                 "res.users",
                 "back_to_origin_login"
             );
-            env.services.action.doAction(actionBackToOriginLogin);
+            action.doAction(actionBackToOriginLogin);
         },
         sequence: 55,
     };

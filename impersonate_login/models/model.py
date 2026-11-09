@@ -12,9 +12,7 @@ class BaseModel(models.AbstractModel):
     def _keep_real_user_on_create_write(self):
         # Avoid overriding the create_uid and write_uid
         # when the model is abstract or transient
-        if self._abstract or self._transient:
-            return True
-        return False
+        return bool(self._abstract or self._transient)
 
     def _prepare_create_values(self, vals_list):
         result_vals_list = super()._prepare_create_values(vals_list)
