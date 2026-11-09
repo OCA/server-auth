@@ -3,7 +3,7 @@
      @author Kévin Roche <kevin.roche@akretion.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <record model="res.groups" id="group_impersonate_login">
+    <record id="group_impersonate_login" model="res.groups">
         <field name="name">Impersonate Users</field>
         <field
             name="user_ids"
