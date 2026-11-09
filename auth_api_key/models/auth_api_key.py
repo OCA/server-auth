@@ -20,7 +20,6 @@ class AuthApiKey(models.Model):
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
-        string="User",
         required=True,
         help="""The user used to process the requests authenticated by
         the api key""",
