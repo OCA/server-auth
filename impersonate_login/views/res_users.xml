@@ -3,7 +3,7 @@
      @author Kévin Roche <kevin.roche@akretion.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
 <odoo>
-    <record model="ir.ui.view" id="impersonate_res_users_tree">
+    <record id="impersonate_res_users_tree" model="ir.ui.view">
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_tree" />
         <field name="type">list</field>
