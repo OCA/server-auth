@@ -7,7 +7,7 @@ import logging
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.http import request
-from odoo.service import security
+from odoo.http.session import update_session_token
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ class Users(models.Model):
             config_restrict = (
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("impersonate_login.restrict_impersonate_admin_settings")
+                .get_bool("impersonate_login.restrict_impersonate_admin_settings")
             )
             if config_restrict:
                 admin_settings_group = self.env.ref("base.group_system")
@@ -73,10 +73,8 @@ class Users(models.Model):
                     f"Login as {self._get_partner_name(self.id)}"
                 )
                 # invalidate session token cache as we've changed the uid
-                request.env.registry.clear_cache()
-                request.session.session_token = security.compute_session_token(
-                    request.session, request.env
-                )
+                request.env.transaction.invalidate_ormcache()
+                update_session_token(request.session, request.env)
 
                 # reload the client; open the first available root menu
                 menu = self.env["ir.ui.menu"].search([("parent_id", "=", False)])[:1]
@@ -127,12 +125,10 @@ class Users(models.Model):
                     }
                 )
                 # invalidate session token cache as we've changed the uid
-                request.env.registry.clear_cache()
+                request.env.transaction.invalidate_ormcache()
                 request.session["impersonate_from_uid"] = False
                 request.session["impersonate_log_id"] = False
-                request.session.session_token = security.compute_session_token(
-                    request.session, request.env
-                )
+                update_session_token(request.session, request.env)
                 logger.info(
                     f"IMPERSONATE: {self._get_partner_name(from_uid)} "
                     f"Logout as {self._get_partner_name(self.env.uid)}"
