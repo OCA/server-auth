@@ -43,6 +43,9 @@ class OpenIDLogin(OAuthLogin):
                     if "openid" not in provider["scope"].split():
                         _logger.error("openid connect scope must contain 'openid'")
                     params["scope"] = provider["scope"]
+                # prompt (https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)
+                if provider.get("prompt"):
+                    params["prompt"] = provider["prompt"]
                 # auth link that the user will click
                 provider["auth_link"] = "{}?{}".format(
                     provider["auth_endpoint"], url_encode(params)

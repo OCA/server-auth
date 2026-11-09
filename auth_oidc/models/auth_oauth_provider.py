@@ -46,6 +46,19 @@ class AuthOauthProvider(models.Model):
         string="Token URL", help="Required for OpenID Connect authorization code flow."
     )
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
+    prompt = fields.Selection(
+        [
+            ("none", "None"),
+            ("login", "Login"),
+            ("consent", "Consent"),
+            ("select_account", "Select Account"),
+        ],
+        help="Value of the OpenID Connect 'prompt' parameter added to the "
+        "authentication link. 'None' requests silent authentication without "
+        "any user interface and fails if the user has no active session at the "
+        "identity provider. Use 'Select Account' to always show the account "
+        "chooser. Leave empty to let the provider decide.",
+    )
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):

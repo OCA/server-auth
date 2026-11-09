@@ -1,3 +1,8 @@
+## 19.0.1.1.0 2026-10-27
+
+- Add a *Prompt* field on the provider to set the OpenID Connect `prompt`
+  parameter (default `none`).
+
 ## 19.0.1.0.0 2025-10-01
 
 - Odoo 19 migration
