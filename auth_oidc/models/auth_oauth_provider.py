@@ -3,11 +3,12 @@
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
-import secrets
 
 import requests
 
-from odoo import fields, models, tools
+from odoo import api, fields, models, tools
+
+from .. import pkce
 
 try:
     from jose import jwt
@@ -39,13 +40,22 @@ class AuthOauthProvider(models.Model):
         help="Used in OpenID Connect authorization code flow for confidential clients.",
     )
     code_verifier = fields.Char(
-        default=lambda self: secrets.token_urlsafe(32), help="Used for PKCE."
+        compute="_compute_code_verifier",
+        help="Used for PKCE, one value per authorization request.",
     )
     validation_endpoint = fields.Char(required=False)
     token_endpoint = fields.Char(
         string="Token URL", help="Required for OpenID Connect authorization code flow."
     )
     jwks_uri = fields.Char(string="JWKS URL", help="Required for OpenID Connect.")
+
+    @api.depends()
+    def _compute_code_verifier(self):
+        # Never False: the controller calls .encode("ascii") on this value,
+        # and a boolean there would break the login page with an
+        # AttributeError instead of failing the token exchange cleanly.
+        for record in self:
+            record.code_verifier = pkce.current_verifier(record.id) or ""
 
     @tools.ormcache("self.jwks_uri", "kid")
     def _get_keys(self, kid):

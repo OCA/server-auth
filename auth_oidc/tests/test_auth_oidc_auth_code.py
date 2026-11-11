@@ -314,6 +314,122 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         self.assertEqual(token, "84/2")
         self.assertEqual(login, user.login)
 
+    def test_code_verifier_rotates_between_requests(self):
+        """Test that each request gets its own verifier
+
+        Exercised on ``pkce.current_verifier`` directly: two requests reuse
+        the same environment here, so the ORM would hand back a cached
+        value from the first one and hide the rotation.
+        """
+        from .. import pkce
+
+        with MockRequest(self.env):
+            first = pkce.current_verifier(self.provider_rec.id)
+        with MockRequest(self.env):
+            second = pkce.current_verifier(self.provider_rec.id)
+        self.assertTrue(first)
+        self.assertNotEqual(first, second)
+
+    def test_code_verifier_is_stable_within_a_request(self):
+        """Test that listing providers twice in one request agrees
+
+        The login page renders the auth links more than once per request.
+        If the two renders disagreed, the challenge in the link the user
+        clicks would not match the verifier filed for it.
+        """
+        self.env["auth.oauth.provider"].search(
+            [("client_id", "!=", "auth_oidc-test")]
+        ).write(dict(enabled=False))
+        with MockRequest(self.env):
+            first = OpenIDLogin().list_providers()[0]["auth_link"]
+            second = OpenIDLogin().list_providers()[0]["auth_link"]
+        self.assertEqual(
+            parse_qs(urlparse(first).query)["code_challenge"],
+            parse_qs(urlparse(second).query)["code_challenge"],
+        )
+        self.assertEqual(
+            parse_qs(urlparse(first).query)["state"],
+            parse_qs(urlparse(second).query)["state"],
+        )
+
+    def test_concurrent_authorizations_do_not_invalidate_each_other(self):
+        """Test that two authorizations in one session each keep their verifier
+
+        Two tabs, or a login page rendered again while an authorization is
+        still in flight, must not overwrite each other -- that would make
+        the first one fail with an invalid_grant at the provider.
+        """
+        from .. import pkce
+
+        with MockRequest(self.env):
+            state_a = pkce.remember("verifier-a", {"d": "db"})
+            state_b = pkce.remember("verifier-b", {"d": "db"})
+            self.assertNotEqual(state_a["k"], state_b["k"])
+            self.assertEqual(pkce.claim(state_a), "verifier-a")
+            self.assertEqual(pkce.claim(state_b), "verifier-b")
+            # a verifier is good for exactly one token request
+            self.assertEqual(pkce.claim(state_a), "")
+
+    def test_code_verifier_not_stored_on_provider(self):
+        """Test that the verifier is not a column of auth_oauth_provider"""
+        field = self.env["auth.oauth.provider"]._fields["code_verifier"]
+        self.assertFalse(field.store)
+        self.assertEqual(field.compute, "_compute_code_verifier")
+
+    @responses.activate
+    def test_login_uses_verifier_from_state(self):
+        """Test that the token request carries the verifier filed for this state"""
+        user = self._prepare_login_test_user()
+        self._prepare_login_test_responses(id_token_body={"user_id": user.login})
+        self.env["auth.oauth.provider"].search(
+            [("client_id", "!=", "auth_oidc-test")]
+        ).write(dict(enabled=False))
+
+        with MockRequest(self.env):
+            auth_link = OpenIDLogin().list_providers()[0]["auth_link"]
+            state = parse_qs(urlparse(auth_link).query)["state"][0]
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": state, "code": "the_code"},
+            )
+
+        token_request = [
+            call.request.body
+            for call in responses.calls
+            if call.request.url.endswith("/token")
+        ]
+        self.assertTrue(token_request)
+        body = parse_qs(token_request[0])
+        self.assertIn("code_verifier", body)
+        self.assertTrue(body["code_verifier"][0])
+
+    @responses.activate
+    def test_login_without_state_verifier_sends_empty(self):
+        """Test that a callback without a filed verifier does not crash
+
+        An authorization started before the upgrade has no session entry.
+        The token exchange is then rejected by the provider, but it must
+        not raise here.
+        """
+        user = self._prepare_login_test_user()
+        self._prepare_login_test_responses(id_token_body={"user_id": user.login})
+
+        with MockRequest(self.env):
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({}), "code": "the_code"},
+            )
+
+        token_request = [
+            call.request.body
+            for call in responses.calls
+            if call.request.url.endswith("/token")
+        ]
+        self.assertTrue(token_request)
+        # present but empty: the provider rejects the exchange, which is the
+        # controlled failure we want, rather than the request raising here
+        self.assertEqual(parse_qs(token_request[0])["code_verifier"], [""])
+
     @responses.activate
     def test_login_with_jwk_format(self):
         """Test that login works with proper jwks format"""
