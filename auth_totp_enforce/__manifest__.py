@@ -4,7 +4,7 @@
 {
     "name": "Enforce Two-Factor Authentication",
     "summary": "Force users to set up an authenticator app before they can log in.",
-    "version": "18.0.1.0.0",
+    "version": "17.0.1.0.0",
     "author": "ForgeFlow, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/server-auth",
     "category": "Authentication",
