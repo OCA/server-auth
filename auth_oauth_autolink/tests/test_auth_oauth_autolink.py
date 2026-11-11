@@ -77,9 +77,14 @@ class TestAuthOauthAutolink(TransactionCase):
             .search_count([("name", "=", module), ("state", "=", "installed")])
         )
 
-    def _skip_if_logins_are_lowercased(self):
-        if self._is_installed("auth_user_case_insensitive"):
-            self.skipTest("auth_user_case_insensitive forces logins to lowercase")
+    def _store_login(self, user, login):
+        """Store ``login`` with its case, which ``auth_user_case_insensitive``
+        would lowercase on create and write."""
+        self.env.flush_all()
+        self.env.cr.execute(
+            "UPDATE res_users SET login = %s WHERE id = %s", (login, user.id)
+        )
+        user.invalidate_recordset(["login"])
 
     def test_links_existing_user_by_verified_email(self):
         messages_before = self._messages(self.user)
@@ -160,8 +165,7 @@ class TestAuthOauthAutolink(TransactionCase):
         )
 
     def test_email_match_is_case_insensitive(self):
-        self._skip_if_logins_are_lowercased()
-        self.user.login = "Ana.Perez@Example.com"
+        self._store_login(self.user, "Ana.Perez@Example.com")
 
         linked = self._autolink(
             validation=self._validation(email="ANA.perez@example.COM")
@@ -256,12 +260,16 @@ class TestAuthOauthAutolink(TransactionCase):
         self.assertFalse(self.user.oauth_uid)
 
     def test_ambiguous_email_does_not_link(self):
-        self._skip_if_logins_are_lowercased()
         twin = self.env["res.users"].create(
-            {"name": "Ana Perez (twin)", "login": "ANA.PEREZ@example.com"}
+            {"name": "Ana Perez (twin)", "login": "ana.perez.twin@example.com"}
         )
+        self._store_login(twin, "ANA.PEREZ@example.com")
 
-        self._assert_refused()
+        with self.assertLogs(
+            "odoo.addons.auth_oauth_autolink.models.res_users", level="INFO"
+        ) as logs:
+            self._assert_refused()
 
+        self.assertIn("2 users share the login", "".join(logs.output))
         self.assertFalse(self.user.oauth_uid)
         self.assertFalse(twin.oauth_uid)
