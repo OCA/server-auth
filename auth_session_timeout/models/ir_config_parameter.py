@@ -34,9 +34,3 @@ class IrConfigParameter(models.Model):
             )
         )
         return urls.split(",")
-
-    def write(self, vals):
-        res = super().write(vals)
-        if DELAY_KEY == self.key or IGNORED_PATH_KEY == self.key:
-            self.env.registry.clear_cache()
-        return res

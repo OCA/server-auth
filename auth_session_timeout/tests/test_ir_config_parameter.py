@@ -65,3 +65,23 @@ class TestIrConfigParameterCaching(common.TransactionCase):
         self.param_obj.set_param("inactive_session_time_out_ignored_url", "example.com")
         self.param_obj._auth_timeout_get_parameter_ignored_urls()
         self.assertTrue(self.get_param_called)
+
+    def test_check_param_writes_several_params(self):
+        params = self.param_obj.search(
+            [
+                (
+                    "key",
+                    "in",
+                    [
+                        "inactive_session_time_out_delay",
+                        "inactive_session_time_out_ignored_url",
+                    ],
+                )
+            ]
+        )
+        self.assertEqual(len(params), 2)
+        self.param_obj._auth_timeout_get_parameter_delay()
+        self.get_param_called = False
+        params.write({"value": "7202"})
+        self.assertEqual(self.param_obj._auth_timeout_get_parameter_delay(), 7202)
+        self.assertTrue(self.get_param_called)
