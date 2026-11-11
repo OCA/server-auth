@@ -1,0 +1,100 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* auth_totp_enforce
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2026-09-16 14:46+0000\n"
+"Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
+"Language-Team: none\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Activate &amp; Log in"
+msgstr "Attiva e registra in"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Cancel"
+msgstr "Annulla"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Cannot scan it?"
+msgstr "Non si può leggere?"
+
+#. module: auth_totp_enforce
+#: model:res.groups,name:auth_totp_enforce.group_mfa_exempt
+msgid "Exempt from 2FA enforcement"
+msgstr "Esenzione dall'obbligo di 2FA"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid ""
+"Install an authenticator app on your device\n"
+"                        (Authy, Google Authenticator, Microsoft Authenticator...)."
+msgstr ""
+"Installa un'app di autenticazione sul tuo dispositivo\n"
+"                        (Authy, Google Authenticator, Microsoft "
+"Authenticator...)."
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Look for an \"Add an account\" button."
+msgstr "Cerca un pulsante \"Aggiungi account\"."
+
+#. module: auth_totp_enforce
+#: model:res.groups,comment:auth_totp_enforce.group_mfa_exempt
+msgid "Members of this group are NOT forced to configure MFA at login."
+msgstr ""
+"I membri di questo gruppo NON sono obbligati a configurare l'MFA al momento "
+"dell'accesso."
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "QR Code"
+msgstr "Codice QR"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Scan the QR code below, or enter the key manually."
+msgstr "Scansiona il codice QR qui sotto o inserisci la chiave manualmente."
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Set up MFA"
+msgstr "Imposta un MFA"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Two-factor authentication is required for your account."
+msgstr "Per il tuo account è richiesta l'autenticazione a due fattori."
+
+#. module: auth_totp_enforce
+#: model:ir.model,name:auth_totp_enforce.model_res_users
+msgid "User"
+msgstr "Utente"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "Verification Code"
+msgstr "Codice di verifica"
+
+#. module: auth_totp_enforce
+#. odoo-python
+#: code:addons/auth_totp_enforce/controllers/home.py:0
+msgid "Verification failed, please double-check the 6-digit code"
+msgstr "Verifica non riuscita; si prega di ricontrollare il codice a 6 cifre"
+
+#. module: auth_totp_enforce
+#: model_terms:ir.ui.view,arch_db:auth_totp_enforce.auth_totp_setup_form
+msgid "e.g. 123456"
+msgstr "es. 123456"

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="group_mfa_exempt" model="res.groups">
+        <field name="name">Exempt from 2FA enforcement</field>
+        <field name="category_id" ref="base.module_category_hidden" />
+        <field
+            name="comment"
+        >Members of this group are NOT forced to configure MFA at login.</field>
+    </record>
+</odoo>
