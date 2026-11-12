@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_file_form" model="ir.ui.view">
+        <field name="model">vault.file</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="vault_id" invisible="1" />
+                        <field name="entry_id" invisible="1" />
+                        <field name="iv" invisible="1" />
+                        <field name="master_key" invisible="1" />
+                        <field name="name" invisible="1" />
+                        <field name="value" widget="vault_file" filename="name" />
+                        <field name="write_date" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_vault_file_tree" model="ir.ui.view">
+        <field name="model">vault.file</field>
+        <field name="arch" type="xml">
+            <list create="false" delete="false">
+                <field name="vault_id" column_invisible="1" />
+                <field name="entry_id" column_invisible="1" />
+                <field name="iv" column_invisible="1" />
+                <field name="master_key" column_invisible="1" />
+                <field name="name" column_invisible="1" />
+                <field name="value" widget="vault_file" filename="name" />
+                <field name="write_date" />
+            </list>
+        </field>
+    </record>
+</odoo>
