@@ -6,7 +6,7 @@
         name="Auth SAML Providers"
     >
         <xpath expr="//t[@t-set='auth_btns']" position="after">
-            <t t-set="auth_btns" t-value="saml_providers + auth_btns" />
+            <t t-set="auth_btns" t-value="(saml_providers or []) + auth_btns" />
         </xpath>
     </template>
 
