@@ -1,0 +1,2 @@
+- XCG SAS, part of [Orbeet](https://orbeet.io/)
+  - Vincent Hatakeyama <vincent.hatakeyama@orbeet.io>
