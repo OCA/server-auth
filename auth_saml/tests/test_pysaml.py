@@ -532,6 +532,27 @@ class TestPySaml(HttpCase):
             + "/web#action=37&model=ir.module.module&view_type=kanban&menu_id=5",
         )
 
+    def test_subpath(self):
+        """Test that URL will be kept after SAML login with autoredirect."""
+        self.add_provider_to_user()
+
+        redirect_url = self.saml_provider._get_auth_request(
+            {"r": "%2Fodoo%2Flist-providers"}
+        )
+        response = self.idp.fake_login(redirect_url)
+        unpacked_response = response._unpack()
+
+        for key in unpacked_response:
+            unpacked_response[key] = html.unescape(unpacked_response[key])
+        response = self.url_open(
+            "/auth_saml/signin",
+            data=unpacked_response,
+            allow_redirects=True,
+            timeout=300,
+        )
+        self.assertTrue(response.ok)
+        self.assertEqual(response.url, self.base_url() + "/odoo/list-providers")
+
     def test_disallow_user_password_when_changing_settings(self):
         """Test that disabling the setting will remove passwords from related users"""
         # We activate the settings to allow password login
