@@ -2,7 +2,9 @@
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl.html).
 
 import time
+from unittest.mock import patch
 
+from odoo import modules
 from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase, new_test_user
 
@@ -68,6 +70,13 @@ class TestResUsers(TransactionCase):
             rec_id._check_password("asdQWE123$%^3"),
             "Password is valid but check failed.",
         )
+
+    def test_check_password_rules_without_running_test(self):
+        """With tests enabled but no test running yet, ``current_test`` is a
+        boolean: the rules are skipped instead of crashing."""
+        rec_id = self._new_record()
+        with patch.object(modules.module, "current_test", False):
+            self.assertTrue(rec_id._check_password_rules("password"))
 
     def test_check_password_raises_error_for_invalid_password(self):
         rec_id = self._new_record()
