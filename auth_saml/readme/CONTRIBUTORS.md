@@ -1,9 +1,9 @@
-- [XCG Consulting](https://xcg-consulting.fr/):
-  - Florent Aide \<<florent.aide@xcg-consulting.fr>\>
-  - Vincent Hatakeyama \<<vincent.hatakeyama@xcg-consulting.fr>\>
+- XCG SAS part of [Orbeet](https://orbeet.io/):
+  - Florent Aide \<<florent.aide@orbeet.io>\>
+  - Vincent Hatakeyama \<<vincent.hatakeyama@orbeet.io>\>
   - Alexandre Brun
-  - Houzéfa Abbasbhay \<<houzefa.abba@xcg-consulting.fr>\>
-  - Szeka Wong \<<szeka.wong@xcg-consulting.fr>\>
+  - Houzéfa Abbasbhay \<<houzefa.abba@orbeet.io>\>
+  - Szeka Wong \<<szeka.wong@orbeet.io>\>
 - Jeremy Co Kim Len \<<jeremy.cokimlen@vinci-concessions.com>\>
 - Jeffery Chen Fan \<<jeffery9@gmail.com>\>
 - Bhavesh Odedra \<<bodedra@opensourceintegrators.com>\>
