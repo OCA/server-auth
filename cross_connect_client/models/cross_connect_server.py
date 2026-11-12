@@ -31,7 +31,6 @@ class CrossConnectServer(models.Model):
     )
     menu_id = fields.Many2one(
         "ir.ui.menu",
-        string="Menu",
         help="Menu to display the Cross Connect Server in the menu",
         compute="_compute_menu_id",
         store=True,

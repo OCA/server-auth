@@ -18,7 +18,6 @@ class AuthOauthMultiToken(models.Model):
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
-        string="User",
         required=True,
         readonly=True,
         index=True,

@@ -90,7 +90,6 @@ class AuthSamlProvider(models.Model):
     attribute_mapping_ids = fields.One2many(
         "auth.saml.attribute.mapping",
         "provider_id",
-        string="Attribute Mapping",
         copy=True,
     )
     active = fields.Boolean(default=True)
