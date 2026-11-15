@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="inbox">
+        <t t-call="web.login_layout">
+            <t t-call-assets="vault.assets_frontend" t-css="false" defer_load="True" />
+
+            <form
+                class="oe_login_form"
+                role="form"
+                t-attf-action="/vault/inbox/{{ token }}"
+                method="post"
+                onsubmit="this.action = this.action + location.hash"
+            >
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    t-att-value="request.csrf_token()"
+                />
+                <input type="hidden" id="token" name="token" t-att-value="token" />
+                <input type="hidden" id="public" name="public" t-att-value="public" />
+                <input type="hidden" id="encrypted" name="encrypted" />
+                <input type="hidden" id="encrypted_file" name="encrypted_file" />
+                <input type="hidden" id="filename" name="filename" />
+                <input type="hidden" id="iv" name="iv" />
+                <input type="hidden" id="key" name="key" />
+
+                <div class="form-group">
+                    <label for="name">Name of your secret:</label>
+                    <input
+                        t-if="name"
+                        class="form-control"
+                        type="text"
+                        name="name"
+                        readonly="readonly"
+                        t-att-value="name"
+                    />
+                    <input
+                        t-else=""
+                        class="form-control"
+                        type="text"
+                        name="name"
+                        required="required"
+                        autofocus="autofocus"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="secret">Secret to share:</label>
+                    <input
+                        id="secret"
+                        class="form-control"
+                        placeholder="Secret"
+                        type="text"
+                        name="secret"
+                        required="required"
+                        autofocus="autofocus"
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label for="secret">File to share:</label>
+                    <input
+                        id="secret_file"
+                        class="form-control"
+                        type="file"
+                        placeholder="Secret"
+                        name="secret_file"
+                        required="required"
+                    />
+                </div>
+
+                <p t-if="error" class="alert alert-danger" role="alert" t-out="error" />
+                <p
+                    t-if="message"
+                    class="alert alert-success"
+                    role="status"
+                    t-out="message"
+                />
+
+                <div
+                    t-attf-class="clearfix text-center mb-1 {{'pt-2' if form_small else 'pt-3'}}"
+                >
+                    <button
+                        id="submit"
+                        class="btn btn-primary btn-block"
+                        type="submit"
+                        disabled="disabled"
+                    >Submit secret</button>
+                </div>
+            </form>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,3 @@
+- Florian Kantelberg \<florian.kantelberg@initos.com\>
+- [Tecnativa](https://www.tecnativa.com):
+  - Carlos Roca
