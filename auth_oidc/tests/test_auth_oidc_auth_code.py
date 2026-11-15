@@ -1,7 +1,9 @@
 # Copyright 2021 ACSONE SA/NV <https://acsone.eu>
 # License: AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import base64
 import contextlib
+import hashlib
 import json
 import logging
 from urllib.parse import parse_qs, urlparse
@@ -106,6 +108,58 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             self.assertTrue(params["nonce"])
             self.assertTrue(params["state"])
             self.assertEqual(params["redirect_uri"], [BASE_URL + "/auth_oauth/signin"])
+            self.assertNotIn("prompt", params)
+
+    def test_auth_link_implicit_flow(self):
+        """Test that the authentication link of the implicit flow is correct,
+        including a configured prompt=none."""
+        # disable existing providers except our test provider
+        self.env["auth.oauth.provider"].search(
+            [("client_id", "!=", "auth_oidc-test")]
+        ).write(dict(enabled=False))
+        self.provider_rec.write({"flow": "id_token", "prompt": "none"})
+        with MockRequest(self.env):
+            providers = OpenIDLogin().list_providers()
+            self.assertEqual(len(providers), 1)
+            auth_link = providers[0]["auth_link"]
+            assert auth_link.startswith(self.provider_rec.auth_endpoint)
+            params = parse_qs(urlparse(auth_link).query)
+            self.assertEqual(params["response_type"], ["id_token token"])
+            self.assertEqual(params["client_id"], [self.provider_rec.client_id])
+            self.assertEqual(params["scope"], ["openid email"])
+            expected_challenge = (
+                base64.urlsafe_b64encode(
+                    hashlib.sha256(
+                        self.provider_rec.code_verifier.encode("ascii")
+                    ).digest()
+                )
+                .rstrip(b"=")
+                .decode("ascii")
+            )
+            self.assertEqual(params["code_challenge"], [expected_challenge])
+            self.assertEqual(params["code_challenge_method"], ["S256"])
+            self.assertTrue(params["nonce"])
+            self.assertTrue(params["state"])
+            self.assertEqual(params["redirect_uri"], [BASE_URL + "/auth_oauth/signin"])
+            # "none" is a real OIDC prompt value, not an empty selection
+            self.assertEqual(params["prompt"], ["none"])
+
+    def test_auth_link_prompt(self):
+        """Test that the configured prompt is added to the authentication link."""
+        self.env["auth.oauth.provider"].search(
+            [("client_id", "!=", "auth_oidc-test")]
+        ).write(dict(enabled=False))
+        self.provider_rec.prompt = "select_account"
+        with MockRequest(self.env):
+            providers = OpenIDLogin().list_providers()
+            self.assertEqual(len(providers), 1)
+            params = parse_qs(urlparse(providers[0]["auth_link"]).query)
+            self.assertEqual(params["prompt"], ["select_account"])
+        self.provider_rec.prompt = False
+        with MockRequest(self.env):
+            providers = OpenIDLogin().list_providers()
+            params = parse_qs(urlparse(providers[0]["auth_link"]).query)
+            self.assertNotIn("prompt", params)
 
     def _prepare_login_test_user(self):
         user = self.env["res.users"].create(
