@@ -66,7 +66,7 @@ def _split(uri):
         return None
     try:
         parts = urlsplit(uri)
-        parts.port  # pylint: disable=pointless-statement
+        _port = parts.port  # raises ValueError for an invalid port
     except ValueError:
         return None
     return parts
@@ -135,7 +135,7 @@ def normalize_uri(uri):
 
 
 def _signature(secret, scope, body):
-    message = ("%s:%s" % (scope, body)).encode()
+    message = (f"{scope}:{body}").encode()
     return hmac.new(secret.encode(), message, hashlib.sha256).hexdigest()
 
 
@@ -144,7 +144,7 @@ def sign(secret, scope, values, max_age):
     payload = dict(values, exp=int(time.time()) + max_age)
     body = json.dumps(payload, sort_keys=True).encode()
     body = base64.urlsafe_b64encode(body).decode().rstrip("=")
-    return "%s.%s" % (body, _signature(secret, scope, body))
+    return f"{body}.{_signature(secret, scope, body)}"
 
 
 def verify(secret, scope, signed):
@@ -234,16 +234,16 @@ def fetch_metadata_document(url):
     )
     try:
         if response.status_code != 200:
-            raise ValueError("HTTP status %s" % response.status_code)
+            raise ValueError(f"HTTP status {response.status_code}")
         content_type = response.headers.get("Content-Type", "")
         content_type = content_type.split(";")[0].strip().lower()
         if content_type != "application/json" and not content_type.endswith("+json"):
-            raise ValueError("unexpected content type %r" % content_type)
+            raise ValueError(f"unexpected content type {content_type!r}")
         size, chunks = 0, []
         for chunk in response.iter_content(chunk_size=1024):
             size += len(chunk)
             if size > METADATA_DOCUMENT_MAX_BYTES:
-                raise ValueError("document larger than %s bytes" % size)
+                raise ValueError(f"document larger than {size} bytes")
             if time.monotonic() > deadline:
                 raise ValueError("document not received in time")
             chunks.append(chunk)

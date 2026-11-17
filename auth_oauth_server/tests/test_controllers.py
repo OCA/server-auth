@@ -283,7 +283,7 @@ class TestControllers(common.OAuthServerMixin, HttpCase):
     def test_confidential_client_basic_auth(self):
         client = self.confidential_client
         _authorization, code, verifier = self.approve(client=client)
-        credentials = "%s:%s" % (client.identifier, self.client_secret)
+        credentials = f"{client.identifier}:{self.client_secret}"
         response = self.token_request(
             {
                 "grant_type": "authorization_code",

@@ -22,7 +22,39 @@ def pkce_pair():
     return verifier, pkce_s256(verifier)
 
 
-class OAuthServerMixin:
+def _remove_attrs(cls, names):
+    for name in names & set(vars(cls)):
+        delattr(cls, name)
+
+
+class AuthMethodsMixin:
+    """For the test cases that create protected resources.
+
+    auth_jwt adds the ``auth="jwt_<name>"`` methods of each validator, those of
+    the resources included, to the ir.http class, where they outlive the
+    records rolled back after a test; Odoo fails the tests that leave such
+    attributes behind. The methods a test adds are removed after it; call
+    ``accept_auth_methods()`` at the end of setUpClass to keep those of the
+    class fixtures until the end of the class.
+    """
+
+    @classmethod
+    def accept_auth_methods(cls):
+        ir_http = type(cls.env["ir.http"])
+        added = set(vars(ir_http)) - cls.attrs_before["ir.http"]
+        cls.attrs_before["ir.http"] |= added
+        cls.addClassCleanup(_remove_attrs, ir_http, added)
+
+    def setUp(self):
+        super().setUp()
+        ir_http = type(self.env["ir.http"])
+        attrs_before = set(vars(ir_http))
+        self.addCleanup(
+            lambda: _remove_attrs(ir_http, set(vars(ir_http)) - attrs_before)
+        )
+
+
+class OAuthServerMixin(AuthMethodsMixin):
     """A resource, a public and a confidential client, and a user."""
 
     @classmethod
@@ -35,7 +67,7 @@ class OAuthServerMixin:
         cls.client = env["oauth.server.client"].create(
             {
                 "name": "Test App",
-                "redirect_uris": "%s\n%s" % (REDIRECT_URI, LOOPBACK_REDIRECT_URI),
+                "redirect_uris": f"{REDIRECT_URI}\n{LOOPBACK_REDIRECT_URI}",
             }
         )
         cls.confidential_client = env["oauth.server.client"].create(
@@ -45,6 +77,7 @@ class OAuthServerMixin:
         cls.client_secret = action["context"]["default_secret"]
         cls.user = new_test_user(env, login="oauth_user")
         cls.other_user = new_test_user(env, login="oauth_other")
+        cls.accept_auth_methods()
 
     def approve(self, client=None, user=None, scopes="read write"):
         """What the consent page does: returns (authorization, code, verifier)."""

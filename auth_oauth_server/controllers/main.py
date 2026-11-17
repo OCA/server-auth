@@ -202,6 +202,9 @@ class OAuthServerController(http.Controller):
     # ------------------------------------------------------------------
     # Token, revocation and registration endpoints
     # ------------------------------------------------------------------
+    # These endpoints write, and auth="none" makes a route read-only by
+    # default since Odoo 17.2: they declare readonly=False rather than rely on
+    # the retry on a read/write cursor, which would run the flow twice.
 
     @staticmethod
     def _basic_credentials():
@@ -218,6 +221,7 @@ class OAuthServerController(http.Controller):
         cors="*",
         csrf=False,
         save_session=False,
+        readonly=False,
     )
     def token(self, **params):
         env = self._env()
@@ -247,6 +251,7 @@ class OAuthServerController(http.Controller):
         cors="*",
         csrf=False,
         save_session=False,
+        readonly=False,
     )
     def revoke(self, **params):
         env = self._env()
@@ -269,6 +274,7 @@ class OAuthServerController(http.Controller):
         cors="*",
         csrf=False,
         save_session=False,
+        readonly=False,
     )
     def register(self):
         env = self._env()

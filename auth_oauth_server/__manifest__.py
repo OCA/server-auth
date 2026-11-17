@@ -4,7 +4,7 @@
 {
     "name": "OAuth Authorization Server",
     "summary": "Let applications obtain OAuth 2.1 access tokens for Odoo users",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "category": "Tools",
     "license": "LGPL-3",
     "author": "Lorenzo Battistini, Odoo Community Association (OCA)",

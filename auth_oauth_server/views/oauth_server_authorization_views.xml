@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="oauth_server_authorization_view_tree" model="ir.ui.view">
-        <field name="name">oauth.server.authorization.tree</field>
+        <field name="name">oauth.server.authorization.list</field>
         <field name="model">oauth.server.authorization</field>
         <field name="arch" type="xml">
-            <tree create="false" edit="false">
+            <list create="false" edit="false">
                 <field name="create_date" string="Allowed On" />
                 <field name="user_id" />
                 <field name="client_id" />
@@ -18,7 +18,7 @@
                     decoration-success="state == 'active'"
                     decoration-muted="state in ('expired', 'revoked')"
                 />
-            </tree>
+            </list>
         </field>
     </record>
     <record id="oauth_server_authorization_view_form" model="ir.ui.view">
@@ -31,8 +31,8 @@
                         name="action_revoke"
                         type="object"
                         string="Revoke"
-                        attrs="{'invisible': [('state', 'in', ('expired', 'revoked'))]}"
                         confirm="The application loses its access at once. Continue?"
+                        invisible="state in ('expired', 'revoked')"
                     />
                     <field name="state" widget="statusbar" />
                 </header>
@@ -49,11 +49,7 @@
                             <field name="create_date" string="Allowed On" />
                             <field name="last_refresh" />
                             <field name="expires_at" />
-                            <field
-                                name="revoked_reason"
-                                attrs="{'invisible': [('revoked', '=', False)]}"
-                            />
-                            <field name="revoked" invisible="1" />
+                            <field name="revoked_reason" invisible="not revoked" />
                         </group>
                     </group>
                 </sheet>
@@ -96,7 +92,8 @@
     <record id="oauth_server_authorization_action" model="ir.actions.act_window">
         <field name="name">OAuth Authorizations</field>
         <field name="res_model">oauth.server.authorization</field>
-        <field name="view_mode">tree,form</field>
+        <field name="path">oauth-server-authorizations</field>
+        <field name="view_mode">list,form</field>
         <field name="context">{'search_default_not_revoked': 1}</field>
     </record>
 </odoo>

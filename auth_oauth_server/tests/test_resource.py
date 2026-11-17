@@ -134,14 +134,14 @@ class TestResource(common.OAuthServerMixin, TransactionCase):
         metadata_url = common.ISSUER + "/.well-known/oauth-protected-resource/test_api"
         self.assertEqual(
             self.resource._www_authenticate(),
-            'Bearer resource_metadata="%s", scope="read write"' % metadata_url,
+            f'Bearer resource_metadata="{metadata_url}", scope="read write"',
         )
         self.assertEqual(
             self.resource._www_authenticate(
                 error="invalid_token", error_description='a "quoted" text', scope=""
             ),
-            'Bearer resource_metadata="%s", error="invalid_token", '
-            'error_description="a \\"quoted\\" text"' % metadata_url,
+            f'Bearer resource_metadata="{metadata_url}", error="invalid_token", '
+            'error_description="a \\"quoted\\" text"',
         )
 
     def test_authenticate_bearer(self):

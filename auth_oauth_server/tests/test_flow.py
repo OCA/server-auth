@@ -38,7 +38,7 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         except OAuthError as raised:
             self.assertEqual(raised.error, error, raised.description)
         else:
-            self.fail("%s not raised" % error)
+            self.fail(f"{error} not raised")
 
     # ------------------------------------------------------------------
     # Authorization request
@@ -328,8 +328,8 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         ]
         for index, change in enumerate(changes):
             with self.subTest(change=index):
-                user = new_test_user(self.env, login="oauth_change_%s" % index)
-                client = self.client.copy({"name": "Copy %s" % index})
+                user = new_test_user(self.env, login=f"oauth_change_{index}")
+                client = self.client.copy({"name": f"Copy {index}"})
                 authorization, tokens = self.tokens(client=client, user=user)
                 self.assertEqual(self.check_token(tokens["access_token"]), user.id)
                 change(authorization.sudo())

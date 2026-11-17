@@ -272,8 +272,8 @@ class OAuthServerClient(models.Model):
         if not self._are_valid_redirect_uris(uris):
             raise OAuthError(
                 "invalid_redirect_uri",
-                "Give 1 to %s redirect URIs using https, or http on localhost."
-                % MAX_REDIRECT_URIS,
+                f"Give 1 to {MAX_REDIRECT_URIS} redirect URIs using https, "
+                "or http on localhost.",
             )
         method = metadata.get("token_endpoint_auth_method", "client_secret_basic")
         if method not in AUTH_METHODS:

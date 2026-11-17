@@ -114,7 +114,7 @@ class OAuthServerResource(models.Model):
         name, counter = base, 1
         while validators.search_count([("name", "=", name)]):
             counter += 1
-            name = "%s_%s" % (base, counter)
+            name = f"{base}_{counter}"
         return validators.create(
             {
                 "name": name,
@@ -256,7 +256,7 @@ class OAuthServerResource(models.Model):
         if error_description:
             params.append(("error_description", error_description))
         return "Bearer " + ", ".join(
-            '%s="%s"' % (key, value.replace("\\", "\\\\").replace('"', '\\"'))
+            '{}="{}"'.format(key, value.replace("\\", "\\\\").replace('"', '\\"'))
             for key, value in params
         )
 

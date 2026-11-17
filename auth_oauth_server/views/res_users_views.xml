@@ -9,7 +9,7 @@
                 <group
                     string="Connected Applications"
                     name="oauth_server_authorizations"
-                    attrs="{'invisible': [('oauth_server_authorization_ids', '=', [])]}"
+                    invisible="not oauth_server_authorization_ids"
                 >
                     <div class="text-muted" colspan="2">
                         Applications you allowed to act on your behalf. Revoke
@@ -22,7 +22,7 @@
                             colspan="4"
                             readonly="0"
                         >
-                            <tree editable="bottom" create="false" delete="false">
+                            <list editable="bottom" create="false" delete="false">
                                 <field name="client_id" />
                                 <field name="resource_id" />
                                 <field name="create_date" string="Allowed On" />
@@ -34,7 +34,7 @@
                                     icon="fa-ban"
                                     confirm="The application loses its access at once. Continue?"
                                 />
-                            </tree>
+                            </list>
                         </field>
                     </div>
                 </group>

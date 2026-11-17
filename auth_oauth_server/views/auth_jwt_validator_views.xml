@@ -8,30 +8,29 @@
         <field name="arch" type="xml">
             <field name="audience" position="attributes">
                 <attribute
-                    name="attrs"
-                >{'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+                    name="readonly"
+                >user_id_strategy == 'oauth_server'</attribute>
             </field>
             <field name="issuer" position="attributes">
                 <attribute
-                    name="attrs"
-                >{'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+                    name="readonly"
+                >user_id_strategy == 'oauth_server'</attribute>
             </field>
             <field name="signature_type" position="attributes">
                 <attribute
-                    name="attrs"
-                >{'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+                    name="readonly"
+                >user_id_strategy == 'oauth_server'</attribute>
             </field>
             <field name="secret_key" position="attributes">
-                <attribute name="attrs">{
-                    'invisible': [('signature_type', '!=', 'secret')],
-                    'required': [('signature_type', '=', 'secret')],
-                    'readonly': [('user_id_strategy', '=', 'oauth_server')]}</attribute>
+                <attribute
+                    name="readonly"
+                >user_id_strategy == 'oauth_server'</attribute>
             </field>
             <field name="user_id_strategy" position="after">
                 <field
                     name="oauth_server_resource_ids"
                     widget="many2many_tags"
-                    attrs="{'invisible': [('user_id_strategy', '!=', 'oauth_server')]}"
+                    invisible="user_id_strategy != 'oauth_server'"
                 />
             </field>
         </field>
