@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.oauth_server</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block name="integration" position="after">
+                <block title="OAuth Authorization Server" name="oauth_server">
+                    <setting
+                        id="oauth_server_issuer"
+                        help="Public address of this Odoo, as applications reach it. Changing it invalidates every access token issued so far."
+                    >
+                        <field
+                            name="oauth_server_issuer"
+                            placeholder="https://erp.example.com"
+                        />
+                    </setting>
+                    <setting
+                        id="oauth_server_cimd"
+                        help="Applications identified by the address of the details they publish can connect without being registered first."
+                    >
+                        <field name="oauth_server_cimd_enabled" />
+                        <div
+                            class="content-group mt16"
+                            invisible="not oauth_server_cimd_enabled"
+                        >
+                            <label
+                                for="oauth_server_cimd_trusted_domains"
+                                class="o_light_label"
+                            />
+                            <field
+                                name="oauth_server_cimd_trusted_domains"
+                                placeholder="example.com, example.org"
+                            />
+                        </div>
+                    </setting>
+                    <setting
+                        id="oauth_server_dcr"
+                        help="Applications may register themselves. Their names are not verified: the consent page says so."
+                    >
+                        <field name="oauth_server_dcr_enabled" />
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>
