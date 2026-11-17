@@ -1,0 +1,4 @@
+id,name,model_id,group_id/id,operation,domain
+access_res_users_pass_history,access_res_users_pass_history,res.users.pass.history,base.group_user,cr,"[('user_id', '=', user.id)]"
+access_res_users_pass_history_portal,access_res_users_pass_history portal,res.users.pass.history,base.group_portal,cr,"[('user_id', '=', user.id)]"
+erp_manager_pass_history_rule,Res Users Pass History Access,res.users.pass.history,base.group_erp_manager,c,
