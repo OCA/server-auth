@@ -64,7 +64,7 @@ class OAuthServerMixin:
     def exchange(self, code, verifier, client=None, **params):
         params = dict(
             {"code": code, "code_verifier": verifier, "redirect_uri": REDIRECT_URI},
-            **params
+            **params,
         )
         return self.env["oauth.server.authorization"]._exchange_code(
             client or self.client, params

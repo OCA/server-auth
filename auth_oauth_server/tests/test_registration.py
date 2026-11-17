@@ -40,7 +40,7 @@ def metadata_document(**values):
             "redirect_uris": ["http://127.0.0.1/callback"],
             "token_endpoint_auth_method": "none",
         },
-        **values
+        **values,
     )
 
 

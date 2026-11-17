@@ -57,7 +57,7 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
                 "scope": "read",
                 "state": "xyz",
             },
-            **params
+            **params,
         )
 
     def test_authorization_request(self):

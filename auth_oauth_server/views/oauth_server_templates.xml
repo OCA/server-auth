@@ -20,8 +20,8 @@
                 </p>
                 <p t-if="scopes" class="small">
                     Scopes: <t t-foreach="scopes" t-as="scope">
-                        <code t-esc="scope" />
-                    </t>
+                    <code t-esc="scope" />
+                </t>
                 </p>
                 <p class="small">
                     You will then be sent to <strong t-esc="redirect_host" />.

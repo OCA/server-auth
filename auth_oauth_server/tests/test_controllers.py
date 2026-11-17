@@ -60,7 +60,7 @@ class TestControllers(common.OAuthServerMixin, HttpCase):
                 "scope": "read",
                 "state": "xyz",
             },
-            **params
+            **params,
         )
         return verifier, {key: value for key, value in query.items() if value}
 
