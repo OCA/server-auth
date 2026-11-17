@@ -60,7 +60,11 @@ class OAuthServerMixin(AuthMethodsMixin):
     @classmethod
     def setup_oauth_server(cls):
         env = cls.env
-        env["ir.config_parameter"].sudo().set_param("auth_oauth_server.issuer", ISSUER)
+        params = env["ir.config_parameter"].sudo()
+        params.set_param("auth_oauth_server.issuer", ISSUER)
+        # off at installation; the tests turn them off again where needed
+        params.set_param("auth_oauth_server.dcr_enabled", True)
+        params.set_param("auth_oauth_server.cimd_enabled", True)
         cls.resource = env["oauth.server.resource"].create(
             {"name": "Test API", "path": "/test_api", "scopes": "read write"}
         )

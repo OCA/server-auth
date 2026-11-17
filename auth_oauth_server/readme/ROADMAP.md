@@ -5,8 +5,8 @@
   `private_key_jwt` client authentication.
 - Redirect URIs must use https, or http on localhost: private-use schemes of
   native applications are not supported.
-- Dynamic client registration is not rate limited; use a reverse proxy, or
-  disable it.
+- Dynamic client registration is not rate limited: if you enable it, limit it
+  with a reverse proxy.
 - A resource created while Odoo runs registers its `auth="jwt_..."` route
   method only in the worker that created it (an `auth_jwt` limitation):
   restart the workers before using it in routes.

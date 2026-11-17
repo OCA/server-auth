@@ -11,6 +11,7 @@ from odoo.tests.common import TransactionCase, tagged
 
 from .. import utils
 from ..exceptions import OAuthError
+from ..hooks import post_init_hook
 from . import common
 
 DOCUMENT_URL = "https://app.example.com/oauth/client.json"
@@ -56,6 +57,18 @@ class TestRegistration(common.OAuthServerMixin, TransactionCase):
         with self.assertRaises(OAuthError) as raised:
             function(*args, **kwargs)
         self.assertEqual(raised.exception.error, error, raised.exception.description)
+
+    def test_registration_off_at_installation(self):
+        """Applications neither register themselves nor present metadata
+        documents until an administrator allows it."""
+        params = self.env["ir.config_parameter"].sudo()
+        params.set_param("auth_oauth_server.dcr_enabled", False)
+        params.set_param("auth_oauth_server.cimd_enabled", False)
+        post_init_hook(self.env)
+        server = self.env["oauth.server"]
+        self.assertFalse(server._is_dynamic_registration_enabled())
+        self.assertFalse(server._is_metadata_document_enabled())
+        self.assertEqual(params.get_param("auth_oauth_server.issuer"), common.ISSUER)
 
     # ------------------------------------------------------------------
     # Dynamic client registration

@@ -41,9 +41,9 @@ requires, so MCP clients can connect to an MCP server hosted in Odoo:
    tokens, rotated on each use;
 -  discovery: authorization server metadata (RFC 8414) and protected
    resource metadata (RFC 9728);
--  applications may be registered by an administrator, register
-   themselves (RFC 7591), or be identified by the URL of the details
-   they publish (OAuth Client ID Metadata Documents);
+-  applications may be registered by an administrator or, once enabled,
+   register themselves (RFC 7591) or be identified by the URL of the
+   details they publish (OAuth Client ID Metadata Documents);
 -  tokens bound to the API they were asked for (RFC 8707 resource
    indicators), ``iss`` in authorization responses (RFC 9207), token
    revocation (RFC 7009).
@@ -83,9 +83,17 @@ In *Settings > General Settings > OAuth Authorization Server*:
 -  **Accept Client Metadata Documents**: let applications identify
    themselves with the URL of the details they publish, without being
    registered first. Odoo then fetches that URL, from public addresses
-   only. Optionally, list the domains to accept.
+   only. List the domains to accept: when the list is empty, any domain
+   is.
 -  **Allow Dynamic Client Registration**: let applications register
-   themselves.
+   themselves. Enable it only for applications that publish no metadata
+   document and that you do not want to register by hand.
+
+Both are off at installation. Whoever may register an application
+chooses its name, and could pass it off as a well-known one to have
+users approve it: the consent page shows the domain that published a
+metadata document, and warns that the name of a self-registered
+application is not verified.
 
 Then, in *Settings > Users & Companies > OAuth Server > Protected
 Resources*, declare each API that accepts the tokens: its path on this
@@ -147,8 +155,8 @@ Known issues / Roadmap
    ``private_key_jwt`` client authentication.
 -  Redirect URIs must use https, or http on localhost: private-use
    schemes of native applications are not supported.
--  Dynamic client registration is not rate limited; use a reverse proxy,
-   or disable it.
+-  Dynamic client registration is not rate limited: if you enable it,
+   limit it with a reverse proxy.
 -  A resource created while Odoo runs registers its ``auth="jwt_..."``
    route method only in the worker that created it (an ``auth_jwt``
    limitation): restart the workers before using it in routes.

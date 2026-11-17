@@ -11,9 +11,9 @@ requires, so MCP clients can connect to an MCP server hosted in Odoo:
   rotated on each use;
 - discovery: authorization server metadata (RFC 8414) and protected resource
   metadata (RFC 9728);
-- applications may be registered by an administrator, register themselves
-  (RFC 7591), or be identified by the URL of the details they publish
-  (OAuth Client ID Metadata Documents);
+- applications may be registered by an administrator or, once enabled,
+  register themselves (RFC 7591) or be identified by the URL of the details
+  they publish (OAuth Client ID Metadata Documents);
 - tokens bound to the API they were asked for (RFC 8707 resource indicators),
   `iss` in authorization responses (RFC 9207), token revocation (RFC 7009).
 

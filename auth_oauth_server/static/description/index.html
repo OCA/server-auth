@@ -382,9 +382,9 @@ requires, so MCP clients can connect to an MCP server hosted in Odoo:</p>
 tokens, rotated on each use;</li>
 <li>discovery: authorization server metadata (RFC 8414) and protected
 resource metadata (RFC 9728);</li>
-<li>applications may be registered by an administrator, register
-themselves (RFC 7591), or be identified by the URL of the details
-they publish (OAuth Client ID Metadata Documents);</li>
+<li>applications may be registered by an administrator or, once enabled,
+register themselves (RFC 7591) or be identified by the URL of the
+details they publish (OAuth Client ID Metadata Documents);</li>
 <li>tokens bound to the API they were asked for (RFC 8707 resource
 indicators), <tt class="docutils literal">iss</tt> in authorization responses (RFC 9207), token
 revocation (RFC 7009).</li>
@@ -432,10 +432,17 @@ refresh tokens.</li>
 <li><strong>Accept Client Metadata Documents</strong>: let applications identify
 themselves with the URL of the details they publish, without being
 registered first. Odoo then fetches that URL, from public addresses
-only. Optionally, list the domains to accept.</li>
+only. List the domains to accept: when the list is empty, any domain
+is.</li>
 <li><strong>Allow Dynamic Client Registration</strong>: let applications register
-themselves.</li>
+themselves. Enable it only for applications that publish no metadata
+document and that you do not want to register by hand.</li>
 </ul>
+<p>Both are off at installation. Whoever may register an application
+chooses its name, and could pass it off as a well-known one to have
+users approve it: the consent page shows the domain that published a
+metadata document, and warns that the name of a self-registered
+application is not verified.</p>
 <p>Then, in <em>Settings &gt; Users &amp; Companies &gt; OAuth Server &gt; Protected
 Resources</em>, declare each API that accepts the tokens: its path on this
 server, the scopes applications may ask for, the groups whose users may
@@ -488,8 +495,8 @@ JWKS would let other servers check them too.</li>
 <tt class="docutils literal">private_key_jwt</tt> client authentication.</li>
 <li>Redirect URIs must use https, or http on localhost: private-use
 schemes of native applications are not supported.</li>
-<li>Dynamic client registration is not rate limited; use a reverse proxy,
-or disable it.</li>
+<li>Dynamic client registration is not rate limited: if you enable it,
+limit it with a reverse proxy.</li>
 <li>A resource created while Odoo runs registers its <tt class="docutils literal"><span class="pre">auth=&quot;jwt_...&quot;</span></tt>
 route method only in the worker that created it (an <tt class="docutils literal">auth_jwt</tt>
 limitation): restart the workers before using it in routes.</li>
