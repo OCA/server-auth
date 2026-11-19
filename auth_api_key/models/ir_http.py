@@ -17,7 +17,7 @@ class IrHttp(models.AbstractModel):
     _inherit = "ir.http"
 
     @classmethod
-    def _auth_method_api_key(cls):
+    def _auth_method_api_key(cls, routing):
         headers = request.httprequest.environ
         api_key = headers.get("HTTP_API_KEY")
         if api_key:

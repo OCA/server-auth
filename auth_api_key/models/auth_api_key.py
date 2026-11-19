@@ -3,7 +3,7 @@
 
 import secrets
 
-from odoo import api, fields, models, tools
+from odoo import api, fields, models
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tools import consteq
 
@@ -11,6 +11,10 @@ from odoo.tools import consteq
 class AuthApiKey(models.Model):
     _name = "auth.api.key"
     _description = "API Key"
+    # Keys are resolved through ormcache'd methods: the ORM clears that cache
+    # on create, unlink, and on write of these fields.
+    _clear_cache_name = "default"
+    _clear_cache_on_fields = ("key", "user_id", "active")
 
     name = fields.Char(required=True)
     key = fields.Char(
@@ -65,7 +69,7 @@ class AuthApiKey(models.Model):
         return self.browse(self._retrieve_api_key_id(key))
 
     @api.model
-    @tools.ormcache("key")
+    @api.ormcache("key")
     def _retrieve_api_key_id(self, key):
         if not self.env.user.has_group("base.group_system"):
             raise AccessError(self.env._("User is not allowed"))
@@ -75,12 +79,12 @@ class AuthApiKey(models.Model):
         raise ValidationError(self.env._("The key '%s' is not allowed", key))
 
     @api.model
-    @tools.ormcache("key")
+    @api.ormcache("key")
     def _retrieve_uid_from_api_key(self, key):
         return self._retrieve_api_key(key).user_id.id
 
     def _clear_key_cache(self):
-        self.env.registry.clear_cache()
+        self.env.transaction.invalidate_ormcache()
 
     @api.depends(
         "user_id.active", "user_id.company_id.archived_user_disable_auth_api_key"
@@ -92,16 +96,3 @@ class AuthApiKey(models.Model):
                 record.active = record.user_id.active
             # To stay coherent if the option is disabled the active field is not
             # changed. Because the field is stored, it should not be an issue.
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        records = super().create(vals_list)
-        if any(["key" in vals or "user_id" in vals for vals in vals_list]):
-            self._clear_key_cache()
-        return records
-
-    def write(self, vals):
-        super().write(vals)
-        if "key" in vals or "user_id" in vals:
-            self._clear_key_cache()
-        return True

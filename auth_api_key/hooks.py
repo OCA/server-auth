@@ -4,7 +4,7 @@
 from werkzeug.exceptions import HTTPException
 from werkzeug.wrappers import Response
 
-from odoo.http import Dispatcher
+from odoo.http.dispatcher import Dispatcher
 
 
 def patch_dispatcher_pre_dispatch():

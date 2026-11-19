@@ -82,6 +82,22 @@ class TestAuthApiKey(TransactionCase):
         with self.assertRaises(ValidationError):
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
 
+    def test_cache_invalidation_on_archive(self):
+        self.assertEqual(
+            self.AuthApiKey._retrieve_uid_from_api_key("api_key"), self.demo_user.id
+        )
+        self.api_key_good.active = False
+        with self.assertRaises(ValidationError):
+            self.AuthApiKey._retrieve_uid_from_api_key("api_key")
+
+    def test_cache_invalidation_on_unlink(self):
+        self.assertEqual(
+            self.AuthApiKey._retrieve_uid_from_api_key("api_key"), self.demo_user.id
+        )
+        self.api_key_good.unlink()
+        with self.assertRaises(ValidationError):
+            self.AuthApiKey._retrieve_uid_from_api_key("api_key")
+
     def test_user_archived_unarchived_with_option_on(self):
         self.env.company.archived_user_disable_auth_api_key = True
         demo_user = self.demo_user

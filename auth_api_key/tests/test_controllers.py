@@ -37,8 +37,8 @@ class TestControllers(HttpCase):
             def auth_api_key_cors(self, **params):
                 return json.dumps({"name": self.env.user.name})
 
-        cls.env.registry.clear_cache("routing")
-        cls.addClassCleanup(cls.env.registry.clear_cache, "routing")
+        cls.env.transaction.invalidate_ormcache("routing")
+        cls.addClassCleanup(cls.env.transaction.invalidate_ormcache, "routing")
 
     def test_auth_api_key_ok(self):
         res = self.url_open("/web/auth-api-key", headers={"API-KEY": self.api_key.key})
