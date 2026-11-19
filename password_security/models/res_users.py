@@ -28,9 +28,10 @@ class ResUsers(models.Model):
     )
 
     def write(self, vals):
+        res = super().write(vals)
         if vals.get("password"):
-            vals["password_write_date"] = fields.Datetime.now()
-        return super().write(vals)
+            self.write({"password_write_date": fields.Datetime.now()})
+        return res
 
     @api.model
     def _get_all_password_params(self):
