@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2023 ACSONE SA/NV
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <template
+        id="auth_device_login_oauth"
+        inherit_id="web.login_oauth"
+        name="Device Login buttons"
+    >
+        <xpath expr="//t[@t-set='auth_btns']" position="after">
+            <!-- device_body set in plain HTML for translations -->
+            <t t-set="device_body">Log in with your Device</t>
+            <t
+                t-set="device_btn"
+                t-value="[{'css_class': 'fa fa-credit-card', 'body': device_body, 'list_item_class': 'o_auth_device_login'}]"
+            />
+            <t t-set="auth_btns" t-value="auth_btns + device_btn" />
+        </xpath>
+    </template>
+    <template id="login" inherit_id="web.login" name="Device Login buttons">
+        <xpath expr="//form" position="after">
+            <div
+                class="modal fade"
+                id="loginDevice"
+                tabindex="-1"
+                role="dialog"
+                aria-labelledby="loginDeviceLabel"
+                aria-hidden="true"
+            >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5
+                                class="modal-title"
+                                id="loginDeviceLabel"
+                            >Log in with your device</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            />
+                        </div>
+                        <form
+                            id="login_device"
+                            class="oe_login_device_form"
+                            role="form"
+                            t-attf-action="/auth_device/login"
+                            method="post"
+                        >
+                            <input
+                                type="hidden"
+                                name="csrf_token"
+                                t-att-value="request.csrf_token()"
+                            />
+                            <input
+                                type="hidden"
+                                name="redirect"
+                                t-att-value="redirect"
+                            />
+                            <div class="modal-body">
+                                <div class="form-group field-password">
+                                    <img
+                                        alt="Scan your device"
+                                        src="/auth_device/static/img/scan.jpg"
+                                    />
+                                    <label for="device_input">Device Code</label>
+                                    <input
+                                        type="password"
+                                        placeholder="Code"
+                                        name="device_code"
+                                        id="device_code_input"
+                                        required="required"
+                                        autofocus="autofocus"
+                                        maxlength="12"
+                                    />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                >Close</button>
+                                <button
+                                    id="submit_device_code"
+                                    name="submit_device_code"
+                                    type="submit"
+                                    class="btn btn-primary"
+                                >Log In</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
