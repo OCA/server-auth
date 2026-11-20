@@ -1,0 +1,4 @@
+responses
+odoo-addon-auth_saml @ git+https://github.com/OCA/server-auth.git@refs/pull/1040/head#subdirectory=auth_saml
+odoo-addon-auth_user_role @ git+https://github.com/OCA/server-auth.git@refs/pull/1023/head#subdirectory=auth_user_role
+odoo-addon-base_user_role @ git+https://github.com/OCA/server-backend.git@refs/pull/488/head#subdirectory=base_user_role
