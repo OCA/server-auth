@@ -3,8 +3,7 @@
 
 {
     "name": "Inactive Sessions Timeout",
-    "summary": """
-        This module disable all inactive sessions since a given delay""",
+    "summary": "This module disable all inactive sessions since a given delay",
     "author": "ACSONE SA/NV, "
     "Dhinesh D, "
     "Jesse Morgan, "
@@ -14,7 +13,7 @@
     "website": "https://github.com/OCA/server-auth",
     "category": "Tools",
     "development_status": "Production/Stable",
-    "version": "19.0.1.0.0",
+    "version": "20.0.1.0.0",
     "license": "AGPL-3",
     "data": ["data/ir_config_parameter_data.xml"],
     "installable": True,

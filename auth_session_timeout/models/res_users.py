@@ -8,7 +8,7 @@ from os.path import getmtime
 from time import time
 
 from odoo import api, http, models
-from odoo.http import SessionExpiredException
+from odoo.http.session import SessionExpiredException, logout, session_store
 
 _logger = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ class ResUsers(models.Model):
             False: session timeout cancelled
         """
         if session.db and session.uid:
-            session.logout(keep_db=True)
+            logout(session, keep_db=True)
         return True
 
     @api.model
@@ -67,7 +67,7 @@ class ResUsers(models.Model):
         # Check if past deadline
         expired = False
         if deadline is not False:
-            path = http.root.session_store.get_session_filename(session.sid)
+            path = session_store().get_session_path(session.sid)
             try:
                 expired = getmtime(path) < deadline
             except OSError:
@@ -91,9 +91,7 @@ class ResUsers(models.Model):
 
         if http.request.httprequest.path not in ignored_urls:
             if "path" not in locals():
-                path = http.root.session_store.get_session_filename(
-                    session.sid,
-                )
+                path = session_store().get_session_path(session.sid)
             try:
                 utime(path, None)
             except OSError:

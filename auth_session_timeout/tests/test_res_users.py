@@ -28,27 +28,28 @@ class TestResUsers(TransactionCase):
         """
         if assets is None:
             assets = ["http"]
+        assets = list(assets) + ["session_store", "logout"]
         patches = {name: mock.DEFAULT for name in assets}
         with mock.patch.multiple(
             "odoo.addons.auth_session_timeout.models.res_users", **patches
         ) as mocks:
             yield mocks
 
-    def _auth_timeout_check(self, http_mock):
+    def _auth_timeout_check(self, assets):
         """It wraps ``_auth_timeout_check`` for easier calling"""
         self.db = mock.MagicMock()
         self.uid = mock.MagicMock()
         self.passwd = mock.MagicMock()
         self.path = "/this/is/a/test/path"
-        get_filename = http_mock.root.session_store.get_session_filename
-        get_filename.return_value = self.path
+        get_path = assets["session_store"].return_value.get_session_path
+        get_path.return_value = self.path
         return self.ResUsers._auth_timeout_check()
 
     def test_session_validity_no_request(self):
         """It should return immediately if no request"""
         with self._mock_assets() as assets:
             assets["http"].request = False
-            res = self._auth_timeout_check(assets["http"])
+            res = self._auth_timeout_check(assets)
             self.assertFalse(res)
 
     def test_session_validity_gets_session_file(self):
@@ -56,11 +57,11 @@ class TestResUsers(TransactionCase):
         with self._mock_assets() as assets:
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 0, []
-            store = assets["http"].root.session_store
-            store.get_session_filename.side_effect = EndTestException
+            store = assets["session_store"].return_value
+            store.get_session_path.side_effect = EndTestException
             with self.assertRaises(EndTestException):
-                self._auth_timeout_check(assets["http"])
-            store.get_session_filename.assert_called_once_with(
+                self._auth_timeout_check(assets)
+            store.get_session_path.assert_called_once_with(
                 assets["http"].request.session.sid,
             )
 
@@ -70,8 +71,9 @@ class TestResUsers(TransactionCase):
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = -9999, []
             assets["getmtime"].return_value = 0
-            self._auth_timeout_check(assets["http"])
-            assets["http"].request.session.logout.assert_called_once_with(
+            self._auth_timeout_check(assets)
+            assets["logout"].assert_called_once_with(
+                assets["http"].request.session,
                 keep_db=True,
             )
 
@@ -81,11 +83,8 @@ class TestResUsers(TransactionCase):
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 9999, []
             assets["getmtime"].return_value = time.time()
-            self._auth_timeout_check(assets["http"])
-            assets["utime"].assert_called_once_with(
-                assets["http"].root.session_store.get_session_filename(),
-                None,
-            )
+            self._auth_timeout_check(assets)
+            assets["utime"].assert_called_once_with(self.path, None)
 
     @mute_logger("odoo.addons.auth_session_timeout.models.res_users")
     def test_session_validity_os_error_guard(self):
@@ -94,7 +93,7 @@ class TestResUsers(TransactionCase):
             get_params = assets["http"].request.env[""].get_session_parameters
             get_params.return_value = 0, []
             assets["getmtime"].side_effect = OSError
-            self._auth_timeout_check(assets["http"])
+            self._auth_timeout_check(assets)
 
     def test_on_timeout_session_loggedout(self):
         with self._mock_assets(["http", "getmtime"]) as assets:
@@ -102,6 +101,5 @@ class TestResUsers(TransactionCase):
             assets["http"].request.session.uid = self.env.uid
             assets["http"].request.session.dbname = self.env.cr.dbname
             assets["http"].request.session.sid = 123
-            assets["http"].request.session.logout = mock.Mock()
             self.ResUsers._auth_timeout_check()
-            self.assertTrue(assets["http"].request.session.logout.called)
+            self.assertTrue(assets["logout"].called)

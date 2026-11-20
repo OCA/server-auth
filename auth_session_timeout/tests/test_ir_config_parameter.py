@@ -31,13 +31,15 @@ class TestIrConfigParameterCaching(common.TransactionCase):
         self.param_obj = self.env["ir.config_parameter"]
         self.get_param_called = False
         test = self
+        model_cls = type(self.param_obj)
+        for name in ("get_int", "get_str"):
+            orig = getattr(model_cls, name)
 
-        def get_param(*args, **kwargs):
-            test.get_param_called = True
-            return orig_get_param(*args[1:], **kwargs)
+            def getter(*args, _orig=orig, **kwargs):
+                test.get_param_called = True
+                return _orig(*args, **kwargs)
 
-        orig_get_param = self.param_obj.get_param
-        self.patch(type(self.param_obj), "get_param", get_param)
+            self.patch(model_cls, name, getter)
 
     def test_auth_timeout_get_parameter_delay_cache(self):
         """It should cache the parameter call."""
@@ -54,13 +56,13 @@ class TestIrConfigParameterCaching(common.TransactionCase):
     def test_check_param_writes_clear_delay_cache(self):
         self.param_obj._auth_timeout_get_parameter_delay()
         self.get_param_called = False
-        self.param_obj.set_param("inactive_session_time_out_delay", 7201)
+        self.param_obj.set_int("inactive_session_time_out_delay", 7201)
         self.param_obj._auth_timeout_get_parameter_delay()
         self.assertTrue(self.get_param_called)
 
     def test_check_param_writes_clear_ignore_url_cache(self):
         self.param_obj._auth_timeout_get_parameter_ignored_urls()
         self.get_param_called = False
-        self.param_obj.set_param("inactive_session_time_out_ignored_url", "example.com")
+        self.param_obj.set_str("inactive_session_time_out_ignored_url", "example.com")
         self.param_obj._auth_timeout_get_parameter_ignored_urls()
         self.assertTrue(self.get_param_called)

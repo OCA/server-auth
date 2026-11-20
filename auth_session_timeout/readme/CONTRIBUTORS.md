@@ -6,3 +6,4 @@
 - Chandresh Thakkar \<<cthakkar@opensourceintegrators.com>\>
 - [Greenice](https://www.greenice.com):
   - Fernando La Chica \<<fernandolachica@gmail.com>\>
+- Panithan k. \<<panithank@ecosoft.co.th>\>
