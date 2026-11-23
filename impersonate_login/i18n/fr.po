@@ -6,19 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 19.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"Last-Translator: Logan Gônet <logan.gonet@horanet.com>\n"
 "Language-Team: none\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "Language: fr\n"
+"PO-Revision-Date: 2026-11-23 13:46+0000\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #. module: impersonate_login
 #. odoo-javascript
 #: code:addons/impersonate_login/static/src/js/user_menu.esm.js:0
 msgid "Back to Original User"
-msgstr ""
+msgstr "Retour à l'utilisateur d'origine"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_base
@@ -28,13 +30,13 @@ msgstr ""
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Paramètres de config"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_mail__body
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__body
 msgid "Contents"
-msgstr ""
+msgstr "Contenus"
 
 #. module: impersonate_login
 #. odoo-python
@@ -45,16 +47,21 @@ msgid ""
 "not connect to the system. You can assign them groups in order to give them "
 "specific access to the applications they need to use in the system."
 msgstr ""
+"Créez et gérez les utilisateurs qui se connecteront au système. Les "
+"utilisateurs peuvent être désactivés un certain temps pendant lequel ils ne "
+"pourront/devront pas se connecter au système. Vous pouvez leur assigner un "
+"groupe pour leur fournir des accès spécifiques aux applications qu'ils ont "
+"besoin d'utiliser dans le système."
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Créé par"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Créé le"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__display_name
@@ -64,22 +71,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__display_name
 #: model:ir.model.fields,field_description:impersonate_login.field_res_users__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nom d'affichage"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_mail_thread
 msgid "Email Thread"
-msgstr ""
+msgstr "Discussion par e-mail"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_end
 msgid "End Date"
-msgstr ""
+msgstr "Date de fin"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "Routage HTTP"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__id
@@ -97,64 +104,66 @@ msgid ""
 "If enabled, users with the 'Administration: Settings' access right cannot be"
 " impersonated."
 msgstr ""
+"Si cette option est activée, il n'est pas possible de se connecter en tant "
+"qu'utilisateur disposant du droit d'accès 'Administration : Paramètres'."
 
 #. module: impersonate_login
 #: model:ir.actions.act_window,name:impersonate_login.impersonate_log_action
 msgid "Impersonate Login Logs"
-msgstr ""
+msgstr "Journaux des connexions en tant qu'utilisateur"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_impersonate_log
 msgid "Impersonate Logs"
-msgstr ""
+msgstr "Journaux de connexion en tant qu'utilisateur"
 
 #. module: impersonate_login
 #: model:res.groups,name:impersonate_login.group_impersonate_login
 msgid "Impersonate Users"
-msgstr ""
+msgstr "Utilisateurs autorisés à la connexion en tant qu'utilisateur"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_mail__impersonated_author_id
 #: model:ir.model.fields,field_description:impersonate_login.field_mail_message__impersonated_author_id
 msgid "Impersonated Author"
-msgstr ""
+msgstr "Auteur connecté en tant qu'utilisateur"
 
 #. module: impersonate_login
 #: model:ir.ui.menu,name:impersonate_login.menu_impersonate_log
 msgid "Impersonated Logs"
-msgstr ""
+msgstr "Journaux des connexions en tant qu'utilisateur"
 
 #. module: impersonate_login
 #: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
 msgid "Impersonation Login"
-msgstr ""
+msgstr "Connexion en tant qu'utilisateur"
 
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
 msgid "It's you."
-msgstr ""
+msgstr "C'est vous-même."
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Mis à jour par"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Mis à jour le"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__impersonated_partner_id
 msgid "Logged as"
-msgstr ""
+msgstr "Connecté en tant que"
 
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/mail_message.py:0
 msgid "Logged in as %(name)s"
-msgstr ""
+msgstr "Connecté en tant que %(name)s"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_mail_message
@@ -165,7 +174,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
 msgid "No users found. Let's create one!"
-msgstr ""
+msgstr "Aucun utilisateur trouvé. Créez-en un !"
 
 #. module: impersonate_login
 #: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
@@ -173,36 +182,39 @@ msgid ""
 "Prevents impersonating users that have the 'Administration: Settings' access"
 " rights."
 msgstr ""
+"Empêche la connexion en tant qu'utilisateur disposant du droit d'accès "
+"'Administration : Paramètres'."
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_res_config_settings__restrict_impersonate_admin_settings
 #: model_terms:ir.ui.view,arch_db:impersonate_login.view_res_config_settings_impersonate
 msgid "Restrict Impersonation of 'Administration: Settings' Users"
 msgstr ""
+"Restreindre la connexion en tant qu'utilisateur 'Administration : Paramètres'"
 
 #. module: impersonate_login
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__date_start
 msgid "Start Date"
-msgstr ""
+msgstr "Date de début"
 
 #. module: impersonate_login
 #. odoo-javascript
 #: code:addons/impersonate_login/static/src/js/user_menu.esm.js:0
 #: model_terms:ir.ui.view,arch_db:impersonate_login.impersonate_res_users_tree
 msgid "Switch Login"
-msgstr ""
+msgstr "Changer d'utilisateur"
 
 #. module: impersonate_login
 #: model:ir.model,name:impersonate_login.model_res_users
 #: model:ir.model.fields,field_description:impersonate_login.field_impersonate_log__user_id
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #. module: impersonate_login
 #. odoo-python
 #: code:addons/impersonate_login/models/res_users.py:0
 msgid "You are already Logged as another user."
-msgstr ""
+msgstr "Vous êtes déjà connecté en tant qu'un autre utilisateur."
 
 #. module: impersonate_login
 #. odoo-python
@@ -210,3 +222,5 @@ msgstr ""
 msgid ""
 "You cannot impersonate users with 'Administration: Settings' access rights."
 msgstr ""
+"Vous ne pouvez pas vous connecter en tant qu'utilisateur disposant du droit "
+"d'accès 'Administration : Paramètres'."
