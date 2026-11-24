@@ -9,3 +9,5 @@
 - [Trobz](https://trobz.com):
 
   > - Hoang Diep \<<hoang@trobz.com>\>
+
+- Ferran Mora \<<ferran@studio73.es>\> (Studio73, migration to 19.0)

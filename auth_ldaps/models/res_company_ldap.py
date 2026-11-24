@@ -1,5 +1,6 @@
 # Copyright (C) Creu Blanca
 # Copyright (C) 2018 Brainbean Apps
+# Copyright 2026 Studio73 - Ferran Mora <ferran@studio73.es>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl.html).
 
 
@@ -9,6 +10,8 @@ import ldap
 
 from odoo import fields, models
 from odoo.tools.misc import str2bool
+
+from odoo.addons.auth_ldap.models.res_company_ldap import LDAPWrapper
 
 _logger = logging.getLogger(__name__)
 
@@ -30,13 +33,19 @@ class CompanyLDAP(models.Model):
         return res
 
     def _connect(self, conf):
+        # The standard connection test passes only the auth_ldap fields.
+        if "is_ssl" not in conf or "skip_cert_validation" not in conf:
+            self.ensure_one()
+            conf = dict(conf)
+            conf.setdefault("is_ssl", self.is_ssl)
+            conf.setdefault("skip_cert_validation", self.skip_cert_validation)
         if conf["is_ssl"]:
-            uri = "ldaps://%s:%d" % (conf["ldap_server"], conf["ldap_server_port"])
+            uri = f"ldaps://{conf['ldap_server']}:{conf['ldap_server_port']}"
             connection = ldap.initialize(uri)
             ldap_chase_ref_disabled = (
                 self.env["ir.config_parameter"]
                 .sudo()
-                .get_param("auth_ldap.disable_chase_ref")
+                .get_param("auth_ldap.disable_chase_ref", "True")
             )
             if str2bool(ldap_chase_ref_disabled):
                 connection.set_option(ldap.OPT_REFERRALS, ldap.OPT_OFF)
@@ -53,5 +62,5 @@ class CompanyLDAP(models.Model):
                 connection.set_option(ldap.OPT_X_TLS_NEWCTX, 0)
             if conf["ldap_tls"]:
                 connection.start_tls_s()
-            return connection
+            return LDAPWrapper(connection)
         return super()._connect(conf)
