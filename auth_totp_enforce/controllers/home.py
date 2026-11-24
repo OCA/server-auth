@@ -1,7 +1,7 @@
 # Copyright 2026 ForgeFlow S.L.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import _, http
+from odoo import http
 from odoo.http import request
 
 import odoo.addons.auth_totp.controllers.home
@@ -24,9 +24,10 @@ class Home(odoo.addons.auth_totp.controllers.home.Home):
             return request.redirect(
                 self._login_redirect(request.session.uid, redirect=redirect)
             )
-        if not request.session.pre_uid:
+        pre_uid = request.session.get("pre_uid")
+        if not pre_uid:
             return request.redirect("/web/login")
-        user = request.env["res.users"].sudo().browse(request.session.pre_uid)
+        user = request.env["res.users"].sudo().browse(pre_uid)
         if not user._mfa_enforced() or user.totp_enabled:
             return request.redirect("/web/login/totp")
         stored = request.session.get(SESSION_KEY)
@@ -46,7 +47,9 @@ class Home(odoo.addons.auth_totp.controllers.home.Home):
                 return request.redirect(
                     self._login_redirect(user.id, redirect=redirect)
                 )
-            error = _("Verification failed, please double-check the 6-digit code")
+            error = request.env._(
+                "Verification failed, please double-check the 6-digit code"
+            )
         wizard = (
             request.env["auth_totp.wizard"]
             .sudo()
