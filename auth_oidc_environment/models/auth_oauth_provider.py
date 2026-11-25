@@ -14,6 +14,9 @@ class AuthOauthProvider(models.Model):
         auth_fields = {
             "client_id": {},
             "client_secret": {},
+            "auth_endpoint": {},
+            "token_endpoint": {},
+            "jwks_uri": {},
         }
         auth_fields.update(base_fields)
         return auth_fields

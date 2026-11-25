@@ -13,7 +13,12 @@ from odoo.addons.server_environment.tests.common import ServerEnvironmentCase
 class TestEnvironmentVariables(ServerEnvironmentCase):
     def test_env_variables(self):
         env_var = (
-            "[auth_oauth_provider.sample]\n" "client_id=foo\n" "client_secret=bar\n"
+            "[auth_oauth_provider.sample]\n"
+            "client_id=foo\n"
+            "client_secret=bar\n"
+            "auth_endpoint=https://test/auth/endpoint\n"
+            "token_endpoint=https://test/token/endpoint\n"
+            "jwks_uri=https://test/jwks/uri\n"
         )
         with self.set_config_dir(None), self.set_env_variables(env_var):
             parser = server_env._load_config()
@@ -25,5 +30,8 @@ class TestEnvironmentVariables(ServerEnvironmentCase):
                 {
                     "client_id": "foo",
                     "client_secret": "bar",
+                    "auth_endpoint": "https://test/auth/endpoint",
+                    "token_endpoint": "https://test/token/endpoint",
+                    "jwks_uri": "https://test/jwks/uri",
                 },
             )
