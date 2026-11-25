@@ -1,0 +1,47 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# * auth_admin_passkey
+#
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: server-tools (8.0)\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-12-31 08:34+0000\n"
+"PO-Revision-Date: 2015-09-18 13:53+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: Turkish (Turkey) (http://www.transifex.com/oca/OCA-server-"
+"tools-8-0/language/tr_TR/)\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: auth_admin_passkey
+#. odoo-python
+#: code:addons/auth_admin_passkey/models/res_users.py:0
+msgid "Passkey used"
+msgstr ""
+
+#. module: auth_admin_passkey
+#. odoo-python
+#: code:addons/auth_admin_passkey/models/res_users.py:0
+msgid ""
+"System Administrator user used his passkey to login with %(login)s.\n"
+"\n"
+"\n"
+"\n"
+"Technicals informations belows : \n"
+"\n"
+"- Login date : %(login_date)s\n"
+"\n"
+msgstr ""
+
+#. module: auth_admin_passkey
+#: model:ir.model,name:auth_admin_passkey.model_res_users
+msgid "User"
+msgstr ""
+
+#~ msgid "Users"
+#~ msgstr "Kullanıcılar"
