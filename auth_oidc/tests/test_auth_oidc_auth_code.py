@@ -148,6 +148,34 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         self.assertEqual(token, "42")
         self.assertEqual(login, user.login)
 
+    def _token_request(self):
+        """Run a login, return the request sent to the token endpoint"""
+        user = self._prepare_login_test_user()
+        self._prepare_login_test_responses(id_token_body={"user_id": user.login})
+        with MockRequest(self.env):
+            self.env["res.users"].auth_oauth(
+                self.provider_rec.id, {"state": json.dumps({})}
+            )
+        return responses.calls[0].request
+
+    @responses.activate
+    def test_token_request_confidential_client(self):
+        """A client with a secret authenticates once: HTTP Basic, no client_id body"""
+        self.provider_rec.client_secret = "a-secret"
+        token_request = self._token_request()
+        self.assertTrue(token_request.headers["Authorization"].startswith("Basic "))
+        self.assertNotIn("client_id", parse_qs(token_request.body))
+
+    @responses.activate
+    def test_token_request_public_client(self):
+        """A client without secret is not authenticated: client_id in the body"""
+        self.provider_rec.client_secret = False
+        token_request = self._token_request()
+        self.assertNotIn("Authorization", token_request.headers)
+        self.assertEqual(
+            parse_qs(token_request.body)["client_id"], [self.provider_rec.client_id]
+        )
+
     @responses.activate
     def test_login_without_kid(self):
         """Test that login works when ID Token has no kid in header"""
