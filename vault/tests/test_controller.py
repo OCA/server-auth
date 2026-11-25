@@ -98,6 +98,20 @@ class TestController(BaseCommon):
             self.assertEqual(self.inbox.secret, "secret")
             self.assertEqual(self.inbox.secret_file, b"file")
 
+            exhausted = self.env["vault.inbox"].create(
+                {
+                    "user_id": self.user.id,
+                    "name": "Exhausted",
+                    "key": "4",
+                    "iv": "1",
+                    "secret": "kept secret",
+                    "accesses": 0,
+                }
+            )
+            response = load(self.controller.vault_inbox(exhausted.token))
+            self.assertEqual(response["error"], "Invalid token")
+            self.assertEqual(exhausted.secret, "kept secret")
+
             # Test a duplicate inbox
             self.inbox.copy().token = self.inbox.token
             response = load(self.controller.vault_inbox(self.inbox.token))
