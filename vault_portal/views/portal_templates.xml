@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2026 INVITU (<https://www.invitu.com>) -->
+<!-- License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl). -->
+<odoo>
+    <!-- Mirrors account/sale's own portal_my_home_* entries: portal.portal_docs_entry
+         with placeholder_count matching a key from _prepare_home_portal_values().
+         portal_common_category is used as-is, like the built-in "Connection & Security" entry. -->
+    <template
+        id="portal_my_home_vault"
+        name="Portal My Home: Vaults"
+        inherit_id="portal.portal_my_home"
+    >
+        <xpath expr="//div[@id='portal_common_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Vaults</t>
+                <t t-set="url" t-value="'/my/vaults'" />
+                <t t-set="text">Access credentials shared with you</t>
+                <t t-set="placeholder_count" t-value="'vault_count'" />
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Also where a contact sets up their key pair before having any
+         vault access: vault.right.user_id requires an existing key
+         (vault/models/vault_right.py), so this page must work with
+         zero vaults too. -->
+    <template id="portal_my_vaults" name="My Vaults">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Vaults</t>
+            </t>
+
+            <owl-component
+                name="vault_portal.vault_key_manager"
+                t-att-props="key_manager_props"
+            />
+
+            <t t-if="not vaults">
+                <p class="alert alert-warning" role="alert">
+                    No vault has been shared with you yet.
+                </p>
+            </t>
+            <t t-else="">
+                <table class="table table-hover o_portal_my_doc_table">
+                    <thead>
+                        <tr class="active">
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="vaults" t-as="vault">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/my/vaults/#{vault.id}">
+                                        <t t-esc="vault.name" />
+                                    </a>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
+        </t>
+    </template>
+
+    <template id="portal_vault_detail" name="Vault Detail">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="False" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Entries</t>
+            </t>
+
+            <h3>
+                <t t-esc="vault.name" />
+            </h3>
+
+            <owl-component name="vault_portal.vault_detail" t-att-props="vault_props" />
+        </t>
+    </template>
+</odoo>
