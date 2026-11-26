@@ -1,0 +1,18 @@
+- Tokens are signed with a secret (HS256) known only to this database, so only
+  Odoo itself can check them. Asymmetric keys published as a JWKS would let
+  other servers check them too.
+- No OpenID Connect (ID tokens, userinfo), no token introspection, no
+  `private_key_jwt` client authentication.
+- Redirect URIs must use https, or http on localhost: private-use schemes of
+  native applications are not supported.
+- Dynamic client registration is not rate limited: if you enable it, limit it
+  with a reverse proxy. Neither are the client metadata documents fetched for
+  the authorization requests of users allowed on a resource.
+- Client metadata documents are fetched directly, never through the proxy of
+  the `HTTPS_PROXY` environment variable: the server connects to the address
+  it checked as public.
+- A resource created while Odoo runs registers its `auth="jwt_..."` route
+  method only in the worker that created it (an `auth_jwt` limitation):
+  restart the workers before using it in routes.
+- Users of the portal can authorize applications when a resource allows their
+  group, but cannot see or revoke them from the portal.

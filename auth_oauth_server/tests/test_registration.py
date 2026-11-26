@@ -1,0 +1,394 @@
+# Copyright 2026 Lorenzo Battistini
+# License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
+
+from datetime import timedelta
+from unittest import mock
+
+from odoo import fields
+from odoo.tests.common import TransactionCase, tagged
+
+from .. import utils
+from ..exceptions import OAuthError
+from ..hooks import post_init_hook
+from . import common
+
+DOCUMENT_URL = "https://app.example.com/oauth/client.json"
+PUBLIC_ADDRESS = "93.184.216.34"
+# the document of ChatGPT, as published at its client_id on 2026-10-20
+CHATGPT_DOCUMENT = {
+    "client_id": "https://chatgpt.com/oauth/client.json",
+    "client_uri": "https://chatgpt.com/",
+    "redirect_uris": ["https://chatgpt.com/connector_platform_oauth_redirect"],
+    "token_endpoint_auth_method": "private_key_jwt",
+    "token_endpoint_auth_methods_supported": ["none", "private_key_jwt"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "client_name": "ChatGPT",
+    "logo_uri": "https://persistent.oaistatic.com/sonic/misc/openai-logo.png",
+    "token_endpoint_auth_signing_alg": "RS256",
+    "jwks_uri": "https://chatgpt.com/oauth/jwks.json",
+}
+
+
+def metadata_document(**values):
+    return dict(
+        {
+            "client_id": DOCUMENT_URL,
+            "client_name": "Example Client",
+            "client_uri": "https://app.example.com",
+            "redirect_uris": ["http://127.0.0.1/callback"],
+            "token_endpoint_auth_method": "none",
+        },
+        **values,
+    )
+
+
+@tagged("post_install", "-at_install")
+class TestRegistration(common.OAuthServerMixin, TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.setup_oauth_server()
+        cls.clients = cls.env["oauth.server.client"]
+
+    def assertOAuthError(self, error, function, *args, **kwargs):
+        with self.assertRaises(OAuthError) as raised:
+            function(*args, **kwargs)
+        self.assertEqual(raised.exception.error, error, raised.exception.description)
+
+    def test_registration_off_at_installation(self):
+        """Applications neither register themselves nor present metadata
+        documents until an administrator allows it."""
+        params = self.env["ir.config_parameter"].sudo()
+        params.set_param("auth_oauth_server.dcr_enabled", False)
+        params.set_param("auth_oauth_server.cimd_enabled", False)
+        post_init_hook(self.env)
+        server = self.env["oauth.server"]
+        self.assertFalse(server._is_dynamic_registration_enabled())
+        self.assertFalse(server._is_metadata_document_enabled())
+        self.assertEqual(params.get_param("auth_oauth_server.issuer"), common.ISSUER)
+
+    # ------------------------------------------------------------------
+    # Dynamic client registration
+    # ------------------------------------------------------------------
+
+    def test_register_public_client(self):
+        response = self.clients._register_dynamic(
+            {
+                "client_name": "Desktop App",
+                "redirect_uris": ["http://localhost:3000/callback"],
+                "token_endpoint_auth_method": "none",
+                "grant_types": ["authorization_code", "refresh_token"],
+                "software_id": "ignored",
+            }
+        )
+        client = self.clients.search([("identifier", "=", response["client_id"])])
+        self.assertEqual(client.registration_type, "dynamic")
+        self.assertEqual(client.client_type, "public")
+        self.assertEqual(client.name, "Desktop App")
+        self.assertNotIn("client_secret", response)
+        self.assertEqual(response["token_endpoint_auth_method"], "none")
+        self.assertEqual(response["response_types"], ["code"])
+
+    def test_register_confidential_client(self):
+        response = self.clients._register_dynamic(
+            {
+                "redirect_uris": ["https://web.example.com/callback"],
+                "token_endpoint_auth_method": "client_secret_post",
+                "client_uri": "http://not-https.example.com",
+            }
+        )
+        client = self.clients.search([("identifier", "=", response["client_id"])])
+        self.assertEqual(client.client_type, "confidential")
+        # no client_name: the redirect host stands in for it
+        self.assertEqual(client.name, "web.example.com")
+        self.assertFalse(client.client_uri)
+        self.assertEqual(response["client_secret_expires_at"], 0)
+        self.assertEqual(
+            self.env["oauth.server"]._authenticate_client(
+                response["client_id"], response["client_secret"]
+            ),
+            client,
+        )
+
+    def test_register_errors(self):
+        uris = ["https://web.example.com/callback"]
+        cases = [
+            ("invalid_client_metadata", ["not", "an", "object"]),
+            ("invalid_redirect_uri", {}),
+            ("invalid_redirect_uri", {"redirect_uris": []}),
+            ("invalid_redirect_uri", {"redirect_uris": "https://a.example.com/cb"}),
+            ("invalid_redirect_uri", {"redirect_uris": ["http://web.example.com/cb"]}),
+            ("invalid_redirect_uri", {"redirect_uris": uris * 11}),
+            (
+                "invalid_client_metadata",
+                {
+                    "redirect_uris": uris,
+                    "token_endpoint_auth_method": "private_key_jwt",
+                },
+            ),
+            (
+                "invalid_client_metadata",
+                {"redirect_uris": uris, "grant_types": ["client_credentials"]},
+            ),
+            (
+                "invalid_client_metadata",
+                {"redirect_uris": uris, "grant_types": ["authorization_code", {}]},
+            ),
+            (
+                "invalid_client_metadata",
+                {"redirect_uris": uris, "response_types": ["token"]},
+            ),
+            (
+                "invalid_client_metadata",
+                {"redirect_uris": uris, "client_name": "x" * 201},
+            ),
+        ]
+        for error, metadata in cases:
+            with self.subTest(metadata=metadata):
+                self.assertOAuthError(error, self.clients._register_dynamic, metadata)
+
+    # ------------------------------------------------------------------
+    # Client ID Metadata Documents
+    # ------------------------------------------------------------------
+
+    def patch_network(self, document=None, addresses=None, error=None):
+        fetch = mock.patch.object(
+            utils,
+            "fetch_metadata_document",
+            side_effect=error,
+            return_value=(document or metadata_document(), "max-age=600"),
+        )
+        resolve = mock.patch.object(
+            utils, "resolve_host", return_value=addresses or {PUBLIC_ADDRESS}
+        )
+        return fetch, resolve
+
+    def get_client(self, url=DOCUMENT_URL, **kwargs):
+        fetch, resolve = self.patch_network(**kwargs)
+        with fetch as fetched, resolve:
+            client = self.clients._get_for_authorization(url)
+        return client, fetched
+
+    def test_metadata_document(self):
+        client, fetched = self.get_client()
+        fetched.assert_called_once_with(DOCUMENT_URL)
+        self.assertEqual(client.identifier, DOCUMENT_URL)
+        self.assertEqual(client.registration_type, "metadata_document")
+        self.assertEqual(client.client_type, "public")
+        self.assertEqual(client.name, "Example Client")
+        self.assertEqual(client._get_redirect_uris(), ["http://127.0.0.1/callback"])
+        self.assertGreater(client.metadata_expires_at, fields.Datetime.now())
+        # cached while fresh
+        same, fetched = self.get_client()
+        self.assertEqual(same, client)
+        fetched.assert_not_called()
+        # fetched again once expired
+        client.metadata_expires_at = fields.Datetime.now() - timedelta(seconds=1)
+        same, fetched = self.get_client(
+            document=metadata_document(client_name="Renamed")
+        )
+        fetched.assert_called_once_with(DOCUMENT_URL)
+        self.assertEqual(same, client)
+        self.assertEqual(client.name, "Renamed")
+
+    def test_metadata_document_supporting_none(self):
+        url = CHATGPT_DOCUMENT["client_id"]
+        client, _fetched = self.get_client(url, document=CHATGPT_DOCUMENT)
+        self.assertEqual(client.identifier, url)
+        self.assertEqual(client.client_type, "public")
+        self.assertEqual(client.name, "ChatGPT")
+        self.assertEqual(
+            client._get_redirect_uris(),
+            ["https://chatgpt.com/connector_platform_oauth_redirect"],
+        )
+        # identified by its client_id alone, without a client assertion
+        self.assertEqual(
+            self.env["oauth.server"]._authenticate_client(url, None), client
+        )
+
+    def test_metadata_document_errors(self):
+        cases = [
+            {"document": metadata_document(client_id="https://other.example.com/c")},
+            {"document": metadata_document(client_name="")},
+            {"document": metadata_document(redirect_uris=["http://evil.com/cb"])},
+            {
+                "document": metadata_document(
+                    token_endpoint_auth_method="client_secret_basic"
+                )
+            },
+            {
+                "document": metadata_document(
+                    token_endpoint_auth_method="private_key_jwt",
+                    token_endpoint_auth_methods_supported=["private_key_jwt"],
+                )
+            },
+            {
+                "document": metadata_document(
+                    token_endpoint_auth_method="private_key_jwt",
+                    token_endpoint_auth_methods_supported="none",
+                )
+            },
+            {"document": ["not", "a", "dict"]},
+            {"addresses": {"10.0.0.5"}},
+            {"addresses": {PUBLIC_ADDRESS, "127.0.0.1"}},
+            {"error": ValueError("too large")},
+        ]
+        for kwargs in cases:
+            with self.subTest(kwargs=kwargs):
+                fetch, resolve = self.patch_network(**kwargs)
+                with fetch, resolve:
+                    self.assertOAuthError(
+                        "invalid_client",
+                        self.clients._get_for_authorization,
+                        DOCUMENT_URL,
+                    )
+        self.assertFalse(self.clients.search([("identifier", "=", DOCUMENT_URL)]))
+
+    def test_metadata_document_only_for_valid_requests(self):
+        """No document is fetched for a request that would be refused."""
+        _verifier, challenge = common.pkce_pair()
+        params = {
+            "client_id": DOCUMENT_URL,
+            "response_type": "code",
+            "code_challenge": challenge,
+            "code_challenge_method": "S256",
+            "resource": self.resource.uri,
+        }
+        portal = common.new_test_user(
+            self.env, login="oauth_portal", groups="base.group_portal"
+        )
+        server = self.env["oauth.server"]
+        fetch, resolve = self.patch_network()
+        with fetch as fetched, resolve:
+            for error, wrong_params, user in (
+                ("unsupported_response_type", {"response_type": "token"}, self.user),
+                ("invalid_request", {"code_challenge": None}, self.user),
+                ("invalid_target", {"resource": "https://x.com/api"}, self.user),
+                ("access_denied", {}, portal),
+            ):
+                with self.subTest(error=error):
+                    self.assertOAuthError(
+                        error,
+                        server._get_authorization_client,
+                        dict(params, **wrong_params),
+                        user,
+                    )
+            fetched.assert_not_called()
+            client, _redirect_uri = server._get_authorization_client(params, self.user)
+        self.assertEqual(client.identifier, DOCUMENT_URL)
+
+    def test_registration_disabled_stops_clients(self):
+        """Disabling a way of registering stops the clients registered so."""
+        params = self.env["ir.config_parameter"].sudo()
+        response = self.clients._register_dynamic(
+            {
+                "redirect_uris": [common.REDIRECT_URI],
+                "token_endpoint_auth_method": "none",
+            }
+        )
+        dynamic = self.clients.search([("identifier", "=", response["client_id"])])
+        document, _fetched = self.get_client()
+        server = self.env["oauth.server"]
+        for client, key in (
+            (dynamic, "auth_oauth_server.dcr_enabled"),
+            (document, "auth_oauth_server.cimd_enabled"),
+        ):
+            with self.subTest(key=key):
+                authorization, tokens = self.tokens(client=client)
+                params.set_param(key, False)
+                self.assertOAuthError(
+                    "invalid_client",
+                    server._authenticate_client,
+                    client.identifier,
+                    None,
+                )
+                self.assertOAuthError(
+                    "invalid_grant", self.refresh, tokens["refresh_token"], client
+                )
+                with self.assertRaises(common.UnauthorizedInvalidToken):
+                    self.check_token(tokens["access_token"])
+                self.assertOAuthError(
+                    "invalid_client",
+                    self.clients._get_for_authorization,
+                    client.identifier,
+                )
+                # enabled again, they work again
+                params.set_param(key, True)
+                self.assertTrue(self.refresh(tokens["refresh_token"], client))
+                self.assertFalse(authorization.revoked)
+
+    def test_metadata_document_not_a_url(self):
+        fetch, resolve = self.patch_network()
+        with fetch as fetched, resolve:
+            for identifier in ("http://app.example.com/c.json", "unknown-client"):
+                self.assertOAuthError(
+                    "invalid_client", self.clients._get_for_authorization, identifier
+                )
+        fetched.assert_not_called()
+
+    def test_metadata_document_disabled(self):
+        params = self.env["ir.config_parameter"].sudo()
+        params.set_param("auth_oauth_server.cimd_enabled", False)
+        fetch, resolve = self.patch_network()
+        with fetch as fetched, resolve:
+            self.assertOAuthError(
+                "invalid_client", self.clients._get_for_authorization, DOCUMENT_URL
+            )
+        fetched.assert_not_called()
+        self.assertFalse(
+            self.env["oauth.server"]._metadata()[
+                "client_id_metadata_document_supported"
+            ]
+        )
+
+    def test_metadata_document_trusted_domains(self):
+        params = self.env["ir.config_parameter"].sudo()
+        params.set_param(
+            "auth_oauth_server.cimd_trusted_domains", "other.com, .example.com"
+        )
+        client, _fetched = self.get_client()
+        self.assertTrue(client)
+        params.set_param("auth_oauth_server.cimd_trusted_domains", "other.com")
+        fetch, resolve = self.patch_network()
+        with fetch, resolve:
+            self.assertOAuthError(
+                "invalid_client",
+                self.clients._get_for_authorization,
+                "https://evil.example.org/client.json",
+            )
+
+    def test_disabled_metadata_document_client(self):
+        client, _fetched = self.get_client()
+        client.active = False
+        fetch, resolve = self.patch_network()
+        with fetch, resolve:
+            self.assertOAuthError(
+                "unauthorized_client", self.clients._get_for_authorization, DOCUMENT_URL
+            )
+
+    # ------------------------------------------------------------------
+    # Garbage collection
+    # ------------------------------------------------------------------
+
+    def test_unused_clients_are_forgotten(self):
+        response = self.clients._register_dynamic(
+            {"redirect_uris": ["https://web.example.com/callback"]}
+        )
+        unused = self.clients.search([("identifier", "=", response["client_id"])])
+        response = self.clients._register_dynamic(
+            {"redirect_uris": ["https://web.example.com/callback"]}
+        )
+        used = self.clients.search([("identifier", "=", response["client_id"])])
+        self.approve(client=used)
+        clients = unused | used | self.client
+        clients.flush_recordset()
+        self.env.cr.execute(
+            "UPDATE oauth_server_client SET create_date = %s WHERE id IN %s",
+            (fields.Datetime.now() - timedelta(days=2), tuple(clients.ids)),
+        )
+        self.clients._gc_unused_clients()
+        self.assertFalse(unused.exists())
+        self.assertTrue(used.exists())
+        # clients created by an administrator are kept
+        self.assertTrue(self.client.exists())

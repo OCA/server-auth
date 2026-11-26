@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_oauth_server_resource_system,oauth.server.resource system,model_oauth_server_resource,base.group_system,1,1,1,1
+access_oauth_server_client_system,oauth.server.client system,model_oauth_server_client,base.group_system,1,1,1,1
+access_oauth_server_authorization_system,oauth.server.authorization system,model_oauth_server_authorization,base.group_system,1,0,0,1
+access_oauth_server_authorization_user,oauth.server.authorization user,model_oauth_server_authorization,base.group_user,1,0,0,0
+access_oauth_server_refresh_token_system,oauth.server.refresh.token system,model_oauth_server_refresh_token,base.group_system,1,0,0,1
