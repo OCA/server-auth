@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates id="template" xml:space="preserve">
+    <t t-name="vault.Field.buttons.send">
+        <button
+            t-if="sendButton"
+            t-on-click="_onSendValue"
+            class="btn btn-secondary btn-sm fa fa-share-alt o_vault_send"
+            title="Send the secret to an user"
+            aria-label="Send the secret to an user"
+        />
+    </t>
+
+    <t t-name="vault.Field.buttons">
+        <button
+            t-if="!state.decrypted &amp;&amp; showButton"
+            t-on-click="_onShowValue"
+            class="btn btn-secondary btn-sm fa fa-eye o_vault_show"
+            title="Show"
+            aria-label="Show"
+        />
+        <button
+            t-elif="showButton"
+            t-on-click="_onShowValue"
+            class="btn btn-secondary btn-sm fa fa-eye-slash o_vault_show"
+            title="Hide"
+            aria-label="Hide"
+        />
+        <button
+            t-if="copyButton"
+            t-on-click="_onCopyValue"
+            class="btn btn-secondary btn-sm fa fa-clipboard o_vault_clipboard"
+            title="Copy to clipboard"
+            aria-label="Copy to clipboard"
+        />
+        <t t-call="vault.Field.buttons.send" />
+    </t>
+
+    <t t-name="vault.FieldVault">
+        <div class="o_vault o_vault_error" t-if="!supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-elif="props.readonly">
+            <span class="o_vault_buttons">
+                <t t-call="vault.Field.buttons" />
+            </span>
+            <span t-esc="formattedValue" t-ref="span" />
+        </div>
+        <div class="o_vault" t-else="">
+            <span class="o_vault_buttons">
+                <button
+                    t-if="generateButton"
+                    t-on-click="_onGenerateValue"
+                    class="btn btn-secondary btn-sm fa fa-lock o_vault_generate"
+                    title="Generate"
+                    aria-label="Generate"
+                />
+            </span>
+            <input class="o_input" type="text" t-esc="formattedValue" t-ref="input" />
+        </div>
+    </t>
+
+    <t t-name="vault.FileVault" t-inherit="web.BinaryField" t-inherit-mode="primary">
+        <xpath expr="//button[hasclass('o_clear_file_button')]" position="after">
+            <t t-call="vault.Field.buttons.send" />
+        </xpath>
+    </t>
+
+    <t t-name="vault.FieldVaultInbox">
+        <div class="o_vault o_vault_error" t-if="!supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-elif="value">
+            <span class="o_vault_buttons">
+                <t t-call="vault.Field.buttons" />
+                <button
+                    t-if="saveButton"
+                    t-on-click="_onSaveValue"
+                    class="btn btn-secondary btn-sm fa fa-save"
+                    title="Save in a vault"
+                    aria-label="Save in a vault"
+                />
+            </span>
+
+            <span class="o_vault_inbox" t-esc="formattedValue" t-ref="span" />
+        </div>
+    </t>
+
+    <t t-name="vault.FileVaultInbox">
+        <div class="o_vault o_vault_error" t-if="!supported()">
+            <span>*******</span>
+        </div>
+        <div class="o_vault" t-elif="value">
+            <span class="o_vault_buttons">
+                <button
+                    t-if="saveButton"
+                    t-on-click="_onSaveValue"
+                    class="btn btn-secondary btn-sm fa fa-save"
+                    title="Save in a vault"
+                    aria-label="Save in a vault"
+                />
+            </span>
+
+            <a class="o_form_uri" href="#" t-on-click.prevent="onFileDownload">
+                <span class="fa fa-download me-2" />
+                <t t-if="state.fileName" t-esc="state.fileName" />
+            </a>
+        </div>
+    </t>
+
+    <t t-name="vault.FileVaultExport">
+        <a class="o_form_uri" href="#" t-on-click.prevent="onFileDownload">
+            <span class="fa fa-download me-2" />
+            <t t-if="state.fileName" t-esc="state.fileName" />
+        </a>
+    </t>
+</templates>

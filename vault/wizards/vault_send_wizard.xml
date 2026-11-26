@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_vault_send_wizard" model="ir.ui.view">
+        <field name="model">vault.send.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div>
+                        You can only send the secret to the user who has generated a key-pair.
+                        If an user is not showing please ask him to generate these.
+                    </div>
+                    <group>
+                        <field name="iv" invisible="1" />
+                        <field name="key" invisible="1" />
+                        <field name="key_user" invisible="1" />
+                        <field name="secret" invisible="1" />
+                        <field name="public" invisible="1" />
+                        <field
+                            name="user_id"
+                            options="{'no_open': true, 'no_create_edit': true, 'no_quick_create': true}"
+                        />
+                        <field name="name" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        type="object"
+                        name="action_send"
+                        string="Send"
+                        class="oe_highlight"
+                    />
+                    <button type="special" string="Cancel" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
