@@ -4,14 +4,15 @@
 import contextlib
 import json
 import logging
+import secrets
 from urllib.parse import parse_qs, urlparse
 
 import responses
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.asymmetric import ec, rsa
 from jose import jwt
 from jose.exceptions import JWTError
-from jose.utils import long_to_base64
+from jose.utils import base64url_encode, long_to_base64
 
 import odoo
 from odoo.exceptions import AccessDenied
@@ -40,11 +41,32 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             cls.rsa_key_pem,
             cls.rsa_key_public_pem,
             cls.rsa_key_public_jwk,
-        ) = cls._generate_key()
-        _, cls.second_key_public_pem, _ = cls._generate_key()
+        ) = cls._generate_rsa_key()
+        _, cls.second_key_public_pem, _ = cls._generate_rsa_key()
+
+        (
+            cls.es256_key_pem,
+            cls.es256_key_public_pem,
+            cls.es256_key_public_jwk,
+        ) = cls._generate_ec_key(curve=ec.SECP256R1())
+
+        (
+            cls.es384_key_pem,
+            cls.es384_key_public_pem,
+            cls.es384_key_public_jwk,
+        ) = cls._generate_ec_key(curve=ec.SECP384R1())
+
+        cls.hs256_key = secrets.token_bytes(32)
+        cls.hs256_jwk = {
+            "kty": "oct",
+            "use": "sig",
+            "alg": "HS256",
+            "kid": "hs256-key",
+            "k": base64url_encode(cls.hs256_key).decode("utf-8"),
+        }
 
     @staticmethod
-    def _generate_key():
+    def _generate_rsa_key():
         rsa_key = rsa.generate_private_key(
             public_exponent=65537,
             key_size=4096,
@@ -67,6 +89,38 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
             "e": long_to_base64(rsa_key_public.public_numbers().e).decode("utf-8"),
         }
         return rsa_key_pem, rsa_key_public_pem, jwk
+
+    @staticmethod
+    def _generate_ec_key(curve):
+        ec_key = ec.generate_private_key(curve)
+        ec_key_pem = ec_key.private_bytes(
+            serialization.Encoding.PEM,
+            serialization.PrivateFormat.TraditionalOpenSSL,
+            serialization.NoEncryption(),
+        ).decode("utf8")
+        ec_key_public = ec_key.public_key()
+        ec_key_public_pem = ec_key_public.public_bytes(
+            serialization.Encoding.PEM,
+            serialization.PublicFormat.SubjectPublicKeyInfo,
+        ).decode("utf8")
+
+        curve_name = "P-256" if isinstance(curve, ec.SECP256R1) else "P-384"
+        alg = "ES256" if isinstance(curve, ec.SECP256R1) else "ES384"
+
+        public_numbers = ec_key_public.public_numbers()
+        x = long_to_base64(public_numbers.x).decode("utf-8")
+        y = long_to_base64(public_numbers.y).decode("utf-8")
+
+        jwk = {
+            "kty": "EC",
+            "use": "sig",
+            "crv": curve_name,
+            "alg": alg,
+            "x": x,
+            "y": y,
+            "kid": "ec-key-" + alg.lower(),
+        }
+        return ec_key_pem, ec_key_public_pem, jwk
 
     def setUp(self):
         super().setUp()
@@ -118,12 +172,38 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         return user
 
     def _prepare_login_test_responses(
-        self, access_token="42", id_token_body=None, id_token_headers=None, keys=None
+        self,
+        access_token="42",
+        id_token_body=None,
+        id_token_headers=None,
+        keys=None,
+        algorithm="RS256",
+        private_key=None,
+        public_key=None,
     ):
         if id_token_body is None:
             id_token_body = {}
         if id_token_headers is None:
             id_token_headers = {"kid": "the_key_id"}
+
+        if private_key is None:
+            if algorithm == "RS256":
+                private_key = self.rsa_key_pem
+                public_key_pem = self.rsa_key_public_pem
+            elif algorithm == "ES256":
+                private_key = self.es256_key_pem
+                public_key_pem = self.es256_key_public_pem
+            elif algorithm == "ES384":
+                private_key = self.es384_key_pem
+                public_key_pem = self.es384_key_public_pem
+            elif algorithm == "HS256":
+                private_key = self.hs256_key
+                # For HS256, we don't use public_key_pem as it's a symmetric key
+                public_key_pem = None
+        else:
+            # For asymmetric algorithms, public_key_pem is needed
+            public_key_pem = public_key or private_key
+
         responses.add(
             responses.POST,
             "http://localhost:8080/auth/realms/master/protocol/openid-connect/token",
@@ -131,17 +211,31 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
                 "access_token": access_token,
                 "id_token": jwt.encode(
                     id_token_body,
-                    self.rsa_key_pem,
-                    algorithm="RS256",
+                    private_key,
+                    algorithm=algorithm,
                     headers=id_token_headers,
                 ),
             },
         )
+
+        # Handle the keys parameter based on the algorithm
         if keys is None:
-            if "kid" in id_token_headers:
-                keys = [{"kid": "the_key_id", "keys": [self.rsa_key_public_pem]}]
+            if algorithm == "HS256":
+                # For HS256, we use the JWK directly
+                keys = [self.hs256_jwk]
+            elif algorithm == "ES256":
+                # For ES256, we use the JWK directly
+                keys = [self.es256_key_public_jwk]
+            elif algorithm == "ES384":
+                # For ES384, we use the JWK directly
+                keys = [self.es384_key_public_jwk]
             else:
-                keys = [{"keys": [self.rsa_key_public_pem]}]
+                # For RS256, we use the traditional approach
+                if "kid" in id_token_headers:
+                    keys = [{"kid": id_token_headers["kid"], "keys": [public_key_pem]}]
+                else:
+                    keys = [{"keys": [public_key_pem]}]
+
         responses.add(
             responses.GET,
             "http://localhost:8080/auth/realms/master/protocol/openid-connect/certs",
@@ -273,6 +367,28 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
         )
 
     @responses.activate
+    def test_login_with_custom_keys(self):
+        """Test that login works with custom provided keys"""
+        user = self._prepare_login_test_user()
+        # Generate a new RSA key for this test
+        custom_key_pem, custom_key_public_pem, _ = self._generate_rsa_key()
+
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login},
+            private_key=custom_key_pem,
+            public_key=custom_key_public_pem,
+            access_token="custom_key_token",
+        )
+
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
+        self.assertEqual(token, "custom_key_token")
+        self.assertEqual(login, user.login)
+
+    @responses.activate
     def test_login_with_multiple_keys_in_jwks(self):
         """Test that login works with multiple keys present in jwks"""
         user = self._prepare_login_test_user()
@@ -331,4 +447,64 @@ class TestAuthOIDCAuthorizationCodeFlow(common.HttpCase):
                 {"state": json.dumps({})},
             )
         self.assertEqual(token, "122/3")
+        self.assertEqual(login, user.login)
+
+    @responses.activate
+    def test_login_with_es256_algorithm(self):
+        """Test that login works with ES256 algorithm"""
+        user = self._prepare_login_test_user()
+
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login},
+            id_token_headers={"kid": self.es256_key_public_jwk["kid"]},
+            algorithm="ES256",
+            access_token="es256token",
+        )
+
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
+        self.assertEqual(token, "es256token")
+        self.assertEqual(login, user.login)
+
+    @responses.activate
+    def test_login_with_es384_algorithm(self):
+        """Test that login works with ES384 algorithm"""
+        user = self._prepare_login_test_user()
+
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login},
+            id_token_headers={"kid": self.es384_key_public_jwk["kid"]},
+            algorithm="ES384",
+            access_token="es384token",
+        )
+
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
+        self.assertEqual(token, "es384token")
+        self.assertEqual(login, user.login)
+
+    @responses.activate
+    def test_login_with_hs256_algorithm(self):
+        """Test that login works with HS256 algorithm"""
+        user = self._prepare_login_test_user()
+
+        self._prepare_login_test_responses(
+            id_token_body={"user_id": user.login},
+            id_token_headers={"kid": self.hs256_jwk["kid"]},
+            algorithm="HS256",
+            access_token="hs256token",
+        )
+
+        with MockRequest(self.env):
+            db, login, token = self.env["res.users"].auth_oauth(
+                self.provider_rec.id,
+                {"state": json.dumps({})},
+            )
+        self.assertEqual(token, "hs256token")
         self.assertEqual(login, user.login)
