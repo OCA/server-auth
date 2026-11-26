@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem
+        id="menu_oauth_server"
+        name="OAuth Server"
+        parent="base.menu_users"
+        sequence="40"
+        groups="base.group_system"
+    />
+    <menuitem
+        id="menu_oauth_server_authorization"
+        parent="menu_oauth_server"
+        action="oauth_server_authorization_action"
+        sequence="10"
+    />
+    <menuitem
+        id="menu_oauth_server_client"
+        parent="menu_oauth_server"
+        action="oauth_server_client_action"
+        sequence="20"
+    />
+    <menuitem
+        id="menu_oauth_server_resource"
+        parent="menu_oauth_server"
+        action="oauth_server_resource_action"
+        sequence="30"
+    />
+</odoo>

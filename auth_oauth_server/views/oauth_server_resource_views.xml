@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="oauth_server_resource_view_tree" model="ir.ui.view">
+        <field name="name">oauth.server.resource.tree</field>
+        <field name="model">oauth.server.resource</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="uri" />
+                <field name="scopes" />
+                <field name="group_ids" widget="many2many_tags" />
+            </tree>
+        </field>
+    </record>
+    <record id="oauth_server_resource_view_form" model="ir.ui.view">
+        <field name="name">oauth.server.resource.form</field>
+        <field name="model">oauth.server.resource</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button
+                        name="action_rotate_secret"
+                        type="object"
+                        string="Rotate Signing Secret"
+                        confirm="Every access token issued so far stops working; applications get new ones with their refresh token. Continue?"
+                    />
+                </header>
+                <sheet>
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        attrs="{'invisible': [('active', '=', True)]}"
+                    />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="e.g. Reporting API" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group name="resource">
+                            <field name="path" placeholder="/api" />
+                            <field name="uri" widget="url" />
+                            <field name="scopes" />
+                            <field name="group_ids" widget="many2many_tags" />
+                            <field name="active" invisible="1" />
+                        </group>
+                        <group name="lifetimes">
+                            <field name="access_token_lifetime" />
+                            <field name="refresh_token_lifetime" />
+                            <field name="max_lifetime" />
+                            <field name="jwt_validator_id" groups="base.group_no_one" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="oauth_server_resource_view_search" model="ir.ui.view">
+        <field name="name">oauth.server.resource.search</field>
+        <field name="model">oauth.server.resource</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="path" />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+            </search>
+        </field>
+    </record>
+    <record id="oauth_server_resource_action" model="ir.actions.act_window">
+        <field name="name">Protected Resources</field>
+        <field name="res_model">oauth.server.resource</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
