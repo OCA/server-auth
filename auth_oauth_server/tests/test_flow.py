@@ -63,7 +63,7 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
     def test_authorization_request(self):
         server = self.env["oauth.server"]
         params = self.request_params()
-        client, redirect_uri = server._get_authorization_client(params)
+        client, redirect_uri = server._get_authorization_client(params, self.user)
         self.assertEqual(client, self.client)
         values = server._check_authorization_request(
             client, redirect_uri, params, self.user
@@ -93,25 +93,28 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
             self.request_params(redirect_uri=None),
         ):
             with self.assertRaises(OAuthError):
-                server._get_authorization_client(params)
+                server._get_authorization_client(params, self.user)
         self.client.active = False
         self.assertOAuthError(
             "unauthorized_client",
             server._get_authorization_client,
             self.request_params(),
+            self.user,
         )
 
     def test_authorization_request_redirect_uri(self):
         server = self.env["oauth.server"]
         _client, redirect_uri = server._get_authorization_client(
-            self.request_params(redirect_uri="http://127.0.0.1:43123/callback")
+            self.request_params(redirect_uri="http://127.0.0.1:43123/callback"),
+            self.user,
         )
         self.assertEqual(redirect_uri, "http://127.0.0.1:43123/callback")
         # the only registered redirect URI is the default
         _client, redirect_uri = server._get_authorization_client(
             self.request_params(
                 client_id=self.confidential_client.identifier, redirect_uri=None
-            )
+            ),
+            self.user,
         )
         self.assertEqual(redirect_uri, common.REDIRECT_URI)
 
@@ -127,6 +130,7 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
             ("invalid_request", {"code_challenge": "short"}),
             ("invalid_request", {"state": "x" * 3000}),
             ("invalid_target", {"resource": "https://other.example.com/api"}),
+            ("invalid_scope", {"scope": "admin"}),
         ]
         for error, params in cases:
             with self.subTest(params=params):
@@ -205,6 +209,33 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         # none of the failures consumed the code
         self.assertTrue(self.exchange(code, verifier)["access_token"])
 
+    def test_code_redirect_uri(self):
+        """The token request must repeat the redirect_uri of the authorization
+        request, if it had one (RFC 6749 4.1.3)."""
+        server = self.env["oauth.server"]
+        for given in (True, False):
+            with self.subTest(given=given):
+                verifier, challenge = common.pkce_pair()
+                params = self.request_params(code_challenge=challenge)
+                if not given:
+                    params.update(
+                        client_id=self.confidential_client.identifier,
+                        redirect_uri=None,
+                    )
+                client, redirect_uri = server._get_authorization_client(
+                    params, self.user
+                )
+                values = server._check_authorization_request(
+                    client, redirect_uri, params, self.user
+                )
+                code = server._approve(values, self.user)
+                exchange = self.env["oauth.server.authorization"]._exchange_code
+                params = {"code": code, "code_verifier": verifier}
+                if given:
+                    self.assertOAuthError("invalid_grant", exchange, client, params)
+                    params["redirect_uri"] = common.REDIRECT_URI
+                self.assertTrue(exchange(client, params)["access_token"])
+
     def test_code_expired(self):
         authorization, code, verifier = self.approve()
         authorization.code_expires_at = fields.Datetime.now() - timedelta(seconds=1)
@@ -237,9 +268,18 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         self.assertNotEqual(new_tokens["refresh_token"], tokens["refresh_token"])
         self.assertEqual(self.check_token(new_tokens["access_token"]), self.user.id)
         self.assertTrue(authorization.last_refresh)
-        # concurrent requests of one client may present the same token twice
-        self.assertTrue(self.refresh(tokens["refresh_token"])["access_token"])
+        # concurrent requests of one client may present the same token twice:
+        # both get the same refresh token, so that a single chain goes on
+        again = self.refresh(tokens["refresh_token"])
+        self.assertEqual(again["refresh_token"], new_tokens["refresh_token"])
+        self.assertEqual(self.check_token(again["access_token"]), self.user.id)
         self.assertFalse(authorization.revoked)
+        self.assertTrue(self.refresh(new_tokens["refresh_token"])["access_token"])
+        # once the chain went on, the first token is a stolen copy
+        self.assertOAuthErrorKeepingChanges(
+            "invalid_grant", self.refresh, tokens["refresh_token"]
+        )
+        self.assertEqual(authorization.revoked_reason, "refresh_reuse")
 
     def test_refresh_reuse_revokes(self):
         authorization, tokens = self.tokens()
@@ -257,6 +297,29 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         )
         with self.assertRaises(UnauthorizedInvalidToken):
             self.check_token(new_tokens["access_token"])
+
+    def test_late_refresh_reuse_revokes(self):
+        authorization, tokens = self.tokens()
+        self.refresh(tokens["refresh_token"])
+        refresh_tokens = self.env["oauth.server.refresh.token"]
+        old_token = refresh_tokens._get_by_token(tokens["refresh_token"])
+        old_token.used_at = fields.Datetime.now() - timedelta(days=2)
+        refresh_tokens._gc_refresh_tokens()
+        # used tokens are kept until they expire
+        self.assertTrue(old_token.exists())
+        self.assertOAuthErrorKeepingChanges(
+            "invalid_grant", self.refresh, tokens["refresh_token"]
+        )
+        self.assertEqual(authorization.revoked_reason, "refresh_reuse")
+        old_token = refresh_tokens.create(
+            {
+                "token_hash": "expired",
+                "authorization_id": authorization.id,
+                "expires_at": fields.Datetime.now() - timedelta(seconds=1),
+            }
+        )
+        refresh_tokens._gc_refresh_tokens()
+        self.assertFalse(old_token.exists())
 
     def test_refresh_errors(self):
         _authorization, tokens = self.tokens()
@@ -283,6 +346,25 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         self.assertEqual(tokens["scope"], "read")
         payload = self.resource.jwt_validator_id._decode(tokens["access_token"])
         self.assertEqual(payload["scope"], "read")
+
+    def test_scopes_removed_from_the_resource(self):
+        authorization, code, verifier = self.approve()
+        self.resource.scopes = "read"
+        tokens = self.exchange(code, verifier)
+        self.assertEqual(tokens["scope"], "read")
+        self.resource.scopes = "admin"
+        tokens = self.refresh(tokens["refresh_token"])
+        self.assertEqual(tokens["scope"], "")
+        payload = self.resource.jwt_validator_id._decode(tokens["access_token"])
+        self.assertEqual(payload["scope"], "")
+        # the consent is kept: the scope comes back with the resource
+        self.resource.scopes = "read write"
+        self.assertEqual(self.refresh(tokens["refresh_token"])["scope"], "read write")
+        self.assertEqual(authorization.scopes, "read write")
+        # a resource without scopes gives tokens without scopes
+        self.resource.scopes = False
+        authorization, code, verifier = self.approve(scopes=False)
+        self.assertEqual(self.exchange(code, verifier)["scope"], "")
 
     def test_refresh_expired(self):
         _authorization, tokens = self.tokens()
@@ -389,8 +471,14 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
     def test_revoke_token(self):
         authorizations = self.env["oauth.server.authorization"]
         authorization, tokens = self.tokens()
-        # tokens of another client are ignored
-        authorizations._revoke_token(self.confidential_client, tokens["refresh_token"])
+        # tokens of another client are refused (RFC 7009 2.1)
+        for token in (tokens["refresh_token"], tokens["access_token"]):
+            self.assertOAuthError(
+                "invalid_grant",
+                authorizations._revoke_token,
+                self.confidential_client,
+                token,
+            )
         self.assertFalse(authorization.revoked)
         authorizations._revoke_token(self.client, tokens["refresh_token"])
         self.assertEqual(authorization.revoked_reason, "client")
@@ -400,6 +488,34 @@ class TestFlow(common.OAuthServerMixin, TransactionCase):
         # unknown tokens are ignored
         authorizations._revoke_token(self.client, "unknown")
         authorizations._revoke_token(self.client, None)
+
+    def test_revoke_token_no_longer_valid(self):
+        """Access tokens expired, or of authorizations not valid for now,
+        revoke their authorization too."""
+        authorizations = self.env["oauth.server.authorization"]
+        authorization, tokens = self.tokens()
+        payload = self.resource.jwt_validator_id._decode(tokens["access_token"])
+        validator = self.resource.jwt_validator_id
+        expired = jwt.encode(
+            dict(payload, exp=payload["iat"] - 1),
+            validator.secret_key,
+            algorithm=validator.secret_algorithm,
+        )
+        authorizations._revoke_token(self.client, expired)
+        self.assertTrue(authorization.revoked)
+        authorization, tokens = self.tokens()
+        self.resource.group_ids = self.env["res.groups"].create({"name": "API"})
+        authorizations._revoke_token(self.client, tokens["access_token"])
+        self.assertTrue(authorization.revoked)
+        # a forged signature is still ignored
+        self.resource.group_ids = False
+        authorization, tokens = self.tokens()
+        payload = self.resource.jwt_validator_id._decode(tokens["access_token"])
+        forged = jwt.encode(
+            payload, "a wrong secret, as long as a real one", algorithm="HS256"
+        )
+        authorizations._revoke_token(self.client, forged)
+        self.assertFalse(authorization.revoked)
 
     # ------------------------------------------------------------------
     # Client authentication

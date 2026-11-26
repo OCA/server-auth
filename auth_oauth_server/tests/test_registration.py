@@ -4,8 +4,6 @@
 from datetime import timedelta
 from unittest import mock
 
-import requests
-
 from odoo import fields
 from odoo.tests.common import TransactionCase, tagged
 
@@ -135,6 +133,10 @@ class TestRegistration(common.OAuthServerMixin, TransactionCase):
             ),
             (
                 "invalid_client_metadata",
+                {"redirect_uris": uris, "grant_types": ["authorization_code", {}]},
+            ),
+            (
+                "invalid_client_metadata",
                 {"redirect_uris": uris, "response_types": ["token"]},
             ),
             (
@@ -230,7 +232,6 @@ class TestRegistration(common.OAuthServerMixin, TransactionCase):
             {"document": ["not", "a", "dict"]},
             {"addresses": {"10.0.0.5"}},
             {"addresses": {PUBLIC_ADDRESS, "127.0.0.1"}},
-            {"error": requests.ConnectionError("down")},
             {"error": ValueError("too large")},
         ]
         for kwargs in cases:
@@ -243,6 +244,79 @@ class TestRegistration(common.OAuthServerMixin, TransactionCase):
                         DOCUMENT_URL,
                     )
         self.assertFalse(self.clients.search([("identifier", "=", DOCUMENT_URL)]))
+
+    def test_metadata_document_only_for_valid_requests(self):
+        """No document is fetched for a request that would be refused."""
+        _verifier, challenge = common.pkce_pair()
+        params = {
+            "client_id": DOCUMENT_URL,
+            "response_type": "code",
+            "code_challenge": challenge,
+            "code_challenge_method": "S256",
+            "resource": self.resource.uri,
+        }
+        portal = common.new_test_user(
+            self.env, login="oauth_portal", groups="base.group_portal"
+        )
+        server = self.env["oauth.server"]
+        fetch, resolve = self.patch_network()
+        with fetch as fetched, resolve:
+            for error, wrong_params, user in (
+                ("unsupported_response_type", {"response_type": "token"}, self.user),
+                ("invalid_request", {"code_challenge": None}, self.user),
+                ("invalid_target", {"resource": "https://x.com/api"}, self.user),
+                ("access_denied", {}, portal),
+            ):
+                with self.subTest(error=error):
+                    self.assertOAuthError(
+                        error,
+                        server._get_authorization_client,
+                        dict(params, **wrong_params),
+                        user,
+                    )
+            fetched.assert_not_called()
+            client, _redirect_uri = server._get_authorization_client(params, self.user)
+        self.assertEqual(client.identifier, DOCUMENT_URL)
+
+    def test_registration_disabled_stops_clients(self):
+        """Disabling a way of registering stops the clients registered so."""
+        params = self.env["ir.config_parameter"].sudo()
+        response = self.clients._register_dynamic(
+            {
+                "redirect_uris": [common.REDIRECT_URI],
+                "token_endpoint_auth_method": "none",
+            }
+        )
+        dynamic = self.clients.search([("identifier", "=", response["client_id"])])
+        document, _fetched = self.get_client()
+        server = self.env["oauth.server"]
+        for client, key in (
+            (dynamic, "auth_oauth_server.dcr_enabled"),
+            (document, "auth_oauth_server.cimd_enabled"),
+        ):
+            with self.subTest(key=key):
+                authorization, tokens = self.tokens(client=client)
+                params.set_param(key, False)
+                self.assertOAuthError(
+                    "invalid_client",
+                    server._authenticate_client,
+                    client.identifier,
+                    None,
+                )
+                self.assertOAuthError(
+                    "invalid_grant", self.refresh, tokens["refresh_token"], client
+                )
+                with self.assertRaises(common.UnauthorizedInvalidToken):
+                    self.check_token(tokens["access_token"])
+                self.assertOAuthError(
+                    "invalid_client",
+                    self.clients._get_for_authorization,
+                    client.identifier,
+                )
+                # enabled again, they work again
+                params.set_param(key, True)
+                self.assertTrue(self.refresh(tokens["refresh_token"], client))
+                self.assertFalse(authorization.revoked)
 
     def test_metadata_document_not_a_url(self):
         fetch, resolve = self.patch_network()

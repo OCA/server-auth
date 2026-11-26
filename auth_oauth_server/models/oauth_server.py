@@ -9,6 +9,7 @@ from odoo.tools import str2bool
 from ..exceptions import OAuthError
 from ..utils import (
     PKCE_CHALLENGE_RE,
+    check_metadata_document_url,
     is_valid_redirect_uri,
     redirect_uri_matches,
     sign,
@@ -99,8 +100,8 @@ class OAuthServer(models.AbstractModel):
     # ------------------------------------------------------------------
 
     @api.model
-    def _get_authorization_client(self, params):
-        """The client and redirect URI of an authorization request.
+    def _get_authorization_client(self, params, user):
+        """The client and redirect URI of an authorization request of ``user``.
 
         The errors raised here must be shown to the user, never redirected:
         the redirect URI is not trusted yet.
@@ -108,6 +109,10 @@ class OAuthServer(models.AbstractModel):
         identifier = params.get("client_id")
         if not identifier or not isinstance(identifier, str):
             raise OAuthError("invalid_request", "Missing client_id.")
+        if check_metadata_document_url(identifier):
+            # before fetching a metadata document, and creating a client, on
+            # behalf of the user: only for valid requests of allowed users
+            self._check_request(params, user)
         client = self.env["oauth.server.client"]._get_for_authorization(identifier)
         registered = client._get_redirect_uris()
         redirect_uri = params.get("redirect_uri")
@@ -127,6 +132,25 @@ class OAuthServer(models.AbstractModel):
 
         Returns the values to sign into the consent page, from which the
         decision is taken once the user answers.
+        """
+        resource = self._check_request(params, user)
+        return {
+            "client": client.id,
+            "redirect_uri": redirect_uri,
+            # then the token request must repeat it
+            "redirect_uri_given": bool(params.get("redirect_uri")),
+            "resource": resource.id,
+            "scope": resource._filter_scopes(params.get("scope")),
+            "code_challenge": params["code_challenge"],
+            "state": params.get("state"),
+            "uid": user.id,
+        }
+
+    @api.model
+    def _check_request(self, params, user):
+        """The checks of an authorization request that need no client.
+
+        Returns the resource asked for.
         """
         if params.get("response_type") != "code":
             raise OAuthError(
@@ -151,15 +175,7 @@ class OAuthServer(models.AbstractModel):
             raise OAuthError(
                 "access_denied", "This user may not give access to this resource."
             )
-        return {
-            "client": client.id,
-            "redirect_uri": redirect_uri,
-            "resource": resource.id,
-            "scope": resource._filter_scopes(params.get("scope")),
-            "code_challenge": challenge,
-            "state": state,
-            "uid": user.id,
-        }
+        return resource
 
     @api.model
     def _get_consent_secret(self):
@@ -178,7 +194,7 @@ class OAuthServer(models.AbstractModel):
         """Record the user's consent; returns the authorization code."""
         client = self.env["oauth.server.client"].browse(values["client"]).exists()
         resource = self.env["oauth.server.resource"].browse(values["resource"]).exists()
-        if not client.active or not resource.active:
+        if not client or not client._is_enabled() or not resource.active:
             raise OAuthError("invalid_request", "The application is no longer allowed.")
         if not resource._is_user_allowed(user):
             raise OAuthError(
@@ -191,7 +207,7 @@ class OAuthServer(models.AbstractModel):
             client,
             resource,
             values["scope"],
-            values["redirect_uri"],
+            values["redirect_uri_given"] and values["redirect_uri"],
             values["code_challenge"],
         )
         return code
@@ -219,7 +235,7 @@ class OAuthServer(models.AbstractModel):
         client = self.env["oauth.server.client"].search(
             [("identifier", "=", client_id)], limit=1
         )
-        if not client:
+        if not client or not client._is_enabled():
             raise failure
         if client.client_type == "confidential" and not client._check_secret(
             client_secret

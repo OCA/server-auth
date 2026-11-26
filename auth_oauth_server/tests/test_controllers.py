@@ -274,6 +274,7 @@ class TestControllers(common.OAuthServerMixin, HttpCase):
             "grant_type": "authorization_code",
             "code": code,
             "code_verifier": verifier,
+            "redirect_uri": common.REDIRECT_URI,
             "client_id": self.client.identifier,
         }
         self.assertEqual(self.token_request(data).status_code, 200)
@@ -289,6 +290,7 @@ class TestControllers(common.OAuthServerMixin, HttpCase):
                 "grant_type": "authorization_code",
                 "code": code,
                 "code_verifier": verifier,
+                "redirect_uri": common.REDIRECT_URI,
             },
             headers={
                 "Authorization": "Basic "
@@ -299,6 +301,17 @@ class TestControllers(common.OAuthServerMixin, HttpCase):
 
     def test_revoke(self):
         authorization, tokens = self.tokens()
+        response = self.post(
+            "/oauth/revoke",
+            {
+                "token": tokens["refresh_token"],
+                "client_id": self.confidential_client.identifier,
+                "client_secret": self.client_secret,
+            },
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["error"], "invalid_grant")
+        self.assertFalse(authorization.revoked)
         response = self.post(
             "/oauth/revoke",
             {"token": tokens["refresh_token"], "client_id": self.client.identifier},

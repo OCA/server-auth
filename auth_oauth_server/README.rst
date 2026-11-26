@@ -156,7 +156,12 @@ Known issues / Roadmap
 -  Redirect URIs must use https, or http on localhost: private-use
    schemes of native applications are not supported.
 -  Dynamic client registration is not rate limited: if you enable it,
-   limit it with a reverse proxy.
+   limit it with a reverse proxy. Neither are the client metadata
+   documents fetched for the authorization requests of users allowed on
+   a resource.
+-  Client metadata documents are fetched directly, never through the
+   proxy of the ``HTTPS_PROXY`` environment variable: the server
+   connects to the address it checked as public.
 -  A resource created while Odoo runs registers its ``auth="jwt_..."``
    route method only in the worker that created it (an ``auth_jwt``
    limitation): restart the workers before using it in routes.

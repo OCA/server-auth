@@ -6,8 +6,6 @@ import time
 from datetime import timedelta
 from urllib.parse import urlsplit
 
-import requests
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import consteq
@@ -105,6 +103,19 @@ class OAuthServerClient(models.Model):
             if uri.strip()
         ]
 
+    def _is_enabled(self):
+        """Active, and registered in a way still enabled: disabling dynamic
+        registration or metadata documents stops the clients registered so."""
+        self.ensure_one()
+        server = self.env["oauth.server"]
+        if self.registration_type == "dynamic":
+            enabled = server._is_dynamic_registration_enabled()
+        elif self.registration_type == "metadata_document":
+            enabled = server._is_metadata_document_enabled()
+        else:
+            enabled = True
+        return self.active and enabled
+
     def _check_secret(self, secret):
         self.ensure_one()
         if not self.client_secret_hash or not isinstance(secret, str) or not secret:
@@ -157,7 +168,7 @@ class OAuthServerClient(models.Model):
             else utils.check_metadata_document_url(identifier)
         )
         if not is_document:
-            if not client:
+            if not client or not client._is_enabled():
                 raise OAuthError("invalid_client", "Unknown client.")
             return client
         if not self.env["oauth.server"]._is_metadata_document_enabled():
@@ -184,16 +195,14 @@ class OAuthServerClient(models.Model):
                 "invalid_client", "Applications from this domain are not accepted."
             )
         try:
-            addresses = utils.resolve_host(hostname)
-        except OSError:
-            addresses = set()
-        if not addresses or not all(utils.is_public_address(a) for a in addresses):
+            utils.resolve_public_address(hostname)
+        except ValueError as error:
             raise OAuthError(
                 "invalid_client", "The client metadata host is not a public address."
-            )
+            ) from error
         try:
             document, cache_control = utils.fetch_metadata_document(url)
-        except (requests.RequestException, ValueError) as error:
+        except ValueError as error:
             _logger.info("Cannot fetch client metadata document %s: %s", url, error)
             raise OAuthError(
                 "invalid_client", "Cannot fetch the client metadata document."
@@ -283,6 +292,7 @@ class OAuthServerClient(models.Model):
         grant_types = metadata.get("grant_types", ["authorization_code"])
         if (
             not isinstance(grant_types, list)
+            or not all(isinstance(grant, str) for grant in grant_types)
             or "authorization_code" not in grant_types
             or not set(grant_types) <= {"authorization_code", "refresh_token"}
         ):

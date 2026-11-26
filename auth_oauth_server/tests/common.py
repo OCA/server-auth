@@ -10,6 +10,8 @@ import secrets
 
 from odoo.tests.common import new_test_user
 
+from odoo.addons.auth_jwt.exceptions import UnauthorizedInvalidToken  # noqa: F401
+
 from ..utils import pkce_s256
 
 ISSUER = "https://erp.example.com"

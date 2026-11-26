@@ -31,6 +31,11 @@ class TestResource(common.OAuthServerMixin, TransactionCase):
             {"name": "Other", "path": "/test-api"}
         )
         self.assertEqual(other.jwt_validator_id.name, "oauth_server_test_api_2")
+        # characters that are not ASCII letters or digits, even \w ones
+        other = self.env["oauth.server.resource"].create(
+            {"name": "Unicode", "path": "/api²/città"}
+        )
+        self.assertEqual(other.jwt_validator_id.name, "oauth_server_api_citt")
 
     def test_root_resource(self):
         resource = self.env["oauth.server.resource"].create(
@@ -44,7 +49,7 @@ class TestResource(common.OAuthServerMixin, TransactionCase):
         )
 
     def test_invalid_path(self):
-        for path in ("api", "/api/", "/api?x=1", "/a b"):
+        for path in ("api", "/api/", "/api?x=1", "/a b", "/api,v2"):
             with self.assertRaises(ValidationError, msg=path):
                 self.env["oauth.server.resource"].create({"name": "X", "path": path})
 
@@ -82,8 +87,15 @@ class TestResource(common.OAuthServerMixin, TransactionCase):
         self.assertEqual(self.resource._filter_scopes("write read write"), "write read")
         # unknown scopes are dropped rather than refused (RFC 6749 3.3)
         self.assertEqual(self.resource._filter_scopes("admin write"), "write")
-        self.assertEqual(self.resource._filter_scopes("admin"), "read write")
+        # but not all of them
+        with self.assertRaises(OAuthError) as raised:
+            self.resource._filter_scopes("admin")
+        self.assertEqual(raised.exception.error, "invalid_scope")
         self.assertEqual(self.resource._filter_scopes(None), "read write")
+        self.assertEqual(self.resource._filter_scopes(" "), "read write")
+        # a resource without scopes ignores the requested ones
+        self.resource.scopes = False
+        self.assertEqual(self.resource._filter_scopes("admin"), "")
 
     def test_resource_from_request(self):
         resources = self.env["oauth.server.resource"]

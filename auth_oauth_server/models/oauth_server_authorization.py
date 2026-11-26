@@ -63,7 +63,12 @@ class OAuthServerAuthorization(models.Model):
         index=True,
     )
     scopes = fields.Char(readonly=True)
-    redirect_uri = fields.Char(readonly=True)
+    redirect_uri = fields.Char(
+        readonly=True,
+        help="The redirect URI of the authorization request, which the token "
+        "request must repeat. Empty when the application relied on its only "
+        "registered redirect URI.",
+    )
     code_hash = fields.Char(readonly=True, copy=False, index=True)
     code_challenge = fields.Char(readonly=True, copy=False)
     code_expires_at = fields.Datetime(readonly=True)
@@ -190,8 +195,9 @@ class OAuthServerAuthorization(models.Model):
             or authorization.code_expires_at <= fields.Datetime.now()
         ):
             raise OAuthError("invalid_grant", "Authorization code expired.")
+        # required when the authorization request had one (RFC 6749 4.1.3)
         redirect_uri = params.get("redirect_uri")
-        if redirect_uri and redirect_uri != authorization.redirect_uri:
+        if authorization.redirect_uri and redirect_uri != authorization.redirect_uri:
             raise OAuthError("invalid_grant", "redirect_uri does not match.")
         if not check_pkce(params.get("code_verifier"), authorization.code_challenge):
             raise OAuthError("invalid_grant", "Invalid code_verifier.")
@@ -218,9 +224,9 @@ class OAuthServerAuthorization(models.Model):
     @api.model
     def _refresh(self, client, params):
         """The refresh_token grant, rotating the refresh token."""
-        token = self.env["oauth.server.refresh.token"]._get_by_token(
-            params.get("refresh_token")
-        )
+        refresh_tokens = self.env["oauth.server.refresh.token"]
+        value = params.get("refresh_token")
+        token = refresh_tokens._get_by_token(value)
         authorization = token.authorization_id
         if not token or authorization.client_id != client:
             raise OAuthError("invalid_grant", "Invalid refresh token.")
@@ -235,14 +241,23 @@ class OAuthServerAuthorization(models.Model):
         authorization._check_resource_param(params.get("resource"))
         authorization._check_still_allowed()
         scopes = authorization._narrow_scopes(params.get("scope"))
-        if not token._claim() and token.used_at < now - timedelta(
-            seconds=REFRESH_REUSE_GRACE
-        ):
-            # someone else holds a copy of the token
-            authorization._revoke("refresh_reuse")
-            raise OAuthError("invalid_grant", "Refresh token already used.")
+        successor = refresh_tokens._successor(value)
+        if token._claim():
+            refresh_tokens._create_for(authorization, successor)
+        else:
+            # within the grace period, the same successor as the first time,
+            # as long as it was not used in turn
+            successor_token = refresh_tokens._get_by_token(successor)
+            if (
+                not successor_token
+                or successor_token.used_at
+                or token.used_at < now - timedelta(seconds=REFRESH_REUSE_GRACE)
+            ):
+                # someone else holds a copy of the token
+                authorization._revoke("refresh_reuse")
+                raise OAuthError("invalid_grant", "Refresh token already used.")
         authorization.last_refresh = now
-        return authorization._issue_tokens(scopes)
+        return authorization._issue_tokens(scopes, successor)
 
     def _check_resource_param(self, resource):
         self.ensure_one()
@@ -262,7 +277,7 @@ class OAuthServerAuthorization(models.Model):
         return (
             not self.revoked
             and self.expires_at > fields.Datetime.now()
-            and self.client_id.active
+            and self.client_id._is_enabled()
             and self.resource_id.active
             and self.resource_id._is_user_allowed(self.user_id)
         )
@@ -278,15 +293,22 @@ class OAuthServerAuthorization(models.Model):
             raise OAuthError("invalid_scope", "Scopes beyond the authorization.")
         return " ".join(scopes)
 
-    def _issue_tokens(self, scopes):
+    def _issue_tokens(self, scopes, refresh_token=None):
+        """The token response; a new refresh token unless one is given.
+
+        Scopes the resource no longer has are left out of the tokens.
+        """
         self.ensure_one()
+        allowed = self.resource_id._get_scopes()
+        scopes = " ".join(s for s in (scopes or "").split() if s in allowed)
         access_token, expires_in = self._make_access_token(scopes)
         return {
             "access_token": access_token,
             "token_type": "Bearer",
             "expires_in": expires_in,
             "scope": scopes,
-            "refresh_token": self.env["oauth.server.refresh.token"]._create_for(self),
+            "refresh_token": refresh_token
+            or self.env["oauth.server.refresh.token"]._create_for(self),
         }
 
     def _make_access_token(self, scopes):
@@ -323,6 +345,21 @@ class OAuthServerAuthorization(models.Model):
     # ------------------------------------------------------------------
 
     @api.model
+    def _get_for_payload(self, validator, payload):
+        """The authorization a verified access token payload was issued for."""
+        try:
+            authorization = self.browse(int(payload.get("authorization_id"))).exists()
+        except (TypeError, ValueError):
+            return self.browse()
+        if (
+            authorization.resource_id.jwt_validator_id != validator
+            or payload.get("client_id") != authorization.client_id.identifier
+            or payload.get("sub") != str(authorization.user_id.id)
+        ):
+            return self.browse()
+        return authorization
+
+    @api.model
     def _get_for_access_token(self, validator, payload):
         """The authorization behind a validated access token payload.
 
@@ -330,38 +367,34 @@ class OAuthServerAuthorization(models.Model):
         applications or resources, and of users no longer allowed, so that
         revoking takes effect at once rather than when the token expires.
         """
-        authorization = self.browse()
-        try:
-            authorization = self.browse(int(payload.get("authorization_id"))).exists()
-        except (TypeError, ValueError):
-            authorization = self.browse()
-        if (
-            not authorization
-            or authorization.resource_id.jwt_validator_id != validator
-            or payload.get("client_id") != authorization.client_id.identifier
-            or payload.get("sub") != str(authorization.user_id.id)
-            or not authorization._is_valid()
-        ):
+        authorization = self._get_for_payload(validator, payload)
+        if not authorization or not authorization._is_valid():
             raise UnauthorizedInvalidToken()
         return authorization
 
     @api.model
     def _revoke_token(self, client, token):
         """Token revocation (RFC 7009) of a refresh or access token of
-        ``client``. Unknown tokens are ignored, as the RFC requires."""
+        ``client``. Unknown tokens are ignored, as the RFC requires, and
+        tokens of other clients refused."""
         if not token or not isinstance(token, str):
             return
         refresh_token = self.env["oauth.server.refresh.token"]._get_by_token(token)
-        if refresh_token:
-            if refresh_token.authorization_id.client_id == client:
-                refresh_token.authorization_id._revoke("client")
+        authorization = (
+            refresh_token.authorization_id or self._get_for_signed_access_token(token)
+        )
+        if not authorization:
             return
-        authorization = self._get_for_unverified_access_token(token)
-        if authorization and authorization.client_id == client:
+        if authorization.client_id != client:
+            raise OAuthError("invalid_grant", "The token was issued to another client.")
+        if not authorization.revoked:
             authorization._revoke("client")
 
     @api.model
-    def _get_for_unverified_access_token(self, token):
+    def _get_for_signed_access_token(self, token):
+        """The authorization of an access token whose signature is valid,
+        even if it expired or its authorization is no longer valid: revoking
+        must work for those too."""
         try:
             claims = jwt.decode(token, options={"verify_signature": False})
         except jwt.PyJWTError:
@@ -374,7 +407,14 @@ class OAuthServerAuthorization(models.Model):
             return self.browse()
         validator = resource.jwt_validator_id.sudo()
         try:
-            payload = validator._decode(token)
-            return self._get_for_access_token(validator, payload)
-        except UnauthorizedInvalidToken:
+            payload = jwt.decode(
+                token,
+                key=validator.secret_key,
+                algorithms=[validator.secret_algorithm],
+                audience=validator.audience,
+                issuer=validator.issuer,
+                options={"require": ["aud", "iss"], "verify_exp": False},
+            )
+        except jwt.PyJWTError:
             return self.browse()
+        return self._get_for_payload(validator, payload)

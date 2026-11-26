@@ -496,7 +496,12 @@ JWKS would let other servers check them too.</li>
 <li>Redirect URIs must use https, or http on localhost: private-use
 schemes of native applications are not supported.</li>
 <li>Dynamic client registration is not rate limited: if you enable it,
-limit it with a reverse proxy.</li>
+limit it with a reverse proxy. Neither are the client metadata
+documents fetched for the authorization requests of users allowed on
+a resource.</li>
+<li>Client metadata documents are fetched directly, never through the
+proxy of the <tt class="docutils literal">HTTPS_PROXY</tt> environment variable: the server
+connects to the address it checked as public.</li>
 <li>A resource created while Odoo runs registers its <tt class="docutils literal"><span class="pre">auth=&quot;jwt_...&quot;</span></tt>
 route method only in the worker that created it (an <tt class="docutils literal">auth_jwt</tt>
 limitation): restart the workers before using it in routes.</li>

@@ -1,6 +1,9 @@
 # Copyright 2026 Lorenzo Battistini
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
+import socket
+import threading
+import time
 from unittest import mock
 
 from odoo.tests.common import TransactionCase
@@ -9,18 +12,18 @@ from .. import utils
 
 
 class FakeResponse:
+    """What utils.read_metadata_response uses of an http.client response."""
+
     def __init__(self, status=200, content_type="application/json", body=b"{}"):
-        self.status_code = status
+        self.status = status
         self.headers = {"Content-Type": content_type, "Cache-Control": "max-age=60"}
         self.body = body
-        self.closed = False
 
-    def iter_content(self, chunk_size=1):
-        for start in range(0, len(self.body), chunk_size):
-            yield self.body[start : start + chunk_size]
+    def getheader(self, name):
+        return self.headers.get(name)
 
-    def close(self):
-        self.closed = True
+    def read(self, amt):  # pylint: disable=method-required-super
+        return self.body[:amt]
 
 
 class TestUtils(TransactionCase):
@@ -137,18 +140,29 @@ class TestUtils(TransactionCase):
         self.assertEqual(utils.max_age_from_cache_control("no-store"), 300)
         self.assertEqual(utils.max_age_from_cache_control(""), 3600)
 
-    def _fetch(self, response):
-        with mock.patch.object(utils.requests, "get", return_value=response) as get:
-            try:
-                return utils.fetch_metadata_document("https://app.example.com/c.json")
-            finally:
-                self.assertTrue(response.closed)
-                kwargs = get.call_args[1]
-                self.assertFalse(kwargs["allow_redirects"])
-                self.assertTrue(kwargs["timeout"])
+    def test_resolve_public_address(self):
+        resolve = utils.resolve_public_address
+        with mock.patch.object(utils, "resolve_host", return_value={"93.184.216.34"}):
+            self.assertEqual(resolve("app.example.com"), "93.184.216.34")
+        for kwargs in (
+            {"return_value": {"10.0.0.5"}},
+            {"return_value": {"93.184.216.34", "127.0.0.1"}},
+            {"return_value": set()},
+            {"side_effect": socket.gaierror("unknown")},
+            # an empty label, or one longer than 63 characters
+            {"side_effect": UnicodeError("label empty or too long")},
+        ):
+            with (
+                self.subTest(kwargs=kwargs),
+                mock.patch.object(utils, "resolve_host", **kwargs),
+            ):
+                with self.assertRaises(ValueError):
+                    resolve("app.example.com")
 
-    def test_fetch_metadata_document(self):
-        document, cache_control = self._fetch(FakeResponse(body=b'{"a": 1}'))
+    def test_read_metadata_response(self):
+        document, cache_control = utils.read_metadata_response(
+            FakeResponse(body=b'{"a": 1}')
+        )
         self.assertEqual(document, {"a": 1})
         self.assertEqual(cache_control, "max-age=60")
         for response in (
@@ -157,5 +171,47 @@ class TestUtils(TransactionCase):
             FakeResponse(body=b"{" + b" " * 6000 + b"}"),
             FakeResponse(body=b"not json"),
         ):
+            with (
+                self.subTest(response=response.__dict__),
+                self.assertRaises(ValueError),
+            ):
+                utils.read_metadata_response(response)
+
+    def test_fetch_from_private_address(self):
+        with (
+            mock.patch.object(utils, "resolve_host", return_value={"10.0.0.5"}),
+            mock.patch.object(utils.socket, "create_connection") as connect,
+        ):
             with self.assertRaises(ValueError):
-                self._fetch(response)
+                utils.fetch_metadata_document("https://app.example.com/c.json")
+        connect.assert_not_called()
+
+    def test_fetch_deadline(self):
+        """A host answering a byte at a time is cut off at the timeout."""
+        server = socket.create_server(("127.0.0.1", 0))
+        self.addCleanup(server.close)
+
+        def drip():
+            connection, _address = server.accept()
+            with connection:
+                # a TLS record announcing 16 KB, then a byte every 0.1 s
+                connection.sendall(b"\x16\x03\x03\x40\x00")
+                for _i in range(100):
+                    try:
+                        connection.sendall(b"\x00")
+                    except OSError:
+                        return
+                    time.sleep(0.1)
+
+        threading.Thread(target=drip, daemon=True).start()
+        with (
+            mock.patch.object(utils, "resolve_host", return_value={"127.0.0.1"}),
+            mock.patch.object(utils, "is_public_address", return_value=True),
+            mock.patch.object(utils, "HTTPS_PORT", server.getsockname()[1]),
+            mock.patch.object(utils, "METADATA_DOCUMENT_TIMEOUT", 0.5),
+        ):
+            start = time.monotonic()
+            with self.assertRaises(ValueError) as raised:
+                utils.fetch_metadata_document("https://app.example.com/c.json")
+        self.assertLess(time.monotonic() - start, 2)
+        self.assertIn("in time", str(raised.exception))

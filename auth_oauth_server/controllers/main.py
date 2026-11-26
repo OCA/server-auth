@@ -108,7 +108,9 @@ class OAuthServerController(http.Controller):
             )
         server = self._env()["oauth.server"]
         try:
-            client, redirect_uri = server._get_authorization_client(params)
+            client, redirect_uri = server._get_authorization_client(
+                params, request.env.user
+            )
         except OAuthError as error:
             return self._error_page(error)
         try:
@@ -261,9 +263,9 @@ class OAuthServerController(http.Controller):
                 params.get("client_secret"),
                 self._basic_credentials(),
             )
+            env["oauth.server.authorization"]._revoke_token(client, params.get("token"))
         except OAuthError as error:
             return self._oauth_error_response(error)
-        env["oauth.server.authorization"]._revoke_token(client, params.get("token"))
         return request.make_response("", headers=NO_STORE)
 
     @http.route(

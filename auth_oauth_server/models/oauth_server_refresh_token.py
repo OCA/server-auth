@@ -5,7 +5,7 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 
-from ..utils import generate_token, hash_token
+from ..utils import derive_token, generate_token, hash_token
 
 
 class OAuthServerRefreshToken(models.Model):
@@ -30,9 +30,9 @@ class OAuthServerRefreshToken(models.Model):
     ]
 
     @api.model
-    def _create_for(self, authorization):
+    def _create_for(self, authorization, token=None):
         """Issue a refresh token for ``authorization``; returns its value."""
-        token = generate_token()
+        token = token or generate_token()
         lifetime = timedelta(days=authorization.resource_id.refresh_token_lifetime)
         self.create(
             {
@@ -50,6 +50,18 @@ class OAuthServerRefreshToken(models.Model):
         if not token or not isinstance(token, str):
             return self.browse()
         return self.search([("token_hash", "=", hash_token(token))], limit=1)
+
+    @api.model
+    def _successor(self, token):
+        """The refresh token issued in exchange for ``token``.
+
+        It is derived from ``token``, so that every request presenting
+        ``token`` gets the same one: concurrent requests of a client continue
+        a single chain of tokens, and so does a thief holding a copy, whose
+        next use then reveals the theft.
+        """
+        secret = self.env["ir.config_parameter"].sudo().get_param("database.secret")
+        return derive_token(secret, "auth_oauth_server.refresh_token", token)
 
     def _claim(self):
         """Mark the token used, atomically; False if it already was.
@@ -71,11 +83,6 @@ class OAuthServerRefreshToken(models.Model):
 
     @api.autovacuum
     def _gc_refresh_tokens(self):
-        now = fields.Datetime.now()
-        self.search(
-            [
-                "|",
-                ("expires_at", "<", now),
-                ("used_at", "<", now - timedelta(days=1)),
-            ]
-        ).unlink()
+        """Drop expired tokens only: a used one presented again, however
+        late, reveals a stolen copy and revokes the authorization."""
+        self.search([("expires_at", "<", fields.Datetime.now())]).unlink()

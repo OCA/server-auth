@@ -87,12 +87,13 @@ class OAuthServerResource(models.Model):
             if (
                 not path.startswith("/")
                 or (path != "/" and path.endswith("/"))
-                or re.search(r"[\s?#]", path)
+                # auth_jwt splits the audience, the URI of the resource, on commas
+                or re.search(r"[\s?#,]", path)
             ):
                 raise ValidationError(
                     _(
                         "The path %(path)s must start with a slash, and contain "
-                        "no trailing slash, query or fragment.",
+                        "no trailing slash, comma, query or fragment.",
                         path=path,
                     )
                 )
@@ -110,7 +111,9 @@ class OAuthServerResource(models.Model):
     @api.model
     def _create_jwt_validator(self, path):
         validators = self.env["auth.jwt.validator"].sudo()
-        base = "oauth_server_" + (re.sub(r"\W+", "_", path or "").strip("_") or "root")
+        # a Python identifier, as auth_jwt requires: ASCII only
+        name = re.sub(r"[^A-Za-z0-9_]+", "_", path or "").strip("_")
+        base = "oauth_server_" + (name or "root")
         name, counter = base, 1
         while validators.search_count([("name", "=", name)]):
             counter += 1
@@ -175,14 +178,17 @@ class OAuthServerResource(models.Model):
         return (self.scopes or "").split()
 
     def _filter_scopes(self, requested):
-        """The scopes to grant for a request: unknown ones are dropped (RFC
-        6749 3.3), and no request at all means every scope."""
+        """The scopes to grant for a request: no scope parameter means every
+        scope, and unknown ones are dropped (RFC 6749 3.3), but a request
+        for none of the resource's scopes is refused."""
         allowed = self._get_scopes()
-        if isinstance(requested, str):
-            kept = [scope for scope in requested.split() if scope in allowed]
-            if kept:
-                return " ".join(dict.fromkeys(kept))
-        return " ".join(allowed)
+        requested = requested.split() if isinstance(requested, str) else []
+        if not requested or not allowed:
+            return " ".join(allowed)
+        kept = [scope for scope in requested if scope in allowed]
+        if not kept:
+            raise OAuthError("invalid_scope", "Unknown scopes.")
+        return " ".join(dict.fromkeys(kept))
 
     @api.model
     def _get_by_uri(self, uri):

@@ -8,17 +8,19 @@ Call them as ``utils.resolve_host(...)``, never import them by name.
 """
 
 import base64
+import contextlib
 import hashlib
 import hmac
+import http.client
 import ipaddress
 import json
 import re
 import secrets
 import socket
+import ssl
+import threading
 import time
 from urllib.parse import parse_qsl, unquote, urlencode, urlsplit, urlunsplit
-
-import requests
 
 from odoo.tools import consteq
 
@@ -30,6 +32,7 @@ PKCE_CHALLENGE_RE = re.compile(r"^[A-Za-z0-9\-_]{43}$")
 LOOPBACK_HOSTS = {"localhost", "127.0.0.1", "::1"}
 METADATA_DOCUMENT_MAX_BYTES = 5 * 1024
 METADATA_DOCUMENT_TIMEOUT = 5
+HTTPS_PORT = 443
 NAT64_NETWORK = ipaddress.ip_network("64:ff9b::/96")
 
 
@@ -40,6 +43,11 @@ def generate_token(nbytes=TOKEN_BYTES):
 def hash_token(token):
     """Digest under which a high-entropy secret is stored and looked up."""
     return hashlib.sha256(token.encode()).hexdigest()
+
+
+def derive_token(secret, scope, token):
+    """A token that only the holder of ``secret`` can derive from ``token``."""
+    return _signature(secret, scope, token)
 
 
 def pkce_s256(verifier):
@@ -213,43 +221,94 @@ def is_public_address(address):
 
 
 def resolve_host(hostname):
-    infos = socket.getaddrinfo(hostname, 443, type=socket.SOCK_STREAM)
+    infos = socket.getaddrinfo(hostname, HTTPS_PORT, type=socket.SOCK_STREAM)
     return {info[4][0] for info in infos}
+
+
+def resolve_public_address(hostname):
+    """An address of ``hostname``, if all of them are public.
+
+    Raises ValueError otherwise, or if the name does not resolve.
+    """
+    try:
+        addresses = resolve_host(hostname)
+    except (OSError, UnicodeError) as error:
+        raise ValueError(f"cannot resolve {hostname}: {error}") from error
+    if not addresses or not all(is_public_address(a) for a in addresses):
+        raise ValueError(f"{hostname} has addresses that are not public")
+    return sorted(addresses)[0]
 
 
 def fetch_metadata_document(url):
     """GET a Client ID Metadata Document.
 
     Returns ``(document, cache_control)``. Raises ValueError for anything but
-    a small JSON document answered directly (no redirect) within the timeout,
-    and requests.RequestException for network errors.
+    a small JSON document answered directly (no redirect) by a public
+    address within the timeout.
+
+    The connection goes to the address checked, not to a new resolution of
+    the name that a DNS rebinding could point to the internal network, and
+    is cut when the timeout expires, however slowly the host answers.
     """
-    deadline = time.monotonic() + METADATA_DOCUMENT_TIMEOUT
-    response = requests.get(
-        url,
-        timeout=METADATA_DOCUMENT_TIMEOUT,
-        allow_redirects=False,
-        stream=True,
-        headers={"Accept": "application/json", "Accept-Encoding": "identity"},
+    parts = urlsplit(url)
+    address = resolve_public_address(parts.hostname)
+    connection = http.client.HTTPSConnection(
+        parts.hostname, HTTPS_PORT, timeout=METADATA_DOCUMENT_TIMEOUT
     )
+
+    def connect():
+        sock = socket.create_connection(
+            (address, HTTPS_PORT), METADATA_DOCUMENT_TIMEOUT
+        )
+        # the handshake after the assignment, so that cut() can interrupt it
+        connection.sock = ssl.create_default_context().wrap_socket(
+            sock, server_hostname=parts.hostname, do_handshake_on_connect=False
+        )
+        if expired.is_set():
+            raise ValueError("document not received in time")
+        connection.sock.do_handshake()
+
+    def cut():
+        expired.set()
+        # not connected yet (connect() then gives up), or already closed
+        with contextlib.suppress(AttributeError, OSError):
+            connection.sock.shutdown(socket.SHUT_RDWR)
+
+    connection.connect = connect
+    expired = threading.Event()
+    timer = threading.Timer(METADATA_DOCUMENT_TIMEOUT, cut)
+    timer.start()
     try:
-        if response.status_code != 200:
-            raise ValueError(f"HTTP status {response.status_code}")
-        content_type = response.headers.get("Content-Type", "")
-        content_type = content_type.split(";")[0].strip().lower()
-        if content_type != "application/json" and not content_type.endswith("+json"):
-            raise ValueError(f"unexpected content type {content_type!r}")
-        size, chunks = 0, []
-        for chunk in response.iter_content(chunk_size=1024):
-            size += len(chunk)
-            if size > METADATA_DOCUMENT_MAX_BYTES:
-                raise ValueError(f"document larger than {size} bytes")
-            if time.monotonic() > deadline:
-                raise ValueError("document not received in time")
-            chunks.append(chunk)
-        return json.loads(b"".join(chunks)), response.headers.get("Cache-Control", "")
+        connection.request(
+            "GET",
+            urlunsplit(("", "", parts.path, parts.query, "")),
+            headers={
+                "Accept": "application/json",
+                "User-Agent": "Odoo auth_oauth_server",
+            },
+        )
+        return read_metadata_response(connection.getresponse())
+    except (OSError, http.client.HTTPException) as error:
+        if expired.is_set():
+            raise ValueError("document not received in time") from error
+        raise ValueError(str(error) or repr(error)) from error
     finally:
-        response.close()
+        timer.cancel()
+        connection.close()
+
+
+def read_metadata_response(response):
+    """The document and Cache-Control header of an http.client response."""
+    if response.status != 200:
+        raise ValueError(f"HTTP status {response.status}")
+    content_type = response.getheader("Content-Type") or ""
+    content_type = content_type.split(";")[0].strip().lower()
+    if content_type != "application/json" and not content_type.endswith("+json"):
+        raise ValueError(f"unexpected content type {content_type!r}")
+    body = response.read(METADATA_DOCUMENT_MAX_BYTES + 1)
+    if len(body) > METADATA_DOCUMENT_MAX_BYTES:
+        raise ValueError(f"document larger than {METADATA_DOCUMENT_MAX_BYTES} bytes")
+    return json.loads(body), response.getheader("Cache-Control") or ""
 
 
 def max_age_from_cache_control(header, default=3600, minimum=300, maximum=86400):
