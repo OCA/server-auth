@@ -70,3 +70,15 @@ In Odoo, create a new Oauth Provider with the following parameters:
   Configuration of your Keycloak realm
 - JWKS URL: The "jwks_uri" URL found in the OpenID Endpoint
   Configuration of your Keycloak realm
+
+## Prompt
+
+For the OpenID Connect flows, the *Prompt* field of the provider controls
+the `prompt` parameter of the authentication request as defined in
+[OpenID Connect Core](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest):
+
+- *Select Account*: always show the account chooser of the identity provider
+- *Login*: always ask the user to re-authenticate
+- *Consent*: always ask the user for consent
+- *None*: never show any UI; fail if interaction is required
+- empty (default): the identity provider decides
