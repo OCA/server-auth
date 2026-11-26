@@ -82,6 +82,35 @@ class TestAuthApiKey(TransactionCase):
         with self.assertRaises(ValidationError):
             self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
 
+    def test_archived_key_is_rejected(self):
+        self.assertEqual(
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"),
+            self.demo_user.id,
+        )
+        self.api_key_good.active = False
+        with self.assertRaises(ValidationError):
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
+
+    def test_deleted_key_is_rejected(self):
+        self.assertEqual(
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"),
+            self.demo_user.id,
+        )
+        self.api_key_good.unlink()
+        with self.assertRaises(ValidationError):
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
+
+    def test_option_turned_on_for_archived_user(self):
+        self.env.company.archived_user_disable_auth_api_key = False
+        self.demo_user.active = False
+        self.assertEqual(
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key"),
+            self.demo_user.id,
+        )
+        self.env.company.archived_user_disable_auth_api_key = True
+        with self.assertRaises(ValidationError):
+            self.env["auth.api.key"]._retrieve_uid_from_api_key("api_key")
+
     def test_user_archived_unarchived_with_option_on(self):
         self.env.company.archived_user_disable_auth_api_key = True
         demo_user = self.demo_user
