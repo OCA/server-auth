@@ -1,3 +1,10 @@
+## 19.0.1.1.2 (2026-11-26)
+
+### Bugfixes
+
+- Ensure that autoredirect keeps URL that was displayed before login.
+
+
 ## 19.0.1.1.0 (2026-10-16)
 
 ### Features
