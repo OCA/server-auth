@@ -81,9 +81,24 @@ msgid ""
 "the nameId in the IDP response."
 msgstr ""
 "Attribut retourné par le fournisseur d’identité à utiliser pour la "
-"correspondance avec un utilisateur Odoo. La valeur spéciale « subject."
-"nameId » peut être utilisée pour une correspondance avec le nameId de la "
-"réponse du fournisseur d’identité."
+"correspondance avec un utilisateur Odoo. La valeur spéciale "
+"« subject.nameId » peut être utilisée pour une correspondance avec le nameId "
+"de la réponse du fournisseur d’identité."
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__requested_authn_context_comparison
+msgid "Authentication Context Comparison"
+msgstr ""
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__requested_authn_context_class_refs
+msgid ""
+"Authentication context class references (AuthnContextClassRef) to request "
+"from the IDP, one per line, for example "
+"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport. When set, "
+"a RequestedAuthnContext element is added to the authentication requests. "
+"Leave empty to not send it."
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__authn_requests_signed
@@ -113,6 +128,11 @@ msgid ""
 msgstr ""
 "Base de l’adresse universelle envoyé à Odoo avec ceci, plutôt que de la "
 "détecter depuis la requête ou le paramètre système « web.base.url »"
+
+#. module: auth_saml
+#: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__better
+msgid "Better"
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__css_class
@@ -173,6 +193,14 @@ msgid "Display Settings"
 msgstr "Paramètres d’affichage"
 
 #. module: auth_saml
+#. odoo-python
+#: code:addons/auth_saml/models/auth_saml_provider.py:0
+msgid ""
+"Each requested authentication context must be a single URI, one per line. "
+"Invalid values: %(values)s"
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__entity_id
 msgid "Entity ID"
 msgstr "Identifiant de l’entité"
@@ -193,11 +221,23 @@ msgstr ""
 "EntityID envoyé au fournisseur d’identité, utilisé pour identifier cet Odoo"
 
 #. module: auth_saml
+#: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__exact
+msgid "Exact"
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__matching_attribute_to_lower
 msgid "Force matching_attribute to lower case before passing back to Odoo."
 msgstr ""
 "Forcer le bas de casse pour les correspondances d’attribut avant de les "
 "envoyer à Odoo."
+
+#. module: auth_saml
+#: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__requested_authn_context_comparison
+msgid ""
+"How the IDP compares the authentication method used with the requested "
+"context classes. Only used when at least one class is set."
+msgstr ""
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__id
@@ -320,9 +360,19 @@ msgstr ""
 "exemple, alors seulement la première valeur sera utilisé."
 
 #. module: auth_saml
+#: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__maximum
+msgid "Maximum"
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_metadata_url
 msgid "Metadata URL"
 msgstr "Adresse universelle des métadonnées"
+
+#. module: auth_saml
+#: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__minimum
+msgid "Minimum"
+msgstr ""
 
 #. module: auth_saml
 #. odoo-python
@@ -361,6 +411,13 @@ msgid "Odoo Settings"
 msgstr "Paramètres Odoo"
 
 #. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid ""
+"One URI per line. Leave empty to let the IDP choose the authentication "
+"method."
+msgstr ""
+
+#. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__autoredirect
 msgid ""
 "Only the provider with the higher priority will be automatically redirected"
@@ -392,6 +449,11 @@ msgstr "Fournisseurs"
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Refresh"
 msgstr "Rafraîchir"
+
+#. module: auth_saml
+#: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__requested_authn_context_class_refs
+msgid "Requested Authentication Context"
+msgstr ""
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
@@ -600,6 +662,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "Your provider will give you this XML once configured."
 msgstr "Votre fournisseur vous donnera ce XML une fois configuré."
+
+#. module: auth_saml
+#: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
+msgid "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
+msgstr ""
 
 #~ msgid "Last Modified on"
 #~ msgstr "Dernière modification le"
