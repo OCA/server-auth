@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from unittest.mock import patch
+from urllib.parse import urlencode
 
 from lxml.html import document_fromstring
 
@@ -40,12 +41,28 @@ class UICase(HttpCase):
         doc = self.html_doc()
         return doc.xpath("//input[@name='csrf_token']")[0].get("value")
 
-    def test_signup_page_hides_password(self):
-        """Uninvited users sign up without choosing a password."""
+    def assertPasswordFields(self, doc, present):
+        for name in ("password", "confirm_password"):
+            self.assertEqual(bool(doc.xpath(f"//input[@name='{name}']")), present)
+
+    def test_password_fields_without_token(self):
+        """Uninvited signup stays passwordless, also with an invalid token."""
         doc = self.html_doc()
         self.assertTrue(doc.xpath('//input[@name="login"]'))
-        self.assertFalse(doc.xpath('//input[@name="password"]'))
-        self.assertFalse(doc.xpath('//input[@name="confirm_password"]'))
+        self.assertPasswordFields(doc, False)
+        doc = self.html_doc("/web/signup?" + urlencode({"token": "bad"}))
+        self.assertPasswordFields(doc, False)
+
+    def test_password_fields_with_token(self):
+        """Token pages (activation, reset, invitation) show password fields."""
+        partner = self.env["res.partner"].create(
+            {"name": "Invited", "email": "invited@example.com"}
+        )
+        partner.signup_prepare()
+        query = urlencode({"token": partner._generate_signup_token()})
+        for url in ("/web/reset_password", "/web/signup"):
+            with self.subTest(url=url):
+                self.assertPasswordFields(self.html_doc(f"{url}?{query}"), True)
 
     def test_bad_email(self):
         """Test rejection of bad emails."""
@@ -106,6 +123,4 @@ class UICase(HttpCase):
         self.assertTrue(user, "signup should have created the user")
         user.partner_id.signup_prepare(signup_type="reset")
         url = user.partner_id.with_context(relative_url=True)._get_signup_url()
-        doc = self.html_doc(url=url)
-        self.assertTrue(doc.xpath('//input[@name="password"]'))
-        self.assertTrue(doc.xpath('//input[@name="confirm_password"]'))
+        self.assertPasswordFields(self.html_doc(url=url), True)
