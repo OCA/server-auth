@@ -1,6 +1,8 @@
 # Copyright 2016 Jairo Llopis <jairo.llopis@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from urllib.parse import urlencode
+
 from lxml.html import document_fromstring
 
 try:
@@ -51,3 +53,24 @@ class UICase(HttpCase):
         self.data["login"] = "contributors@odoo-community.org"
         doc = self.html_doc(data=self.data)
         self.assertTrue(doc.xpath('//p[@class="alert alert-success"]'))
+
+    def assertPasswordFields(self, doc, present):
+        for name in ("password", "confirm_password"):
+            self.assertEqual(bool(doc.xpath(f"//input[@name='{name}']")), present)
+
+    def test_password_fields_without_token(self):
+        """Uninvited signup stays passwordless."""
+        self.assertPasswordFields(self.html_doc(), False)
+        doc = self.html_doc("/web/signup?" + urlencode({"token": "bad"}))
+        self.assertPasswordFields(doc, False)
+
+    def test_password_fields_with_token(self):
+        """Token pages (activation, reset, invitation) show password fields."""
+        partner = self.env["res.partner"].create(
+            {"name": "Invited", "email": "invited@example.com"}
+        )
+        partner.signup_prepare()
+        query = urlencode({"token": partner._generate_signup_token()})
+        for url in ("/web/reset_password", "/web/signup"):
+            with self.subTest(url=url):
+                self.assertPasswordFields(self.html_doc(f"{url}?{query}"), True)
