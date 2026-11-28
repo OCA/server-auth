@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2025-09-26 18:43+0000\n"
+"PO-Revision-Date: 2026-11-28 17:46+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.4\n"
+"X-Generator: Weblate 2026.11.2\n"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.providers
@@ -85,7 +85,7 @@ msgstr ""
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__requested_authn_context_comparison
 msgid "Authentication Context Comparison"
-msgstr ""
+msgstr "Confronto contesto di autenticazione"
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__requested_authn_context_class_refs
@@ -96,6 +96,11 @@ msgid ""
 "a RequestedAuthnContext element is added to the authentication requests. "
 "Leave empty to not send it."
 msgstr ""
+"Riferimenti alle classi di contesto di autenticazione (AuthnContextClassRef) "
+"da richiedere all'IDP, uno per riga, ad esempio "
+"urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport. Se "
+"impostato, un elemento RequestedAuthnContext viene aggiunto alle richieste "
+"di autenticazione. Lasciare vuoto per non inviarlo."
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__authn_requests_signed
@@ -128,7 +133,7 @@ msgstr ""
 #. module: auth_saml
 #: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__better
 msgid "Better"
-msgstr ""
+msgstr "Migliore"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__css_class
@@ -195,6 +200,8 @@ msgid ""
 "Each requested authentication context must be a single URI, one per line. "
 "Invalid values: %(values)s"
 msgstr ""
+"Ogni contesto di autenticazione richiesto deve essere un singolo URI, uno "
+"per riga. Valori non validi: %(values)s"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__entity_id
@@ -218,7 +225,7 @@ msgstr "EntityID passato all'IDP, utilizzato per identificate Odoo"
 #. module: auth_saml
 #: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__exact
 msgid "Exact"
-msgstr ""
+msgstr "Esatto"
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__matching_attribute_to_lower
@@ -231,6 +238,9 @@ msgid ""
 "How the IDP compares the authentication method used with the requested "
 "context classes. Only used when at least one class is set."
 msgstr ""
+"Modalità con cui l'IDP confronta il metodo di autenticazione utilizzato con "
+"le classi di contesto richieste. Utilizzato solo quando è impostata almeno "
+"una classe."
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_attribute_mapping__id
@@ -271,7 +281,7 @@ msgid ""
 "Indicates if the Authentication Requests sent by this SP should be signed by "
 "default."
 msgstr ""
-"ndica se la richiesta di atenticazione inviata da questo SP deve essere "
+"Indica se la richiesta di autenticazione inviata da questo SP deve essere "
 "firmata in modo predefinito."
 
 #. module: auth_saml
@@ -351,7 +361,7 @@ msgstr ""
 #. module: auth_saml
 #: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__maximum
 msgid "Maximum"
-msgstr ""
+msgstr "Massimo"
 
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__sp_metadata_url
@@ -361,7 +371,7 @@ msgstr "URL metadati"
 #. module: auth_saml
 #: model:ir.model.fields.selection,name:auth_saml.selection__auth_saml_provider__requested_authn_context_comparison__minimum
 msgid "Minimum"
-msgstr ""
+msgstr "Minimo"
 
 #. module: auth_saml
 #. odoo-python
@@ -405,6 +415,8 @@ msgid ""
 "One URI per line. Leave empty to let the IDP choose the authentication "
 "method."
 msgstr ""
+"Un URI per riga. Lasciare vuoto per lasciare che l'IDP scelga il metodo di "
+"autenticazione."
 
 #. module: auth_saml
 #: model:ir.model.fields,help:auth_saml.field_auth_saml_provider__autoredirect
@@ -442,7 +454,7 @@ msgstr "Aggiorna"
 #. module: auth_saml
 #: model:ir.model.fields,field_description:auth_saml.field_auth_saml_provider__requested_authn_context_class_refs
 msgid "Requested Authentication Context"
-msgstr ""
+msgstr "Contesto di autenticazione richiesto"
 
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.auth_saml_base_settings_form
@@ -652,7 +664,7 @@ msgstr "Il suo provider fornirà questo XML una volta configurato."
 #. module: auth_saml
 #: model_terms:ir.ui.view,arch_db:auth_saml.view_saml_provider_form
 msgid "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
-msgstr ""
+msgstr "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"
 
 #~ msgid "Last Modified on"
 #~ msgstr "Ultima modifica il"
